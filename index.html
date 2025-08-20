@@ -1687,7 +1687,7 @@
                 ? wonGiveaways.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max, wonGiveaways[0]) 
                 : null;
 
-            const sortedWins = [...wonGiveaways].sort((a,b]) => new Date(a.wonDate) - new Date(b.wonDate));
+            const sortedWins = [...wonGiveaways].sort((a, b) => new Date(a.wonDate) - new Date(b.wonDate));
             let bestStreak = null;
             let longestDrySpell = null;
             let averageWinInterval = null;

@@ -13,7 +13,7 @@ exports.handler = async function (event, context) {
         };
     }
 
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     const prompt = `Busca en internet el precio aproximado del siguiente producto: "${query}". Devuélveme el precio encontrado y la URL de la fuente en un objeto JSON. Por ejemplo: {"value": "150€", "url": "https://example.com"}. Si no encuentras un precio, usa "No encontrado" para la clave "value" y null para "url".`;
 
     const payload = {

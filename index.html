@@ -1871,72 +1871,6 @@
             `;
         };
         
-        const renderChartsModal = () => {
-            const stats = calculateStats();
-            const monthlyWins = {};
-            wonGiveaways.forEach(g => {
-                const month = new Date(g.wonDate).toLocaleString('es-ES', { month: 'short', year: 'numeric' });
-                monthlyWins[month] = (monthlyWins[month] || 0) + parsePrice(g.price);
-            });
-
-            const categoryLabels = Object.keys(stats.categoryCounts).map(key => key.charAt(0).toUpperCase() + key.slice(1));
-            const categoryData = Object.values(stats.categoryCounts);
-            const categoryColors = ['#F7D468', '#4299E1', '#E53E3E', '#A0AEC0']; // Amarillo, azul, rojo, gris
-
-            const monthlyLabels = Object.keys(monthlyWins);
-            const monthlyData = Object.values(monthlyWins);
-            const monthlyColors = monthlyLabels.map(() => '#f7d468');
-
-            const pieChartCanvas = document.getElementById('category-pie-chart');
-            const barChartCanvas = document.getElementById('monthly-value-bar-chart');
-
-            if (pieChartCanvas.chart) pieChartCanvas.chart.destroy();
-            if (barChartCanvas.chart) barChartCanvas.chart.destroy();
-
-            pieChartCanvas.chart = new Chart(pieChartCanvas, {
-                type: 'pie',
-                data: {
-                    labels: categoryLabels,
-                    datasets: [{
-                        data: categoryData,
-                        backgroundColor: categoryColors,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#f0e6d2' } },
-                        title: { display: false }
-                    }
-                }
-            });
-
-            barChartCanvas.chart = new Chart(barChartCanvas, {
-                type: 'bar',
-                data: {
-                    labels: monthlyLabels,
-                    datasets: [{
-                        label: 'Valor total ganado (€)',
-                        data: monthlyData,
-                        backgroundColor: monthlyColors,
-                        borderColor: '#d4af37',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: '#f0e6d2' } },
-                        y: { ticks: { color: '#f0e6d2' } }
-                    }
-                }
-            });
-        };
-
         const generateShareableSummary = () => {
             const stats = calculateStats();
             const monthName = new Date().toLocaleDateString('es-ES', { month: 'long' });
@@ -2089,7 +2023,7 @@
         async function handleImageProcessing(base64Data, file) {
             const hoy = new Date();
             const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-            const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><TAREA_PRINCIPAL>Analiza la imagen proporcionada y extrae la información solicitada. Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown adicional como \`\`\`json.</TAREA_PRINCIPAL><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</DEFINICION_FORMATO_JSON><EJEMPLOS_DE_ALTA_CALIDAD>- Ejemplo 1: Texto dice "Sorteo hasta el 28 de agosto".- Resultado: {"prize": "...", "accounts": [], "date": "${hoy.getFullYear()}-08-28", "ends_at_time": null, "status": "valid", ...}- Ejemplo 2: Texto dice "Anunciaremos el ganador el 1 de septiembre".- Resultado: {"prize": "...", "accounts": ["..."], "date": "${hoy.getFullYear()}-08-31", "ends_at_time": null, "status": "valid", ...}- Ejemplo 3: Texto dice "Sorteamos un viaje. Síguenos para participar".- Resultado: {"prize": "Viaje", "accounts": [], "date": null, "ends_at_time": null, "status": "discard_no_date", ...}- Ejemplo 4: Texto dice "Finaliza el 27 de agosto a las 13:00h".- Resultado: {"prize": "...", "accounts": [], "date": "${hoy.getFullYear()}-08-27", "ends_at_time": "13:00", "status": "valid", ...}</EJEMPLOS_DE_ALTA_CALIDAD><PROCESO_DE_RAZONAMIENTO_INTERNO>Antes de generar el JSON, sigue estos pasos mentalmente: 1. Lee todo el texto. 2. Identifica el premio y las cuentas. 3. Analiza CUIDADOSAMENTE la fecha y la hora. Aplica la REGLA DE ORO. Compara con la fecha de contexto. 4. Si no hay fecha, \`date\` es \`null\` y \`status\` es \`discard_no_date\`. 5. Si hay fecha, \`status\` es \`valid\`. Si hay hora específica, rellena \`ends_at_time\`. 6. Construye el objeto JSON final.</PROCESO_DE_RAZONAMIENTO_INTERNO><REGLAS_CRITICAS_FINALES>- Tu respuesta final debe ser solo el objeto JSON.- La precisión en la fecha, hora y status es la máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
+            const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><TAREA_PRINCIPAL>Analiza la imagen proporcionada y extrae la información solicitada. Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown adicional como \`\`\`json.</TAREA_PRINCIPAL><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
 
             try {
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
@@ -2383,7 +2317,7 @@
             requestAnimationFrame(() => duplicateModal.classList.add('is-visible'));
         };
         const closeDuplicateModal = () => { duplicateModal.classList.remove('is-visible'); setTimeout(() => duplicateModal.classList.add('hidden'), 300); };
-        const addDiscardedToCalendar = (giveawayId) => { const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId); if (giveawayToAdd) { discardedGiveaways = discardedGiveaways.filter(g => g.id !== giveawayId); saveDiscardedGiveaways(); renderDiscardedModal(); openAddGiveawayModal({ date: giveawayToAdd.date, prize: giveawayToAdd.prize, accounts: giveawayToAdd.accounts.join(', '), price: giveawayToAdd.price, }); } };
+        const addDiscardedToCalendar = (giveawayId) => { const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId); if (giveawayToAdd) { discardedGiveaways = discardedGiveaways.filter(g => g.id !== giveawayId); saveDiscardedGiveaways(); renderDiscardedModal(); openAddGiveawayModal({ date: giveawayToAdd.date, prize: giveawayToAdd.prize, accounts: giveawayToAdd.accounts.join(', '), price: giveawayToAdd.price }); } };
 
         const renderAchievementsModal = (activeTab = 'logros') => {
             const unlockedIds = userAchievements.unlocked;
@@ -2624,7 +2558,7 @@
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(content);
                 const today = new Date().toISOString().slice(0, 10);
-                link.download = \`Misorteos-Backup-Completo-\${today}.zip\`;
+                link.download = `Misorteos-Backup-Completo-${today}.zip`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);

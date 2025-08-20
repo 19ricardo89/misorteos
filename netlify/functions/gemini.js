@@ -35,19 +35,17 @@ exports.handler = async function (event, context) {
             body: JSON.stringify(payload)
         });
 
-        // --- INICIO DEL CÓDIGO AÑADIDO ---
-        // Comprobamos si la respuesta de Gemini NO fue exitosa (código de estado no es 2xx)
+        // --- INICIO DEL CÓDIGO AÑADIDO PARA MEJORAR EL MANEJO DE ERRORES ---
         if (!geminiResponse.ok) {
-            // Leemos el cuerpo del error que nos envía Google
             const errorBody = await geminiResponse.json();
-            
-            // ¡Imprimimos el error real en los logs de Netlify para poder verlo!
             console.error("Error desde la API de Gemini:", errorBody);
-            
-            // Devolvemos un error claro al frontend
+
             return {
                 statusCode: geminiResponse.status,
-                body: JSON.stringify({ error: 'La API de Gemini devolvió un error.', details: errorBody })
+                body: JSON.stringify({ 
+                    error: 'La API de Gemini devolvió un error.', 
+                    details: errorBody.error ? { message: errorBody.error.message, code: errorBody.error.code } : errorBody 
+                })
             };
         }
         // --- FIN DEL CÓDIGO AÑADIDO ---

@@ -32,15 +32,17 @@ exports.handler = async function (event, context) {
             body: JSON.stringify(payload)
         });
 
-        // --- INICIO DEL CÓDIGO AÑADIDO ---
-        // Verificamos si la respuesta de la API fue exitosa
+        // --- INICIO DEL CÓDIGO AÑADIDO PARA MEJORAR EL MANEJO DE ERRORES ---
         if (!geminiResponse.ok) {
             const errorBody = await geminiResponse.json();
             console.error("Error desde la API de Gemini (en search.js):", errorBody);
             
             return {
                 statusCode: geminiResponse.status,
-                body: JSON.stringify({ error: 'La API de Gemini devolvió un error en la búsqueda.', details: errorBody })
+                body: JSON.stringify({ 
+                    error: 'La API de Gemini devolvió un error en la búsqueda.', 
+                    details: errorBody.error ? { message: errorBody.error.message, code: errorBody.error.code } : errorBody 
+                })
             };
         }
         // --- FIN DEL CÓDIGO AÑADIDO ---

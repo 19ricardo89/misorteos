@@ -781,25 +781,11 @@
             </div>
         </div>
     </div>
-    
+
     <div id="notification-modal" class="modal fixed inset-0 flex items-center justify-center p-4 z-50 hidden">
         <div id="notification-modal-content" class="bg-gray-800/80 text-yellow-300 p-6 rounded-xl shadow-xl max-w-lg w-full text-center border-2 border-yellow-500/50">
             <h3 id="notification-title" class="text-xl font-bold mb-2"></h3>
             <div id="notification-content" class="text-sm font-mono overflow-x-auto text-left"></div>
-        </div>
-    </div>
-
-    <div id="error-details-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
-        <div class="modal-content w-full max-w-md rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">Detalles del Error</h2>
-                <button id="close-error-details-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <div id="error-details-modal-body" class="text-left space-y-4">
-                <p><strong>Archivo:</strong> <span id="error-details-filename"></span></p>
-                <p><strong>Motivo:</strong> <span id="error-details-reason"></span></p>
-            </div>
-            <button id="reanalyze-single-btn" class="mt-6 bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors">Re-analizar solo esta imagen</button>
         </div>
     </div>
     
@@ -1266,11 +1252,6 @@
         const blockLikeBtn = document.getElementById('block-like-btn');
         const blockCommentBtn = document.getElementById('block-comment-btn');
         const blockStatsContainer = document.getElementById('block-stats-container');
-        const errorDetailsModal = document.getElementById('error-details-modal');
-        const closeErrorDetailsModal = document.getElementById('close-error-details-modal');
-        const errorDetailsFilename = document.getElementById('error-details-filename');
-        const errorDetailsReason = document.getElementById('error-details-reason');
-        const reanalyzeSingleBtn = document.getElementById('reanalyze-single-btn');
         
         let giveawayToMove = null;
         let originalDateOfGiveaway = null;
@@ -1747,7 +1728,7 @@
                 ? wonGiveaways.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max, wonGiveaways[0]) 
                 : null;
 
-            const sortedWins = [...wonGiveaways].sort((a, b) => new Date(a.wonDate) - new Date(a.wonDate));
+            const sortedWins = [...wonGiveaways].sort((a, b) => new Date(a.wonDate) - new Date(b.wonDate));
             let bestStreak = null;
             let longestDrySpell = null;
             let averageWinInterval = null;
@@ -1974,7 +1955,7 @@
                 const filesToAdd = Array.from(files).slice(0, MAX_IMAGES);
                 for (const file of filesToAdd) {
                     if (file.type.startsWith('image/')) {
-                        imageQueue.push({ file, status: 'pending', error: null });
+                        imageQueue.push(file);
                         const listItem = document.createElement('li');
                         listItem.textContent = file.name;
                         listItem.classList.add('p-2', 'border-b', 'border-yellow-500/10', 'last:border-b-0');
@@ -1989,41 +1970,6 @@
                 aiQueueContainer.style.display = 'none';
             }
         }
-
-        const reanalyzeAllFailed = () => {
-             const failedImages = imageQueue.filter(img => img.status === 'failed');
-             if (failedImages.length > 0) {
-                 imageQueue = failedImages.map(img => ({ ...img, status: 'pending', error: null }));
-                 currentIndex = 0;
-                 startAnalysis();
-             } else {
-                 showNotification('No hay errores', 'No hay imágenes fallidas para re-analizar.');
-             }
-         };
-
-        const reanalyzeSingleFailed = (filename) => {
-             const imageToReanalyze = imageQueue.find(img => img.file.name === filename);
-             if (imageToReanalyze) {
-                 // Reiniciar la cola con solo esta imagen
-                 imageQueue = [{ ...imageToReanalyze, status: 'pending', error: null }];
-                 currentIndex = 0;
-                 startAnalysis();
-             }
-        };
-
-        const updateAnalysisProgress = () => {
-            const total = imageQueue.length;
-            const processedCount = imageQueue.filter(img => img.status !== 'pending').length;
-            aiProgressBar.style.width = `${(processedCount / total) * 100}%`;
-            
-            let statusMessage = `Analizando imagen ${currentIndex + 1} de ${total}`;
-            if (currentIndex >= total) {
-                 statusMessage = 'Análisis completado';
-            } else {
-                 statusMessage = `Analizando imagen ${currentIndex + 1} de ${total}: ${imageQueue[currentIndex].file.name}`;
-            }
-            aiStatusMessage.textContent = statusMessage;
-        };
         
         async function startAnalysis() {
             if (imageQueue.length === 0 || isProcessing) return;
@@ -2058,21 +2004,23 @@
                 return;
             }
 
-            updateAnalysisProgress();
-            const currentImage = imageQueue[currentIndex];
-            const file = currentImage.file;
-            const delay = currentIndex === 0 ? 0 : 2000;
+            // Añadimos un retardo, excepto para la primera imagen
+            const delay = currentIndex === 0 ? 0 : 2000; // 2000 ms = 2 segundos
 
             setTimeout(() => {
+                const file = imageQueue[currentIndex];
+                aiStatusMessage.textContent = `Analizando imagen ${currentIndex + 1} de ${imageQueue.length}: ${file.name}`;
+                aiProgressBar.style.width = `${((currentIndex + 1) / imageQueue.length) * 100}%`;
+                
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    handleImageProcessing(event.target.result, file, currentImage);
+                    handleImageProcessing(event.target.result, file);
                 };
                 reader.readAsDataURL(file);
             }, delay);
         }
 
-        async function handleImageProcessing(base64Data, file, currentImage) {
+        async function handleImageProcessing(base64Data, file) {
             const hoy = new Date();
             const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
             const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><TAREA_PRINCIPAL>Analiza la imagen proporcionada y extrae la información solicitada. Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown adicional como \`\`\`json.</TAREA_PRINCIPAL><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
@@ -2082,9 +2030,8 @@
                 
                 if (aiData.status === 'discard_no_date') {
                     noDateGiveawaysCount++;
-                    noDateGiveawaysDetails.push({ prize: aiData.prize, file });
+                    noDateGiveawaysDetails.push({ prize: aiData.prize });
                     discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'nd', status: 'no_date' });
-                    currentImage.status = 'discarded';
                 } else {
                     const accounts = aiData.accounts || [];
                     const isForeign = accounts.some(acc => foreignAccounts.includes(`@${acc}`));
@@ -2093,19 +2040,16 @@
 
                     if (isForeign) {
                         foreignGiveawaysCount++;
-                        foreignGiveawaysDetails.push({ prize: aiData.prize, accounts: accounts.join(', '), file });
+                        foreignGiveawaysDetails.push({ prize: aiData.prize, accounts: accounts.join(', ') });
                         discardedGiveaways.push({...aiData, status: 'foreign', id: Date.now().toString() + 'f'});
-                        currentImage.status = 'discarded';
                     } else if (existingGiveaway) {
                         duplicateGiveawaysCount++;
-                        duplicateGiveawaysDetails.push({ prize: aiData.prize, file });
+                        duplicateGiveawaysDetails.push({ prize: aiData.prize });
                         discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'd', status: 'duplicate', originalGiveaway: existingGiveaway });
-                        currentImage.status = 'discarded';
                     } else if (isExpired) {
                         expiredGiveawaysCount++;
-                        expiredGiveawaysDetails.push({ prize: aiData.prize, date: aiData.date, file });
+                        expiredGiveawaysDetails.push({ prize: aiData.prize, date: aiData.date });
                         discardedGiveaways.push({...aiData, status: 'expired', id: Date.now().toString() + 'e'});
-                        currentImage.status = 'discarded';
                     } else {
                         const priceInfo = await searchPrizeValue(aiData);
                         const newGiveaway = { 
@@ -2120,20 +2064,22 @@
                         };
                         addGiveaway(newGiveaway);
                         
+                        // --- INICIO DE LA CORRECCIÓN ---
+                        // Primero, registramos el éxito para el resumen.
                         addedGiveawaysCount++;
-                        addedGiveawaysDetails.push({ prize: newGiveaway.prize, date: newGiveaway.date, file });
-                        currentImage.status = 'added';
+                        addedGiveawaysDetails.push({ prize: newGiveaway.prize, date: newGiveaway.date });
                         
+                        // Después, realizamos las otras operaciones (puntos, logros).
+                        // Si alguna de estas falla, se registrará un error, pero el sorteo ya constará como añadido.
                         addPoints(5);
                         checkAchievements('add-ai');
+                        // --- FIN DE LA CORRECCIÓN ---
                     }
                 }
                 saveDiscardedGiveaways();
             } catch (error) {
                 console.error(`Error al analizar la imagen ${file.name}:`, error);
                 failedFilesDetails.push({ filename: file.name, error: error.message });
-                currentImage.status = 'failed';
-                currentImage.error = error.message;
             }
             currentIndex++;
             processNextImage();
@@ -2142,18 +2088,8 @@
         const showAISummary = () => {
             const summaryData = {
                 analysisDate: new Date().toISOString(),
-                totalCaptures: totalCaptures,
-                addedGiveawaysCount: addedGiveawaysDetails.length,
-                duplicateGiveawaysCount: duplicateGiveawaysDetails.length,
-                expiredGiveawaysCount: expiredGiveawaysDetails.length,
-                foreignGiveawaysCount: foreignGiveawaysDetails.length,
-                noDateGiveawaysCount: noDateGiveawaysDetails.length,
-                addedGiveawaysDetails,
-                duplicateGiveawaysDetails,
-                expiredGiveawaysDetails,
-                foreignGiveawaysDetails,
-                noDateGiveawaysDetails,
-                failedFilesDetails
+                totalCaptures, addedGiveawaysCount, duplicateGiveawaysCount, expiredGiveawaysCount, foreignGiveawaysCount, noDateGiveawaysCount,
+                addedGiveawaysDetails, duplicateGiveawaysDetails, expiredGiveawaysDetails, foreignGiveawaysDetails, noDateGiveawaysDetails, failedFilesDetails
             };
             analysisHistory.push(summaryData);
             analysisHistory = analysisHistory.slice(-20);
@@ -2165,104 +2101,55 @@
             startAiButton.style.display = 'none';
             aiStatusContainer.style.display = 'none';
             const summaryContainer = document.getElementById('ai-summary-results');
-            summaryContainer.innerHTML = '';
-            
-            // Sección de resumen general
-            let summaryHTML = `<h3 class="text-xl font-bold mb-4">✨ Resumen General</h3>
-                <ul class="space-y-2">
-                    <li>Imágenes Enviadas: <strong>${summaryData.totalCaptures}</strong></li>
-                    <li>✅ Sorteos Añadidos: <strong>${summaryData.addedGiveawaysCount}</strong></li>
-                    <li>❌ Sorteos Descartados: <strong>${summaryData.duplicateGiveawaysCount + summaryData.expiredGiveawaysCount + summaryData.foreignGiveawaysCount + summaryData.noDateGiveawaysCount}</strong></li>
-                    <li>⚠️ Errores de Análisis: <strong>${summaryData.failedFilesDetails.length}</strong></li>
-                </ul>
-                <hr class="border-yellow-500/20 my-4">`;
-
-            // Sección de sorteos añadidos
-            if (summaryData.addedGiveawaysDetails.length > 0) {
-                summaryHTML += `<h4 class="text-lg font-bold mb-2">✅ Sorteos Añadidos al Calendario</h4>
-                <div class="space-y-2">
-                    ${summaryData.addedGiveawaysDetails.map(g => `<div class="p-3 bg-green-100/30 rounded-lg shadow-inner"><p class="font-bold">${g.prize}</p><p class="text-sm">Fecha: ${new Date(g.date+'T00:00:00').toLocaleDateString('es-ES')}</p></div>`).join('')}
-                </div>
-                <hr class="border-yellow-500/20 my-4">`;
+            summaryContainer.innerHTML = ''; 
+            let summaryHTML = `<h3 class="text-xl font-bold mb-4">✨ Resumen General</h3><ul><li>Imágenes Enviadas: <strong>${totalCaptures}</strong></li><li>✅ Sorteos Añadidos: <strong>${addedGiveawaysCount}</strong></li><li>❌ Sorteos Descartados: <strong>${duplicateGiveawaysCount + expiredGiveawaysCount + foreignGiveawaysCount + noDateGiveawaysCount}</strong></li><li>⚠️ Errores de Análisis: <strong>${failedFilesDetails.length}</strong></li></ul><hr class="border-yellow-500/20 my-4">`;
+            if (addedGiveawaysDetails.length > 0) {
+                summaryHTML += `<h4 class="text-lg font-bold mb-2">✅ Sorteos Añadidos al Calendario</h4><ul>${addedGiveawaysDetails.map(g => `<li><strong>${g.prize}</strong> (para el ${new Date(g.date+'T00:00:00').toLocaleDateString('es-ES')})</li>`).join('')}</ul><hr class="border-yellow-500/20 my-4">`;
             }
-
-            // Sección de sorteos descartados (con tarjetas)
-            if (summaryData.duplicateGiveawaysCount > 0 || summaryData.expiredGiveawaysCount > 0 || summaryData.foreignGiveawaysCount > 0 || summaryData.noDateGiveawaysCount > 0) {
-                summaryHTML += `<h4 class="text-lg font-bold mb-2">❌ Desglose de Sorteos Descartados</h4>
-                <div class="space-y-2">`;
-                summaryHTML += summaryData.duplicateGiveawaysDetails.map(g => `<div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner"><p class="font-bold">${g.prize}</p><p class="text-xs">Motivo: Duplicado</p></div>`).join('');
-                summaryHTML += summaryData.expiredGiveawaysDetails.map(g => `<div class="p-3 bg-gray-100/50 rounded-lg shadow-inner"><p class="font-bold">${g.prize}</p><p class="text-xs">Motivo: Caducado</p></div>`).join('');
-                summaryHTML += summaryData.foreignGiveawaysDetails.map(g => `<div class="p-3 bg-blue-100/50 rounded-lg shadow-inner"><p class="font-bold">${g.prize}</p><p class="text-xs">Motivo: Extranjero</p></div>`).join('');
-                summaryHTML += summaryData.noDateGiveawaysDetails.map(g => `<div class="p-3 bg-purple-100/50 rounded-lg shadow-inner"><p class="font-bold">${g.prize}</p><p class="text-xs">Motivo: Sin Fecha</p></div>`).join('');
-                summaryHTML += `</div><hr class="border-yellow-500/20 my-4">`;
+            if (duplicateGiveawaysCount > 0 || expiredGiveawaysCount > 0 || foreignGiveawaysCount > 0 || noDateGiveawaysCount > 0) {
+                summaryHTML += `<h4 class="text-lg font-bold mb-2">❌ Desglose de Sorteos Descartados</h4>`;
+                if (duplicateGiveawaysCount > 0) { summaryHTML += `<details><summary>📋 Duplicados (${duplicateGiveawaysCount})</summary><ul>${duplicateGiveawaysDetails.map(g => `<li>${g.prize}</li>`).join('')}</ul></details>`; }
+                if (expiredGiveawaysCount > 0) { summaryHTML += `<details><summary>📅 Caducados (${expiredGiveawaysCount})</summary><ul>${expiredGiveawaysDetails.map(g => `<li>${g.prize} (fecha: ${new Date(g.date+'T00:00:00').toLocaleDateString('es-ES')})</li>`).join('')}</ul></details>`; }
+                if (foreignGiveawaysCount > 0) { summaryHTML += `<details><summary>🌐 Extranjeros (${foreignGiveawaysCount})</summary><ul>${foreignGiveawaysDetails.map(g => `<li>${g.prize} (cuenta: ${g.accounts})</li>`).join('')}</ul></details>`; }
+                if (noDateGiveawaysCount > 0) { summaryHTML += `<details><summary>❓ Sin Fecha (${noDateGiveawaysCount})</summary><ul>${noDateGiveawaysDetails.map(g => `<li>${g.prize}</li>`).join('')}</ul></details>`; }
+                summaryHTML += `<hr class="border-yellow-500/20 my-4">`;
             }
-
-            // Sección de informe de errores (con botón de re-análisis)
-            if (summaryData.failedFilesDetails.length > 0) {
-                summaryHTML += `<h4 class="text-lg font-bold mb-2">⚠️ Informe de Errores</h4>
-                <div class="space-y-2">`;
-                summaryHTML += summaryData.failedFilesDetails.map(f => `
-                    <div class="flex justify-between items-center bg-red-100/50 p-3 rounded-lg shadow-inner">
-                        <span>${f.filename}</span>
-                        <div class="flex items-center gap-2">
-                            <button class="view-error-details-btn text-blue-600 underline font-bold" data-filename="${f.filename}">Ver detalles</button>
-                            <button class="reanalyze-single-error-btn text-yellow-900 bg-yellow-500 hover:bg-yellow-400 p-1 rounded-full text-xs font-bold" data-filename="${f.filename}">🔄 Re-analizar</button>
-                        </div>
-                    </div>
-                `).join('');
-                summaryHTML += `</div>
-                <div class="mt-4 text-center">
-                    <button id="reanalyze-all-failed-btn" class="bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">Re-analizar todos los errores</button>
-                </div>
-                <hr class="border-yellow-500/20 my-4">`;
+            if (failedFilesDetails.length > 0) {
+                summaryHTML += `<h4 class="text-lg font-bold mb-2">⚠️ Informe de Errores</h4><details><summary>Imágenes no procesadas (${failedFilesDetails.length})</summary><ul>${failedFilesDetails.map(f => `<li><strong>${f.filename}</strong></li>`).join('')}</ul></details>`;
             }
-
             summaryContainer.innerHTML = summaryHTML;
             summaryContainer.style.display = 'block';
             aiSummaryCloseBtn.style.display = 'block';
+        };
 
-            // Añadir listeners para los nuevos botones
-            summaryContainer.querySelectorAll('.view-error-details-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const filename = btn.dataset.filename;
-                    const errorDetails = failedFilesDetails.find(f => f.filename === filename);
-                    if (errorDetails) {
-                        errorDetailsFilename.textContent = errorDetails.filename;
-                        errorDetailsReason.textContent = errorDetails.error;
-                        reanalyzeSingleBtn.dataset.filename = filename;
-                        errorDetailsModal.classList.remove('hidden');
-                        requestAnimationFrame(() => errorDetailsModal.classList.add('is-visible'));
-                    }
-                });
+        const renderHistoryModal = () => {
+            historyModalBody.innerHTML = '';
+            if (analysisHistory.length === 0) {
+                historyModalBody.innerHTML = '<p class="text-center">No hay análisis guardados en el historial.</p>';
+                return;
+            }
+
+            [...analysisHistory].reverse().forEach(summary => {
+                const date = new Date(summary.analysisDate);
+                const formattedDate = date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                let summaryHTML = `<details class="mb-4"><summary class="font-bold text-lg cursor-pointer">Análisis del ${formattedDate}</summary>`;
+                summaryHTML += `<div class="p-2 border-t border-yellow-600/20 mt-2">`;
+                summaryHTML += `<h3 class="text-lg font-bold mb-2">✨ Resumen General</h3><ul><li>Imágenes Enviadas: <strong>${summary.totalCaptures}</strong></li><li>✅ Sorteos Añadidos: <strong>${summary.addedGiveawaysCount}</strong></li><li>❌ Sorteos Descartados: <strong>${summary.duplicateGiveawaysCount + summary.expiredGiveawaysCount + summary.foreignGiveawaysCount + (summary.noDateGiveawaysCount || 0)}</strong></li><li>⚠️ Errores de Análisis: <strong>${summary.failedFilesDetails.length}</strong></li></ul><hr class="border-yellow-500/20 my-4">`;
+                if (summary.addedGiveawaysDetails.length > 0) {
+                    summaryHTML += `<h4 class="text-md font-bold mb-2">✅ Sorteos Añadidos</h4><ul>${summary.addedGiveawaysDetails.map(g => `<li><strong>${g.prize}</strong></li>`).join('')}</ul><hr class="border-yellow-500/20 my-4">`;
+                }
+                 if (summary.duplicateGiveawaysCount > 0 || summary.expiredGiveawaysCount > 0 || summary.foreignGiveawaysCount > 0 || (summary.noDateGiveawaysCount || 0) > 0) {
+                    summaryHTML += `<h4 class="text-md font-bold mb-2">❌ Desglose de Descartados</h4>`;
+                    if (summary.duplicateGiveawaysCount > 0) { summaryHTML += `<p><strong>📋 Duplicados:</strong> ${summary.duplicateGiveawaysCount}</p>`; }
+                    if (summary.expiredGiveawaysCount > 0) { summaryHTML += `<p><strong>📅 Caducados:</strong> ${summary.expiredGiveawaysCount}</p>`; }
+                    if (summary.foreignGiveawaysCount > 0) { summaryHTML += `<p><strong>🌐 Extranjeros:</strong> ${summary.foreignGiveawaysCount}</p>`; }
+                    if ((summary.noDateGiveawaysCount || 0) > 0) { summaryHTML += `<p><strong>❓ Sin Fecha:</strong> ${summary.noDateGiveawaysCount}</p>`; }
+                }
+                summaryHTML += `</div></details>`;
+                historyModalBody.innerHTML += summaryHTML;
             });
-
-            summaryContainer.querySelectorAll('.reanalyze-single-error-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const filename = btn.dataset.filename;
-                    const fileToReanalyze = imageQueue.find(img => img.file.name === filename).file;
-                    
-                    imageQueue = [{ file: fileToReanalyze, status: 'pending', error: null }];
-                    currentIndex = 0;
-                    startAnalysis();
-                });
-            });
-
-            document.getElementById('reanalyze-all-failed-btn')?.addEventListener('click', reanalyzeAllFailed);
         };
 
-        const openErrorDetailsModal = (filename, reason) => {
-             errorDetailsFilename.textContent = filename;
-             errorDetailsReason.textContent = reason;
-             reanalyzeSingleBtn.dataset.filename = filename;
-             errorDetailsModal.classList.remove('hidden');
-             requestAnimationFrame(() => errorDetailsModal.classList.add('is-visible'));
-        };
-
-        const closeErrorDetailsModalFunc = () => {
-             errorDetailsModal.classList.remove('is-visible');
-             setTimeout(() => errorDetailsModal.classList.add('hidden'), 300);
-        };
-        
         async function callGeminiAPI(base64Data, dynamicPrompt) {
             const functionUrl = '/.netlify/functions/gemini';
             const payload = { base64Data, dynamicPrompt };
@@ -2274,7 +2161,7 @@
                 });
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || errorData.details?.error?.message || 'Error en la función de Netlify');
+                    throw new Error(errorData.error || 'Error en la función de Netlify');
                 }
                 const result = await response.json();
                 if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
@@ -2286,6 +2173,7 @@
                 }
             } catch (error) {
                 console.error("Error al llamar a la función de Netlify:", error);
+                showNotification('Error de Análisis', 'No se pudo conectar con el servicio de IA. Inténtalo de nuevo.');
                 throw error;
             }
         }
@@ -2651,7 +2539,7 @@
                     return {
                         statusCode: 500,
                         body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
-                    });
+                    };
                 }
             };`;
 
@@ -2734,7 +2622,6 @@
             setupModal(null, foreignAccountsModal, closeForeignAccountsModalBtn);
             setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn);
             setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
-            setupModal(null, errorDetailsModal, closeErrorDetailsModalFunc);
             
             openNavMenuBtn.addEventListener('click', toggleNavMenu);
             closeNavMenuBtn.addEventListener('click', toggleNavMenu);
@@ -2823,16 +2710,6 @@
             aiImageInput.addEventListener('change', handleFileSelection);
             startAiButton.addEventListener('click', startAnalysis);
             aiSummaryCloseBtn.addEventListener('click', closeAddAIGiveawayModal);
-            
-            reanalyzeSingleBtn.addEventListener('click', () => {
-                const filename = reanalyzeSingleBtn.dataset.filename;
-                closeErrorDetailsModalFunc();
-                const imageToReanalyze = imageQueue.find(img => img.file.name === filename).file;
-                
-                imageQueue = [{ file: imageToReanalyze, status: 'pending', error: null }];
-                currentIndex = 0;
-                startAnalysis();
-            });
 
             blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderStatsModal(); });
             blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderStatsModal(); });

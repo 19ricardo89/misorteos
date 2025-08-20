@@ -116,12 +116,16 @@
         .modal-default-bg { background-color: #fffbef; }
         .modal-travel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=1170&auto=format&fit=crop'); }
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
-        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #ai-modal-content-wrapper, #history-modal-body, #achievements-modal-body, .nav-menu { overflow-y: auto; }
+        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, .nav-menu { overflow-y: auto; }
 
         /* --- CORRECCIÓN UI MODAL IA --- */
         #ai-image-queue {
             max-height: 160px; /* 10rem */
             overflow-y: auto;
+        }
+        #ai-summary-results-container {
+             max-height: 60vh;
+             overflow-y: auto;
         }
 
         /* --- ANIMACIÓN ESTRELLA FUGAZ --- */
@@ -1147,8 +1151,7 @@
         let foreignGiveawaysDetails = [];
         let noDateGiveawaysDetails = [];
         let failedFilesDetails = [];
-        // Nueva variable para los sorteos que fallaron en el análisis.
-        let giveawaysWithErrors = [];
+        let giveawaysWithErrors = []; 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let trashGiveaways = JSON.parse(localStorage.getItem('trashGiveaways')) || [];
         let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || [];
@@ -2027,25 +2030,21 @@
             noDateGiveawaysCount = 0;
             addedGiveawaysDetails = [];
             duplicateGiveawaysDetails = [];
-            let processedGiveaways = []; // Array temporal para duplicados, expirados, etc.
+            expiredGiveawaysDetails = [];
+            foreignGiveawaysDetails = [];
+            noDateGiveawaysDetails = [];
             failedFilesDetails = [];
-            giveawaysWithErrors = []; // Reiniciar la lista de errores
+            giveawaysWithErrors = []; 
             startAiButton.disabled = true;
             startAiButton.textContent = "Procesando...";
             aiStatusContainer.style.display = 'block';
             aiSummaryResults.style.display = 'none';
             aiSummaryCloseBtn.style.display = 'none';
-            
             await processNextImage();
             
-            // Lógica de finalización
             isProcessing = false;
             startAiButton.disabled = false;
             showAISummary();
-
-            // Guardar los sorteos descartados una vez que el proceso ha terminado
-            processedGiveaways.forEach(g => discardedGiveaways.push(g));
-            saveDiscardedGiveaways();
         }
         
         async function processNextImage() {
@@ -2066,55 +2065,60 @@
                 const base64Data = event.target.result;
                 const hoy = new Date();
                 const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-                const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
+                const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><TAREA_PRINCIPAL>Analiza la imagen proporcionada y extrae la información solicitada. Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown adicional como \`\`\`json. Si la imagen NO es un sorteo, devuelve el siguiente JSON: {"status": "not_a_giveaway"}.</TAREA_PRINCIPAL><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
 
                 try {
                     const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                     
-                    const accounts = aiData.accounts || [];
-                    const isForeign = accounts.some(acc => foreignAccounts.includes(`@${acc}`));
-                    const giveawayDate = aiData.date ? new Date(aiData.date) : null;
-                    const isExpired = giveawayDate && giveawayDate < new Date(new Date().toDateString());
-                    const existingGiveaway = isDuplicateGiveaway(aiData);
-
-                    // Lógica de descarte
                     if (aiData.status === 'not_a_giveaway') {
                          failedFilesDetails.push({ filename: file.name, error: 'La imagen no contiene un sorteo.' });
-                    } else if (isForeign) {
-                        foreignGiveawaysCount++;
-                        foreignGiveawaysDetails.push({ prize: aiData.prize, accounts: accounts.join(', ') });
-                        discardedGiveaways.push({...aiData, status: 'foreign', id: Date.now().toString() + 'f'});
-                    } else if (existingGiveaway) {
-                        duplicateGiveawaysCount++;
-                        duplicateGiveawaysDetails.push({ prize: aiData.prize, file: file.name });
-                        discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'd', status: 'duplicate', originalGiveaway: existingGiveaway });
-                    } else if (isExpired) {
-                        expiredGiveawaysCount++;
-                        expiredGiveawaysDetails.push({ prize: aiData.prize, date: aiData.date });
-                        discardedGiveaways.push({...aiData, status: 'expired', id: Date.now().toString() + 'e'});
+                         giveawaysWithErrors.push({ file: file, type: 'not_a_giveaway' });
+                    } else if (aiData.status === 'discard_no_date' || !aiData.date) {
+                        noDateGiveawaysCount++;
+                        noDateGiveawaysDetails.push({ ...aiData, file: file.name });
+                        discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'nd', status: 'no_date', originalFile: file });
                     } else {
-                        // Lógica de añadido
-                        const priceInfo = await searchPrizeValue(aiData);
-                        const newGiveaway = { 
-                            id: Date.now().toString(), 
-                            date: aiData.date, 
-                            prize: priceInfo.prize, 
-                            accounts: aiData.accounts.map(acc => `@${acc}`), 
-                            price: priceInfo.value, 
-                            url: priceInfo.url, 
-                            addDate: new Date().toISOString().slice(0, 10),
-                            ends_at_time: aiData.ends_at_time 
-                        };
-                        addGiveaway(newGiveaway);
-                        addedGiveawaysCount++;
-                        addedGiveawaysDetails.push({ prize: newGiveaway.prize, date: newGiveaway.date, file: file.name });
-                        addPoints(5);
-                        checkAchievements('add-ai');
+                        const accounts = aiData.accounts || [];
+                        const isForeign = accounts.some(acc => foreignAccounts.includes(`@${acc}`));
+                        const giveawayDate = new Date(aiData.date);
+                        const isExpired = giveawayDate < new Date(new Date().toDateString());
+                        const existingGiveaway = isDuplicateGiveaway(aiData);
+                        
+                        if (isForeign) {
+                            foreignGiveawaysCount++;
+                            foreignGiveawaysDetails.push({ ...aiData, file: file.name });
+                            discardedGiveaways.push({...aiData, status: 'foreign', id: Date.now().toString() + 'f', originalFile: file});
+                        } else if (existingGiveaway) {
+                            duplicateGiveawaysCount++;
+                            duplicateGiveawaysDetails.push({ ...aiData, file: file.name });
+                            discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'd', status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file });
+                        } else if (isExpired) {
+                            expiredGiveawaysCount++;
+                            expiredGiveawaysDetails.push({ ...aiData, file: file.name });
+                            discardedGiveaways.push({...aiData, status: 'expired', id: Date.now().toString() + 'e', originalFile: file});
+                        } else {
+                            const priceInfo = await searchPrizeValue(aiData);
+                            const newGiveaway = { 
+                                id: Date.now().toString(), 
+                                date: aiData.date, 
+                                prize: priceInfo.prize, 
+                                accounts: aiData.accounts.map(acc => `@${acc}`), 
+                                price: priceInfo.value, 
+                                url: priceInfo.url, 
+                                addDate: new Date().toISOString().slice(0, 10),
+                                ends_at_time: aiData.ends_at_time 
+                            };
+                            addGiveaway(newGiveaway);
+                            addedGiveawaysCount++;
+                            addedGiveawaysDetails.push({ ...newGiveaway, file: file.name });
+                            addPoints(5);
+                            checkAchievements('add-ai');
+                        }
                     }
                 } catch (error) {
                     console.error(`Error al analizar la imagen ${file.name}:`, error);
                     failedFilesDetails.push({ filename: file.name, error: error.message });
-                    giveawaysWithErrors.push(file); // Guardar el archivo para reintento
+                    giveawaysWithErrors.push({ file: file, type: 'api_error' }); 
                 }
                 currentIndex++;
                 processNextImage();
@@ -2138,22 +2142,36 @@
             startAiButton.style.display = 'none';
             aiStatusContainer.style.display = 'none';
             const summaryContainer = document.getElementById('ai-summary-results');
-            summaryContainer.innerHTML = ''; 
-            let summaryHTML = `<h3 class="text-xl font-bold mb-4">✨ Resumen General</h3><ul><li>Imágenes Enviadas: <strong>${totalCaptures}</strong></li><li>✅ Sorteos Añadidos: <strong>${addedGiveawaysCount}</strong></li><li>❌ Sorteos Descartados: <strong>${duplicateGiveawaysCount + expiredGiveawaysCount + foreignGiveawaysCount + noDateGiveawaysCount}</strong></li><li>⚠️ Errores de Análisis: <strong>${failedFilesDetails.length}</strong></li></ul><hr class="border-yellow-500/20 my-4">`;
+            summaryContainer.innerHTML = '';
+
+            let summaryHTML = `
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold">✨ Resumen General</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-image text-yellow-600"></i> Imágenes enviadas: <strong>${totalCaptures}</strong></li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-600"></i> Sorteos añadidos: <strong>${addedGiveawaysCount}</strong></li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-xmark text-red-600"></i> Sorteos descartados: <strong>${duplicateGiveawaysCount + expiredGiveawaysCount + foreignGiveawaysCount + noDateGiveawaysCount}</strong></li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-orange-600"></i> Errores de análisis: <strong>${failedFilesDetails.length}</strong></li>
+                    </ul>
+                </div>
+            `;
+            
+            // Sección de Sorteos Añadidos
             if (addedGiveawaysDetails.length > 0) {
-                summaryHTML += `<h4 class="text-lg font-bold mb-2">✅ Sorteos Añadidos al Calendario</h4><ul>${addedGiveawaysDetails.map(g => `<li><strong>${g.prize}</strong> (para el ${new Date(g.date+'T00:00:00').toLocaleDateString('es-ES')})</li>`).join('')}</ul><hr class="border-yellow-500/20 my-4">`;
+                 summaryHTML += `<hr class="border-yellow-500/20 my-4"><h4 class="text-lg font-bold mb-2">✅ Sorteos Añadidos al Calendario</h4><div class="space-y-4">${addedGiveawaysDetails.map(g => generateGiveawayCardHTML(g)).join('')}</div>`;
             }
-            if (duplicateGiveawaysCount > 0 || expiredGiveawaysCount > 0 || foreignGiveawaysCount > 0 || noDateGiveawaysCount > 0) {
-                summaryHTML += `<h4 class="text-lg font-bold mb-2">❌ Desglose de Sorteos Descartados</h4>`;
-                if (duplicateGiveawaysCount > 0) { summaryHTML += `<details><summary>📋 Duplicados (${duplicateGiveawaysCount})</summary><ul>${duplicateGiveawaysDetails.map(g => `<li>${g.prize}</li>`).join('')}</ul></details>`; }
-                if (expiredGiveawaysCount > 0) { summaryHTML += `<details><summary>📅 Caducados (${expiredGiveawaysCount})</summary><ul>${expiredGiveawaysDetails.map(g => `<li>${g.prize} (fecha: ${new Date(g.date+'T00:00:00').toLocaleDateString('es-ES')})</li>`).join('')}</ul></details>`; }
-                if (foreignGiveawaysCount > 0) { summaryHTML += `<details><summary>🌐 Extranjeros (${foreignGiveawaysCount})</summary><ul>${foreignGiveawaysDetails.map(g => `<li>${g.prize} (cuenta: ${g.accounts})</li>`).join('')}</ul></details>`; }
-                if (noDateGiveawaysCount > 0) { summaryHTML += `<details><summary>❓ Sin Fecha (${noDateGiveawaysCount})</summary><ul>${noDateGiveawaysDetails.map(g => `<li>${g.prize}</li>`).join('')}</ul></details>`; }
-                summaryHTML += `<hr class="border-yellow-500/20 my-4">`;
+
+            // Sección de Sorteos Descartados
+            const discardedGiveawaysHtml = [...duplicateGiveawaysDetails, ...expiredGiveawaysDetails, ...foreignGiveawaysDetails, ...noDateGiveawaysDetails];
+            if (discardedGiveawaysHtml.length > 0) {
+                summaryHTML += `<hr class="border-yellow-500/20 my-4"><h4 class="text-lg font-bold mb-2">❌ Desglose de Sorteos Descartados</h4><div class="space-y-4">${discardedGiveawaysHtml.map(g => generateGiveawayCardHTML(g)).join('')}</div>`;
             }
+
+            // Sección de Errores de Análisis
             if (failedFilesDetails.length > 0) {
-                summaryHTML += `<h4 class="text-lg font-bold mb-2">⚠️ Informe de Errores</h4><details><summary>Imágenes no procesadas (${failedFilesDetails.length})</summary><ul>${failedFilesDetails.map(f => `<li><strong>${f.filename}</strong></li>`).join('')}</ul></details>`;
+                 summaryHTML += `<hr class="border-yellow-500/20 my-4"><h4 class="text-lg font-bold mb-2">⚠️ Informe de Errores</h4><details><summary>Imágenes no procesadas (${failedFilesDetails.length})</summary><ul>${failedFilesDetails.map(f => `<li><strong>${f.filename}</strong>: ${f.error}</li>`).join('')}</ul></details>`;
             }
+
             summaryContainer.innerHTML = summaryHTML;
             summaryContainer.style.display = 'block';
             aiSummaryCloseBtn.style.display = 'block';

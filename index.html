@@ -1687,7 +1687,7 @@
                 ? wonGiveaways.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max, wonGiveaways[0]) 
                 : null;
 
-            const sortedWins = [...wonGiveaways].sort((a,b) => new Date(a.wonDate) - new Date(b.wonDate));
+            const sortedWins = [...wonGiveaways].sort((a,b]) => new Date(a.wonDate) - new Date(b.wonDate));
             let bestStreak = null;
             let longestDrySpell = null;
             let averageWinInterval = null;
@@ -2369,7 +2369,149 @@
             });
         };
 
-        const downloadSourceCode = () => { showNotification('Preparando descarga...', 'Se está generando el archivo .zip con tus datos actualizados.'); const zip = new JSZip(); zip.file("giveaways_new.js", `window.giveaways = ${JSON.stringify(giveaways, null, 4)};`); zip.file("discardedGiveaways_new.js", `window.discardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};`); zip.file("foreignAccounts.js", `window.foreignAccounts = ${JSON.stringify(foreignAccounts, null, 4)};`); zip.file("index.html", document.documentElement.outerHTML); zip.generateAsync({ type: "blob" }).then(function(content) { const link = document.createElement('a'); link.href = URL.createObjectURL(content); const today = new Date().toISOString().slice(0, 10); link.download = `Misorteos-Backup-${today}.zip`; document.body.appendChild(link); link.click(); document.body.removeChild(link); }); };
+        const downloadSourceCode = () => {
+            showNotification('Preparando descarga...', 'Se está generando el archivo .zip con tus datos actualizados.');
+            const zip = new JSZip();
+
+            // --- Contenido de los Archivos de Datos (Dinámicos) ---
+            const giveawaysContent = `window.giveaways = ${JSON.stringify(giveaways, null, 4)};`;
+            const discardedGiveawaysContent = `const initialDiscardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};\n\nif (localStorage.getItem('discardedGiveaways') === null) {\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\n}\n\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];`;
+            
+            // --- Contenido de los Archivos de Configuración y Backend (Estáticos) ---
+            const indexHtmlContent = document.documentElement.outerHTML;
+
+            const netlifyTomlContent = `[build]
+              command = "npm install"
+              functions = "netlify/functions"`;
+
+            const packageJsonContent = `{
+              "name": "misorteos-functions",
+              "version": "1.0.0",
+              "description": "Dependencias para las funciones de Netlify",
+              "dependencies": {
+                "node-fetch": "^3.3.2"
+              }
+            }`;
+
+            const geminiJsContent = `// netlify/functions/gemini.js
+            exports.handler = async function (event, context) {
+                const fetch = (await import('node-fetch')).default;
+                const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+                const body = JSON.parse(event.body);
+                const { base64Data, dynamicPrompt } = body;
+                if (!base64Data || !dynamicPrompt) {
+                    return {
+                        statusCode: 400,
+                        body: JSON.stringify({ error: 'Faltan datos en la petición.' })
+                    };
+                }
+                const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
+                const payload = {
+                    contents: [{
+                        role: "user",
+                        parts: [
+                            { text: dynamicPrompt },
+                            { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }
+                        ]
+                    }]
+                };
+                try {
+                    const geminiResponse = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!geminiResponse.ok) {
+                        const errorBody = await geminiResponse.json();
+                        console.error("Error desde la API de Gemini:", errorBody);
+                        return {
+                            statusCode: geminiResponse.status,
+                            body: JSON.stringify({ error: 'La API de Gemini devolvió un error.', details: errorBody })
+                        };
+                    }
+                    const data = await geminiResponse.json();
+                    return {
+                        statusCode: 200,
+                        body: JSON.stringify(data)
+                    };
+                } catch (error) {
+                    console.error("Error en la función de Netlify:", error);
+                    return {
+                        statusCode: 500,
+                        body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
+                    };
+                }
+            };`;
+
+            const searchJsContent = `// netlify/functions/search.js
+            exports.handler = async function (event, context) {
+                const fetch = (await import('node-fetch')).default;
+                const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+                const { query } = JSON.parse(event.body);
+                if (!query) {
+                    return {
+                        statusCode: 400,
+                        body: JSON.stringify({ error: 'Falta la consulta (query).' })
+                    };
+                }
+                const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
+                const prompt = \`Busca en internet el precio aproximado del siguiente producto: "\${query}". Devuélveme el precio encontrado y la URL de la fuente en un objeto JSON. Por ejemplo: {"value": "150€", "url": "https://example.com"}. Si no encuentras un precio, usa "No encontrado" para la clave "value" y null para "url". Tu respuesta debe ser únicamente el objeto JSON, sin texto adicional ni markdown.\`;
+                const payload = {
+                    contents: [{
+                        role: "user",
+                        parts: [{ text: prompt }]
+                    }]
+                };
+                try {
+                    const geminiResponse = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!geminiResponse.ok) {
+                        const errorBody = await geminiResponse.json();
+                        console.error("Error desde la API de Gemini (en search.js):", errorBody);
+                        return {
+                            statusCode: geminiResponse.status,
+                            body: JSON.stringify({ error: 'La API de Gemini devolvió un error en la búsqueda.', details: errorBody })
+                        };
+                    }
+                    const data = await geminiResponse.json();
+                    return {
+                        statusCode: 200,
+                        body: JSON.stringify(data)
+                    };
+                } catch (error) {
+                    console.error("Error en la función search.js:", error);
+                    return {
+                        statusCode: 500,
+                        body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
+                    };
+                }
+            };`;
+
+            // --- Creación del Archivo .ZIP ---
+            zip.file("index.html", indexHtmlContent);
+            zip.file("giveaways_new.js", giveawaysContent);
+            zip.file("discardedGiveaways_new.js", discardedGiveawaysContent);
+            zip.file("netlify.toml", netlifyTomlContent);
+            zip.file("package.json", packageJsonContent);
+
+            const functionsFolder = zip.folder("netlify").folder("functions");
+            functionsFolder.file("gemini.js", geminiJsContent);
+            functionsFolder.file("search.js", searchJsContent);
+
+            zip.generateAsync({ type: "blob" }).then(function(content) {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                const today = new Date().toISOString().slice(0, 10);
+                link.download = \`Misorteos-Backup-Completo-\${today}.zip\`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        };
+        
         const restoreFromBackup = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { JSZip.loadAsync(e.target.result).then(zip => { const giveawaysFile = zip.file("giveaways_new.js"); const discardedFile = zip.file("discardedGiveaways_new.js"); const foreignFile = zip.file("foreignAccounts.js"); if (!giveawaysFile || !discardedFile || !foreignFile) { showNotification('Error', 'El archivo .zip no parece una copia de seguridad válida.'); return; } Promise.all([giveawaysFile.async("string"), discardedFile.async("string"), foreignFile.async("string")]) .then(contents => { try { const giveawaysContent = contents[0].replace('window.giveaways = ', '').slice(0, -1); const discardedContent = contents[1].replace('window.discardedGiveaways = ', '').slice(0, -1); const foreignContent = contents[2].replace('window.foreignAccounts = ', '').slice(0, -1); const parsedGiveaways = JSON.parse(giveawaysContent); const parsedDiscarded = JSON.parse(discardedContent); const parsedForeign = JSON.parse(foreignContent); if (confirm("¿Seguro que quieres restaurar esta copia? Se borrarán todos los datos actuales y se reemplazarán por los del archivo.")) { giveaways = parsedGiveaways; discardedGiveaways = parsedDiscarded; foreignAccounts = parsedForeign; saveGiveaways(); saveDiscardedGiveaways(); saveForeignAccounts(); renderCalendar(); showNotification('¡Éxito!', 'La copia de seguridad se ha restaurado correctamente.'); } } catch (error) { showNotification('Error de formato', 'No se pudo leer el contenido del archivo .zip.'); console.error("Error al parsear la copia de seguridad:", error); } }); }); }; reader.readAsArrayBuffer(file); };
 
         const toggleNavMenu = () => {

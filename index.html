@@ -541,6 +541,8 @@
         .status-expired { background-color: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; }
         .status-foreign { background-color: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
         .status-no_date { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+        /* NUEVA CLASE PARA EL ESTADO NO-SORTEO */
+        .status-not_a_giveaway { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
     </style>
 </head>
 <body class="p-4">
@@ -1145,6 +1147,8 @@
         let foreignGiveawaysDetails = [];
         let noDateGiveawaysDetails = [];
         let failedFilesDetails = [];
+        // Nueva variable para los sorteos que fallaron en el análisis.
+        let giveawaysWithErrors = [];
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let trashGiveaways = JSON.parse(localStorage.getItem('trashGiveaways')) || [];
         let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || [];
@@ -1308,6 +1312,25 @@
             const numericValue = parseFloat(cleanedString);
             return isNaN(numericValue) ? 0 : numericValue;
         };
+        
+        const calculateSimilarity = (str1, str2) => {
+            const lev = (s1, s2) => {
+                const matrix = [];
+                for (let i = 0; i <= s2.length; i++) { matrix[i] = [i]; }
+                for (let j = 0; j <= s1.length; j++) { matrix[0][j] = j; }
+                for (let i = 1; i <= s2.length; i++) {
+                    for (let j = 1; j <= s1.length; j++) {
+                        const cost = s1[j - 1] === s2[i - 1] ? 0 : 1;
+                        matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+                    }
+                }
+                return matrix[s2.length][s1.length];
+            };
+            const longer = str1.length > str2.length ? str1 : str2;
+            const shorter = str1.length > str2.length ? str2 : str1;
+            const distance = lev(longer, shorter);
+            return (longer.length - distance) / longer.length;
+        };
 
         const checkAchievements = (action, data = null) => {
             const today = new Date().toISOString().slice(0, 10);
@@ -1377,10 +1400,26 @@
         };
 
         const isDuplicateGiveaway = (newGiveaway) => {
-            return Object.values(giveaways).flat().find(g => 
-                g.prize === newGiveaway.prize && 
-                (g.accounts || []).join() === (newGiveaway.accounts || []).map(acc => `@${acc}`).join()
-            ) || null;
+            const newPrize = (newGiveaway.prize || '').toLowerCase();
+            const newAccounts = (newGiveaway.accounts || []).map(acc => acc.toLowerCase()).sort().join(',');
+            
+            for (const date in giveaways) {
+                const existing = giveaways[date].find(g => {
+                    const existingPrize = (g.prize || '').toLowerCase();
+                    const existingAccounts = (g.accounts || []).map(acc => acc.toLowerCase().replace('@','')).sort().join(',');
+                    // Comparación de similitud
+                    const prizeSimilarity = calculateSimilarity(newPrize, existingPrize);
+                    // Comparación estricta de cuentas
+                    const accountsMatch = newAccounts === existingAccounts;
+                    
+                    // Si el premio es muy similar y las cuentas coinciden, es un duplicado
+                    return prizeSimilarity > 0.7 && accountsMatch;
+                });
+                if (existing) {
+                    return existing;
+                }
+            }
+            return null;
         };
         
         const renderCalendar = () => {
@@ -1834,7 +1873,7 @@
                     ${talismanAccountsHTML}
                 </div>
                 <hr class="border-yellow-600/20 my-4">
-                 <h3 class="text-xl font-bold mb-2 text-yellow-700">Análisis de la App ⚙️</h3>
+                <h3 class="text-xl font-bold mb-2 text-yellow-700">Análisis de la App ⚙️</h3>
                 <ul class="space-y-2 mb-4">
                     <li><strong>Efectividad del Cortafuegos:</strong> ${stats.discardCounts.foreign} sorteos extranjeros bloqueados.</li>
                     <li><strong>Informe de Descarte (Total: ${totalDiscards}):</strong>
@@ -1914,8 +1953,13 @@
                 duplicate: 'Duplicado',
                 expired: 'Caducado',
                 foreign: 'Extranjero',
-                no_date: 'Sin Fecha'
+                no_date: 'Sin Fecha',
+                not_a_giveaway: 'No es Sorteo',
+                api_error: 'Error de la API',
+                unknown_error: 'Error Desconocido'
             };
+            const giveawayStatus = giveaway.status || 'unknown_error';
+            const statusText = statusMap[giveawayStatus] || giveawayStatus;
 
             return `
                 <div class="giveaway-card">
@@ -1934,10 +1978,10 @@
                             <i class="fa-solid fa-sack-dollar"></i>
                             <span>${giveaway.price}</span>
                         </div>` : ''}
-                        ${giveaway.status ? `
+                        ${giveawayStatus ? `
                         <div class="detail-item">
                              <i class="fa-solid fa-circle-info"></i>
-                             <span class="status-tag status-${giveaway.status}">${statusMap[giveaway.status] || giveaway.status}</span>
+                             <span class="status-tag status-${giveawayStatus}">${statusText}</span>
                         </div>` : ''}
                     </div>
                 </div>
@@ -1945,7 +1989,7 @@
         };
         
         const openAddAIGiveawayModal = () => { addAIGiveawayModal.classList.remove('hidden'); requestAnimationFrame(() => addAIGiveawayModal.classList.add('is-visible')); };
-        const closeAddAIGiveawayModal = () => { addAIGiveawayModal.classList.remove('is-visible'); aiImageInput.value = null; imageQueue = []; aiQueueContainer.style.display = 'none'; aiQueueList.innerHTML = ''; startAiButton.style.display = 'none'; aiStatusContainer.style.display = 'none'; aiSummaryResults.style.display = 'none'; aiSummaryCloseBtn.style.display = 'none'; setTimeout(() => addAIGiveawayModal.classList.add('hidden'), 300); };
+        const closeAddAIGiveawayModal = () => { aiImageInput.value = null; imageQueue = []; giveawaysWithErrors = []; aiQueueContainer.style.display = 'none'; aiQueueList.innerHTML = ''; startAiButton.style.display = 'none'; aiStatusContainer.style.display = 'none'; aiSummaryResults.style.display = 'none'; aiSummaryCloseBtn.style.display = 'none'; addAIGiveawayModal.classList.remove('is-visible'); setTimeout(() => addAIGiveawayModal.classList.add('hidden'), 300); };
         
         function handleFileSelection(event) {
             imageQueue = [];
@@ -1983,74 +2027,73 @@
             noDateGiveawaysCount = 0;
             addedGiveawaysDetails = [];
             duplicateGiveawaysDetails = [];
-            expiredGiveawaysDetails = [];
-            foreignGiveawaysDetails = [];
-            noDateGiveawaysDetails = [];
+            let processedGiveaways = []; // Array temporal para duplicados, expirados, etc.
             failedFilesDetails = [];
+            giveawaysWithErrors = []; // Reiniciar la lista de errores
             startAiButton.disabled = true;
             startAiButton.textContent = "Procesando...";
             aiStatusContainer.style.display = 'block';
             aiSummaryResults.style.display = 'none';
             aiSummaryCloseBtn.style.display = 'none';
+            
             await processNextImage();
+            
+            // Lógica de finalización
+            isProcessing = false;
+            startAiButton.disabled = false;
+            showAISummary();
+
+            // Guardar los sorteos descartados una vez que el proceso ha terminado
+            processedGiveaways.forEach(g => discardedGiveaways.push(g));
+            saveDiscardedGiveaways();
         }
         
-        function processNextImage() {
-            if (currentIndex >= imageQueue.length) {
+        async function processNextImage() {
+             if (currentIndex >= imageQueue.length) {
+                // Al final, llamamos a la función de renderizado del resumen
                 showAISummary();
                 isProcessing = false;
                 startAiButton.disabled = false;
-                startAiButton.textContent = "Empezar de nuevo";
                 return;
             }
 
-            // Añadimos un retardo, excepto para la primera imagen
-            const delay = currentIndex === 0 ? 0 : 2000; // 2000 ms = 2 segundos
+            const file = imageQueue[currentIndex];
+            aiStatusMessage.textContent = `Analizando imagen ${currentIndex + 1} de ${imageQueue.length}: ${file.name}`;
+            aiProgressBar.style.width = `${((currentIndex + 1) / imageQueue.length) * 100}%`;
+            
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const base64Data = event.target.result;
+                const hoy = new Date();
+                const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
 
-            setTimeout(() => {
-                const file = imageQueue[currentIndex];
-                aiStatusMessage.textContent = `Analizando imagen ${currentIndex + 1} de ${imageQueue.length}: ${file.name}`;
-                aiProgressBar.style.width = `${((currentIndex + 1) / imageQueue.length) * 100}%`;
-                
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    handleImageProcessing(event.target.result, file);
-                };
-                reader.readAsDataURL(file);
-            }, delay);
-        }
-
-        async function handleImageProcessing(base64Data, file) {
-            const hoy = new Date();
-            const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-            const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><TAREA_PRINCIPAL>Analiza la imagen proporcionada y extrae la información solicitada. Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown adicional como \`\`\`json.</TAREA_PRINCIPAL><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
-
-            try {
-                const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
-                
-                if (aiData.status === 'discard_no_date') {
-                    noDateGiveawaysCount++;
-                    noDateGiveawaysDetails.push({ prize: aiData.prize });
-                    discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'nd', status: 'no_date' });
-                } else {
+                try {
+                    const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
+                    
                     const accounts = aiData.accounts || [];
                     const isForeign = accounts.some(acc => foreignAccounts.includes(`@${acc}`));
-                    const isExpired = aiData.date && new Date(aiData.date) < new Date(new Date().toDateString());
+                    const giveawayDate = aiData.date ? new Date(aiData.date) : null;
+                    const isExpired = giveawayDate && giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway(aiData);
 
-                    if (isForeign) {
+                    // Lógica de descarte
+                    if (aiData.status === 'not_a_giveaway') {
+                         failedFilesDetails.push({ filename: file.name, error: 'La imagen no contiene un sorteo.' });
+                    } else if (isForeign) {
                         foreignGiveawaysCount++;
                         foreignGiveawaysDetails.push({ prize: aiData.prize, accounts: accounts.join(', ') });
                         discardedGiveaways.push({...aiData, status: 'foreign', id: Date.now().toString() + 'f'});
                     } else if (existingGiveaway) {
                         duplicateGiveawaysCount++;
-                        duplicateGiveawaysDetails.push({ prize: aiData.prize });
+                        duplicateGiveawaysDetails.push({ prize: aiData.prize, file: file.name });
                         discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'd', status: 'duplicate', originalGiveaway: existingGiveaway });
                     } else if (isExpired) {
                         expiredGiveawaysCount++;
                         expiredGiveawaysDetails.push({ prize: aiData.prize, date: aiData.date });
                         discardedGiveaways.push({...aiData, status: 'expired', id: Date.now().toString() + 'e'});
                     } else {
+                        // Lógica de añadido
                         const priceInfo = await searchPrizeValue(aiData);
                         const newGiveaway = { 
                             id: Date.now().toString(), 
@@ -2063,28 +2106,22 @@
                             ends_at_time: aiData.ends_at_time 
                         };
                         addGiveaway(newGiveaway);
-                        
-                        // --- INICIO DE LA CORRECCIÓN ---
-                        // Primero, registramos el éxito para el resumen.
                         addedGiveawaysCount++;
-                        addedGiveawaysDetails.push({ prize: newGiveaway.prize, date: newGiveaway.date });
-                        
-                        // Después, realizamos las otras operaciones (puntos, logros).
-                        // Si alguna de estas falla, se registrará un error, pero el sorteo ya constará como añadido.
+                        addedGiveawaysDetails.push({ prize: newGiveaway.prize, date: newGiveaway.date, file: file.name });
                         addPoints(5);
                         checkAchievements('add-ai');
-                        // --- FIN DE LA CORRECCIÓN ---
                     }
+                } catch (error) {
+                    console.error(`Error al analizar la imagen ${file.name}:`, error);
+                    failedFilesDetails.push({ filename: file.name, error: error.message });
+                    giveawaysWithErrors.push(file); // Guardar el archivo para reintento
                 }
-                saveDiscardedGiveaways();
-            } catch (error) {
-                console.error(`Error al analizar la imagen ${file.name}:`, error);
-                failedFilesDetails.push({ filename: file.name, error: error.message });
-            }
-            currentIndex++;
-            processNextImage();
+                currentIndex++;
+                processNextImage();
+            };
+            reader.readAsDataURL(file);
         }
-        
+
         const showAISummary = () => {
             const summaryData = {
                 analysisDate: new Date().toISOString(),
@@ -2166,7 +2203,9 @@
                 const result = await response.json();
                 if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
                     const text = result.candidates[0].content.parts[0].text;
-                    return JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+                    const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                    const jsonResult = JSON.parse(cleanText);
+                    return jsonResult;
                 } else {
                     console.error("Respuesta inválida de la API de Visión:", result);
                     throw new Error("Respuesta incompleta o inválida de la API de Visión.");

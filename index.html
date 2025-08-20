@@ -557,9 +557,9 @@
                  <button id="open-nav-menu" class="nav-menu-btn rounded-full mr-4">
                      <i class="fa-solid fa-bars text-xl"></i>
                  </button>
-                 <div class="flex-1 text-center flex items-center justify-center gap-4">
-                     <h2 id="user-title" class="text-2xl sm:text-3xl font-bold text-yellow-500"></h2>
-                     <div id="total-ps-container" class="bg-yellow-500/20 text-yellow-300 font-bold px-4 py-1 rounded-full text-lg border border-yellow-500/30 hidden sm:block">
+                 <div class="flex-1 text-center flex items-center justify-center gap-2 sm:gap-4">
+                     <h2 id="user-title" class="text-xl sm:text-2xl font-bold text-yellow-500"></h2>
+                     <div id="total-ps-container" class="bg-yellow-500/20 text-yellow-300 font-bold px-3 sm:px-4 py-0.5 sm:py-1 rounded-full text-sm sm:text-lg border border-yellow-500/30">
                         <span id="total-ps-count">0</span> PS ✨
                     </div>
                  </div>
@@ -2405,7 +2405,7 @@
                         body: JSON.stringify({ error: 'Faltan datos en la petición.' })
                     };
                 }
-                const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
+                const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
                 const payload = {
                     contents: [{
                         role: "user",
@@ -2454,8 +2454,8 @@
                         body: JSON.stringify({ error: 'Falta la consulta (query).' })
                     };
                 }
-                const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
-                const prompt = \`Busca en internet el precio aproximado del siguiente producto: "\${query}". Devuélveme el precio encontrado y la URL de la fuente en un objeto JSON. Por ejemplo: {"value": "150€", "url": "https://example.com"}. Si no encuentras un precio, usa "No encontrado" para la clave "value" y null para "url". Tu respuesta debe ser únicamente el objeto JSON, sin texto adicional ni markdown.\`;
+                const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+                const prompt = \\\`Busca en internet el precio aproximado del siguiente producto: "\\\${query}". Devuélveme el precio encontrado y la URL de la fuente en un objeto JSON. Por ejemplo: {"value": "150€", "url": "https://example.com"}. Si no encuentras un precio, usa "No encontrado" para la clave "value" y null para "url". Tu respuesta debe ser únicamente el objeto JSON, sin texto adicional ni markdown.\\\`;
                 const payload = {
                     contents: [{
                         role: "user",

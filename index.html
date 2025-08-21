@@ -1183,7 +1183,7 @@
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script>
-          // Carga de datos desde localStorage o valores por defecto
+        // Carga de datos desde localStorage o valores por defecto
         let giveaways;
         const savedGiveaways = localStorage.getItem('giveaways');
         if (savedGiveaways) {
@@ -2702,203 +2702,204 @@
          showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
     };
     
-    document.addEventListener('DOMContentLoaded', () => {
-        animateStarryBackground();
-        animateTitle();
-        renderCalendar();
-        updatePointsDisplay();
-        userTitleEl.textContent = userAchievements.title;
+    // --- CÓDIGO CORREGIDO: SE EJECUTA DIRECTAMENTE ---
+    
+    animateStarryBackground();
+    animateTitle();
+    renderCalendar();
+    updatePointsDisplay();
+    userTitleEl.textContent = userAchievements.title;
 
-        const setupModal = (button, modal, closeButton, onOpenCallback) => {
-            if (button) button.addEventListener('click', (e) => { e.preventDefault(); if (onOpenCallback) onOpenCallback(); modal.classList.remove('hidden'); requestAnimationFrame(() => modal.classList.add('is-visible')); });
-            if (closeButton) closeButton.addEventListener('click', () => { modal.classList.remove('is-visible'); setTimeout(() => modal.classList.add('hidden'), 300); });
-            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) { modal.classList.remove('is-visible'); setTimeout(() => modal.classList.add('hidden'), 300); } });
-        };
+    const setupModal = (button, modal, closeButton, onOpenCallback) => {
+        if (button) button.addEventListener('click', (e) => { e.preventDefault(); if (onOpenCallback) onOpenCallback(); modal.classList.remove('hidden'); requestAnimationFrame(() => modal.classList.add('is-visible')); });
+        if (closeButton) closeButton.addEventListener('click', () => { modal.classList.remove('is-visible'); setTimeout(() => modal.classList.add('hidden'), 300); });
+        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) { modal.classList.remove('is-visible'); setTimeout(() => modal.classList.add('hidden'), 300); } });
+    };
 
-        setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
-        setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
-        setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
-        setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
-        setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
-        setupModal(addAIBtn, addAIGiveawayModal, closeAddAIGiveawayModalBtn);
-        setupModal(searchMenuBtn, searchModal, closeSearchModalBtn);
-        setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
-        setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
-        setupModal(null, foreignAccountsModal, closeForeignAccountsModalBtn);
-        setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn);
-        setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
-        
-        // Listeners para el nuevo modal de zoom
-        const closeZoomModal = () => { zoomModal.classList.remove('is-visible'); setTimeout(() => { zoomModal.classList.add('hidden'); }, 300); };
-        analysisImagePreview.addEventListener('click', () => {
-            zoomedImage.src = analysisImagePreview.src;
-            zoomModal.classList.remove('hidden');
-            requestAnimationFrame(() => zoomModal.classList.add('is-visible'));
-        });
-        zoomModal.addEventListener('click', closeZoomModal);
-        
-        openNavMenuBtn.addEventListener('click', toggleNavMenu);
-        closeNavMenuBtn.addEventListener('click', toggleNavMenu);
-        menuOverlay.addEventListener('click', toggleNavMenu);
+    setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
+    setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
+    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
+    setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
+    setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
+    setupModal(addAIBtn, addAIGiveawayModal, closeAddAIGiveawayModalBtn);
+    setupModal(searchMenuBtn, searchModal, closeSearchModalBtn);
+    setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
+    setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
+    setupModal(null, foreignAccountsModal, closeForeignAccountsModalBtn);
+    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn);
+    setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
+    
+    // Listeners para el nuevo modal de zoom
+    const closeZoomModal = () => { zoomModal.classList.remove('is-visible'); setTimeout(() => { zoomModal.classList.add('hidden'); }, 300); };
+    analysisImagePreview.addEventListener('click', () => {
+        zoomedImage.src = analysisImagePreview.src;
+        zoomModal.classList.remove('hidden');
+        requestAnimationFrame(() => zoomModal.classList.add('is-visible'));
+    });
+    zoomModal.addEventListener('click', closeZoomModal);
+    
+    openNavMenuBtn.addEventListener('click', toggleNavMenu);
+    closeNavMenuBtn.addEventListener('click', toggleNavMenu);
+    menuOverlay.addEventListener('click', toggleNavMenu);
 
-        prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
-        nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
-        calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
+    prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
+    nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
+    calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
 
-        closeModalBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-        modalBody.addEventListener('click', (e) => {
-            const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
-            if (!giveawayId) return;
-            const dateStr = modal.dataset.date;
-            const giveaway = giveaways[dateStr].find(g => g.id === giveawayId);
+    modalBody.addEventListener('click', (e) => {
+        const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
+        if (!giveawayId) return;
+        const dateStr = modal.dataset.date;
+        const giveaway = giveaways[dateStr].find(g => g.id === giveawayId);
 
-            if (e.target.type === 'checkbox') {
-                const itemContainer = e.target.closest('.giveaway-item');
-                if (e.target.checked) {
-                    completedGiveaways[giveawayId] = true;
-                    animateShootingStar(itemContainer, () => {
-                        itemContainer.classList.add('completed');
-                        buildModal(dateStr);
-                        renderCalendar();
-                    });
-                    addPoints(2);
-                } else {
-                    delete completedGiveaways[giveawayId];
-                    itemContainer.classList.remove('completed');
+        if (e.target.type === 'checkbox') {
+            const itemContainer = e.target.closest('.giveaway-item');
+            if (e.target.checked) {
+                completedGiveaways[giveawayId] = true;
+                animateShootingStar(itemContainer, () => {
+                    itemContainer.classList.add('completed');
                     buildModal(dateStr);
                     renderCalendar();
-                }
-                saveCompletedGiveaways();
-                checkAchievements('complete', { giveawayDate: dateStr });
-            } else if (e.target.closest('.win-giveaway-btn')) {
-                markAsWon(giveawayId, dateStr);
-            } else if (e.target.closest('.move-giveaway-btn')) {
-                openMoveGiveawayModal(giveaway, dateStr);
-            } else if (e.target.closest('.delete-giveaway-btn')) {
-                if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
-                    deleteGiveawayFromCalendar(dateStr, giveawayId);
-                }
-            } else if (e.target.closest('.delete-giveaway-foreign-btn')) {
-                if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
-                    deleteForeignGiveaway(dateStr, giveawayId);
-                }
-            }
-        });
-
-        trashModalBody.addEventListener('click', (e) => { const restoreBtn = e.target.closest('.restore-btn'); if (restoreBtn) { restoreGiveawayFromTrash(restoreBtn.dataset.giveawayId); } });
-        manageForeignAccountsBtn.addEventListener('click', (e) => { e.preventDefault(); renderForeignAccountsModal(); foreignAccountsModal.classList.remove('hidden'); requestAnimationFrame(() => foreignAccountsModal.classList.add('is-visible')); });
-
-        discardedModal.addEventListener('click', (e) => {
-            const filterBtn = e.target.closest('.filter-btn');
-            if (filterBtn) {
-                discardedFilter = filterBtn.dataset.filter;
-                renderDiscardedModal();
-            }
-        });
-
-        discardedModalBody.addEventListener('click', (e) => { 
-            const item = e.target.closest('.giveaway-item-discarded'); 
-            if (!item) return;
-            const giveawayId = item.dataset.giveawayId;
-            const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
-            if (!giveaway) return;
-            if (e.target.closest('.add-discarded-btn')) {
-                e.stopPropagation();
-                openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
-                deleteDiscardedGiveaway(giveawayId);
-                closeDiscardedModalBtn.click();
-            } else if (e.target.closest('.delete-discarded-btn')) {
-                e.stopPropagation(); 
-                deleteDiscardedGiveaway(giveawayId); 
-            } else if (giveaway.status === 'duplicate' && giveaway.originalGiveaway) { 
-                showDuplicateComparisonModal(giveaway); 
+                });
+                addPoints(2);
             } else {
-                openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+                delete completedGiveaways[giveawayId];
+                itemContainer.classList.remove('completed');
+                buildModal(dateStr);
+                renderCalendar();
             }
-        });
+            saveCompletedGiveaways();
+            checkAchievements('complete', { giveawayDate: dateStr });
+        } else if (e.target.closest('.win-giveaway-btn')) {
+            markAsWon(giveawayId, dateStr);
+        } else if (e.target.closest('.move-giveaway-btn')) {
+            openMoveGiveawayModal(giveaway, dateStr);
+        } else if (e.target.closest('.delete-giveaway-btn')) {
+            if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
+                deleteGiveawayFromCalendar(dateStr, giveawayId);
+            }
+        } else if (e.target.closest('.delete-giveaway-foreign-btn')) {
+            if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
+                deleteForeignGiveaway(dateStr, giveawayId);
+            }
+        }
+    });
 
-        trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
-        selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
-        aiImageInput.addEventListener('change', handleFileSelection);
-        startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
-        aiSummaryCloseBtn.addEventListener('click', closeAddAIGiveawayModal);
-        
-        retryFailedBtn.addEventListener('click', () => {
-             if (giveawaysWithErrors.length > 0) {
-                  startAnalysis(giveawaysWithErrors);
-             } else {
-                  showNotification('No hay archivos para reintentar', 'Todos los errores se han procesado.');
-             }
-        });
+    trashModalBody.addEventListener('click', (e) => { const restoreBtn = e.target.closest('.restore-btn'); if (restoreBtn) { restoreGiveawayFromTrash(restoreBtn.dataset.giveawayId); } });
+    manageForeignAccountsBtn.addEventListener('click', (e) => { e.preventDefault(); renderForeignAccountsModal(); foreignAccountsModal.classList.remove('hidden'); requestAnimationFrame(() => foreignAccountsModal.classList.add('is-visible')); });
 
-        blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderStatsModal(); });
-        blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderStatsModal(); });
+    discardedModal.addEventListener('click', (e) => {
+        const filterBtn = e.target.closest('.filter-btn');
+        if (filterBtn) {
+            discardedFilter = filterBtn.dataset.filter;
+            renderDiscardedModal();
+        }
+    });
 
-        addAsNewBtn.addEventListener('click', (e) => {
-            const giveawayId = e.target.dataset.giveawayId;
-            if (!giveawayId) return;
-            const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId);
-            if (giveawayToAdd) {
+    discardedModalBody.addEventListener('click', (e) => { 
+        const item = e.target.closest('.giveaway-item-discarded'); 
+        if (!item) return;
+        const giveawayId = item.dataset.giveawayId;
+        const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
+        if (!giveaway) return;
+        if (e.target.closest('.add-discarded-btn')) {
+            e.stopPropagation();
+            openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+            deleteDiscardedGiveaway(giveawayId);
+            closeDiscardedModalBtn.click();
+        } else if (e.target.closest('.delete-discarded-btn')) {
+            e.stopPropagation(); 
+            deleteDiscardedGiveaway(giveawayId); 
+        } else if (giveaway.status === 'duplicate' && giveaway.originalGiveaway) { 
+            showDuplicateComparisonModal(giveaway); 
+        } else {
+            openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+        }
+    });
+
+    trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
+    selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
+    aiImageInput.addEventListener('change', handleFileSelection);
+    startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
+    aiSummaryCloseBtn.addEventListener('click', closeAddAIGiveawayModal);
+    
+    retryFailedBtn.addEventListener('click', () => {
+         if (giveawaysWithErrors.length > 0) {
+              startAnalysis(giveawaysWithErrors);
+         } else {
+              showNotification('No hay archivos para reintentar', 'Todos los errores se han procesado.');
+         }
+    });
+
+    blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderStatsModal(); });
+    blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderStatsModal(); });
+
+    addAsNewBtn.addEventListener('click', (e) => {
+        const giveawayId = e.target.dataset.giveawayId;
+        if (!giveawayId) return;
+        const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId);
+        if (giveawayToAdd) {
+            deleteDiscardedGiveaway(giveawayId);
+            openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price });
+            duplicateComparisonModal.classList.remove('is-visible');
+            setTimeout(() => duplicateComparisonModal.classList.add('hidden'), 300);
+        }
+    });
+
+    mergeGiveawayBtn.addEventListener('click', (e) => {
+        const giveawayId = e.target.dataset.giveawayId;
+        if (!giveawayId) return;
+        const discarded = discardedGiveaways.find(g => g.id === giveawayId);
+        if (discarded && discarded.originalGiveaway) {
+            let original = null;
+            for (const date in giveaways) {
+                const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id);
+                if (found) { original = found; break; }
+            }
+            if (original) {
+                if (!original.price && discarded.price) original.price = discarded.price;
+                if (!original.date && discarded.date) original.date = discarded.date;
                 deleteDiscardedGiveaway(giveawayId);
-                openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price });
+                saveGiveaways();
+                renderCalendar();
+                showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.');
+                checkAchievements('merge');
                 duplicateComparisonModal.classList.remove('is-visible');
                 setTimeout(() => duplicateComparisonModal.classList.add('hidden'), 300);
+            } else {
+                showNotification('Error', 'No se encontró el sorteo original para fusionar.');
             }
-        });
-
-        mergeGiveawayBtn.addEventListener('click', (e) => {
-            const giveawayId = e.target.dataset.giveawayId;
-            if (!giveawayId) return;
-            const discarded = discardedGiveaways.find(g => g.id === giveawayId);
-            if (discarded && discarded.originalGiveaway) {
-                let original = null;
-                for (const date in giveaways) {
-                    const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id);
-                    if (found) { original = found; break; }
-                }
-                if (original) {
-                    if (!original.price && discarded.price) original.price = discarded.price;
-                    if (!original.date && discarded.date) original.date = discarded.date;
-                    deleteDiscardedGiveaway(giveawayId);
-                    saveGiveaways();
-                    renderCalendar();
-                    showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.');
-                    checkAchievements('merge');
-                    duplicateComparisonModal.classList.remove('is-visible');
-                    setTimeout(() => duplicateComparisonModal.classList.add('hidden'), 300);
-                } else {
-                    showNotification('Error', 'No se encontró el sorteo original para fusionar.');
-                }
-            }
-        });
-
-        addGiveawayForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) };
-            addGiveaway(newGiveaway);
-            closeAddGiveawayModal();
-        });
-
-        moveGiveawayForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (giveawayToMove && originalDateOfGiveaway) {
-                moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value);
-                closeMoveGiveawayModal();
-            }
-        });
-
-        const allNavButtons = document.querySelectorAll('#nav-menu a');
-        allNavButtons.forEach(btn => { btn.addEventListener('click', () => toggleNavMenu()); });
-
-        const downloadBtn = document.getElementById('download-btn');
-        const uploadBtn = document.getElementById('upload-btn');
-        const zipUploadInput = document.getElementById('zip-upload');
-        if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
-        if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
-        if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
+        }
     });
+
+    addGiveawayForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) };
+        addGiveaway(newGiveaway);
+        closeAddGiveawayModal();
+    });
+
+    moveGiveawayForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (giveawayToMove && originalDateOfGiveaway) {
+            moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value);
+            closeMoveGiveawayModal();
+        }
+    });
+
+    const allNavButtons = document.querySelectorAll('#nav-menu a');
+    allNavButtons.forEach(btn => { btn.addEventListener('click', () => toggleNavMenu()); });
+
+    const downloadBtn = document.getElementById('download-btn');
+    const uploadBtn = document.getElementById('upload-btn');
+    const zipUploadInput = document.getElementById('zip-upload');
+    if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
+    if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
+    if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
+
 </script>
 </body>
 </html>

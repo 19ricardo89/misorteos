@@ -13,26 +13,28 @@ exports.handler = async function (event, context) {
         };
     }
 
-    // Corregimos el nombre del modelo a la versión correcta
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     
-    // --- INICIO DEL PROMPT MODIFICADO ---
-    let prompt = `Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
-    
-    1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
-        * Producto: "${query}"
-        * Cuentas de Instagram: ${accounts.join(', ')}
+    // --- INICIO DEL PROMPT MODIFICADO Y MEJORADO ---
+    const prompt = `Actúa como un asistente de investigación de mercado experto y minucioso. Tu única tarea es encontrar el precio y el enlace de un producto específico siguiendo una jerarquía estricta.
 
-    2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
+    **Producto a buscar:** "${query}"
 
-    3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:
-        {
-          "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",
-          "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
-        }
+    **Jerarquía de Búsqueda:**
 
-    Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`.`;
-    // --- FIN DEL PROMPT MODIFICADO ---
+    1.  **Prioridad 1 (Máxima):** Busca el producto ("${query}") directamente en la **página web oficial de la marca del producto**. Ignora las webs de las cuentas de Instagram que organizan el sorteo, a menos que sean la propia marca del producto. Por ejemplo, para un "iPhone 16", busca en apple.com.
+
+    2.  **Prioridad 2 (Solo si falla la Prioridad 1):** Si no encuentras la web oficial de la marca o el producto no está disponible allí, realiza una búsqueda general en Google para encontrar el precio y una tienda de confianza que lo venda.
+
+    3.  **Insistencia:** Sé persistente. Intenta variaciones del nombre del producto si es necesario para encontrar una coincidencia.
+
+    **Formato de Salida Obligatorio:**
+    Devuelve tu respuesta única y exclusivamente como un objeto JSON válido, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. La estructura debe ser:
+    {
+      "value": "string con el precio encontrado (ej: '150€') o 'No encontrado' si es imposible hallarlo",
+      "url": "string con el enlace URL de la página donde encontraste el precio, o null si no lo encontraste"
+    }`;
+    // --- FIN DEL PROMPT MODIFICADO Y MEJORADO ---
 
     const payload = {
         contents: [{

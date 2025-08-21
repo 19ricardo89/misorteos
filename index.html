@@ -1433,17 +1433,16 @@
         const analysisStepText = document.getElementById('analysis-step-text');
         const zoomModal = document.getElementById('zoom-modal');
         const zoomedImage = document.getElementById('zoomed-image');
-        
+        const notificationModal = document.getElementById('notification-modal');
+        const notificationTitle = document.getElementById('notification-title');
+        const notificationContent = document.getElementById('notification-content');
+
         let giveawayToMove = null;
         let originalDateOfGiveaway = null;
-        
+
         // --- FUNCIONES DE LA APLICACIÓN ---
-        
+
         const showNotification = (title, message) => {
-            const notificationModal = document.getElementById('notification-modal');
-            const notificationTitle = document.getElementById('notification-title');
-            const notificationContent = document.getElementById('notification-content');
-            // MODIFICACIÓN: Estas variables eran nulas porque no existían en el HTML
             if (notificationTitle && notificationContent && notificationModal) {
                 notificationTitle.textContent = title;
                 notificationContent.textContent = message;
@@ -1464,7 +1463,7 @@
         const saveUserPoints = () => localStorage.setItem('userPoints', JSON.stringify(userPoints));
         const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
         const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
-        
+
         const updatePointsDisplay = () => {
             if (totalPsCountEl) {
                 totalPsCountEl.textContent = userPoints.total;
@@ -1483,7 +1482,7 @@
             const numericValue = parseFloat(cleanedString);
             return isNaN(numericValue) ? 0 : numericValue;
         };
-        
+
         const calculateSimilarity = (str1, str2) => {
             const lev = (s1, s2) => {
                 const matrix = [];
@@ -1567,7 +1566,9 @@
             });
 
             saveUserAchievements();
-            userTitleEl.textContent = userAchievements.title;
+            if (userTitleEl) {
+                userTitleEl.textContent = userAchievements.title;
+            }
         };
 
         const isDuplicateGiveaway = (newGiveaway) => {
@@ -1590,6 +1591,7 @@
         };
         
         const renderCalendar = () => {
+            if (!calendarDaysEl || !monthYearEl) return;
             calendarDaysEl.innerHTML = '';
             const month = currentDate.getMonth();
             const year = currentDate.getFullYear();
@@ -1747,7 +1749,6 @@
         modal.dataset.date = dateStr;
     };
     
-    // --- MODIFICADO: Lógica de apertura/cierre de modales simplificada ---
     const openModal = (dateStr) => { 
         buildModal(dateStr); 
         modal.classList.add('is-visible'); 
@@ -1780,7 +1781,6 @@
          moveGiveawayModal.classList.add('is-visible');
     }
     const closeMoveGiveawayModal = () => { moveGiveawayModal.classList.remove('is-visible'); }
-    // --- FIN DE LA MODIFICACIÓN DE LÓGICA DE MODALES ---
 
     const addGiveaway = (newGiveaway) => {
         const dateStr = newGiveaway.date;
@@ -1860,8 +1860,33 @@
         }
     };
     
-    // --- LÓGICA DEL NUEVO FLUJO DE ANÁLISIS DE IA (FASE 4 - FINAL) ---
+    // --- LÓGICA DEL NUEVO FLUJO DE ANÁLISIS DE IA ---
 
+    const handleFileSelection = (event) => {
+        const files = event.target.files;
+        if (!files) return;
+
+        const newFiles = Array.from(files);
+        imageQueue.push(...newFiles);
+
+        if (imageQueue.length > MAX_IMAGES) {
+            imageQueue = imageQueue.slice(0, MAX_IMAGES);
+            showNotification('Límite alcanzado', `Solo se pueden analizar ${MAX_IMAGES} imágenes a la vez.`);
+        }
+
+        aiQueueList.innerHTML = '';
+        imageQueue.forEach(file => {
+            const li = document.createElement('li');
+            li.textContent = file.name;
+            li.className = 'text-xs truncate';
+            aiQueueList.appendChild(li);
+        });
+
+        aiQueueCount.textContent = imageQueue.length;
+        aiQueueContainer.style.display = 'block';
+        startAiButton.style.display = 'block';
+    };
+    
     function startAnalysis(filesToProcess = imageQueue) {
         if (filesToProcess.length === 0 || isProcessing) return;
         
@@ -1941,7 +1966,7 @@
         };
         reader.readAsDataURL(file);
     }
-    
+
     function typewriterEffect(element, text = '', speed = 20) {
         let i = 0;
         if (!element) return;
@@ -2708,14 +2733,14 @@
     };
 
     // --- CÓDIGO DE INICIALIZACIÓN ---
-
-    // MODIFICACIÓN: Se ha eliminado el envoltorio document.addEventListener('DOMContentLoaded', ...)
     
     animateStarryBackground();
     animateTitle();
     renderCalendar();
     updatePointsDisplay();
-    userTitleEl.textContent = userAchievements.title;
+    if (userTitleEl) {
+        userTitleEl.textContent = userAchievements.title;
+    }
 
     const setupModal = (button, modal, closeButton, onOpenCallback) => {
         if (button) button.addEventListener('click', (e) => { 
@@ -2733,9 +2758,13 @@
         });
     };
 
-    setupModal(statsBtn, statsModal, closeStatsModalBtn, () => renderStatsModal());
+    // MODIFICADO: Se han añadido funciones placeholder para que no den error.
+    const renderStatsModal = () => { if (statsModal) statsModal.classList.add('is-visible'); };
+    const renderTrophyModal = () => { if (trophyModal) trophyModal.classList.add('is-visible'); };
+
+    setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
-    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, () => renderTrophyModal());
+    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
     setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
     setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
     setupModal(addAIBtn, addAIGiveawayModal, closeAddAIGiveawayModalBtn);
@@ -2746,11 +2775,10 @@
     setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     
-    // Listeners para el nuevo modal de zoom
-    const closeZoomModal = () => { zoomModal.classList.remove('is-visible'); };
+    const closeZoomModal = () => { if(zoomModal) zoomModal.classList.remove('is-visible'); };
     if (analysisImagePreview) {
         analysisImagePreview.addEventListener('click', () => {
-            if (zoomedImage) {
+            if (zoomedImage && zoomModal) {
                 zoomedImage.src = analysisImagePreview.src;
                 zoomModal.classList.add('is-visible');
             }
@@ -2769,6 +2797,7 @@
     calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
 
     closeModalBtn.addEventListener('click', closeModal);
+    moveGiveawayModal.querySelector('#close-move-giveaway-modal').addEventListener('click', closeMoveGiveawayModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
     modalBody.addEventListener('click', (e) => {
@@ -2844,10 +2873,10 @@
 
     trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
     selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
-    aiImageInput.addEventListener('change', (e) => handleFileSelection(e)); // MODIFICACIÓN: Faltaba pasar el evento a la función
+    aiImageInput.addEventListener('change', (e) => handleFileSelection(e));
     startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
     aiSummaryCloseBtn.addEventListener('click', closeAddAIGiveawayModal);
-    
+
     retryFailedBtn.addEventListener('click', () => {
          if (giveawaysWithErrors.length > 0) {
               startAnalysis(giveawaysWithErrors);

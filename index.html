@@ -1209,576 +1209,576 @@
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script>
-        // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
+    // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
 
-        // Carga de datos desde localStorage o valores por defecto
-        let giveaways;
-        const savedGiveaways = localStorage.getItem('giveaways');
-        if (savedGiveaways) {
-            giveaways = JSON.parse(savedGiveaways);
-        } else {
-            giveaways = window.giveaways || {};
+    // Carga de datos desde localStorage o valores por defecto
+    let giveaways;
+    const savedGiveaways = localStorage.getItem('giveaways');
+    if (savedGiveaways) {
+        giveaways = JSON.parse(savedGiveaways);
+    } else {
+        giveaways = window.giveaways || {};
+    }
+
+    let completedGiveaways = JSON.parse(localStorage.getItem(`completedGiveaways`)) || {};
+    let wonGiveaways = JSON.parse(localStorage.getItem('wonGiveaways')) || [];
+    let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+    let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, monthly: 0, lastUpdatedMonth: new Date().getMonth() };
+    
+    const achievementList = {
+        bronze: [
+            { id: 'b_add_1', name: 'El Primer Paso', icon: '🌱', desc: 'Añade tu primer sorteo manualmente.', ps: 5, condition: (c) => c.totalManualAdds >= 1 },
+            { id: 'b_add_ia_1', name: 'Mirando al Futuro', icon: '🤖', desc: 'Añade tu primer sorteo usando la IA.', ps: 5, condition: (c) => c.totalGiveawaysAddedAI >= 1 },
+            { id: 'b_complete_1', name: '¡Manos a la Obra!', icon: '✅', desc: 'Marca tu primer sorteo como completado.', ps: 5, condition: (c) => c.totalGiveawaysCompleted >= 1 },
+            { id: 'b_move_1', name: 'El Organizador', icon: '🗓️', desc: 'Mueve un sorteo de día por primera vez.', ps: 5, condition: (c) => c.firstMove },
+            { id: 'b_restore_1', name: 'Segunda Oportunidad', icon: '♻️', desc: 'Restaura un sorteo desde la papelera.', ps: 10, condition: (c) => c.restoredFromTrash >= 1 },
+            { id: 'b_search_1', name: 'El Detective', icon: '🕵️', desc: 'Usa la búsqueda o un filtro por primera vez.', ps: 5, condition: (c) => c.searchesMade >= 1 },
+            { id: 'b_win_1', name: '¡Estoy en racha!', icon: '🎉', desc: 'Gana tu primer sorteo (de cualquier valor).', ps: 20, condition: (c) => c.totalGiveawaysWon >= 1 },
+        ],
+        silver: [
+            { id: 's_add_100', name: 'Coleccionista Amateur', icon: '📦', desc: 'Registra un total de 100 sorteos.', ps: 10, condition: (c) => c.totalGiveawaysAdded >= 100 },
+            { id: 's_add_ia_50', name: 'Asistente de la IA', icon: '🧠', desc: 'Añade 50 sorteos usando la IA.', ps: 15, condition: (c) => c.totalGiveawaysAddedAI >= 50 },
+            { id: 's_complete_250', name: 'El Finalizador', icon: '✔️', desc: 'Completa un total de 250 sorteos.', ps: 10, condition: (c) => c.totalGiveawaysCompleted >= 250 },
+            { id: 's_firewall_1', name: 'El Inmunólogo', icon: '🛡️', desc: 'Añade tu primera cuenta al cortafuegos de extranjeras.', ps: 15, condition: (c) => c.foreignAccountsBlocked >= 1 },
+            { id: 's_win_value_100', name: 'Cazador de Tesoros', icon: '💎', desc: 'Gana un premio valorado en más de 100€.', ps: 25, condition: (c) => c.winsOver100 >= 1 },
+            { id: 's_win_5', name: 'Lluvia de Victorias', icon: '🌦️', desc: 'Gana 5 sorteos en total.', ps: 25, condition: (c) => c.totalGiveawaysWon >= 5 },
+            { id: 's_specialist_3', name: 'El Especialista', icon: '⭐', desc: 'Gana 3 sorteos de la misma categoría.', ps: 30, condition: (c) => Object.values(c.categoryWins).some(val => val >= 3) },
+        ],
+        gold: [
+            { id: 'g_add_500', name: 'Archivista Profesional', icon: '🗄️', desc: 'Registra un total de 500 sorteos.', ps: 20, condition: (c) => c.totalGiveawaysAdded >= 500 },
+            { id: 'g_ia_process_500', name: 'Conexión Neuronal', icon: '📡', desc: 'Procesa un total de 500 imágenes com a IA.', ps: 25, condition: (c) => c.totalImagesProcessedAI >= 500 },
+            { id: 'g_win_25', name: 'El Conquistador', icon: '🏰', desc: 'Gana 25 sorteos en total.', ps: 50, condition: (c) => c.totalGiveawaysWon >= 25 },
+            { id: 'g_win_double', name: 'Doble Suerte', icon: '✌️', desc: 'Gana dos sorteos en el mismo día.', ps: 75, condition: (c) => Object.values(c.sameDayWins).some(val => val >= 2) },
+            { id: 'g_value_2500', name: 'Acaparador', icon: '💰', desc: 'Supera los 2.500€ en valor total de premios.', ps: 50, condition: (c) => c.totalValueWon >= 2500 },
+            { id: 'g_merge_1', name: 'El Fusionador', icon: '🧬', desc: 'Fusiona un sorteo duplicado con su original.', ps: 20, condition: (c) => c.mergedDuplicates >= 1 },
+        ],
+        platinum: [
+            { id: 'p_add_2000', name: 'Biblioteca de Sorteos', icon: '🏛️', desc: 'Registra 2.000 sorteos.', ps: 50, condition: (c) => c.totalGiveawaysAdded >= 2000 },
+            { id: 'p_complete_1500', name: 'Máquina de Completar', icon: '💯', desc: 'Completa 1.500 sorteos.', ps: 40, condition: (c) => c.totalGiveawaysCompleted >= 1500 },
+            { id: 'p_win_value_2000', name: 'El Toque de Midas', icon: '✨', desc: 'Gana un premio valorado en más de 2.000€.', ps: 100, condition: (c) => c.winsOver2000 >= 1 },
+            { id: 'p_win_50', name: 'Imán de Premios', icon: '🧲', desc: 'Gana 50 sorteos en total.', ps: 100, condition: (c) => c.totalGiveawaysWon >= 50 },
+            { id: 'p_talisman', name: 'Talismán Dorado', icon: '🍀', desc: 'Gana 3 premios de la misma cuenta de Instagram.', ps: 75, condition: (c) => Object.values(c.winsFromSameAccount).some(val => val >= 3) },
+        ],
+        diamond: [
+            { id: 'd_win_100', name: 'Coleccionista Legendario', icon: '👑', desc: 'Gana 100 sorteos en total.', ps: 200, condition: (c) => c.totalGiveawaysWon >= 100 },
+            { id: 'd_value_25000', name: 'Toque de Midas', icon: '👑', desc: 'Acumula 25.000€ en premios ganados.', ps: 250, condition: (c) => c.totalValueWon >= 25000 },
+            { id: 'd_nostradamus', name: 'El Nostradamus', icon: '📜', desc: 'Gana un sorteo que añadiste más de 6 meses antes.', ps: 150, condition: (c) => c.nostradamusWins >= 1 },
+            { id: 'd_win_triple', name: 'Trébol de Doce Hojas', icon: '🍀', desc: 'Gana 3 sorteos en un mismo día.', ps: 200, condition: (c) => Object.values(c.sameDayWins).some(val => val >= 3) },
+        ],
+        merits: [ 
+            { id: 'm_photo', name: 'Victoria Fotográfica', icon: '📸', desc: 'Gana un sorteo cuyo premio sea una cámara.', ps: 20, condition: (c, u, p) => p && /cámara|instax/i.test(p.prize) },
+            { id: 'm_sweet', name: 'El Dulce Sabor de la Victoria', icon: '🍬', desc: 'Gana un sorteo de comida o dulces.', ps: 20, condition: (c, u, p) => p && /comida|dulces|jamón|chocolate|tarta|lote de productos/i.test(p.prize) },
+            { id: 'm_tech', name: 'Victoria Tecnológica', icon: '💻', desc: 'Gana un premio de tecnología (móvil, tablet, consola, etc).', ps: 25, condition: (c, u, p) => p && /móvil|consola|auriculares|tablet|portátil|pc|ps5|nintendo|xbox/i.test(p.prize) },
+            { id: 'm_fashion', name: 'Icono de la Moda', icon: '👠', desc: 'Gana un premio de moda (ropa, zapatillas, bolso).', ps: 20, condition: (c, u, p) => p && /ropa|zapatillas|bolso|camiseta|sudadera|gafas de sol/i.test(p.prize) },
+            { id: 'm_beauty', name: 'Gurú de Belleza', icon: '💄', desc: 'Gana un lote de productos de cosmética o maquillaje.', ps: 20, condition: (c, u, p) => p && /belleza|maquillaje|cosmética|perfume|lote de productos/i.test(p.prize) },
+            { id: 'm_experience', name: 'Coleccionista de Experiencias', icon: '🎫', desc: 'Gana entradas, una cena o una experiencia.', ps: 30, condition: (c, u, p) => p && /entradas|cena|experiencia|abono|festival/i.test(p.prize) },
+            { id: 'm_fast', name: 'A Contrarreloj', icon: '⏱️', desc: 'Añade y completa un sorteo el mismo día que finaliza.', ps: 15, condition: (c) => c.lastMinuteCompletes >= 1 },
+            { id: 'm_seer', name: 'El Adivino', icon: '👁️', desc: 'Gana un sorteo que previamente habías movido de fecha.', ps: 25, condition: (c) => c.movedGiveawayWins >= 1 },
+            { id: 'm_repeat', name: 'El Reincidente', icon: '🔁', desc: 'Gana un sorteo de una cuenta de la que ya ganaste antes.', ps: 30, condition: (c) => Object.values(c.winsFromSameAccount).some(val => val >= 2) },
+            { id: 'm_rival', name: 'Rival Eterno', icon: '🤺', desc: 'Participa en más de 50 sorteos de una misma cuenta sin ganar.', ps: 10, condition: (c) => Object.values(c.playsOnSameAccount).some(val => val >= 50) },
+        ],
+        prestige: [
+            { id: 't_padel', title: 'Maestro/a de la Pala', req: 'Gana 15 sorteos de Pádel.', condition: (c) => c.categoryWins.padel >= 15 },
+            { id: 't_travel', title: 'Nómada Legendario/a', req: 'Gana 15 sorteos de Viajes.', condition: (c) => c.categoryWins.viajes >= 15 },
+            { id: 't_friki', title: 'Señor/a de los Funkos', req: 'Gana 15 sorteos Frikis.', condition: (c) => c.categoryWins.frikis >= 15 },
+            { id: 't_polymath', title: 'El/La Polímata', req: 'Consigue los 3 títulos de especialista (Pádel, Viajes, Frikis).', condition: (c, u) => u.includes('t_padel') && u.includes('t_travel') && u.includes('t_friki') },
+            { id: 't_oracle', title: 'Oráculo de la IA', req: 'Añade 500 sorteos con la IA.', condition: (c) => c.totalGiveawaysAddedAI >= 500 },
+            { id: 't_magnate', title: 'Fortuna Personificada', req: 'Supera los 10.000€ en premios.', condition: (c) => c.totalValueWon >= 10000 },
+            { id: 't_consistency', title: 'El Metrónomo', req: 'Gana al menos un sorteo al mes durante 12 meses seguidos.', condition: (c) => c.monthlyWinStreak >= 12 },
+            { id: 't_allrounder', title: 'El/La Todoterreno', req: 'Gana al menos 5 premios en cada una de las 4 categorías.', condition: (c) => c.categoryWins.padel >= 5 && c.categoryWins.viajes >= 5 && c.categoryWins.frikis >= 5 && c.categoryWins.otros >= 5 },
+            { id: 't_monopolist', title: 'El/La Monopolista', req: 'Gana premios de 50 cuentas organizadoras diferentes.', condition: (c) => Object.keys(c.winsFromSameAccount).length >= 50 },
+            { id: 't_perfectionist', title: 'El/La Perfeccionista', req: 'Completa todos los logros de Bronce, Plata y Oro.', condition: (c, u) => [...achievementList.bronze, ...achievementList.silver, ...achievementList.gold].every(ach => u.includes(ach.id)) },
+            { id: 't_legend', title: 'Leyenda Viva', req: 'Desbloquea 10 Títulos de Prestigio.', condition: (c, u) => u.filter(id => id.startsWith('t_')).length >= 10 },
+        ]
+    };
+
+    const initialAchievements = {
+        unlocked: [],
+        title: 'Buscador/a de Tréboles 🍀',
+        counters: {
+            totalGiveawaysAdded: 0,
+            totalManualAdds: 0,
+            totalGiveawaysAddedAI: 0,
+            totalGiveawaysCompleted: 0,
+            totalGiveawaysWon: 0,
+            totalValueWon: 0,
+            categoryWins: { padel: 0, viajes: 0, frikis: 0, otros: 0 },
+            firstMove: false,
+            restoredFromTrash: 0,
+            searchesMade: 0,
+            winsOver100: 0,
+            winsOver2000: 0,
+            foreignAccountsBlocked: 0,
+            sniperWins: 0,
+            sameDayWins: {},
+            mergedDuplicates: 0,
+            totalImagesProcessedAI: 0,
+            winsFromSameAccount: {},
+            playsOnSameAccount: {},
+            nostradamusWins: 0,
+            monthlyWinStreak: 0,
+            lastWinMonthYear: null,
+            movedGiveawayWins: 0,
+            lastMinuteCompletes: 0,
         }
+    };
+    
+    let userAchievements = JSON.parse(localStorage.getItem('userAchievements')) || initialAchievements;
+    
+    let blockHistory = JSON.parse(localStorage.getItem('blockHistory')) || [];
+    let completedGiveawayCount = Object.keys(completedGiveaways).length;
+    let currentDate = new Date();
+    let currentFilter = 'all';
+    let searchQuery = '';
+    const MAX_IMAGES = 100;
+    let discardedFilter = 'all';
+    
+    // Variables para el estado del análisis de IA
+    let imageQueue = [];
+    let isProcessing = false;
+    let currentIndex = 0;
+    let totalCaptures = 0;
+    let giveawaysWithErrors = [];
+    let analysisResults = {
+        added: [],
+        duplicate: [],
+        expired: [],
+        foreign: [],
+        no_date: [],
+        not_a_giveaway: [],
+        api_error: []
+    };
+    
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    let trashGiveaways = JSON.parse(localStorage.getItem('trashGiveaways')) || [];
+    let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || [];
+    let discardedGiveaways;
+    const savedDiscarded = localStorage.getItem('discardedGiveaways');
+    if (savedDiscarded) {
+         discardedGiveaways = JSON.parse(savedDiscarded);
+    } else {
+         discardedGiveaways = window.discardedGiveaways || [];
+    }
 
-        let completedGiveaways = JSON.parse(localStorage.getItem(`completedGiveaways`)) || {};
-        let wonGiveaways = JSON.parse(localStorage.getItem('wonGiveaways')) || [];
-        let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
-        let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, monthly: 0, lastUpdatedMonth: new Date().getMonth() };
-        
-        const achievementList = {
-            bronze: [
-                { id: 'b_add_1', name: 'El Primer Paso', icon: '🌱', desc: 'Añade tu primer sorteo manualmente.', ps: 5, condition: (c) => c.totalManualAdds >= 1 },
-                { id: 'b_add_ia_1', name: 'Mirando al Futuro', icon: '🤖', desc: 'Añade tu primer sorteo usando la IA.', ps: 5, condition: (c) => c.totalGiveawaysAddedAI >= 1 },
-                { id: 'b_complete_1', name: '¡Manos a la Obra!', icon: '✅', desc: 'Marca tu primer sorteo como completado.', ps: 5, condition: (c) => c.totalGiveawaysCompleted >= 1 },
-                { id: 'b_move_1', name: 'El Organizador', icon: '🗓️', desc: 'Mueve un sorteo de día por primera vez.', ps: 5, condition: (c) => c.firstMove },
-                { id: 'b_restore_1', name: 'Segunda Oportunidad', icon: '♻️', desc: 'Restaura un sorteo desde la papelera.', ps: 10, condition: (c) => c.restoredFromTrash >= 1 },
-                { id: 'b_search_1', name: 'El Detective', icon: '🕵️', desc: 'Usa la búsqueda o un filtro por primera vez.', ps: 5, condition: (c) => c.searchesMade >= 1 },
-                { id: 'b_win_1', name: '¡Estoy en racha!', icon: '🎉', desc: 'Gana tu primer sorteo (de cualquier valor).', ps: 20, condition: (c) => c.totalGiveawaysWon >= 1 },
-            ],
-            silver: [
-                { id: 's_add_100', name: 'Coleccionista Amateur', icon: '📦', desc: 'Registra un total de 100 sorteos.', ps: 10, condition: (c) => c.totalGiveawaysAdded >= 100 },
-                { id: 's_add_ia_50', name: 'Asistente de la IA', icon: '🧠', desc: 'Añade 50 sorteos usando la IA.', ps: 15, condition: (c) => c.totalGiveawaysAddedAI >= 50 },
-                { id: 's_complete_250', name: 'El Finalizador', icon: '✔️', desc: 'Completa un total de 250 sorteos.', ps: 10, condition: (c) => c.totalGiveawaysCompleted >= 250 },
-                { id: 's_firewall_1', name: 'El Inmunólogo', icon: '🛡️', desc: 'Añade tu primera cuenta al cortafuegos de extranjeras.', ps: 15, condition: (c) => c.foreignAccountsBlocked >= 1 },
-                { id: 's_win_value_100', name: 'Cazador de Tesoros', icon: '💎', desc: 'Gana un premio valorado en más de 100€.', ps: 25, condition: (c) => c.winsOver100 >= 1 },
-                { id: 's_win_5', name: 'Lluvia de Victorias', icon: '🌦️', desc: 'Gana 5 sorteos en total.', ps: 25, condition: (c) => c.totalGiveawaysWon >= 5 },
-                { id: 's_specialist_3', name: 'El Especialista', icon: '⭐', desc: 'Gana 3 sorteos de la misma categoría.', ps: 30, condition: (c) => Object.values(c.categoryWins).some(val => val >= 3) },
-            ],
-            gold: [
-                { id: 'g_add_500', name: 'Archivista Profesional', icon: '🗄️', desc: 'Registra un total de 500 sorteos.', ps: 20, condition: (c) => c.totalGiveawaysAdded >= 500 },
-                { id: 'g_ia_process_500', name: 'Conexión Neuronal', icon: '📡', desc: 'Procesa un total de 500 imágenes com a IA.', ps: 25, condition: (c) => c.totalImagesProcessedAI >= 500 },
-                { id: 'g_win_25', name: 'El Conquistador', icon: '🏰', desc: 'Gana 25 sorteos en total.', ps: 50, condition: (c) => c.totalGiveawaysWon >= 25 },
-                { id: 'g_win_double', name: 'Doble Suerte', icon: '✌️', desc: 'Gana dos sorteos en el mismo día.', ps: 75, condition: (c) => Object.values(c.sameDayWins).some(val => val >= 2) },
-                { id: 'g_value_2500', name: 'Acaparador', icon: '💰', desc: 'Supera los 2.500€ en valor total de premios.', ps: 50, condition: (c) => c.totalValueWon >= 2500 },
-                { id: 'g_merge_1', name: 'El Fusionador', icon: '🧬', desc: 'Fusiona un sorteo duplicado con su original.', ps: 20, condition: (c) => c.mergedDuplicates >= 1 },
-            ],
-            platinum: [
-                { id: 'p_add_2000', name: 'Biblioteca de Sorteos', icon: '🏛️', desc: 'Registra 2.000 sorteos.', ps: 50, condition: (c) => c.totalGiveawaysAdded >= 2000 },
-                { id: 'p_complete_1500', name: 'Máquina de Completar', icon: '💯', desc: 'Completa 1.500 sorteos.', ps: 40, condition: (c) => c.totalGiveawaysCompleted >= 1500 },
-                { id: 'p_win_value_2000', name: 'El Toque de Midas', icon: '✨', desc: 'Gana un premio valorado en más de 2.000€.', ps: 100, condition: (c) => c.winsOver2000 >= 1 },
-                { id: 'p_win_50', name: 'Imán de Premios', icon: '🧲', desc: 'Gana 50 sorteos en total.', ps: 100, condition: (c) => c.totalGiveawaysWon >= 50 },
-                { id: 'p_talisman', name: 'Talismán Dorado', icon: '🍀', desc: 'Gana 3 premios de la misma cuenta de Instagram.', ps: 75, condition: (c) => Object.values(c.winsFromSameAccount).some(val => val >= 3) },
-            ],
-            diamond: [
-                { id: 'd_win_100', name: 'Coleccionista Legendario', icon: '👑', desc: 'Gana 100 sorteos en total.', ps: 200, condition: (c) => c.totalGiveawaysWon >= 100 },
-                { id: 'd_value_25000', name: 'Toque de Midas', icon: '👑', desc: 'Acumula 25.000€ en premios ganados.', ps: 250, condition: (c) => c.totalValueWon >= 25000 },
-                { id: 'd_nostradamus', name: 'El Nostradamus', icon: '📜', desc: 'Gana un sorteo que añadiste más de 6 meses antes.', ps: 150, condition: (c) => c.nostradamusWins >= 1 },
-                { id: 'd_win_triple', name: 'Trébol de Doce Hojas', icon: '🍀', desc: 'Gana 3 sorteos en un mismo día.', ps: 200, condition: (c) => Object.values(c.sameDayWins).some(val => val >= 3) },
-            ],
-            merits: [ 
-                { id: 'm_photo', name: 'Victoria Fotográfica', icon: '📸', desc: 'Gana un sorteo cuyo premio sea una cámara.', ps: 20, condition: (c, u, p) => p && /cámara|instax/i.test(p.prize) },
-                { id: 'm_sweet', name: 'El Dulce Sabor de la Victoria', icon: '🍬', desc: 'Gana un sorteo de comida o dulces.', ps: 20, condition: (c, u, p) => p && /comida|dulces|jamón|chocolate|tarta|lote de productos/i.test(p.prize) },
-                { id: 'm_tech', name: 'Victoria Tecnológica', icon: '💻', desc: 'Gana un premio de tecnología (móvil, tablet, consola, etc).', ps: 25, condition: (c, u, p) => p && /móvil|consola|auriculares|tablet|portátil|pc|ps5|nintendo|xbox/i.test(p.prize) },
-                { id: 'm_fashion', name: 'Icono de la Moda', icon: '👠', desc: 'Gana un premio de moda (ropa, zapatillas, bolso).', ps: 20, condition: (c, u, p) => p && /ropa|zapatillas|bolso|camiseta|sudadera|gafas de sol/i.test(p.prize) },
-                { id: 'm_beauty', name: 'Gurú de Belleza', icon: '💄', desc: 'Gana un lote de productos de cosmética o maquillaje.', ps: 20, condition: (c, u, p) => p && /belleza|maquillaje|cosmética|perfume|lote de productos/i.test(p.prize) },
-                { id: 'm_experience', name: 'Coleccionista de Experiencias', icon: '🎫', desc: 'Gana entradas, una cena o una experiencia.', ps: 30, condition: (c, u, p) => p && /entradas|cena|experiencia|abono|festival/i.test(p.prize) },
-                { id: 'm_fast', name: 'A Contrarreloj', icon: '⏱️', desc: 'Añade y completa un sorteo el mismo día que finaliza.', ps: 15, condition: (c) => c.lastMinuteCompletes >= 1 },
-                { id: 'm_seer', name: 'El Adivino', icon: '👁️', desc: 'Gana un sorteo que previamente habías movido de fecha.', ps: 25, condition: (c) => c.movedGiveawayWins >= 1 },
-                { id: 'm_repeat', name: 'El Reincidente', icon: '🔁', desc: 'Gana un sorteo de una cuenta de la que ya ganaste antes.', ps: 30, condition: (c) => Object.values(c.winsFromSameAccount).some(val => val >= 2) },
-                { id: 'm_rival', name: 'Rival Eterno', icon: '🤺', desc: 'Participa en más de 50 sorteos de una misma cuenta sin ganar.', ps: 10, condition: (c) => Object.values(c.playsOnSameAccount).some(val => val >= 50) },
-            ],
-            prestige: [
-                { id: 't_padel', title: 'Maestro/a de la Pala', req: 'Gana 15 sorteos de Pádel.', condition: (c) => c.categoryWins.padel >= 15 },
-                { id: 't_travel', title: 'Nómada Legendario/a', req: 'Gana 15 sorteos de Viajes.', condition: (c) => c.categoryWins.viajes >= 15 },
-                { id: 't_friki', title: 'Señor/a de los Funkos', req: 'Gana 15 sorteos Frikis.', condition: (c) => c.categoryWins.frikis >= 15 },
-                { id: 't_polymath', title: 'El/La Polímata', req: 'Consigue los 3 títulos de especialista (Pádel, Viajes, Frikis).', condition: (c, u) => u.includes('t_padel') && u.includes('t_travel') && u.includes('t_friki') },
-                { id: 't_oracle', title: 'Oráculo de la IA', req: 'Añade 500 sorteos con la IA.', condition: (c) => c.totalGiveawaysAddedAI >= 500 },
-                { id: 't_magnate', title: 'Fortuna Personificada', req: 'Supera los 10.000€ en premios.', condition: (c) => c.totalValueWon >= 10000 },
-                { id: 't_consistency', title: 'El Metrónomo', req: 'Gana al menos un sorteo al mes durante 12 meses seguidos.', condition: (c) => c.monthlyWinStreak >= 12 },
-                { id: 't_allrounder', title: 'El/La Todoterreno', req: 'Gana al menos 5 premios en cada una de las 4 categorías.', condition: (c) => c.categoryWins.padel >= 5 && c.categoryWins.viajes >= 5 && c.categoryWins.frikis >= 5 && c.categoryWins.otros >= 5 },
-                { id: 't_monopolist', title: 'El/La Monopolista', req: 'Gana premios de 50 cuentas organizadoras diferentes.', condition: (c) => Object.keys(c.winsFromSameAccount).length >= 50 },
-                { id: 't_perfectionist', title: 'El/La Perfeccionista', req: 'Completa todos los logros de Bronce, Plata y Oro.', condition: (c, u) => [...achievementList.bronze, ...achievementList.silver, ...achievementList.gold].every(ach => u.includes(ach.id)) },
-                { id: 't_legend', title: 'Leyenda Viva', req: 'Desbloquea 10 Títulos de Prestigio.', condition: (c, u) => u.filter(id => id.startsWith('t_')).length >= 10 },
-            ]
-        };
+    // --- Referencias a elementos del DOM ---
+    const monthYearEl = document.getElementById('month-year');
+    const calendarDaysEl = document.getElementById('calendar-days');
+    const prevMonthBtn = document.getElementById('prev-month');
+    const nextMonthBtn = document.getElementById('next-month');
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modal-body');
+    const closeModalBtn = document.getElementById('close-modal');
+    const addManualBtn = document.getElementById('add-manual-btn');
+    const addGiveawayModal = document.getElementById('add-giveaway-modal');
+    const closeAddGiveawayModalBtn = document.getElementById('close-add-giveaway-modal');
+    const addGiveawayForm = document.getElementById('add-giveaway-form');
+    const giveawayDateInput = document.getElementById('giveaway-date');
+    const giveawayPrizeInput = document.getElementById('giveaway-prize');
+    const giveawayAccountsInput = document.getElementById('giveaway-accounts');
+    const giveawayPriceInput = document.getElementById('giveaway-price');
+    const totalGiveawaysEl = document.getElementById('total-giveaways-count');
+    const searchMenuBtn = document.getElementById('search-menu-btn');
+    const searchModal = document.getElementById('search-modal');
+    const closeSearchModalBtn = document.getElementById('close-search-modal');
+    const searchInputModal = document.getElementById('search-input-modal');
+    const selectAllBtn = document.getElementById('select-all-btn');
+    const deselectAllBtn = document.getElementById('deselect-all-btn');
+    const addAIBtn = document.getElementById('add-ai-btn');
+    const aiFullscreenView = document.getElementById('ai-fullscreen-view');
+    const closeAiViewBtn = document.getElementById('close-ai-view');
+    const aiInitialView = document.getElementById('ai-initial-view');
+    const interactiveAnalysisContainer = document.getElementById('interactive-analysis-container');
+    const aiSummaryView = document.getElementById('ai-summary-view');
+    const analysisLegendContainer = document.getElementById('analysis-legend-container');
+    const selectAiImagesBtn = document.getElementById('select-ai-images-btn');
+    const aiImageInput = document.getElementById('ai-image-upload');
+    const aiQueueContainer = document.getElementById('ai-queue-container');
+    const aiQueueList = document.getElementById('ai-image-queue');
+    const aiQueueCount = document.getElementById('ai-queue-count');
+    const startAiButton = document.getElementById('start-ai-button');
+    const aiSummaryResultsContainer = document.getElementById('ai-summary-results-container');
+    const aiSummaryCloseBtn = document.getElementById('ai-summary-close-btn');
+    const trashBtn = document.getElementById('trash-btn');
+    const discardedBtn = document.getElementById('discarded-btn');
+    const statsBtn = document.getElementById('stats-btn');
+    const historyBtn = document.getElementById('history-btn');
+    const trophyBtn = document.getElementById('trophy-btn');
+    const achievementsBtn = document.getElementById('achievements-btn');
+    const navMenu = document.getElementById('nav-menu');
+    const openNavMenuBtn = document.getElementById('open-nav-menu');
+    const closeNavMenuBtn = document.getElementById('close-nav-menu');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const userTitleEl = document.getElementById('user-title');
+    const totalPsCountEl = document.getElementById('total-ps-count');
+    const statsModal = document.getElementById('stats-modal');
+    const historyModal = document.getElementById('history-modal');
+    const trophyModal = document.getElementById('trophy-modal');
+    const achievementsModal = document.getElementById('achievements-modal');
+    const trophyModalBody = document.getElementById('trophy-modal-body');
+    const historyModalBody = document.getElementById('history-modal-body');
+    const achievementsModalBody = document.getElementById('achievements-modal-body');
+    const closeStatsModalBtn = document.getElementById('close-stats-modal');
+    const closeHistoryModalBtn = document.getElementById('close-history-modal');
+    const closeTrophyModalBtn = document.getElementById('close-trophy-modal');
+    const closeAchievementsModalBtn = document.getElementById('close-achievements-modal');
+    const trashModal = document.getElementById('trash-modal');
+    const closeTrashModalBtn = document.getElementById('close-trash-modal');
+    const trashModalBody = document.getElementById('trash-modal-body');
+    const deleteAllTrashBtn = document.getElementById('delete-all-trash-btn');
+    const discardedModal = document.getElementById('discarded-modal');
+    const closeDiscardedModalBtn = document.getElementById('close-discarded-modal');
+    const discardedModalBody = document.getElementById('discarded-modal-body');
+    const deleteAllDiscardedBtn = document.getElementById('delete-all-discarded-btn');
+    const duplicateModal = document.getElementById('duplicate-modal');
+    const closeDuplicateModalBtn = document.getElementById('close-duplicate-modal');
+    const duplicateGiveawayInfo = document.getElementById('duplicate-giveaway-info');
+    const confirmRestoreBtn = document.getElementById('confirm-restore-btn');
+    const cancelRestoreBtn = document.getElementById('cancel-restore-btn');
+    const moveGiveawayModal = document.getElementById('move-giveaway-modal');
+    const closeMoveGiveawayModalBtn = document.getElementById('close-move-giveaway-modal');
+    const moveGiveawayForm = document.getElementById('move-giveaway-form');
+    const newGiveawayDateInput = document.getElementById('new-giveaway-date');
+    const openChartsModalBtn = document.getElementById('open-charts-modal');
+    const chartsModal = document.getElementById('charts-modal');
+    const closeChartsModalBtn = document.getElementById('close-charts-modal');
+    const duplicateComparisonModal = document.getElementById('duplicate-comparison-modal');
+    const closeDuplicateComparisonModalBtn = document.getElementById('close-duplicate-comparison-modal');
+    const originalGiveawayDetails = document.getElementById('original-giveaway-details');
+    const discardedGiveawayDetails = document.getElementById('discarded-giveaway-details');
+    const mergeGiveawayBtn = document.getElementById('merge-giveaway-btn');
+    const addAsNewBtn = document.getElementById('add-as-new-btn');
+    const manageForeignAccountsBtn = document.getElementById('manage-foreign-accounts-btn');
+    const foreignAccountsModal = document.getElementById('foreign-accounts-modal');
+    const closeForeignAccountsModalBtn = document.getElementById('close-foreign-accounts-modal');
+    const foreignAccountsModalBody = document.getElementById('foreign-accounts-modal-body');
+    const manageBlocksBtn = document.getElementById('manage-blocks-btn');
+    const blockManagementModal = document.getElementById('block-management-modal');
+    const closeBlockManagementModalBtn = document.getElementById('close-block-management-modal');
+    const blockLikeBtn = document.getElementById('block-like-btn');
+    const blockCommentBtn = document.getElementById('block-comment-btn');
+    const blockStatsContainer = document.getElementById('block-stats-container');
+    const retryFailedBtn = document.getElementById('retry-failed-btn');
+    const analysisImagePreview = document.getElementById('analysis-image-preview');
+    const liveResultsContainer = document.getElementById('live-results-container');
+    const analysisStepText = document.getElementById('analysis-step-text');
+    const zoomModal = document.getElementById('zoom-modal');
+    const zoomedImage = document.getElementById('zoomed-image');
+    const notificationModal = document.getElementById('notification-modal');
+    const notificationTitle = document.getElementById('notification-title');
+    const notificationContent = document.getElementById('notification-content');
 
-        const initialAchievements = {
-            unlocked: [],
-            title: 'Buscador/a de Tréboles 🍀',
-            counters: {
-                totalGiveawaysAdded: 0,
-                totalManualAdds: 0,
-                totalGiveawaysAddedAI: 0,
-                totalGiveawaysCompleted: 0,
-                totalGiveawaysWon: 0,
-                totalValueWon: 0,
-                categoryWins: { padel: 0, viajes: 0, frikis: 0, otros: 0 },
-                firstMove: false,
-                restoredFromTrash: 0,
-                searchesMade: 0,
-                winsOver100: 0,
-                winsOver2000: 0,
-                foreignAccountsBlocked: 0,
-                sniperWins: 0,
-                sameDayWins: {},
-                mergedDuplicates: 0,
-                totalImagesProcessedAI: 0,
-                winsFromSameAccount: {},
-                playsOnSameAccount: {},
-                nostradamusWins: 0,
-                monthlyWinStreak: 0,
-                lastWinMonthYear: null,
-                movedGiveawayWins: 0,
-                lastMinuteCompletes: 0,
-            }
-        };
-        
-        let userAchievements = JSON.parse(localStorage.getItem('userAchievements')) || initialAchievements;
-        
-        let blockHistory = JSON.parse(localStorage.getItem('blockHistory')) || [];
-        let completedGiveawayCount = Object.keys(completedGiveaways).length;
-        let currentDate = new Date();
-        let currentFilter = 'all';
-        let searchQuery = '';
-        const MAX_IMAGES = 100;
-        let discardedFilter = 'all';
-        
-        // Variables para el estado del análisis de IA
-        let imageQueue = [];
-        let isProcessing = false;
-        let currentIndex = 0;
-        let totalCaptures = 0;
-        let giveawaysWithErrors = [];
-        let analysisResults = {
-            added: [],
-            duplicate: [],
-            expired: [],
-            foreign: [],
-            no_date: [],
-            not_a_giveaway: [],
-            api_error: []
-        };
-        
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let trashGiveaways = JSON.parse(localStorage.getItem('trashGiveaways')) || [];
-        let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || [];
-        let discardedGiveaways;
-        const savedDiscarded = localStorage.getItem('discardedGiveaways');
-        if (savedDiscarded) {
-             discardedGiveaways = JSON.parse(savedDiscarded);
-        } else {
-             discardedGiveaways = window.discardedGiveaways || [];
+    let giveawayToMove = null;
+    let originalDateOfGiveaway = null;
+
+    // --- FUNCIONES DE LA APLICACIÓN ---
+
+    const showNotification = (title, message) => {
+        if (notificationTitle && notificationContent && notificationModal) {
+            notificationTitle.textContent = title;
+            notificationContent.textContent = message;
+            notificationModal.classList.add('is-visible');
+            setTimeout(() => {
+                notificationModal.classList.remove('is-visible');
+            }, 4000);
         }
+    };
 
-        // --- Referencias a elementos del DOM ---
-        const monthYearEl = document.getElementById('month-year');
-        const calendarDaysEl = document.getElementById('calendar-days');
-        const prevMonthBtn = document.getElementById('prev-month');
-        const nextMonthBtn = document.getElementById('next-month');
-        const modal = document.getElementById('modal');
-        const modalBody = document.getElementById('modal-body');
-        const closeModalBtn = document.getElementById('close-modal');
-        const addManualBtn = document.getElementById('add-manual-btn');
-        const addGiveawayModal = document.getElementById('add-giveaway-modal');
-        const closeAddGiveawayModalBtn = document.getElementById('close-add-giveaway-modal');
-        const addGiveawayForm = document.getElementById('add-giveaway-form');
-        const giveawayDateInput = document.getElementById('giveaway-date');
-        const giveawayPrizeInput = document.getElementById('giveaway-prize');
-        const giveawayAccountsInput = document.getElementById('giveaway-accounts');
-        const giveawayPriceInput = document.getElementById('giveaway-price');
-        const totalGiveawaysEl = document.getElementById('total-giveaways-count');
-        const searchMenuBtn = document.getElementById('search-menu-btn');
-        const searchModal = document.getElementById('search-modal');
-        const closeSearchModalBtn = document.getElementById('close-search-modal');
-        const searchInputModal = document.getElementById('search-input-modal');
-        const selectAllBtn = document.getElementById('select-all-btn');
-        const deselectAllBtn = document.getElementById('deselect-all-btn');
-        const addAIBtn = document.getElementById('add-ai-btn');
-        const aiFullscreenView = document.getElementById('ai-fullscreen-view');
-        const closeAiViewBtn = document.getElementById('close-ai-view');
-        const aiInitialView = document.getElementById('ai-initial-view');
-        const interactiveAnalysisContainer = document.getElementById('interactive-analysis-container');
-        const aiSummaryView = document.getElementById('ai-summary-view');
-        const analysisLegendContainer = document.getElementById('analysis-legend-container');
-        const selectAiImagesBtn = document.getElementById('select-ai-images-btn');
-        const aiImageInput = document.getElementById('ai-image-upload');
-        const aiQueueContainer = document.getElementById('ai-queue-container');
-        const aiQueueList = document.getElementById('ai-image-queue');
-        const aiQueueCount = document.getElementById('ai-queue-count');
-        const startAiButton = document.getElementById('start-ai-button');
-        const aiSummaryResultsContainer = document.getElementById('ai-summary-results-container');
-        const aiSummaryCloseBtn = document.getElementById('ai-summary-close-btn');
-        const trashBtn = document.getElementById('trash-btn');
-        const discardedBtn = document.getElementById('discarded-btn');
-        const statsBtn = document.getElementById('stats-btn');
-        const historyBtn = document.getElementById('history-btn');
-        const trophyBtn = document.getElementById('trophy-btn');
-        const achievementsBtn = document.getElementById('achievements-btn');
-        const navMenu = document.getElementById('nav-menu');
-        const openNavMenuBtn = document.getElementById('open-nav-menu');
-        const closeNavMenuBtn = document.getElementById('close-nav-menu');
-        const menuOverlay = document.getElementById('menu-overlay');
-        const userTitleEl = document.getElementById('user-title');
-        const totalPsCountEl = document.getElementById('total-ps-count');
-        const statsModal = document.getElementById('stats-modal');
-        const historyModal = document.getElementById('history-modal');
-        const trophyModal = document.getElementById('trophy-modal');
-        const achievementsModal = document.getElementById('achievements-modal');
-        const trophyModalBody = document.getElementById('trophy-modal-body');
-        const historyModalBody = document.getElementById('history-modal-body');
-        const achievementsModalBody = document.getElementById('achievements-modal-body');
-        const closeStatsModalBtn = document.getElementById('close-stats-modal');
-        const closeHistoryModalBtn = document.getElementById('close-history-modal');
-        const closeTrophyModalBtn = document.getElementById('close-trophy-modal');
-        const closeAchievementsModalBtn = document.getElementById('close-achievements-modal');
-        const trashModal = document.getElementById('trash-modal');
-        const closeTrashModalBtn = document.getElementById('close-trash-modal');
-        const trashModalBody = document.getElementById('trash-modal-body');
-        const deleteAllTrashBtn = document.getElementById('delete-all-trash-btn');
-        const discardedModal = document.getElementById('discarded-modal');
-        const closeDiscardedModalBtn = document.getElementById('close-discarded-modal');
-        const discardedModalBody = document.getElementById('discarded-modal-body');
-        const deleteAllDiscardedBtn = document.getElementById('delete-all-discarded-btn');
-        const duplicateModal = document.getElementById('duplicate-modal');
-        const closeDuplicateModalBtn = document.getElementById('close-duplicate-modal');
-        const duplicateGiveawayInfo = document.getElementById('duplicate-giveaway-info');
-        const confirmRestoreBtn = document.getElementById('confirm-restore-btn');
-        const cancelRestoreBtn = document.getElementById('cancel-restore-btn');
-        const moveGiveawayModal = document.getElementById('move-giveaway-modal');
-        const closeMoveGiveawayModalBtn = document.getElementById('close-move-giveaway-modal');
-        const moveGiveawayForm = document.getElementById('move-giveaway-form');
-        const newGiveawayDateInput = document.getElementById('new-giveaway-date');
-        const openChartsModalBtn = document.getElementById('open-charts-modal');
-        const chartsModal = document.getElementById('charts-modal');
-        const closeChartsModalBtn = document.getElementById('close-charts-modal');
-        const duplicateComparisonModal = document.getElementById('duplicate-comparison-modal');
-        const closeDuplicateComparisonModalBtn = document.getElementById('close-duplicate-comparison-modal');
-        const originalGiveawayDetails = document.getElementById('original-giveaway-details');
-        const discardedGiveawayDetails = document.getElementById('discarded-giveaway-details');
-        const mergeGiveawayBtn = document.getElementById('merge-giveaway-btn');
-        const addAsNewBtn = document.getElementById('add-as-new-btn');
-        const manageForeignAccountsBtn = document.getElementById('manage-foreign-accounts-btn');
-        const foreignAccountsModal = document.getElementById('foreign-accounts-modal');
-        const closeForeignAccountsModalBtn = document.getElementById('close-foreign-accounts-modal');
-        const foreignAccountsModalBody = document.getElementById('foreign-accounts-modal-body');
-        const manageBlocksBtn = document.getElementById('manage-blocks-btn');
-        const blockManagementModal = document.getElementById('block-management-modal');
-        const closeBlockManagementModalBtn = document.getElementById('close-block-management-modal');
-        const blockLikeBtn = document.getElementById('block-like-btn');
-        const blockCommentBtn = document.getElementById('block-comment-btn');
-        const blockStatsContainer = document.getElementById('block-stats-container');
-        const retryFailedBtn = document.getElementById('retry-failed-btn');
-        const analysisImagePreview = document.getElementById('analysis-image-preview');
-        const liveResultsContainer = document.getElementById('live-results-container');
-        const analysisStepText = document.getElementById('analysis-step-text');
-        const zoomModal = document.getElementById('zoom-modal');
-        const zoomedImage = document.getElementById('zoomed-image');
-        const notificationModal = document.getElementById('notification-modal');
-        const notificationTitle = document.getElementById('notification-title');
-        const notificationContent = document.getElementById('notification-content');
+    const saveGiveaways = () => localStorage.setItem('giveaways', JSON.stringify(giveaways));
+    const saveCompletedGiveaways = () => localStorage.setItem(`completedGiveaways`, JSON.stringify(completedGiveaways));
+    const saveTrashGiveaways = () => localStorage.setItem('trashGiveaways', JSON.stringify(trashGiveaways));
+    const saveDiscardedGiveaways = () => localStorage.setItem('discardedGiveaways', JSON.stringify(discardedGiveaways));
+    const saveForeignAccounts = () => localStorage.setItem('foreignAccounts', JSON.stringify(foreignAccounts));
+    const saveWonGiveaways = () => localStorage.setItem('wonGiveaways', JSON.stringify(wonGiveaways));
+    const saveAnalysisHistory = () => localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+    const saveUserPoints = () => localStorage.setItem('userPoints', JSON.stringify(userPoints));
+    const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
+    const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
 
-        let giveawayToMove = null;
-        let originalDateOfGiveaway = null;
+    const updatePointsDisplay = () => {
+        if (totalPsCountEl) {
+            totalPsCountEl.textContent = userPoints.total;
+        }
+    };
 
-        // --- FUNCIONES DE LA APLICACIÓN ---
+    const addPoints = (pointsToAdd) => {
+        userPoints.total += pointsToAdd;
+        saveUserPoints();
+        updatePointsDisplay();
+    };
 
-        const showNotification = (title, message) => {
-            if (notificationTitle && notificationContent && notificationModal) {
-                notificationTitle.textContent = title;
-                notificationContent.textContent = message;
-                notificationModal.classList.add('is-visible');
-                setTimeout(() => {
-                    notificationModal.classList.remove('is-visible');
-                }, 4000);
-            }
-        };
+    const parsePrice = (priceString) => {
+        if (!priceString || typeof priceString !== 'string') return 0;
+        const cleanedString = priceString.replace(/[^0-9,.]/g, '').replace(',', '.');
+        const numericValue = parseFloat(cleanedString);
+        return isNaN(numericValue) ? 0 : numericValue;
+    };
 
-        const saveGiveaways = () => localStorage.setItem('giveaways', JSON.stringify(giveaways));
-        const saveCompletedGiveaways = () => localStorage.setItem(`completedGiveaways`, JSON.stringify(completedGiveaways));
-        const saveTrashGiveaways = () => localStorage.setItem('trashGiveaways', JSON.stringify(trashGiveaways));
-        const saveDiscardedGiveaways = () => localStorage.setItem('discardedGiveaways', JSON.stringify(discardedGiveaways));
-        const saveForeignAccounts = () => localStorage.setItem('foreignAccounts', JSON.stringify(foreignAccounts));
-        const saveWonGiveaways = () => localStorage.setItem('wonGiveaways', JSON.stringify(wonGiveaways));
-        const saveAnalysisHistory = () => localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
-        const saveUserPoints = () => localStorage.setItem('userPoints', JSON.stringify(userPoints));
-        const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
-        const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
-
-        const updatePointsDisplay = () => {
-            if (totalPsCountEl) {
-                totalPsCountEl.textContent = userPoints.total;
-            }
-        };
-
-        const addPoints = (pointsToAdd) => {
-            userPoints.total += pointsToAdd;
-            saveUserPoints();
-            updatePointsDisplay();
-        };
-
-        const parsePrice = (priceString) => {
-            if (!priceString || typeof priceString !== 'string') return 0;
-            const cleanedString = priceString.replace(/[^0-9,.]/g, '').replace(',', '.');
-            const numericValue = parseFloat(cleanedString);
-            return isNaN(numericValue) ? 0 : numericValue;
-        };
-
-        const calculateSimilarity = (str1, str2) => {
-            const lev = (s1, s2) => {
-                const matrix = [];
-                for (let i = 0; i <= s2.length; i++) { matrix[i] = [i]; }
-                for (let j = 0; j <= s1.length; j++) { matrix[0][j] = j; }
-                for (let i = 1; i <= s2.length; i++) {
-                    for (let j = 1; j <= s1.length; j++) {
-                        const cost = s1[j - 1] === s2[i - 1] ? 0 : 1;
-                        matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
-                    }
-                }
-                return matrix[s2.length][s1.length];
-            };
-            const longer = str1.length > str2.length ? str1 : str2;
-            const shorter = str1.length > str2.length ? str2 : str1;
-            const distance = lev(longer, shorter);
-            return (longer.length - distance) / longer.length;
-        };
-
-        const checkAchievements = (action, data = null) => {
-            const today = new Date().toISOString().slice(0, 10);
-            const counters = userAchievements.counters;
-
-            counters.totalGiveawaysAdded = Object.values(giveaways).flat().length + wonGiveaways.length;
-            counters.totalGiveawaysCompleted = Object.keys(completedGiveaways).length;
-            counters.totalGiveawaysWon = wonGiveaways.length;
-            counters.totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
-
-            if (action === 'add-manual') counters.totalManualAdds = (counters.totalManualAdds || 0) + 1;
-            if (action === 'add-ai') counters.totalGiveawaysAddedAI = (counters.totalGiveawaysAddedAI || 0) + 1;
-            if (action === 'move') counters.firstMove = true;
-            if (action === 'restore') counters.restoredFromTrash = (counters.restoredFromTrash || 0) + 1;
-            if (action === 'search') counters.searchesMade = (counters.searchesMade || 0) + 1;
-            if (action === 'block-foreign') counters.foreignAccountsBlocked = (counters.foreignAccountsBlocked || 0) + 1;
-            if (action === 'merge') counters.mergedDuplicates = (counters.mergedDuplicates || 0) + 1;
-            if (action === 'complete' && data.giveawayDate === today) counters.lastMinuteCompletes = (counters.lastMinuteCompletes || 0) + 1;
-
-            if (action === 'win') {
-                const prizeValue = parsePrice(data.price);
-                if (prizeValue > 100) counters.winsOver100 = (counters.winsOver100 || 0) + 1;
-                if (prizeValue > 2000) counters.winsOver2000 = (counters.winsOver2000 || 0) + 1;
-                
-                const categoryMap = { '🥎': 'padel', '🛩️': 'viajes', '🃏': 'frikis' };
-                let prizeCategory = 'otros';
-                for (const emoji in categoryMap) {
-                    if (data.prize.includes(emoji)) { prizeCategory = categoryMap[emoji]; break; }
-                }
-                counters.categoryWins[prizeCategory]++;
-                
-                counters.sameDayWins[today] = (counters.sameDayWins[today] || 0) + 1;
-
-                data.accounts.forEach(acc => {
-                    counters.winsFromSameAccount[acc] = (counters.winsFromSameAccount[acc] || 0) + 1;
-                });
-
-                if(data.moved) counters.movedGiveawayWins = (counters.movedGiveawayWins || 0) + 1;
-
-                if (data.addDate) {
-                    const addDate = new Date(data.addDate);
-                    const winDate = new Date(data.wonDate);
-                    const diffMonths = (winDate.getFullYear() - addDate.getFullYear()) * 12 + (winDate.getMonth() - addDate.getMonth());
-                    if (diffMonths >= 6) counters.nostradamusWins = (counters.nostradamusWins || 0) + 1;
+    const calculateSimilarity = (str1, str2) => {
+        const lev = (s1, s2) => {
+            const matrix = [];
+            for (let i = 0; i <= s2.length; i++) { matrix[i] = [i]; }
+            for (let j = 0; j <= s1.length; j++) { matrix[0][j] = j; }
+            for (let i = 1; i <= s2.length; i++) {
+                for (let j = 1; j <= s1.length; j++) {
+                    const cost = s1[j - 1] === s2[i - 1] ? 0 : 1;
+                    matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
                 }
             }
+            return matrix[s2.length][s1.length];
+        };
+        const longer = str1.length > str2.length ? str1 : str2;
+        const shorter = str1.length > str2.length ? str2 : str1;
+        const distance = lev(longer, shorter);
+        return (longer.length - distance) / longer.length;
+    };
+
+    const checkAchievements = (action, data = null) => {
+        const today = new Date().toISOString().slice(0, 10);
+        const counters = userAchievements.counters;
+
+        counters.totalGiveawaysAdded = Object.values(giveaways).flat().length + wonGiveaways.length;
+        counters.totalGiveawaysCompleted = Object.keys(completedGiveaways).length;
+        counters.totalGiveawaysWon = wonGiveaways.length;
+        counters.totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
+
+        if (action === 'add-manual') counters.totalManualAdds = (counters.totalManualAdds || 0) + 1;
+        if (action === 'add-ai') counters.totalGiveawaysAddedAI = (counters.totalGiveawaysAddedAI || 0) + 1;
+        if (action === 'move') counters.firstMove = true;
+        if (action === 'restore') counters.restoredFromTrash = (counters.restoredFromTrash || 0) + 1;
+        if (action === 'search') counters.searchesMade = (counters.searchesMade || 0) + 1;
+        if (action === 'block-foreign') counters.foreignAccountsBlocked = (counters.foreignAccountsBlocked || 0) + 1;
+        if (action === 'merge') counters.mergedDuplicates = (counters.mergedDuplicates || 0) + 1;
+        if (action === 'complete' && data.giveawayDate === today) counters.lastMinuteCompletes = (counters.lastMinuteCompletes || 0) + 1;
+
+        if (action === 'win') {
+            const prizeValue = parsePrice(data.price);
+            if (prizeValue > 100) counters.winsOver100 = (counters.winsOver100 || 0) + 1;
+            if (prizeValue > 2000) counters.winsOver2000 = (counters.winsOver2000 || 0) + 1;
             
-            const allAchievementTypes = [...achievementList.bronze, ...achievementList.silver, ...achievementList.gold, ...achievementList.platinum, ...achievementList.diamond, ...achievementList.merits, ...achievementList.prestige];
-            allAchievementTypes.forEach(ach => {
-                if (!userAchievements.unlocked.includes(ach.id)) {
-                    const conditionData = action === 'win' ? data : null;
-                    if (ach.condition(counters, userAchievements.unlocked, conditionData)) {
-                        userAchievements.unlocked.push(ach.id);
-                        const title = ach.title || ach.name;
-                        const isPrestige = ach.id.startsWith('t_');
-                        showNotification(`🏆 ${isPrestige ? 'Título Desbloqueado' : 'Logro Desbloqueado'}!`, title);
-                        if (ach.ps) addPoints(ach.ps);
-                        if (isPrestige) {
-                            userAchievements.title = ach.title;
-                        }
-                    }
-                }
+            const categoryMap = { '🥎': 'padel', '🛩️': 'viajes', '🃏': 'frikis' };
+            let prizeCategory = 'otros';
+            for (const emoji in categoryMap) {
+                if (data.prize.includes(emoji)) { prizeCategory = categoryMap[emoji]; break; }
+            }
+            counters.categoryWins[prizeCategory]++;
+            
+            counters.sameDayWins[today] = (counters.sameDayWins[today] || 0) + 1;
+
+            data.accounts.forEach(acc => {
+                counters.winsFromSameAccount[acc] = (counters.winsFromSameAccount[acc] || 0) + 1;
             });
 
-            saveUserAchievements();
-            if (userTitleEl) {
-                userTitleEl.textContent = userAchievements.title;
-            }
-        };
+            if(data.moved) counters.movedGiveawayWins = (counters.movedGiveawayWins || 0) + 1;
 
-        const isDuplicateGiveaway = (newGiveaway) => {
-            const newPrize = (newGiveaway.prize || '').toLowerCase();
-            const newAccounts = (newGiveaway.accounts || []).map(acc => acc.toLowerCase().replace('@','')).sort().join(',');
-            
-            for (const date in giveaways) {
-                const existing = giveaways[date].find(g => {
-                    const existingPrize = (g.prize || '').toLowerCase();
-                    const existingAccounts = (g.accounts || []).map(acc => acc.toLowerCase().replace('@','')).sort().join(',');
-                    const prizeSimilarity = calculateSimilarity(newPrize, existingPrize);
-                    const accountsMatch = newAccounts === existingAccounts;
-                    return prizeSimilarity > 0.7 && accountsMatch;
-                });
-                if (existing) {
-                    return existing;
-                }
+            if (data.addDate) {
+                const addDate = new Date(data.addDate);
+                const winDate = new Date(data.wonDate);
+                const diffMonths = (winDate.getFullYear() - addDate.getFullYear()) * 12 + (winDate.getMonth() - addDate.getMonth());
+                if (diffMonths >= 6) counters.nostradamusWins = (counters.nostradamusWins || 0) + 1;
             }
-            return null;
-        };
+        }
         
-        const renderCalendar = () => {
-            if (!calendarDaysEl || !monthYearEl) return;
-            calendarDaysEl.innerHTML = '';
-            const month = currentDate.getMonth();
-            const year = currentDate.getFullYear();
-            monthYearEl.textContent = `${currentDate.toLocaleDateString('es-ES', { month: 'long' }).toUpperCase()}`;
-            const firstDayOfMonth = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const dayOffset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
-            let totalGiveawaysCount = 0;
-            for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
-                    const prize = g.prize ? g.prize.toLowerCase() : '';
-                    const searchText = searchQuery.toLowerCase();
-                    let isMatch = true;
-                    if(currentFilter !== 'all') {
-                         isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
-                                   (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                                   (currentFilter === 'price' && prize.includes('💲')) ||
-                                   (currentFilter === 'frikis' && prize.includes('🃏'));
-                    }
-                    if (searchQuery && !prize.includes(searchText)) isMatch = false;
-                    return isMatch;
-                });
-                totalGiveawaysCount += dayGiveaways.length;
-                const dayEl = document.createElement('div');
-                dayEl.className = 'calendar-day';
-                dayEl.draggable = true;
-                dayEl.addEventListener('dragstart', (e) => {
-                    e.dataTransfer.setData('text/plain', dateStr);
-                    e.dataTransfer.effectAllowed = 'move';
-                });
-                let dayNumberHTML = `<span class="day-number">${day}</span>`;
-                if (dayGiveaways.length > 0) {
-                    dayEl.classList.add('has-giveaway');
-                    dayEl.dataset.date = dateStr;
-                    const remainingCount = dayGiveaways.filter(g => !completedGiveaways[g.id]).length;
-                    if (remainingCount > 0) {
-                        dayNumberHTML += `<span class="giveaway-count rounded-full">${remainingCount}</span>`;
-                    } else {
-                        dayEl.classList.add('all-done');
-                        dayNumberHTML += `<span class="text-2xl mt-1">✨</span>`;
+        const allAchievementTypes = [...achievementList.bronze, ...achievementList.silver, ...achievementList.gold, ...achievementList.platinum, ...achievementList.diamond, ...achievementList.merits, ...achievementList.prestige];
+        allAchievementTypes.forEach(ach => {
+            if (!userAchievements.unlocked.includes(ach.id)) {
+                const conditionData = action === 'win' ? data : null;
+                if (ach.condition(counters, userAchievements.unlocked, conditionData)) {
+                    userAchievements.unlocked.push(ach.id);
+                    const title = ach.title || ach.name;
+                    const isPrestige = ach.id.startsWith('t_');
+                    showNotification(`🏆 ${isPrestige ? 'Título Desbloqueado' : 'Logro Desbloqueado'}!`, title);
+                    if (ach.ps) addPoints(ach.ps);
+                    if (isPrestige) {
+                        userAchievements.title = ach.title;
                     }
                 }
-                dayEl.innerHTML = dayNumberHTML;
-                calendarDaysEl.appendChild(dayEl);
             }
-            if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
-        };
+        });
 
-        const buildModal = (dateStr) => {
-            let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+        saveUserAchievements();
+        if (userTitleEl) {
+            userTitleEl.textContent = userAchievements.title;
+        }
+    };
+
+    const isDuplicateGiveaway = (newGiveaway) => {
+        const newPrize = (newGiveaway.prize || '').toLowerCase();
+        const newAccounts = (newGiveaway.accounts || []).map(acc => acc.toLowerCase().replace('@','')).sort().join(',');
+        
+        for (const date in giveaways) {
+            const existing = giveaways[date].find(g => {
+                const existingPrize = (g.prize || '').toLowerCase();
+                const existingAccounts = (g.accounts || []).map(acc => acc.toLowerCase().replace('@','')).sort().join(',');
+                const prizeSimilarity = calculateSimilarity(newPrize, existingPrize);
+                const accountsMatch = newAccounts === existingAccounts;
+                return prizeSimilarity > 0.7 && accountsMatch;
+            });
+            if (existing) {
+                return existing;
+            }
+        }
+        return null;
+    };
+    
+    const renderCalendar = () => {
+        if (!calendarDaysEl || !monthYearEl) return;
+        calendarDaysEl.innerHTML = '';
+        const month = currentDate.getMonth();
+        const year = currentDate.getFullYear();
+        monthYearEl.textContent = `${currentDate.toLocaleDateString('es-ES', { month: 'long' }).toUpperCase()}`;
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const dayOffset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+        let totalGiveawaysCount = 0;
+        for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
                 let isMatch = true;
                 if(currentFilter !== 'all') {
-                         isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
-                                   (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                                   (currentFilter === 'price' && prize.includes('💲')) ||
-                                   (currentFilter === 'frikis' && prize.includes('🃏'));
+                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
+                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                               (currentFilter === 'price' && prize.includes('💲')) ||
+                               (currentFilter === 'frikis' && prize.includes('🃏'));
+                }
+                if (searchQuery && !prize.includes(searchText)) isMatch = false;
+                return isMatch;
+            });
+            totalGiveawaysCount += dayGiveaways.length;
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            dayEl.draggable = true;
+            dayEl.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', dateStr);
+                e.dataTransfer.effectAllowed = 'move';
+            });
+            let dayNumberHTML = `<span class="day-number">${day}</span>`;
+            if (dayGiveaways.length > 0) {
+                dayEl.classList.add('has-giveaway');
+                dayEl.dataset.date = dateStr;
+                const remainingCount = dayGiveaways.filter(g => !completedGiveaways[g.id]).length;
+                if (remainingCount > 0) {
+                    dayNumberHTML += `<span class="giveaway-count rounded-full">${remainingCount}</span>`;
+                } else {
+                    dayEl.classList.add('all-done');
+                    dayNumberHTML += `<span class="text-2xl mt-1">✨</span>`;
+                }
             }
-            if (searchQuery && !prize.includes(searchText)) isMatch = false;
-            return isMatch;
-        });
-        
-        dayGiveaways.sort((a, b) => {
-            const aCompleted = completedGiveaways[a.id];
-            const bCompleted = completedGiveaways[b.id];
-            const aHasTime = a.ends_at_time != null;
-            const bHasTime = b.ends_at_time != null;
-
-            if (aCompleted !== bCompleted) return aCompleted ? 1 : -1;
-            if (aHasTime !== bHasTime) return aHasTime ? -1 : 1;
-            return 0;
-        });
-
-        document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
-        modalBody.innerHTML = '';
-        let hasPadel = false, hasTravel = false;
-        dayGiveaways.forEach(giveaway => {
-            const itemContainer = document.createElement('div');
-            itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
-            
-            const leftSideContainer = document.createElement('div');
-            leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
-
-            const controlsContainer = document.createElement('div');
-            controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.dataset.giveawayId = giveaway.id;
-            checkbox.className = 'h-5 w-5 sm:h-6 sm:w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500';
-            checkbox.checked = completedGiveaways[giveaway.id];
-            controlsContainer.appendChild(checkbox);
-            
-            const winBtn = document.createElement('button');
-            winBtn.className = 'win-giveaway-btn';
-            winBtn.innerHTML = `🏆`;
-            winBtn.dataset.giveawayId = giveaway.id;
-            winBtn.dataset.giveawayDate = dateStr;
-            controlsContainer.appendChild(winBtn);
-
-            const prizeContainer = document.createElement('div');
-            prizeContainer.className = 'overflow-hidden';
-
-            let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
-            const timeEmoji = giveaway.ends_at_time ? '⏰' : '';
-            prizeContainer.innerHTML = `<p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize} ${timeEmoji}</p><p class="text-sm truncate">${accountsHTML}</p>`;
-
-            leftSideContainer.appendChild(controlsContainer);
-            leftSideContainer.appendChild(prizeContainer);
-
-            const detailsContainer = document.createElement('div');
-            detailsContainer.className = 'text-right flex-shrink-0 ml-2';
-            if (giveaway.price) {
-                detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
-            }
-
-            itemContainer.appendChild(leftSideContainer);
-            itemContainer.appendChild(detailsContainer);
-
-            const actionsContainer = document.createElement('div');
-            actionsContainer.className = 'flex flex-col items-center ml-2 space-y-2';
-            const moveBtn = document.createElement('button');
-            moveBtn.className = 'move-giveaway-btn p-1 rounded-full';
-            moveBtn.innerHTML = `<i class="fa-solid fa-calendar-alt"></i>`;
-            moveBtn.dataset.giveawayId = giveaway.id;
-            moveBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(moveBtn);
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full';
-            deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-            deleteBtn.dataset.giveawayId = giveaway.id;
-            deleteBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(deleteBtn);
-            const deleteForeignBtn = document.createElement('button');
-            deleteForeignBtn.className = 'delete-giveaway-foreign-btn p-1 rounded-full';
-            deleteForeignBtn.innerHTML = `<i class="fa-solid fa-earth-americas"></i>`;
-            deleteForeignBtn.dataset.giveawayId = giveaway.id;
-            deleteForeignBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(deleteForeignBtn);
-            
-            itemContainer.appendChild(actionsContainer);
-            modalBody.appendChild(itemContainer);
-
-            if (giveaway.prize.includes('🥎')) hasPadel = true;
-            if (giveaway.prize.includes('🛩️')) hasTravel = true;
-        });
-        const modalContent = document.getElementById('modal-content');
-        modalContent.classList.remove('modal-default-bg', 'modal-padel-bg', 'modal-travel-bg');
-        if (hasPadel) modalContent.classList.add('modal-padel-bg');
-        else if (hasTravel) modalContent.classList.add('modal-travel-bg');
-        else modalContent.classList.add('modal-default-bg');
-        modal.dataset.date = dateStr;
+            dayEl.innerHTML = dayNumberHTML;
+            calendarDaysEl.appendChild(dayEl);
+        }
+        if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
     };
+
+    const buildModal = (dateStr) => {
+        let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+            const prize = g.prize ? g.prize.toLowerCase() : '';
+            const searchText = searchQuery.toLowerCase();
+            let isMatch = true;
+            if(currentFilter !== 'all') {
+                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
+                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                               (currentFilter === 'price' && prize.includes('💲')) ||
+                               (currentFilter === 'frikis' && prize.includes('🃏'));
+        }
+        if (searchQuery && !prize.includes(searchText)) isMatch = false;
+        return isMatch;
+    });
     
+    dayGiveaways.sort((a, b) => {
+        const aCompleted = completedGiveaways[a.id];
+        const bCompleted = completedGiveaways[b.id];
+        const aHasTime = a.ends_at_time != null;
+        const bHasTime = b.ends_at_time != null;
+
+        if (aCompleted !== bCompleted) return aCompleted ? 1 : -1;
+        if (aHasTime !== bHasTime) return aHasTime ? -1 : 1;
+        return 0;
+    });
+
+    document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
+    modalBody.innerHTML = '';
+    let hasPadel = false, hasTravel = false;
+    dayGiveaways.forEach(giveaway => {
+        const itemContainer = document.createElement('div');
+        itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
+        
+        const leftSideContainer = document.createElement('div');
+        leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
+
+        const controlsContainer = document.createElement('div');
+        controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0';
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.dataset.giveawayId = giveaway.id;
+        checkbox.className = 'h-5 w-5 sm:h-6 sm:w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500';
+        checkbox.checked = completedGiveaways[giveaway.id];
+        controlsContainer.appendChild(checkbox);
+        
+        const winBtn = document.createElement('button');
+        winBtn.className = 'win-giveaway-btn';
+        winBtn.innerHTML = `🏆`;
+        winBtn.dataset.giveawayId = giveaway.id;
+        winBtn.dataset.giveawayDate = dateStr;
+        controlsContainer.appendChild(winBtn);
+
+        const prizeContainer = document.createElement('div');
+        prizeContainer.className = 'overflow-hidden';
+
+        let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
+        const timeEmoji = giveaway.ends_at_time ? '⏰' : '';
+        prizeContainer.innerHTML = `<p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize} ${timeEmoji}</p><p class="text-sm truncate">${accountsHTML}</p>`;
+
+        leftSideContainer.appendChild(controlsContainer);
+        leftSideContainer.appendChild(prizeContainer);
+
+        const detailsContainer = document.createElement('div');
+        detailsContainer.className = 'text-right flex-shrink-0 ml-2';
+        if (giveaway.price) {
+            detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
+        }
+
+        itemContainer.appendChild(leftSideContainer);
+        itemContainer.appendChild(detailsContainer);
+
+        const actionsContainer = document.createElement('div');
+        actionsContainer.className = 'flex flex-col items-center ml-2 space-y-2';
+        const moveBtn = document.createElement('button');
+        moveBtn.className = 'move-giveaway-btn p-1 rounded-full';
+        moveBtn.innerHTML = `<i class="fa-solid fa-calendar-alt"></i>`;
+        moveBtn.dataset.giveawayId = giveaway.id;
+        moveBtn.dataset.giveawayDate = dateStr;
+        actionsContainer.appendChild(moveBtn);
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full';
+        deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+        deleteBtn.dataset.giveawayId = giveaway.id;
+        deleteBtn.dataset.giveawayDate = dateStr;
+        actionsContainer.appendChild(deleteBtn);
+        const deleteForeignBtn = document.createElement('button');
+        deleteForeignBtn.className = 'delete-giveaway-foreign-btn p-1 rounded-full';
+        deleteForeignBtn.innerHTML = `<i class="fa-solid fa-earth-americas"></i>`;
+        deleteForeignBtn.dataset.giveawayId = giveaway.id;
+        deleteForeignBtn.dataset.giveawayDate = dateStr;
+        actionsContainer.appendChild(deleteForeignBtn);
+        
+        itemContainer.appendChild(actionsContainer);
+        modalBody.appendChild(itemContainer);
+
+        if (giveaway.prize.includes('🥎')) hasPadel = true;
+        if (giveaway.prize.includes('🛩️')) hasTravel = true;
+    });
+    const modalContent = document.getElementById('modal-content');
+    modalContent.classList.remove('modal-default-bg', 'modal-padel-bg', 'modal-travel-bg');
+    if (hasPadel) modalContent.classList.add('modal-padel-bg');
+    else if (hasTravel) modalContent.classList.add('modal-travel-bg');
+    else modalContent.classList.add('modal-default-bg');
+    modal.dataset.date = dateStr;
+    };
+
     const openModal = (dateStr) => { 
         if (navMenu.classList.contains('is-open')) {
             toggleNavMenu();
@@ -1961,7 +1961,6 @@
 
     function processNextImage() {
         if (currentIndex < totalCaptures) {
-            // No actualizamos el texto aquí para evitar el parpadeo
             liveResultsContainer.innerHTML = `<div id="live-card-placeholder" class="live-card-placeholder">Analizando imagen ${currentIndex + 1} de ${totalCaptures}...</div>`;
             processImage(imageQueue[currentIndex]);
         } else {
@@ -2019,7 +2018,7 @@
         reader.readAsDataURL(file);
     }
 
-    function typewriterEffect(element, text = '', speed = 20) {
+    function typewriterEffect(element, text = '', speed = 25) { // Ralentizado un poco
         let i = 0;
         if (!element) return;
         element.value = '';
@@ -2043,7 +2042,7 @@
         const prize = resultData.prize || '';
         const date = resultData.date || '';
         const accounts = (resultData.accounts || []).join(', ');
-        const price = resultData.price || '';
+        const price = resultData.price || 'No encontrado';
 
         const formHTML = `
             <div class="interactive-card-form space-y-2">
@@ -2238,17 +2237,19 @@
         interactiveAnalysisContainer.style.display = 'none';
         aiSummaryView.style.display = 'flex';
 
-        const totalDiscarded = analysisResults.duplicate.length + analysisResults.expired.length + analysisResults.foreign.length + analysisResults.no_date.length + analysisResults.not_a_giveaway.length;
         const totalAdded = analysisResults.added.length;
-        const totalErrors = analysisResults.api_error.length;
+        const totalDuplicates = analysisResults.duplicate.length;
+        const totalExpired = analysisResults.expired.length;
+        const totalForeign = analysisResults.foreign.length;
+        const totalErrors = analysisResults.api_error.length + analysisResults.no_date.length + analysisResults.not_a_giveaway.length;
 
         const historyEntry = {
             analysisDate: new Date().toISOString(),
             totalCaptures,
             addedGiveawaysCount: totalAdded,
-            duplicateGiveawaysCount: analysisResults.duplicate.length,
-            expiredGiveawaysCount: analysisResults.expired.length,
-            foreignGiveawaysCount: analysisResults.foreign.length,
+            duplicateGiveawaysCount: totalDuplicates,
+            expiredGiveawaysCount: totalExpired,
+            foreignGiveawaysCount: totalForeign,
             noDateGiveawaysCount: analysisResults.no_date.length,
             addedGiveawaysDetails: analysisResults.added,
             failedFilesDetails: analysisResults.api_error.map(e => ({ filename: e.originalFile.name, error: e.error }))
@@ -2260,16 +2261,16 @@
         let summaryHTML = `
             <div class="space-y-4 text-yellow-300 w-full">
                 <h3 class="text-2xl font-bold text-center">✨ Resumen del Análisis</h3>
-                <ul class="space-y-2">
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-image text-yellow-500"></i> Imágenes Procesadas: <strong>${totalCaptures}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-500"></i> Sorteos Añadidos: <strong>${totalAdded}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-xmark text-gray-500"></i> Sorteos Descartados: <strong>${totalDiscarded}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-red-500"></i> Errores de Análisis: <strong>${totalErrors}</strong></li>
+                <ul class="space-y-2 text-lg">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-image text-yellow-500 w-6 text-center"></i> Imágenes Procesadas: <strong>${totalCaptures}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-500 w-6 text-center"></i> Sorteos Añadidos: <strong>${totalAdded}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-copy text-gray-400 w-6 text-center"></i> Duplicados: <strong>${totalDuplicates}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-clock text-yellow-600 w-6 text-center"></i> Caducados: <strong>${totalExpired}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-globe text-blue-400 w-6 text-center"></i> Extranjeros: <strong>${totalForeign}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-red-500 w-6 text-center"></i> Errores: <strong>${totalErrors}</strong></li>
                 </ul>
             </div>
         `;
-        
-        // ... (el resto de la generación del resumen no necesita cambios)
         
         aiSummaryResultsContainer.innerHTML = summaryHTML;
         
@@ -2866,7 +2867,7 @@
     calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
 
     closeModalBtn.addEventListener('click', closeModal);
-    moveGiveawayModal.querySelector('#close-move-giveaway-modal').addEventListener('click', closeMoveGiveawayModal);
+    closeMoveGiveawayModalBtn.addEventListener('click', closeMoveGiveawayModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
     modalBody.addEventListener('click', (e) => {
@@ -3006,13 +3007,6 @@
             moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value);
             closeMoveGiveawayModal();
         }
-    });
-
-    const allNavButtons = document.querySelectorAll('#nav-menu a');
-    allNavButtons.forEach(btn => { 
-        btn.addEventListener('click', (e) => { 
-            // La función setupModal ya se encarga de cerrar el menú.
-        }); 
     });
 
     const downloadBtn = document.getElementById('download-btn');

@@ -1443,12 +1443,15 @@
             const notificationModal = document.getElementById('notification-modal');
             const notificationTitle = document.getElementById('notification-title');
             const notificationContent = document.getElementById('notification-content');
-            notificationTitle.textContent = title;
-            notificationContent.textContent = message;
-            notificationModal.classList.add('is-visible');
-            setTimeout(() => {
-                notificationModal.classList.remove('is-visible');
-            }, 4000);
+            // MODIFICACIÓN: Estas variables eran nulas porque no existían en el HTML
+            if (notificationTitle && notificationContent && notificationModal) {
+                notificationTitle.textContent = title;
+                notificationContent.textContent = message;
+                notificationModal.classList.add('is-visible');
+                setTimeout(() => {
+                    notificationModal.classList.remove('is-visible');
+                }, 4000);
+            }
         };
 
         const saveGiveaways = () => localStorage.setItem('giveaways', JSON.stringify(giveaways));
@@ -1744,6 +1747,7 @@
         modal.dataset.date = dateStr;
     };
     
+    // --- MODIFICADO: Lógica de apertura/cierre de modales simplificada ---
     const openModal = (dateStr) => { 
         buildModal(dateStr); 
         modal.classList.add('is-visible'); 
@@ -1765,7 +1769,7 @@
     const closeAddGiveawayModal = () => { 
         addGiveawayModal.classList.remove('is-visible'); 
     };
-
+    
     const openSearchModal = () => { searchModal.classList.add('is-visible'); };
     const closeSearchModal = () => { searchModal.classList.remove('is-visible'); };
     
@@ -1776,6 +1780,7 @@
          moveGiveawayModal.classList.add('is-visible');
     }
     const closeMoveGiveawayModal = () => { moveGiveawayModal.classList.remove('is-visible'); }
+    // --- FIN DE LA MODIFICACIÓN DE LÓGICA DE MODALES ---
 
     const addGiveaway = (newGiveaway) => {
         const dateStr = newGiveaway.date;
@@ -2704,6 +2709,8 @@
 
     // --- CÓDIGO DE INICIALIZACIÓN ---
 
+    // MODIFICACIÓN: Se ha eliminado el envoltorio document.addEventListener('DOMContentLoaded', ...)
+    
     animateStarryBackground();
     animateTitle();
     renderCalendar();
@@ -2726,9 +2733,9 @@
         });
     };
 
-    setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
+    setupModal(statsBtn, statsModal, closeStatsModalBtn, () => renderStatsModal());
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
-    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
+    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, () => renderTrophyModal());
     setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
     setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
     setupModal(addAIBtn, addAIGiveawayModal, closeAddAIGiveawayModalBtn);
@@ -2741,11 +2748,17 @@
     
     // Listeners para el nuevo modal de zoom
     const closeZoomModal = () => { zoomModal.classList.remove('is-visible'); };
-    analysisImagePreview.addEventListener('click', () => {
-        zoomedImage.src = analysisImagePreview.src;
-        zoomModal.classList.add('is-visible');
-    });
-    zoomModal.addEventListener('click', closeZoomModal);
+    if (analysisImagePreview) {
+        analysisImagePreview.addEventListener('click', () => {
+            if (zoomedImage) {
+                zoomedImage.src = analysisImagePreview.src;
+                zoomModal.classList.add('is-visible');
+            }
+        });
+    }
+    if (zoomModal) {
+        zoomModal.addEventListener('click', closeZoomModal);
+    }
     
     openNavMenuBtn.addEventListener('click', toggleNavMenu);
     closeNavMenuBtn.addEventListener('click', toggleNavMenu);
@@ -2831,7 +2844,7 @@
 
     trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
     selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
-    aiImageInput.addEventListener('change', handleFileSelection);
+    aiImageInput.addEventListener('change', (e) => handleFileSelection(e)); // MODIFICACIÓN: Faltaba pasar el evento a la función
     startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
     aiSummaryCloseBtn.addEventListener('click', closeAddAIGiveawayModal);
     

@@ -1269,8 +1269,11 @@
     
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
+    
     <script>
-// --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
+    // --- SCRIPT PRINCIPAL DE LA APLICACIÓN (ESTRUCTURA CORREGIDA) ---
+
+    // --- BLOQUE 1: DECLARACIÓN DE VARIABLES Y CARGA DE DATOS ---
 
     // Carga de datos desde localStorage o valores por defecto
     let giveaways;
@@ -1539,12 +1542,11 @@
     const closeAddHistoryModalBtn = document.getElementById('close-add-history-modal');
     const shareStatsBtn = document.getElementById('share-stats-btn');
 
-
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
     let chartInstances = {};
 
-    // --- FUNCIONES DE LA APLICACIÓN ---
+    // --- BLOQUE 2: DEFINICIÓN DE FUNCIONES ---
 
     const showNotification = (title, message) => {
         if (notificationTitle && notificationContent && notificationModal) {
@@ -2721,191 +2723,6 @@
         });
     };
 
-    const downloadSourceCode = () => {
-        showNotification('Preparando descarga...', 'Se está generando el archivo .zip con tus datos actualizados.');
-        const zip = new JSZip();
-
-        const giveawaysContent = `window.giveaways = ${JSON.stringify(giveaways, null, 4)};`;
-        const discardedGiveawaysContent = `const initialDiscardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};\n\nif (localStorage.getItem('discardedGiveaways') === null) {\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\n}\n\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];`;
-        
-        const indexHtmlContent = document.documentElement.outerHTML;
-
-        const netlifyTomlContent = `[build]
-          command = "npm install"
-          functions = "netlify/functions"`;
-
-        const packageJsonContent = `{
-          "name": "misorteos-functions",
-          "version": "1.0.0",
-          "description": "Dependencias para las funciones de Netlify",
-          "dependencies": {
-            "node-fetch": "^3.3.2"
-          }
-        }`;
-
-        const geminiJsContent = `// netlify/functions/gemini.js
-        exports.handler = async function (event, context) {
-            const fetch = (await import('node-fetch')).default;
-            const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-            const body = JSON.parse(event.body);
-            const { base64Data, dynamicPrompt } = body;
-            if (!base64Data || !dynamicPrompt) {
-                return {
-                    statusCode: 400,
-                    body: JSON.stringify({ error: 'Faltan datos en la petición.' })
-                };
-            }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
-            const payload = {
-                contents: [{
-                    role: "user",
-                    parts: [
-                        { text: dynamicPrompt },
-                        { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }
-                    ]
-                }]
-            };
-            try {
-                const geminiResponse = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!geminiResponse.ok) {
-                    const errorBody = await geminiResponse.json();
-                    console.error("Error desde la API de Gemini:", errorBody);
-                    return {
-                        statusCode: geminiResponse.status,
-                        body: JSON.stringify({ error: 'La API de Gemini devolvió un error.', details: errorBody })
-                    };
-                }
-                const data = await geminiResponse.json();
-                return {
-                    statusCode: 200,
-                    body: JSON.stringify(data)
-                };
-            } catch (error) {
-                console.error("Error en la función de Netlify:", error);
-                return {
-                    statusCode: 500,
-                    body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
-                };
-            }
-        };`;
-
-        const searchJsContent = `// netlify/functions/search.js
-        exports.handler = async function (event, context) {
-            const fetch = (await import('node-fetch')).default;
-            const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-            const { query, accounts } = JSON.parse(event.body);
-            if (!query) {
-                return {
-                    statusCode: 400,
-                    body: JSON.stringify({ error: 'Falta la consulta (query).' })
-                };
-            }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
-            const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
-    
-            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
-                * Producto: "\${query}"
-                * Cuentas de Instagram: \${accounts.join(', ')}
-
-            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
-
-            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:
-                {
-                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",
-                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
-                }
-
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. \`;
-            const payload = {
-                contents: [{
-                    role: "user",
-                    parts: [{ text: prompt }]
-                }]
-            };
-            try {
-                const geminiResponse = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!geminiResponse.ok) {
-                    const errorBody = await geminiResponse.json();
-                    console.error("Error desde la API de Gemini (en search.js):", errorBody);
-                    return {
-                        statusCode: geminiResponse.status,
-                        body: JSON.stringify({ error: 'La API de Gemini devolvió un error en la búsqueda.', details: errorBody })
-                    };
-                }
-                const data = await geminiResponse.json();
-                return {
-                    statusCode: 200,
-                    body: JSON.stringify(data)
-                };
-            } catch (error) {
-                console.error("Error en la función search.js:", error);
-                return {
-                    statusCode: 500,
-                    body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
-                };
-            }
-        };`;
-
-        zip.file("index.html", indexHtmlContent);
-        zip.file("giveaways_new.js", giveawaysContent);
-        zip.file("discardedGiveaways_new.js", discardedGiveawaysContent);
-        zip.file("netlify.toml", netlifyTomlContent);
-        zip.file("package.json", packageJsonContent);
-
-        const functionsFolder = zip.folder("netlify").folder("functions");
-        functionsFolder.file("gemini.js", geminiJsContent);
-        functionsFolder.file("search.js", searchJsContent);
-
-        zip.generateAsync({ type: "blob" }).then(function(content) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(content);
-            const today = new Date().toISOString().slice(0, 10);
-            link.download = `Misorteos-Backup-Completo-${today}.zip`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-    };
-    
-    const restoreFromBackup = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { JSZip.loadAsync(e.target.result).then(zip => { const giveawaysFile = zip.file("giveaways_new.js"); const discardedFile = zip.file("discardedGiveaways_new.js"); const foreignFile = zip.file("foreignAccounts.js"); if (!giveawaysFile || !discardedFile || !foreignFile) { showNotification('Error', 'El archivo .zip no parece una copia de seguridad válida.'); return; } Promise.all([giveawaysFile.async("string"), discardedFile.async("string"), foreignFile.async("string")]) .then(contents => { try { const giveawaysContent = contents[0].replace('window.giveaways = ', '').slice(0, -1); const discardedContent = contents[1].replace('window.discardedGiveaways = ', '').slice(0, -1); const foreignContent = contents[2].replace('window.foreignAccounts = ', '').slice(0, -1); const parsedGiveaways = JSON.parse(giveawaysContent); const parsedDiscarded = JSON.parse(discardedContent); const parsedForeign = JSON.parse(foreignContent); if (confirm("¿Seguro que quieres restaurar esta copia? Se borrarán todos los datos actuales y se reemplazarán por los del archivo.")) { giveaways = parsedGiveaways; discardedGiveaways = parsedDiscarded; foreignAccounts = parsedForeign; saveGiveaways(); saveDiscardedGiveaways(); saveForeignAccounts(); renderCalendar(); showNotification('¡Éxito!', 'La copia de seguridad se ha restaurado correctamente.'); } } catch (error) { showNotification('Error de formato', 'No se pudo leer el contenido del archivo .zip.'); console.error("Error al parsear la copia de seguridad:", error); } }); }); }; reader.readAsArrayBuffer(file); };
-
-    const toggleNavMenu = () => {
-        navMenu.classList.toggle('is-open');
-        menuOverlay.style.display = navMenu.classList.contains('is-open') ? 'block' : 'none';
-    };
-
-    const renderForeignAccountsModal = () => {
-         foreignAccountsModalBody.innerHTML = '';
-         if (foreignAccounts.length === 0) {
-             foreignAccountsModalBody.innerHTML = '<p class="text-center">No hay cuentas extranjeras bloqueadas.</p>';
-             return;
-         }
-         foreignAccounts.forEach(account => {
-             const itemContainer = document.createElement('div');
-             itemContainer.className = 'flex justify-between items-center p-3 bg-red-100/50 rounded-lg shadow-inner border border-red-600/20';
-             itemContainer.innerHTML = `
-                 <span class="font-bold">${account}</span>
-                 <button class="remove-foreign-account-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-400" data-account-name="${account}"><i class="fa-solid fa-trash-can"></i></button>
-             `;
-             foreignAccountsModalBody.appendChild(itemContainer);
-         });
-    };
-
-    const removeForeignAccount = (accountName) => {
-         foreignAccounts = foreignAccounts.filter(acc => acc !== accountName);
-         saveForeignAccounts();
-         renderForeignAccountsModal();
-         showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
-    };
-
     const renderBlockStats = () => {
         const blockStatsContainer = document.getElementById('block-stats-container');
         if (!blockStatsContainer) return;
@@ -2984,248 +2801,169 @@
                  body.appendChild(dateHeader);
              }
              const card = document.createElement('div');
-             card.innerHTML = generateGiveawayCardHTML(giveaway).replace(/<div class="flex justify-end.*?<\/div>/s, ''); // Remove action buttons
+             // Remove action buttons from the card html for this view
+             card.innerHTML = generateGiveawayCardHTML(giveaway).replace(/<div class="flex justify-end.*?<\/div>/s, ''); 
              body.appendChild(card);
         });
     };
 
-    // --- CÓDIGO DE INICIALIZACIÓN ---
+    // --- BLOQUE 3: CÓDIGO DE INICIALIZACIÓN Y EVENT LISTENERS ---
     
-    document.addEventListener('DOMContentLoaded', () => {
-        animateStarryBackground();
-        animateTitle();
-        renderCalendar();
-        updatePointsDisplay();
-        if (userTitleEl) {
-            userTitleEl.textContent = userAchievements.title;
-        }
+    // Al colocar el script al final del body, el DOM ya está cargado.
+    // No es necesario usar 'DOMContentLoaded'.
+    
+    animateStarryBackground();
+    animateTitle();
+    renderCalendar();
+    updatePointsDisplay();
+    if (userTitleEl) {
+        userTitleEl.textContent = userAchievements.title;
+    }
 
-        const setupModal = (button, modal, closeButton, onOpenCallback) => {
-            const openAction = (e) => {
-                e.preventDefault();
-                if (navMenu.classList.contains('is-open')) {
-                    toggleNavMenu();
-                }
-                if (onOpenCallback) onOpenCallback();
-                if (modal) modal.classList.add('is-visible');
-            };
-
-            if (button) button.addEventListener('click', openAction);
-            if (closeButton) closeButton.addEventListener('click', () => { 
-                if (modal) modal.classList.remove('is-visible'); 
-            });
-            if (modal) modal.addEventListener('click', (e) => { 
-                if (e.target === modal) { 
-                    modal.classList.remove('is-visible'); 
-                } 
-            });
-        };
-        
-        // Setup de todos los botones para abrir modales
-        setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
-        setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
-        setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
-        setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
-        setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
-        setupModal(searchMenuBtn, searchModal, closeSearchModalBtn);
-        setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
-        setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
-        setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-        setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockStats);
-        setupModal(openChartsModalBtn, chartsModal, closeChartsModalBtn, renderCharts);
-        setupModal(oracleBtn, oracleModal, closeOracleModalBtn, renderOracleModal);
-        setupModal(totalPsContainer, psHistoryModal, closePsHistoryModalBtn, renderPsHistoryModal);
-        setupModal(totalGiveawaysContainer, addHistoryModal, closeAddHistoryModalBtn, renderAddHistoryModal);
-        setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
-        
-        // Vista de IA a pantalla completa
-        addAIBtn.addEventListener('click', (e) => {
+    const setupModal = (button, modal, closeButton, onOpenCallback) => {
+        const openAction = (e) => {
             e.preventDefault();
             if (navMenu.classList.contains('is-open')) {
                 toggleNavMenu();
             }
-            aiFullscreenView.classList.add('is-visible');
+            if (onOpenCallback) onOpenCallback();
+            if (modal) modal.classList.add('is-visible');
+        };
+
+        if (button) button.addEventListener('click', openAction);
+        if (closeButton) closeButton.addEventListener('click', () => { 
+            if (modal) modal.classList.remove('is-visible'); 
         });
-        closeAiViewBtn.addEventListener('click', () => {
-            aiFullscreenView.classList.remove('is-visible');
+        if (modal) modal.addEventListener('click', (e) => { 
+            if (e.target === modal) { 
+                modal.classList.remove('is-visible'); 
+            } 
         });
-        aiSummaryCloseBtn.addEventListener('click', () => {
-            aiFullscreenView.classList.remove('is-visible');
-        });
+    };
+    
+    // Setup de todos los botones para abrir modales
+    setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
+    setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
+    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
+    setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
+    setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
+    setupModal(searchMenuBtn, searchModal, closeSearchModalBtn);
+    setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
+    setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
+    setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
+    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockStats);
+    setupModal(openChartsModalBtn, chartsModal, closeChartsModalBtn, renderCharts);
+    setupModal(oracleBtn, oracleModal, closeOracleModalBtn, renderOracleModal);
+    setupModal(totalPsContainer, psHistoryModal, closePsHistoryModalBtn, renderPsHistoryModal);
+    setupModal(totalGiveawaysContainer, addHistoryModal, closeAddHistoryModalBtn, renderAddHistoryModal);
+    setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
+    
+    // Listeners directos
+    openNavMenuBtn.addEventListener('click', toggleNavMenu);
+    closeNavMenuBtn.addEventListener('click', toggleNavMenu);
+    menuOverlay.addEventListener('click', toggleNavMenu);
+    prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
+    nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
+    calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    modalBody.addEventListener('click', (e) => {
+        const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
+        if (!giveawayId) return;
+        const dateStr = modal.dataset.date;
+        const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
+        if (!giveaway) return;
 
-        const closeZoomModal = () => { if(zoomModal) zoomModal.classList.remove('is-visible'); };
-        if (analysisImagePreview) {
-            analysisImagePreview.addEventListener('click', () => {
-                if (zoomedImage && zoomModal) {
-                    zoomedImage.src = analysisImagePreview.src;
-                    zoomModal.classList.add('is-visible');
-                }
-            });
-        }
-        if (zoomModal) {
-            zoomModal.addEventListener('click', closeZoomModal);
-        }
-        
-        openNavMenuBtn.addEventListener('click', toggleNavMenu);
-        closeNavMenuBtn.addEventListener('click', toggleNavMenu);
-        menuOverlay.addEventListener('click', toggleNavMenu);
-
-        prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
-        nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
-        calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
-
-        closeModalBtn.addEventListener('click', closeModal);
-        closeMoveGiveawayModalBtn.addEventListener('click', closeMoveGiveawayModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-        modalBody.addEventListener('click', (e) => {
-            const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
-            if (!giveawayId) return;
-
-            const dateStr = modal.dataset.date;
-            const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
-            if (!giveaway) return;
-
-            if (e.target.type === 'checkbox') {
-                const itemContainer = e.target.closest('.giveaway-item');
-                if (e.target.checked) {
-                    completedGiveaways[giveawayId] = true;
-                    animateShootingStar(itemContainer, () => {
-                        itemContainer.classList.add('completed');
-                        buildModal(dateStr);
-                        renderCalendar();
-                    });
-                    addPoints(2, 'Completar sorteo');
-                } else {
-                    delete completedGiveaways[giveawayId];
-                    itemContainer.classList.remove('completed');
+        if (e.target.type === 'checkbox') {
+            const itemContainer = e.target.closest('.giveaway-item');
+            if (e.target.checked) {
+                completedGiveaways[giveawayId] = true;
+                animateShootingStar(itemContainer, () => {
+                    itemContainer.classList.add('completed');
                     buildModal(dateStr);
                     renderCalendar();
-                }
-                saveCompletedGiveaways();
-                checkAchievements('complete', { giveawayDate: dateStr });
-            } else if (e.target.closest('.win-giveaway-btn')) {
-                markAsWon(giveawayId, dateStr);
-            } else if (e.target.closest('.move-giveaway-btn')) {
-                openMoveGiveawayModal(giveaway, dateStr);
-            } else if (e.target.closest('.delete-giveaway-btn')) {
-                if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
-                    deleteGiveawayFromCalendar(dateStr, giveawayId);
-                }
-            } else if (e.target.closest('.delete-giveaway-foreign-btn')) {
-                if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
-                    deleteForeignGiveaway(dateStr, giveawayId);
-                }
-            }
-        });
-
-        trashModalBody.addEventListener('click', (e) => { const restoreBtn = e.target.closest('.restore-btn'); if (restoreBtn) { restoreGiveawayFromTrash(restoreBtn.dataset.giveawayId); } });
-        
-        discardedModal.addEventListener('click', (e) => {
-            const filterBtn = e.target.closest('.filter-btn');
-            if (filterBtn) {
-                discardedFilter = filterBtn.dataset.filter;
-                renderDiscardedModal();
-            }
-        });
-
-        discardedModalBody.addEventListener('click', (e) => { 
-            const item = e.target.closest('.giveaway-item-discarded'); 
-            if (!item) return;
-            const giveawayId = e.target.closest('[data-giveaway-id]').dataset.giveawayId;
-            const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
-            if (!giveaway) return;
-            
-            if (e.target.closest('.add-discarded-btn')) {
-                e.stopPropagation();
-                openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
-                deleteDiscardedGiveaway(giveawayId);
-                closeDiscardedModalBtn.click();
-            } else if (e.target.closest('.delete-discarded-btn')) {
-                e.stopPropagation(); 
-                deleteDiscardedGiveaway(giveawayId); 
-            } else if (giveaway.status === 'duplicate' && giveaway.originalGiveaway) { 
-                showDuplicateComparisonModal(giveaway); 
+                });
+                addPoints(2, 'Completar sorteo');
             } else {
-                openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+                delete completedGiveaways[giveawayId];
+                itemContainer.classList.remove('completed');
+                buildModal(dateStr);
+                renderCalendar();
             }
-        });
-
-        trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
-        selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
-        aiImageInput.addEventListener('change', handleFileSelection);
-        startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
-        
-        retryFailedBtn.addEventListener('click', () => {
-             if (giveawaysWithErrors.length > 0) {
-                  startAnalysis(giveawaysWithErrors);
-             } else {
-                  showNotification('No hay archivos para reintentar', 'Todos los errores se han procesado.');
-             }
-        });
-
-        blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderBlockStats(); });
-        blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderBlockStats(); });
-
-        addAsNewBtn.addEventListener('click', (e) => {
-            const giveawayId = e.target.dataset.giveawayId;
-            if (!giveawayId) return;
-            const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId);
-            if (giveawayToAdd) {
-                deleteDiscardedGiveaway(giveawayId);
-                openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price });
-                duplicateComparisonModal.classList.remove('is-visible');
+            saveCompletedGiveaways();
+            checkAchievements('complete', { giveawayDate: dateStr });
+        } else if (e.target.closest('.win-giveaway-btn')) {
+            markAsWon(giveawayId, dateStr);
+        } else if (e.target.closest('.move-giveaway-btn')) {
+            openMoveGiveawayModal(giveaway, dateStr);
+        } else if (e.target.closest('.delete-giveaway-btn')) {
+            if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
+                deleteGiveawayFromCalendar(dateStr, giveawayId);
             }
-        });
-
-        mergeGiveawayBtn.addEventListener('click', (e) => {
-            const giveawayId = e.target.dataset.giveawayId;
-            if (!giveawayId) return;
-            const discarded = discardedGiveaways.find(g => g.id === giveawayId);
-            if (discarded && discarded.originalGiveaway) {
-                let original = null;
-                for (const date in giveaways) {
-                    const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id);
-                    if (found) { original = found; break; }
-                }
-                if (original) {
-                    if (!original.price && discarded.price) original.price = discarded.price;
-                    if (!original.date && discarded.date) original.date = discarded.date;
-                    deleteDiscardedGiveaway(giveawayId);
-                    saveGiveaways();
-                    renderCalendar();
-                    showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.');
-                    checkAchievements('merge');
-                    duplicateComparisonModal.classList.remove('is-visible');
-                } else {
-                    showNotification('Error', 'No se encontró el sorteo original para fusionar.');
-                }
+        } else if (e.target.closest('.delete-giveaway-foreign-btn')) {
+            if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
+                deleteForeignGiveaway(dateStr, giveawayId);
             }
-        });
-
-        addGiveawayForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) };
-            addGiveaway(newGiveaway, 'manual');
-            closeAddGiveawayModal();
-        });
-
-        moveGiveawayForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (giveawayToMove && originalDateOfGiveaway) {
-                moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value);
-                closeMoveGiveawayModal();
-            }
-        });
-
-        const downloadBtn = document.getElementById('download-btn');
-        const uploadBtn = document.getElementById('upload-btn');
-        const zipUploadInput = document.getElementById('zip-upload');
-        if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
-        if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
-        if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
-
+        }
     });
+    
+    trashModalBody.addEventListener('click', (e) => { const restoreBtn = e.target.closest('.restore-btn'); if (restoreBtn) { restoreGiveawayFromTrash(restoreBtn.dataset.giveawayId); } });
+    
+    discardedModal.addEventListener('click', (e) => {
+        const filterBtn = e.target.closest('.filter-btn');
+        if (filterBtn) {
+            discardedFilter = filterBtn.dataset.filter;
+            renderDiscardedModal();
+        }
+    });
+
+    discardedModalBody.addEventListener('click', (e) => { 
+        const item = e.target.closest('.giveaway-item-discarded'); 
+        if (!item) return;
+        const giveawayId = e.target.closest('[data-giveaway-id]').dataset.giveawayId;
+        const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
+        if (!giveaway) return;
+        
+        if (e.target.closest('.add-discarded-btn')) {
+            e.stopPropagation();
+            openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+            deleteDiscardedGiveaway(giveawayId);
+            discardedModal.classList.remove('is-visible');
+        } else if (e.target.closest('.delete-discarded-btn')) {
+            e.stopPropagation(); 
+            deleteDiscardedGiveaway(giveawayId); 
+        } else if (giveaway.status === 'duplicate' && giveaway.originalGiveaway) { 
+            showDuplicateComparisonModal(giveaway); 
+        } else {
+            openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+        }
+    });
+
+    trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
+    selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
+    aiImageInput.addEventListener('change', handleFileSelection);
+    startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
+    retryFailedBtn.addEventListener('click', () => { if (giveawaysWithErrors.length > 0) { startAnalysis(giveawaysWithErrors); } else { showNotification('No hay archivos para reintentar', 'Todos los errores se han procesado.'); } });
+    blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderBlockStats(); });
+    blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderBlockStats(); });
+    addAsNewBtn.addEventListener('click', (e) => { const giveawayId = e.target.dataset.giveawayId; if (!giveawayId) return; const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId); if (giveawayToAdd) { deleteDiscardedGiveaway(giveawayId); openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price }); duplicateComparisonModal.classList.remove('is-visible'); } });
+    mergeGiveawayBtn.addEventListener('click', (e) => { const giveawayId = e.target.dataset.giveawayId; if (!giveawayId) return; const discarded = discardedGiveaways.find(g => g.id === giveawayId); if (discarded && discarded.originalGiveaway) { let original = null; for (const date in giveaways) { const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id); if (found) { original = found; break; } } if (original) { if (!original.price && discarded.price) original.price = discarded.price; if (!original.date && discarded.date) original.date = discarded.date; deleteDiscardedGiveaway(giveawayId); saveGiveaways(); renderCalendar(); showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.'); checkAchievements('merge'); duplicateComparisonModal.classList.remove('is-visible'); } else { showNotification('Error', 'No se encontró el sorteo original para fusionar.'); } } });
+    addGiveawayForm.addEventListener('submit', (e) => { e.preventDefault(); const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) }; addGiveaway(newGiveaway, 'manual'); closeAddGiveawayModal(); });
+    moveGiveawayForm.addEventListener('submit', (e) => { e.preventDefault(); if (giveawayToMove && originalDateOfGiveaway) { moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value); closeMoveGiveawayModal(); } });
+    const downloadBtn = document.getElementById('download-btn');
+    const uploadBtn = document.getElementById('upload-btn');
+    const zipUploadInput = document.getElementById('zip-upload');
+    if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
+    if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
+    if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
+    if(shareStatsBtn) shareStatsBtn.addEventListener('click', generateShareableSummary);
+
+    // AI View listeners
+    addAIBtn.addEventListener('click', (e) => { e.preventDefault(); if (navMenu.classList.contains('is-open')) { toggleNavMenu(); } aiFullscreenView.classList.add('is-visible'); });
+    closeAiViewBtn.addEventListener('click', () => { aiFullscreenView.classList.remove('is-visible'); });
+    aiSummaryCloseBtn.addEventListener('click', () => { aiFullscreenView.classList.remove('is-visible'); });
+    // Zoom modal listener
+    if (analysisImagePreview) { analysisImagePreview.addEventListener('click', () => { if (zoomedImage && zoomModal) { zoomedImage.src = analysisImagePreview.src; zoomModal.classList.add('is-visible'); } }); }
+    if (zoomModal) { zoomModal.addEventListener('click', () => zoomModal.classList.remove('is-visible')); }
 
 </script>
 </body>

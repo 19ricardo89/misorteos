@@ -36,27 +36,6 @@
             from { transform: rotate(0deg) scale(1); }
             to { transform: rotate(360deg) scale(0); }
         }
-        /* <!-- NUEVO --> Keyframes para la nueva UI de análisis */
-        @keyframes card-enter {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        @keyframes typewriter-blink {
-            50% {
-                border-color: transparent;
-            }
-        }
-        @keyframes pulse-border {
-            0%, 100% { border-color: rgba(247, 212, 104, 0.4); }
-            50% { border-color: rgba(247, 212, 104, 1); }
-        }
-
 
         /* --- ESTILOS GENERALES --- */
         html, body {
@@ -127,7 +106,7 @@
             background-size: cover;
             background-position: center;
             border: 3px solid #d4af37;
-            max-height: 90vh; /* Aumentado para dar más espacio a la nueva UI */
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
         }
@@ -568,75 +547,57 @@
         .status-no_date { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
         .status-not_a_giveaway { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
         
-        /* <!-- NUEVO --> ESTILOS PARA LA PANTALLA DE ANÁLISIS INTERACTIVO */
+        /* --- NUEVOS ESTILOS PARA LA PANTALLA DE ANÁLISIS EN TIEMPO REAL --- */
         #interactive-analysis-container {
-            padding: 1rem;
-            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            max-height: 70vh;
         }
         #analysis-image-preview {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border: 3px solid #f7d468;
-            animation: pulse-border 2s infinite;
+            margin-bottom: 1rem;
         }
         #live-results-container {
-            min-height: 350px; /* Asegura espacio para la tarjeta */
-        }
-        .interactive-card-container {
-            background-color: #fffbef;
-            border-radius: 12px;
-            padding: 1rem;
-            color: #4e342e;
-            border: 2px solid; /* El color se definirá con clases */
-            animation: card-enter 0.5s ease-out forwards;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
-        }
-        /* Colores de borde para cada estado */
-        .interactive-card-valid { border-color: #22c55e; }
-        .interactive-card-duplicate { border-color: #6b7280; }
-        .interactive-card-expired { border-color: #92400e; }
-        .interactive-card-foreign { border-color: #2563eb; }
-        .interactive-card-error { border-color: #dc2626; }
-
-        .interactive-card-container .form-label {
-            font-weight: bold;
-            color: #8c5a15;
-            font-size: 0.9rem;
-        }
-        .interactive-card-container .form-input {
             width: 100%;
-            padding: 0.5rem;
-            margin-top: 0.25rem;
-            border-radius: 8px;
-            background-color: white;
-            border: 1px solid #fde047;
-            color: #4e342e;
-            transition: box-shadow 0.2s;
-        }
-        .interactive-card-container .form-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(253, 224, 71, 0.5);
-        }
-        /* Efecto máquina de escribir */
-        .typewriter-effect {
-            border-right: 2px solid #4e342e;
-            animation: typewriter-blink 0.7s steps(2) infinite;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .comparison-container {
-            max-height: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
             overflow-y: auto;
-            border: 1px solid #d4af37;
             padding: 0.5rem;
-            border-radius: 8px;
-            background: rgba(212, 175, 55, 0.05);
+        }
+        .live-card-placeholder {
+            min-height: 150px;
+            background: rgba(255, 251, 235, 0.1);
+            border: 2px dashed #f7d468;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: rgba(247, 212, 104, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+        .interactive-card {
+            animation: slideInLeft 0.5s ease-out;
+            transition: transform 0.5s ease;
+        }
+        .interactive-card.slide-out {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
     </style>
@@ -846,63 +807,41 @@
         </div>
     </div>
 
-    <!-- MODIFICADO: Contenido del modal de IA para la nueva interfaz interactiva -->
     <div id="add-ai-giveaway-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg text-center">
             <div class="flex justify-between items-center p-6 pb-0">
                 <h2 class="text-2xl sm:text-3xl font-bold" id="ai-modal-title">Añadir Sorteos con IA</h2>
                 <button id="close-add-ai-giveaway-modal" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold">&times;</button>
             </div>
-            
-            <div id="ai-modal-content-wrapper" class="p-6">
-                <!-- PASO 1: Selección de imágenes -->
-                <div id="ai-step-1-selection">
-                    <p class="mt-4 font-semibold" id="ai-modal-info">Selecciona hasta 100 imágenes del sorteo.</p>
-                    <input type="file" id="ai-image-upload" accept="image/*" multiple class="hidden">
-                    <button id="select-ai-images-btn" class="mt-6 bg-yellow-500 text-yellow-900 font-bold py-3 px-6 rounded-lg shadow-md hover:bg-yellow-400 transition-colors w-full">
-                        🌟 Seleccionar Imágenes 🌟
-                    </button>
-                    <div id="ai-queue-container" class="mt-6 text-left" style="display: none;">
-                        <h3 class="text-lg font-semibold mb-2">Imágenes en cola: <span id="ai-queue-count">0</span></h3>
-                        <ul id="ai-image-queue" class="bg-yellow-100/20 p-4 rounded-lg border border-yellow-500/30"></ul>
-                    </div>
-                    <button id="start-ai-button" class="mt-6 bg-yellow-500 text-yellow-900 font-bold py-3 px-6 rounded-lg shadow-md hover:bg-yellow-400 transition-colors w-full" style="display: none;">
-                        Empezar Análisis
-                    </button>
+            <div id="ai-modal-content-wrapper">
+                <p class="mt-4 font-semibold" id="ai-modal-info">Selecciona hasta 100 imágenes del sorteo.</p>
+                <input type="file" id="ai-image-upload" accept="image/*" multiple class="hidden">
+                <button id="select-ai-images-btn" class="mt-6 bg-yellow-500 text-yellow-900 font-bold py-3 px-6 rounded-lg shadow-md hover:bg-yellow-400 transition-colors w-full">
+                    🌟 Haz tu magia 🌟
+                </button>
+                <div id="ai-queue-container" class="mt-6 text-left" style="display: none;">
+                    <h3 class="text-lg font-semibold mb-2">Imágenes en cola: <span id="ai-queue-count">0</span></h3>
+                    <ul id="ai-image-queue" class="bg-yellow-100/20 p-4 rounded-lg border border-yellow-500/30"></ul>
                 </div>
-
-                <!-- <!-- NUEVO --> PASO 2: Vista de análisis interactivo (inicialmente oculto) -->
-                <div id="interactive-analysis-container" class="hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-                        <!-- Columna Izquierda: Imagen y Progreso -->
-                        <div class="flex flex-col items-center gap-4">
-                            <img id="analysis-image-preview" src="" alt="Imagen en análisis" class="w-full max-w-xs rounded-lg shadow-lg">
-                            <div id="analysis-progress-container" class="w-full text-center">
-                                <div class="text-2xl font-bold text-yellow-400" id="analysis-counter">1/34</div>
-                                <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
-                                    <div id="analysis-progress-bar" class="bg-yellow-400 h-2.5 rounded-full" style="width: 0%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Columna Derecha: Tarjeta y Leyenda -->
-                        <div class="flex flex-col gap-4 w-full">
-                            <div id="live-results-container" class="w-full">
-                                <!-- La tarjeta interactiva se insertará aquí -->
-                            </div>
-                            <div id="analysis-legend" class="text-xs text-left space-y-1 p-2 bg-yellow-900/20 rounded-lg">
-                                <h4 class="font-bold text-yellow-400 mb-1">Resumen Parcial:</h4>
-                                <p>✅ <span id="legend-added">0</span> Añadidos</p>
-                                <p>📋 <span id="legend-duplicates">0</span> Duplicados</p>
-                                <p>🗓️ <span id="legend-expired">0</span> Caducados</p>
-                                <p>🌍 <span id="legend-foreign">0</span> Extranjeros</p>
-                                <p>🚫 <span id="legend-not-giveaway">0</span> No Sorteos</p>
-                                <p>🔥 <span id="legend-errors">0</span> Errores</p>
-                            </div>
-                        </div>
+                <button id="start-ai-button" class="mt-6 bg-yellow-500 text-yellow-900 font-bold py-3 px-6 rounded-lg shadow-md hover:bg-yellow-400 transition-colors w-full" style="display: none;">
+                    Empezar Análisis
+                </button>
+                <div id="ai-status-container" class="mt-8 text-left p-4 rounded-xl border border-yellow-500/20" style="display: none;">
+                    <p id="ai-status-message" class="font-semibold text-lg mb-2"></p>
+                    <div id="ai-progress-bar" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-2">
+                      <div id="ai-progress" class="bg-yellow-400 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
-
-                <!-- PASO 3: Resumen final -->
+                <div id="interactive-analysis-container" class="p-4">
+                    <div class="w-full flex justify-between items-center">
+                        <button id="pause-edit-btn" class="text-sm font-bold bg-yellow-300 px-2 py-1 rounded-full hover:bg-yellow-400">Pausar y Editar</button>
+                        <h4 id="analysis-step-text" class="text-yellow-600"></h4>
+                    </div>
+                    <img id="analysis-image-preview" src="" alt="Imagen en análisis" class="w-full max-w-xs mx-auto my-4" style="display: none;">
+                    <div id="live-results-container">
+                        <div id="live-card-placeholder" class="live-card-placeholder">Esperando análisis...</div>
+                    </div>
+                </div>
                 <div id="ai-summary-results" class="mt-8 text-left p-4 rounded-xl" style="display: none;">
                 </div>
                 <button id="ai-summary-close-btn" class="mt-6 bg-yellow-500 text-yellow-900 font-bold py-3 px-6 rounded-lg shadow-md hover:bg-yellow-400 transition-colors w-full" style="display: none;">
@@ -921,7 +860,8 @@
             <div id="notification-content" class="text-sm font-mono overflow-x-auto text-left"></div>
         </div>
     </div>
-<div id="duplicate-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
+    
+    <div id="duplicate-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">Sorteo Duplicado Detectado</h2>
@@ -1321,6 +1261,9 @@
         const aiQueueList = document.getElementById('ai-image-queue');
         const aiQueueCount = document.getElementById('ai-queue-count');
         const startAiButton = document.getElementById('start-ai-button');
+        const aiStatusContainer = document.getElementById('ai-status-container');
+        const aiStatusMessage = document.getElementById('ai-status-message');
+        const aiProgressBar = document.getElementById('ai-progress');
         const aiSummaryResults = document.getElementById('ai-summary-results');
         const aiSummaryCloseBtn = document.getElementById('ai-summary-close-btn');
         const trashBtn = document.getElementById('trash-btn');
@@ -1386,6 +1329,8 @@
         const interactiveAnalysisContainer = document.getElementById('interactive-analysis-container');
         const analysisImagePreview = document.getElementById('analysis-image-preview');
         const liveResultsContainer = document.getElementById('live-results-container');
+        const pauseEditBtn = document.getElementById('pause-edit-btn');
+        const analysisStepText = document.getElementById('analysis-step-text');
         
         let giveawayToMove = null;
         let originalDateOfGiveaway = null;
@@ -2137,6 +2082,7 @@
         aiQueueContainer.style.display = 'none'; 
         aiQueueList.innerHTML = ''; 
         startAiButton.style.display = 'none'; 
+        aiStatusContainer.style.display = 'none'; 
         aiSummaryResults.style.display = 'none'; 
         aiSummaryCloseBtn.style.display = 'none'; 
         retryFailedBtn.style.display = 'none'; 
@@ -2185,43 +2131,49 @@
         startAiButton.textContent = "Procesando...";
         retryFailedBtn.style.display = 'none'; 
         
-        // Ocultar la selección de archivos y mostrar la vista de análisis
-        document.getElementById('ai-step-1-selection').style.display = 'none';
-        document.getElementById('interactive-analysis-container').classList.remove('hidden');
+        aiQueueContainer.style.display = 'none';
+        startAiButton.style.display = 'none';
+        aiSummaryResults.style.display = 'none';
+        interactiveAnalysisContainer.style.display = 'flex';
+        liveResultsContainer.innerHTML = `<div id="live-card-placeholder" class="live-card-placeholder">Esperando análisis...</div>`;
         
-        await processImage(filesToProcess[currentIndex]);
+        for (const file of filesToProcess) {
+             await processImage(file);
+        }
+        
+        isProcessing = false;
+        startAiButton.disabled = false;
+        startAiButton.textContent = "Empezar Análisis";
+        showAISummary();
     }
     
     async function processImage(file) {
-        if (!file) {
-            // Si no hay más archivos, termina el proceso
-            isProcessing = false;
-            showAISummary();
-            return;
-        }
-
-        // Actualizar UI para la imagen actual
-        document.getElementById('analysis-counter').textContent = `${currentIndex + 1}/${totalCaptures}`;
-        document.getElementById('analysis-progress-bar').style.width = `${((currentIndex + 1) / totalCaptures) * 100}%`;
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
+        analysisStepText.textContent = `Analizando imagen ${currentIndex + 1} de ${totalCaptures}`;
         const reader = new FileReader();
         reader.onload = async (event) => {
             const base64Data = event.target.result;
             analysisImagePreview.src = base64Data;
+            analysisImagePreview.style.display = 'block';
 
             const hoy = new Date();
             const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
             const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><TAREA_PRINCIPAL>Analiza la imagen proporcionada y extrae la información solicitada. Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown adicional como \`\`\`json. Si la imagen NO es un sorteo, devuelve el siguiente JSON: {"status": "not_a_giveaway"}.</TAREA_PRINCIPAL><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
             
             let resultData;
+            let finalGiveaway = null;
 
             try {
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
                 if (aiData.status === 'not_a_giveaway') {
-                     resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
+                     failedFilesDetails.push({ filename: file.name, error: 'La imagen no contiene un sorteo.' });
+                     resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway' };
                 } else if (aiData.status === 'discard_no_date' || !aiData.date) {
-                    resultData = { ...aiData, status: 'no_date', originalFile: file };
+                    noDateGiveawaysDetails.push({ ...aiData, file: file.name, status: 'no_date' });
+                    discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'nd', status: 'no_date', originalFile: file });
+                    resultData = { ...aiData, status: 'no_date' };
                 } else {
                     const accounts = aiData.accounts || [];
                     const isForeign = accounts.some(acc => foreignAccounts.includes(`@${acc}`));
@@ -2230,37 +2182,81 @@
                     const existingGiveaway = isDuplicateGiveaway(aiData);
                     
                     if (isForeign) {
-                        resultData = { ...aiData, status: 'foreign', originalFile: file };
+                        foreignGiveawaysDetails.push({ ...aiData, file: file.name, status: 'foreign' });
+                        discardedGiveaways.push({...aiData, status: 'foreign', id: Date.now().toString() + 'f', originalFile: file});
+                        resultData = { ...aiData, status: 'foreign' };
                     } else if (existingGiveaway) {
-                        resultData = { ...aiData, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
+                        duplicateGiveawaysDetails.push({ ...aiData, file: file.name, status: 'duplicate' });
+                        discardedGiveaways.push({ ...aiData, id: Date.now().toString() + 'd', status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file });
+                        resultData = { ...aiData, status: 'duplicate' };
                     } else if (isExpired) {
-                        resultData = { ...aiData, status: 'expired', originalFile: file };
+                        expiredGiveawaysDetails.push({ ...aiData, file: file.name, status: 'expired' });
+                        discardedGiveaways.push({...aiData, status: 'expired', id: Date.now().toString() + 'e', originalFile: file});
+                        resultData = { ...aiData, status: 'expired' };
                     } else {
                         const priceInfo = await searchPrizeValue(aiData);
                         const newGiveaway = { 
+                            id: Date.now().toString(), 
                             date: aiData.date, 
                             prize: priceInfo.prize, 
                             accounts: aiData.accounts.map(acc => `@${acc}`), 
                             price: priceInfo.value, 
                             url: priceInfo.url, 
+                            addDate: new Date().toISOString().slice(0, 10),
                             ends_at_time: aiData.ends_at_time 
                         };
-                        resultData = { ...newGiveaway, status: 'valid', originalFile: file };
+                        addGiveaway(newGiveaway);
+                        addedGiveawaysDetails.push({ ...newGiveaway, file: file.name, status: 'added' });
+                        addPoints(5);
+                        checkAchievements('add-ai');
+                        resultData = { ...newGiveaway, status: 'added' };
+                        finalGiveaway = newGiveaway;
                     }
                 }
             } catch (error) {
                 console.error(`Error al analizar la imagen ${file.name}:`, error);
-                resultData = { prize: 'Error de la API', status: 'api_error', originalFile: file, error: error.message };
+                failedFilesDetails.push({ filename: file.name, error: error.message });
+                giveawaysWithErrors.push({ file: file, type: 'api_error' }); 
+                resultData = { prize: 'Error de la API', status: 'api_error' };
             }
             
-            // Renderizar la tarjeta interactiva y esperar la acción del usuario
-            renderInteractiveCard(resultData);
+            updateLiveAnalysis(resultData);
+
+            currentIndex++;
+            
+            // Reanudar el proceso solo si no está en pausa
+            if (!isPaused) {
+                // processNextImage() ahora es la misma función asíncrona que processImage()
+                // Solo tenemos que llamarla para continuar con la siguiente imagen en la cola.
+                // La llamada recursiva a processNextImage() ya no es necesaria con el bucle for
+            }
         };
         reader.readAsDataURL(file);
     }
     
+    // Función para actualizar la interfaz en tiempo real
+    const updateLiveAnalysis = (resultData) => {
+        const placeholder = document.getElementById('live-card-placeholder');
+        if (placeholder) {
+            placeholder.remove();
+        }
+        
+        const cardContainer = document.createElement('div');
+        cardContainer.classList.add('interactive-card');
+        cardContainer.innerHTML = generateGiveawayCardHTML(resultData);
+        liveResultsContainer.prepend(cardContainer);
+        
+        // Transición de la tarjeta
+        setTimeout(() => {
+            cardContainer.classList.add('slide-out');
+            setTimeout(() => {
+                cardContainer.remove();
+            }, 500); 
+        }, 3000); // Muestra la tarjeta por 3 segundos
+    };
+
     const showAISummary = () => {
-        interactiveAnalysisContainer.classList.add('hidden');
+        interactiveAnalysisContainer.style.display = 'none';
 
         addedGiveawaysCount = addedGiveawaysDetails.length;
         duplicateGiveawaysCount = duplicateGiveawaysDetails.length;
@@ -2283,6 +2279,7 @@
         document.getElementById('ai-modal-info').style.display = 'none';
         aiQueueContainer.style.display = 'none';
         startAiButton.style.display = 'none';
+        aiStatusContainer.style.display = 'none';
         const summaryContainer = document.getElementById('ai-summary-results');
         summaryContainer.innerHTML = '';
         
@@ -2817,6 +2814,9 @@
          showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
     };
     
+    // Nueva variable para controlar la pausa del análisis
+    let isPaused = false;
+    
     // Event Listeners
     document.addEventListener('DOMContentLoaded', () => {
         animateStarryBackground();
@@ -2942,6 +2942,11 @@
              }
         });
 
+        pauseEditBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            pauseEditBtn.textContent = isPaused ? 'Reanudar' : 'Pausar y Editar';
+        });
+
         blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderStatsModal(); });
         blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderStatsModal(); });
 
@@ -3009,5 +3014,3 @@
         if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
     });
 </script>
-</body>
-</html>

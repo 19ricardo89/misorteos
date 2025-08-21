@@ -1270,7 +1270,7 @@
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script>
-    // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
+// --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
 
     // Carga de datos desde localStorage o valores por defecto
     let giveaways;
@@ -1537,6 +1537,8 @@
     const closePsHistoryModalBtn = document.getElementById('close-ps-history-modal');
     const addHistoryModal = document.getElementById('add-history-modal');
     const closeAddHistoryModalBtn = document.getElementById('close-add-history-modal');
+    const shareStatsBtn = document.getElementById('share-stats-btn');
+
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
@@ -2904,266 +2906,326 @@
          showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
     };
 
+    const renderBlockStats = () => {
+        const blockStatsContainer = document.getElementById('block-stats-container');
+        if (!blockStatsContainer) return;
+
+        const likeBlocks = blockHistory.filter(b => b.type === 'like');
+        const commentBlocks = blockHistory.filter(b => b.type === 'comment');
+
+        let avgDaysBetweenBlocks = 'N/A';
+        if (blockHistory.length > 1) {
+            const sortedBlocks = [...blockHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
+            let totalDays = 0;
+            for (let i = 1; i < sortedBlocks.length; i++) {
+                const date1 = new Date(sortedBlocks[i-1].date);
+                const date2 = new Date(sortedBlocks[i].date);
+                const diffTime = Math.abs(date2 - date1);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                totalDays += diffDays;
+            }
+            avgDaysBetweenBlocks = (totalDays / (sortedBlocks.length - 1)).toFixed(1);
+        }
+
+        blockStatsContainer.innerHTML = `
+            <ul class="text-left space-y-2">
+                <li>👍 Bloqueos de 'Me Gusta': <strong>${likeBlocks.length}</strong></li>
+                <li>💬 Bloqueos de Comentarios: <strong>${commentBlocks.length}</strong></li>
+                <li>📈 Media de días entre bloqueos: <strong>${avgDaysBetweenBlocks}</strong></li>
+            </ul>
+        `;
+    };
+    
+    // --- NUEVAS FUNCIONES DE RENDERIZADO ---
+
+    const renderPsHistoryModal = () => {
+        const body = document.getElementById('ps-history-modal-body');
+        body.innerHTML = '';
+        if (pointsHistory.length === 0) {
+            body.innerHTML = '<p class="text-center">Aún no has ganado puntos.</p>';
+            return;
+        }
+        pointsHistory.forEach(entry => {
+            const date = new Date(entry.date).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
+            const sign = entry.points > 0 ? '+' : '';
+            const color = entry.points > 0 ? 'text-green-500' : 'text-red-500';
+            const item = document.createElement('div');
+            item.className = 'flex justify-between items-center p-2 bg-yellow-100/30 rounded';
+            item.innerHTML = `
+                <span>${date} - ${entry.reason}</span>
+                <span class="font-bold ${color}">${sign}${entry.points} PS</span>
+            `;
+            body.appendChild(item);
+        });
+    };
+
+    const renderAddHistoryModal = () => {
+        const body = document.getElementById('add-history-modal-body');
+        body.innerHTML = '';
+        const allGiveaways = Object.values(giveaways).flat();
+        const recentGiveaways = allGiveaways
+            .filter(g => g.addDate)
+            .sort((a, b) => new Date(b.addDate) - new Date(a.addDate))
+            .slice(0, 20);
+
+        if (recentGiveaways.length === 0) {
+            body.innerHTML = '<p class="text-center">No hay sorteos recientes con fecha de adición.</p>';
+            return;
+        }
+
+        let currentAddDate = '';
+        recentGiveaways.forEach(giveaway => {
+             const giveawayAddDate = new Date(giveaway.addDate + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+             if (giveawayAddDate !== currentAddDate) {
+                 currentAddDate = giveawayAddDate;
+                 const dateHeader = document.createElement('h3');
+                 dateHeader.className = 'text-lg font-bold text-yellow-700 mt-4 border-b-2 border-yellow-700/50 pb-1';
+                 dateHeader.textContent = `Añadidos el ${currentAddDate}`;
+                 body.appendChild(dateHeader);
+             }
+             const card = document.createElement('div');
+             card.innerHTML = generateGiveawayCardHTML(giveaway).replace(/<div class="flex justify-end.*?<\/div>/s, ''); // Remove action buttons
+             body.appendChild(card);
+        });
+    };
+
     // --- CÓDIGO DE INICIALIZACIÓN ---
     
-    animateStarryBackground();
-    animateTitle();
-    renderCalendar();
-    updatePointsDisplay();
-    if (userTitleEl) {
-        userTitleEl.textContent = userAchievements.title;
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        animateStarryBackground();
+        animateTitle();
+        renderCalendar();
+        updatePointsDisplay();
+        if (userTitleEl) {
+            userTitleEl.textContent = userAchievements.title;
+        }
 
-    const setupModal = (button, modal, closeButton, onOpenCallback) => {
-        const openAction = (e) => {
+        const setupModal = (button, modal, closeButton, onOpenCallback) => {
+            const openAction = (e) => {
+                e.preventDefault();
+                if (navMenu.classList.contains('is-open')) {
+                    toggleNavMenu();
+                }
+                if (onOpenCallback) onOpenCallback();
+                if (modal) modal.classList.add('is-visible');
+            };
+
+            if (button) button.addEventListener('click', openAction);
+            if (closeButton) closeButton.addEventListener('click', () => { 
+                if (modal) modal.classList.remove('is-visible'); 
+            });
+            if (modal) modal.addEventListener('click', (e) => { 
+                if (e.target === modal) { 
+                    modal.classList.remove('is-visible'); 
+                } 
+            });
+        };
+        
+        // Setup de todos los botones para abrir modales
+        setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
+        setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
+        setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
+        setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
+        setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
+        setupModal(searchMenuBtn, searchModal, closeSearchModalBtn);
+        setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
+        setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
+        setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
+        setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockStats);
+        setupModal(openChartsModalBtn, chartsModal, closeChartsModalBtn, renderCharts);
+        setupModal(oracleBtn, oracleModal, closeOracleModalBtn, renderOracleModal);
+        setupModal(totalPsContainer, psHistoryModal, closePsHistoryModalBtn, renderPsHistoryModal);
+        setupModal(totalGiveawaysContainer, addHistoryModal, closeAddHistoryModalBtn, renderAddHistoryModal);
+        setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
+        
+        // Vista de IA a pantalla completa
+        addAIBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (navMenu.classList.contains('is-open')) {
                 toggleNavMenu();
             }
-            if (onOpenCallback) onOpenCallback();
-            if (modal) modal.classList.add('is-visible');
-        };
+            aiFullscreenView.classList.add('is-visible');
+        });
+        closeAiViewBtn.addEventListener('click', () => {
+            aiFullscreenView.classList.remove('is-visible');
+        });
+        aiSummaryCloseBtn.addEventListener('click', () => {
+            aiFullscreenView.classList.remove('is-visible');
+        });
 
-        if (button) button.addEventListener('click', openAction);
-        if (closeButton) closeButton.addEventListener('click', () => { 
-            if (modal) modal.classList.remove('is-visible'); 
-        });
-        if (modal) modal.addEventListener('click', (e) => { 
-            if (e.target === modal) { 
-                modal.classList.remove('is-visible'); 
-            } 
-        });
-    };
-    
-    // Funciones de renderizado para los modales del menú
-    const renderTrophyModal = () => {
-        trophyModalBody.innerHTML = '';
-        if (wonGiveaways.length === 0) {
-            trophyModalBody.innerHTML = '<p class="text-center">Aún no has ganado ningún sorteo. ¡Sigue participando!</p>';
-            return;
+        const closeZoomModal = () => { if(zoomModal) zoomModal.classList.remove('is-visible'); };
+        if (analysisImagePreview) {
+            analysisImagePreview.addEventListener('click', () => {
+                if (zoomedImage && zoomModal) {
+                    zoomedImage.src = analysisImagePreview.src;
+                    zoomModal.classList.add('is-visible');
+                }
+            });
         }
-
-        wonGiveaways.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate)).forEach(giveaway => {
-            const card = document.createElement('div');
-            card.className = 'trophy-card';
-            
-            const wonDate = new Date(giveaway.wonDate + 'T00:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const accounts = (giveaway.accounts || []).join(', ');
-
-            card.innerHTML = `
-                <button class="trophy-delete-btn" data-giveaway-id="${giveaway.id}" title="Eliminar de la vitrina">&times;</button>
-                <h3>${giveaway.prize}</h3>
-                <p class="text-sm mt-2">Ganado el: <strong>${wonDate}</strong></p>
-                <p class="text-sm">Valor: <strong>${giveaway.price || 'N/A'}</strong></p>
-                <p class="text-xs mt-1 truncate">De: ${accounts}</p>
-            `;
-            trophyModalBody.appendChild(card);
-        });
-    };
-
-    // Setup de todos los botones para abrir modales
-    setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
-    setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
-    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
-    setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
-    setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
-    setupModal(searchMenuBtn, searchModal, closeSearchModalBtn);
-    setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
-    setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
-    setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockStats);
-    setupModal(openChartsModalBtn, chartsModal, closeChartsModalBtn, renderCharts);
-    setupModal(oracleBtn, oracleModal, closeOracleModalBtn, renderOracleModal);
-    setupModal(totalPsContainer, psHistoryModal, closePsHistoryModalBtn, renderPsHistoryModal);
-    setupModal(totalGiveawaysContainer, addHistoryModal, closeAddHistoryModalBtn, renderAddHistoryModal);
-    setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
-    
-    // Vista de IA a pantalla completa
-    addAIBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (navMenu.classList.contains('is-open')) {
-            toggleNavMenu();
+        if (zoomModal) {
+            zoomModal.addEventListener('click', closeZoomModal);
         }
-        aiFullscreenView.classList.add('is-visible');
-    });
-    closeAiViewBtn.addEventListener('click', () => {
-        aiFullscreenView.classList.remove('is-visible');
-    });
-    aiSummaryCloseBtn.addEventListener('click', () => {
-        aiFullscreenView.classList.remove('is-visible');
-    });
+        
+        openNavMenuBtn.addEventListener('click', toggleNavMenu);
+        closeNavMenuBtn.addEventListener('click', toggleNavMenu);
+        menuOverlay.addEventListener('click', toggleNavMenu);
 
-    const closeZoomModal = () => { if(zoomModal) zoomModal.classList.remove('is-visible'); };
-    if (analysisImagePreview) {
-        analysisImagePreview.addEventListener('click', () => {
-            if (zoomedImage && zoomModal) {
-                zoomedImage.src = analysisImagePreview.src;
-                zoomModal.classList.add('is-visible');
-            }
-        });
-    }
-    if (zoomModal) {
-        zoomModal.addEventListener('click', closeZoomModal);
-    }
-    
-    openNavMenuBtn.addEventListener('click', toggleNavMenu);
-    closeNavMenuBtn.addEventListener('click', toggleNavMenu);
-    menuOverlay.addEventListener('click', toggleNavMenu);
+        prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
+        nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
+        calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
 
-    prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
-    nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
-    calendarDaysEl.addEventListener('click', (e) => { const dayEl = e.target.closest('.has-giveaway'); if (dayEl) openModal(dayEl.dataset.date); });
+        closeModalBtn.addEventListener('click', closeModal);
+        closeMoveGiveawayModalBtn.addEventListener('click', closeMoveGiveawayModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-    closeModalBtn.addEventListener('click', closeModal);
-    closeMoveGiveawayModalBtn.addEventListener('click', closeMoveGiveawayModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        modalBody.addEventListener('click', (e) => {
+            const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
+            if (!giveawayId) return;
 
-    modalBody.addEventListener('click', (e) => {
-        const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
-        if (!giveawayId) return;
+            const dateStr = modal.dataset.date;
+            const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
+            if (!giveaway) return;
 
-        const dateStr = modal.dataset.date;
-        const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
-        if (!giveaway) return;
-
-        if (e.target.type === 'checkbox') {
-            const itemContainer = e.target.closest('.giveaway-item');
-            if (e.target.checked) {
-                completedGiveaways[giveawayId] = true;
-                animateShootingStar(itemContainer, () => {
-                    itemContainer.classList.add('completed');
+            if (e.target.type === 'checkbox') {
+                const itemContainer = e.target.closest('.giveaway-item');
+                if (e.target.checked) {
+                    completedGiveaways[giveawayId] = true;
+                    animateShootingStar(itemContainer, () => {
+                        itemContainer.classList.add('completed');
+                        buildModal(dateStr);
+                        renderCalendar();
+                    });
+                    addPoints(2, 'Completar sorteo');
+                } else {
+                    delete completedGiveaways[giveawayId];
+                    itemContainer.classList.remove('completed');
                     buildModal(dateStr);
                     renderCalendar();
-                });
-                addPoints(2, 'Completar sorteo');
-            } else {
-                delete completedGiveaways[giveawayId];
-                itemContainer.classList.remove('completed');
-                buildModal(dateStr);
-                renderCalendar();
+                }
+                saveCompletedGiveaways();
+                checkAchievements('complete', { giveawayDate: dateStr });
+            } else if (e.target.closest('.win-giveaway-btn')) {
+                markAsWon(giveawayId, dateStr);
+            } else if (e.target.closest('.move-giveaway-btn')) {
+                openMoveGiveawayModal(giveaway, dateStr);
+            } else if (e.target.closest('.delete-giveaway-btn')) {
+                if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
+                    deleteGiveawayFromCalendar(dateStr, giveawayId);
+                }
+            } else if (e.target.closest('.delete-giveaway-foreign-btn')) {
+                if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
+                    deleteForeignGiveaway(dateStr, giveawayId);
+                }
             }
-            saveCompletedGiveaways();
-            checkAchievements('complete', { giveawayDate: dateStr });
-        } else if (e.target.closest('.win-giveaway-btn')) {
-            markAsWon(giveawayId, dateStr);
-        } else if (e.target.closest('.move-giveaway-btn')) {
-            openMoveGiveawayModal(giveaway, dateStr);
-        } else if (e.target.closest('.delete-giveaway-btn')) {
-            if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
-                deleteGiveawayFromCalendar(dateStr, giveawayId);
-            }
-        } else if (e.target.closest('.delete-giveaway-foreign-btn')) {
-            if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
-                deleteForeignGiveaway(dateStr, giveawayId);
-            }
-        }
-    });
+        });
 
-    trashModalBody.addEventListener('click', (e) => { const restoreBtn = e.target.closest('.restore-btn'); if (restoreBtn) { restoreGiveawayFromTrash(restoreBtn.dataset.giveawayId); } });
-    
-    discardedModal.addEventListener('click', (e) => {
-        const filterBtn = e.target.closest('.filter-btn');
-        if (filterBtn) {
-            discardedFilter = filterBtn.dataset.filter;
-            renderDiscardedModal();
-        }
-    });
-
-    discardedModalBody.addEventListener('click', (e) => { 
-        const item = e.target.closest('.giveaway-item-discarded'); 
-        if (!item) return;
-        const giveawayId = e.target.closest('[data-giveaway-id]').dataset.giveawayId;
-        const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
-        if (!giveaway) return;
+        trashModalBody.addEventListener('click', (e) => { const restoreBtn = e.target.closest('.restore-btn'); if (restoreBtn) { restoreGiveawayFromTrash(restoreBtn.dataset.giveawayId); } });
         
-        if (e.target.closest('.add-discarded-btn')) {
-            e.stopPropagation();
-            openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
-            deleteDiscardedGiveaway(giveawayId);
-            closeDiscardedModalBtn.click();
-        } else if (e.target.closest('.delete-discarded-btn')) {
-            e.stopPropagation(); 
-            deleteDiscardedGiveaway(giveawayId); 
-        } else if (giveaway.status === 'duplicate' && giveaway.originalGiveaway) { 
-            showDuplicateComparisonModal(giveaway); 
-        } else {
-            openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
-        }
-    });
-
-    trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
-    selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
-    aiImageInput.addEventListener('change', handleFileSelection);
-    startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
-    
-    retryFailedBtn.addEventListener('click', () => {
-         if (giveawaysWithErrors.length > 0) {
-              startAnalysis(giveawaysWithErrors);
-         } else {
-              showNotification('No hay archivos para reintentar', 'Todos los errores se han procesado.');
-         }
-    });
-
-    blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderBlockStats(); });
-    blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderBlockStats(); });
-
-    addAsNewBtn.addEventListener('click', (e) => {
-        const giveawayId = e.target.dataset.giveawayId;
-        if (!giveawayId) return;
-        const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId);
-        if (giveawayToAdd) {
-            deleteDiscardedGiveaway(giveawayId);
-            openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price });
-            duplicateComparisonModal.classList.remove('is-visible');
-        }
-    });
-
-    mergeGiveawayBtn.addEventListener('click', (e) => {
-        const giveawayId = e.target.dataset.giveawayId;
-        if (!giveawayId) return;
-        const discarded = discardedGiveaways.find(g => g.id === giveawayId);
-        if (discarded && discarded.originalGiveaway) {
-            let original = null;
-            for (const date in giveaways) {
-                const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id);
-                if (found) { original = found; break; }
+        discardedModal.addEventListener('click', (e) => {
+            const filterBtn = e.target.closest('.filter-btn');
+            if (filterBtn) {
+                discardedFilter = filterBtn.dataset.filter;
+                renderDiscardedModal();
             }
-            if (original) {
-                if (!original.price && discarded.price) original.price = discarded.price;
-                if (!original.date && discarded.date) original.date = discarded.date;
+        });
+
+        discardedModalBody.addEventListener('click', (e) => { 
+            const item = e.target.closest('.giveaway-item-discarded'); 
+            if (!item) return;
+            const giveawayId = e.target.closest('[data-giveaway-id]').dataset.giveawayId;
+            const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
+            if (!giveaway) return;
+            
+            if (e.target.closest('.add-discarded-btn')) {
+                e.stopPropagation();
+                openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
                 deleteDiscardedGiveaway(giveawayId);
-                saveGiveaways();
-                renderCalendar();
-                showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.');
-                checkAchievements('merge');
-                duplicateComparisonModal.classList.remove('is-visible');
+                closeDiscardedModalBtn.click();
+            } else if (e.target.closest('.delete-discarded-btn')) {
+                e.stopPropagation(); 
+                deleteDiscardedGiveaway(giveawayId); 
+            } else if (giveaway.status === 'duplicate' && giveaway.originalGiveaway) { 
+                showDuplicateComparisonModal(giveaway); 
             } else {
-                showNotification('Error', 'No se encontró el sorteo original para fusionar.');
+                openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
             }
-        }
-    });
+        });
 
-    addGiveawayForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) };
-        addGiveaway(newGiveaway, 'manual');
-        closeAddGiveawayModal();
-    });
+        trophyModalBody.addEventListener('click', (e) => { const deleteBtn = e.target.closest('.trophy-delete-btn'); if (deleteBtn) { deleteWonGiveaway(deleteBtn.dataset.giveawayId); } });
+        selectAiImagesBtn.addEventListener('click', () => { aiImageInput.click(); });
+        aiImageInput.addEventListener('change', handleFileSelection);
+        startAiButton.addEventListener('click', () => startAnalysis(imageQueue));
+        
+        retryFailedBtn.addEventListener('click', () => {
+             if (giveawaysWithErrors.length > 0) {
+                  startAnalysis(giveawaysWithErrors);
+             } else {
+                  showNotification('No hay archivos para reintentar', 'Todos los errores se han procesado.');
+             }
+        });
 
-    moveGiveawayForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (giveawayToMove && originalDateOfGiveaway) {
-            moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value);
-            closeMoveGiveawayModal();
-        }
-    });
+        blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderBlockStats(); });
+        blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderBlockStats(); });
 
-    const downloadBtn = document.getElementById('download-btn');
-    const uploadBtn = document.getElementById('upload-btn');
-    const zipUploadInput = document.getElementById('zip-upload');
-    if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
-    if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
-    if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
+        addAsNewBtn.addEventListener('click', (e) => {
+            const giveawayId = e.target.dataset.giveawayId;
+            if (!giveawayId) return;
+            const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId);
+            if (giveawayToAdd) {
+                deleteDiscardedGiveaway(giveawayId);
+                openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price });
+                duplicateComparisonModal.classList.remove('is-visible');
+            }
+        });
+
+        mergeGiveawayBtn.addEventListener('click', (e) => {
+            const giveawayId = e.target.dataset.giveawayId;
+            if (!giveawayId) return;
+            const discarded = discardedGiveaways.find(g => g.id === giveawayId);
+            if (discarded && discarded.originalGiveaway) {
+                let original = null;
+                for (const date in giveaways) {
+                    const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id);
+                    if (found) { original = found; break; }
+                }
+                if (original) {
+                    if (!original.price && discarded.price) original.price = discarded.price;
+                    if (!original.date && discarded.date) original.date = discarded.date;
+                    deleteDiscardedGiveaway(giveawayId);
+                    saveGiveaways();
+                    renderCalendar();
+                    showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.');
+                    checkAchievements('merge');
+                    duplicateComparisonModal.classList.remove('is-visible');
+                } else {
+                    showNotification('Error', 'No se encontró el sorteo original para fusionar.');
+                }
+            }
+        });
+
+        addGiveawayForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) };
+            addGiveaway(newGiveaway, 'manual');
+            closeAddGiveawayModal();
+        });
+
+        moveGiveawayForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (giveawayToMove && originalDateOfGiveaway) {
+                moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value);
+                closeMoveGiveawayModal();
+            }
+        });
+
+        const downloadBtn = document.getElementById('download-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        const zipUploadInput = document.getElementById('zip-upload');
+        if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
+        if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
+        if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
+
+    });
 
 </script>
 </body>

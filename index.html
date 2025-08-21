@@ -1749,7 +1749,11 @@
         modal.dataset.date = dateStr;
     };
     
+    // --- MODIFICADO: Lógica de apertura/cierre de modales simplificada ---
     const openModal = (dateStr) => { 
+        if (navMenu.classList.contains('is-open')) {
+            toggleNavMenu();
+        }
         buildModal(dateStr); 
         modal.classList.add('is-visible'); 
     };
@@ -1781,9 +1785,14 @@
          moveGiveawayModal.classList.add('is-visible');
     }
     const closeMoveGiveawayModal = () => { moveGiveawayModal.classList.remove('is-visible'); }
+    // --- FIN DE LA MODIFICACIÓN DE LÓGICA DE MODALES ---
 
     const addGiveaway = (newGiveaway) => {
         const dateStr = newGiveaway.date;
+        if (!dateStr) {
+            alert('Por favor, selecciona una fecha para el sorteo.');
+            return;
+        }
         if (!giveaways[dateStr]) giveaways[dateStr] = [];
         giveaways[dateStr].push(newGiveaway);
         saveGiveaways();
@@ -2743,11 +2752,17 @@
     }
 
     const setupModal = (button, modal, closeButton, onOpenCallback) => {
-        if (button) button.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            if (onOpenCallback) onOpenCallback(); 
-            if (modal) modal.classList.add('is-visible'); 
-        });
+        // MODIFICACIÓN FASE 3: Añadido el cierre del menú al abrir un modal.
+        const openAction = (e) => {
+            e.preventDefault();
+            if (navMenu.classList.contains('is-open')) {
+                toggleNavMenu();
+            }
+            if (onOpenCallback) onOpenCallback();
+            if (modal) modal.classList.add('is-visible');
+        };
+
+        if (button) button.addEventListener('click', openAction);
         if (closeButton) closeButton.addEventListener('click', () => { 
             if (modal) modal.classList.remove('is-visible'); 
         });
@@ -2758,9 +2773,12 @@
         });
     };
 
-    // MODIFICADO: Se han añadido funciones placeholder para que no den error.
-    const renderStatsModal = () => { if (statsModal) statsModal.classList.add('is-visible'); };
-    const renderTrophyModal = () => { if (trophyModal) trophyModal.classList.add('is-visible'); };
+    const renderStatsModal = () => { 
+        if (statsModal) statsModal.classList.add('is-visible'); 
+    };
+    const renderTrophyModal = () => { 
+        if (trophyModal) trophyModal.classList.add('is-visible'); 
+    };
 
     setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
@@ -2940,7 +2958,12 @@
     });
 
     const allNavButtons = document.querySelectorAll('#nav-menu a');
-    allNavButtons.forEach(btn => { btn.addEventListener('click', () => toggleNavMenu()); });
+    allNavButtons.forEach(btn => { 
+        btn.addEventListener('click', (e) => { 
+            // La función setupModal ya se encarga de cerrar el menú.
+            // No necesitamos hacer nada aquí.
+        }); 
+    });
 
     const downloadBtn = document.getElementById('download-btn');
     const uploadBtn = document.getElementById('upload-btn');

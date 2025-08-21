@@ -2791,7 +2791,7 @@
             }
         };`;
 
-        const searchJsContent = `// netlify/functions/search.js
+        const searchJsContent = \`// netlify/functions/search.js
         exports.handler = async function (event, context) {
             const fetch = (await import('node-fetch')).default;
             const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -2803,21 +2803,7 @@
                 };
             }
             const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
-            const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
-    
-            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
-                * Producto: "\${query}"
-                * Cuentas de Instagram: \${accounts.join(', ')}
-
-            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
-
-            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:
-                {
-                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",
-                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
-                }
-
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. \`;
+            const prompt = \\\`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.\\n\\n            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.\\n                * Producto: "\\\${query}"\\n                * Cuentas de Instagram: \\\${accounts.join(', ')}\\n\\n            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.\\n\\n            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:\\n                {\\n                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",\\n                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"\\n                }\\n\\n            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \\\`\\\`\\\`. \\\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -2850,7 +2836,7 @@
                     body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
                 };
             }
-        };`;
+        };\`;
 
         zip.file("index.html", indexHtmlContent);
         zip.file("giveaways_new.js", giveawaysContent);
@@ -2866,7 +2852,7 @@
             const link = document.createElement('a');
             link.href = URL.createObjectURL(content);
             const today = new Date().toISOString().slice(0, 10);
-            link.download = `Misorteos-Backup-Completo-${today}.zip`;
+            link.download = \`Misorteos-Backup-Completo-\${today}.zip\`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

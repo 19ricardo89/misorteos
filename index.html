@@ -116,7 +116,7 @@
         .modal-default-bg { background-color: #fffbef; }
         .modal-travel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=1170&auto=format&fit=crop'); }
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
-        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-history-modal-body, #add-history-modal-body, .nav-menu { overflow-y: auto; }
+        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, .nav-menu { overflow-y: auto; }
 
         /* --- CORRECCIÓN UI MODAL IA --- */
         #ai-image-queue {
@@ -288,7 +288,7 @@
         }
         
         /* Estilos para el nuevo contador */
-        #total-giveaways-container, #total-ps-container {
+        #total-giveaways-container {
             padding: 0.5rem 1rem;
             background-color: #302b63;
             border-radius: 9999px;
@@ -297,14 +297,7 @@
             font-weight: bold;
             border: 2px solid #d4af37;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
         }
-        #total-giveaways-container:hover, #total-ps-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #f7d468;
-        }
-
 
         /* --- NUEVA PALETA DE COLORES (VERSIÓN 2) --- */
         .modal-content, .ai-fullscreen-view {
@@ -350,7 +343,7 @@
         }
 
         /* Títulos de los modales */
-        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-history-modal h2, #add-history-modal h2, #block-management-modal h2, #charts-modal h2, #oracle-modal h2 {
+        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2 {
             color: #8c5a15; 
         }
         
@@ -734,20 +727,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             cursor: zoom-out;
         }
-
-        /* --- NUEVO: ESTILOS NOTIFICACIÓN --- */
-        #notification-modal {
-            position: fixed;
-            bottom: 1.25rem;
-            right: 1.25rem;
-            z-index: 200;
-            transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            transform: translateX(calc(100% + 1.25rem));
-        }
-        #notification-modal.is-visible {
-            transform: translateX(0);
-        }
-
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
@@ -813,7 +792,7 @@
                  </button>
                  <div class="flex-1 text-center flex items-center justify-center gap-2 sm:gap-4">
                      <h2 id="user-title" class="text-xl sm:text-2xl font-bold text-yellow-500"></h2>
-                     <div id="total-ps-container" title="Ver historial de puntos">
+                     <div id="total-ps-container" class="bg-yellow-500/20 text-yellow-300 font-bold px-3 sm:px-4 py-0.5 sm:py-1 rounded-full text-sm sm:text-lg border border-yellow-500/30">
                         <span id="total-ps-count">0</span> PS ✨
                     </div>
                  </div>
@@ -836,7 +815,7 @@
         <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div id="total-giveaways-container" title="Ver sorteos añadidos recientemente">
+        <div id="total-giveaways-container">
             <span id="total-giveaways-count">0</span>
         </div>
         <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
@@ -846,7 +825,7 @@
             </svg>
         </button>
     </footer>
-
+    
     <div id="trash-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1048,29 +1027,18 @@
     </div>
     
     <div id="stats-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-2xl rounded-2xl shadow-2xl modal-default-bg p-6">
+        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">📊 Estadísticas de Sorteos</h2>
                 <button id="close-stats-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
-            <div id="stats-modal-body" class="text-left max-h-[60vh] overflow-y-auto pr-2"></div>
+            <div id="stats-modal-body" class="text-left"></div>
             <hr class="border-yellow-600/20 my-4">
             <div class="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
-                <button id="oracle-btn" class="bg-purple-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-purple-400 transition-colors">🔮 Consultar Oráculo</button>
-                <button id="manage-blocks-btn" class="bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">🚫 Gestionar Bloqueos</button>
-                <button id="open-charts-modal" class="bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors">📈 Ver Gráficos</button>
-                 <button id="share-stats-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">📲 Compartir Resumen</button>
+                <button id="manage-blocks-btn" class="bg-purple-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-purple-400 transition-colors">Gestionar Bloqueos</button>
+                <button id="share-stats-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">📲 Compartir Resumen</button>
+                <button id="open-charts-modal" class="bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors">Ver Gráficos 📈</button>
             </div>
-        </div>
-    </div>
-
-    <div id="oracle-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">🔮 Oráculo de la Suerte 🔮</h2>
-                <button id="close-oracle-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <div id="oracle-modal-body" class="text-left"></div>
         </div>
     </div>
     
@@ -1100,7 +1068,7 @@
                 <h2 class="text-2xl sm:text-3xl">Gráficos de Estadísticas</h2>
                 <button id="close-charts-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
-            <div id="charts-modal-body" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div id="charts-modal-body">
                 <div class="chart-container">
                     <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Victorias por Categoría</h3>
                     <canvas id="category-pie-chart"></canvas>
@@ -1108,10 +1076,6 @@
                 <div class="chart-container">
                     <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Valor de Premios Ganados por Mes</h3>
                     <canvas id="monthly-value-bar-chart"></canvas>
-                </div>
-                <div class="chart-container lg:col-span-2">
-                    <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Valor Acumulado de Premios</h3>
-                    <canvas id="cumulative-value-line-chart"></canvas>
                 </div>
             </div>
         </div>
@@ -1132,31 +1096,6 @@
         <div id="zoom-modal-content" class="modal-content">
             <img id="zoomed-image" src="" alt="Vista ampliada">
         </div>
-    </div>
-    
-    <div id="ps-history-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">Historial de Puntos (PS)</h2>
-                <button id="close-ps-history-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <div id="ps-history-modal-body" class="space-y-2 max-h-[60vh]"></div>
-        </div>
-    </div>
-
-    <div id="add-history-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">Sorteos Añadidos Recientemente</h2>
-                <button id="close-add-history-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <div id="add-history-modal-body" class="space-y-4 max-h-[60vh]"></div>
-        </div>
-    </div>
-    
-    <div id="notification-modal" class="bg-web-gradient p-4 rounded-lg shadow-2xl border border-yellow-500">
-        <h3 id="notification-title" class="font-bold text-lg text-yellow-400"></h3>
-        <p id="notification-content" class="text-white"></p>
     </div>
 
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
@@ -1269,7 +1208,6 @@
     
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
-    
     <script>
     // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
 
@@ -1285,8 +1223,7 @@
     let completedGiveaways = JSON.parse(localStorage.getItem(`completedGiveaways`)) || {};
     let wonGiveaways = JSON.parse(localStorage.getItem('wonGiveaways')) || [];
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
-    let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, lastUpdatedMonth: new Date().getMonth() };
-    let pointsHistory = JSON.parse(localStorage.getItem('pointsHistory')) || [];
+    let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, monthly: 0, lastUpdatedMonth: new Date().getMonth() };
     
     const achievementList = {
         bronze: [
@@ -1440,7 +1377,6 @@
     const giveawayAccountsInput = document.getElementById('giveaway-accounts');
     const giveawayPriceInput = document.getElementById('giveaway-price');
     const totalGiveawaysEl = document.getElementById('total-giveaways-count');
-    const totalGiveawaysContainer = document.getElementById('total-giveaways-container');
     const searchMenuBtn = document.getElementById('search-menu-btn');
     const searchModal = document.getElementById('search-modal');
     const closeSearchModalBtn = document.getElementById('close-search-modal');
@@ -1474,7 +1410,6 @@
     const menuOverlay = document.getElementById('menu-overlay');
     const userTitleEl = document.getElementById('user-title');
     const totalPsCountEl = document.getElementById('total-ps-count');
-    const totalPsContainer = document.getElementById('total-ps-container');
     const statsModal = document.getElementById('stats-modal');
     const historyModal = document.getElementById('history-modal');
     const trophyModal = document.getElementById('trophy-modal');
@@ -1531,17 +1466,9 @@
     const notificationModal = document.getElementById('notification-modal');
     const notificationTitle = document.getElementById('notification-title');
     const notificationContent = document.getElementById('notification-content');
-    const oracleBtn = document.getElementById('oracle-btn');
-    const oracleModal = document.getElementById('oracle-modal');
-    const closeOracleModalBtn = document.getElementById('close-oracle-modal');
-    const psHistoryModal = document.getElementById('ps-history-modal');
-    const closePsHistoryModalBtn = document.getElementById('close-ps-history-modal');
-    const addHistoryModal = document.getElementById('add-history-modal');
-    const closeAddHistoryModalBtn = document.getElementById('close-add-history-modal');
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
-    let chartInstances = {};
 
     // --- FUNCIONES DE LA APLICACIÓN ---
 
@@ -1564,7 +1491,6 @@
     const saveWonGiveaways = () => localStorage.setItem('wonGiveaways', JSON.stringify(wonGiveaways));
     const saveAnalysisHistory = () => localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
     const saveUserPoints = () => localStorage.setItem('userPoints', JSON.stringify(userPoints));
-    const savePointsHistory = () => localStorage.setItem('pointsHistory', JSON.stringify(pointsHistory));
     const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
     const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
 
@@ -1574,15 +1500,9 @@
         }
     };
 
-    const addPoints = (pointsToAdd, reason) => {
-        if (!pointsToAdd || pointsToAdd === 0) return;
+    const addPoints = (pointsToAdd) => {
         userPoints.total += pointsToAdd;
-        pointsHistory.unshift({ points: pointsToAdd, reason: reason, date: new Date().toISOString() });
-        if (pointsHistory.length > 50) { // Keep history manageable
-            pointsHistory.pop();
-        }
         saveUserPoints();
-        savePointsHistory();
         updatePointsDisplay();
     };
 
@@ -1591,14 +1511,6 @@
         const cleanedString = priceString.replace(/[^0-9,.]/g, '').replace(',', '.');
         const numericValue = parseFloat(cleanedString);
         return isNaN(numericValue) ? 0 : numericValue;
-    };
-    
-    const getCategoryFromPrize = (prize) => {
-        if (!prize) return 'otros';
-        if (prize.includes('🥎')) return 'padel';
-        if (prize.includes('🛩️')) return 'viajes';
-        if (prize.includes('🃏')) return 'frikis';
-        return 'otros';
     };
 
     const calculateSimilarity = (str1, str2) => {
@@ -1643,8 +1555,12 @@
             if (prizeValue > 100) counters.winsOver100 = (counters.winsOver100 || 0) + 1;
             if (prizeValue > 2000) counters.winsOver2000 = (counters.winsOver2000 || 0) + 1;
             
-            const prizeCategory = getCategoryFromPrize(data.prize);
-            counters.categoryWins[prizeCategory] = (counters.categoryWins[prizeCategory] || 0) + 1;
+            const categoryMap = { '🥎': 'padel', '🛩️': 'viajes', '🃏': 'frikis' };
+            let prizeCategory = 'otros';
+            for (const emoji in categoryMap) {
+                if (data.prize.includes(emoji)) { prizeCategory = categoryMap[emoji]; break; }
+            }
+            counters.categoryWins[prizeCategory]++;
             
             counters.sameDayWins[today] = (counters.sameDayWins[today] || 0) + 1;
 
@@ -1671,7 +1587,7 @@
                     const title = ach.title || ach.name;
                     const isPrestige = ach.id.startsWith('t_');
                     showNotification(`🏆 ${isPrestige ? 'Título Desbloqueado' : 'Logro Desbloqueado'}!`, title);
-                    if (ach.ps) addPoints(ach.ps, `Logro: ${ach.name}`);
+                    if (ach.ps) addPoints(ach.ps);
                     if (isPrestige) {
                         userAchievements.title = ach.title;
                     }
@@ -1722,11 +1638,10 @@
                 const searchText = searchQuery.toLowerCase();
                 let isMatch = true;
                 if(currentFilter !== 'all') {
-                     const category = getCategoryFromPrize(g.prize);
-                     isMatch = (currentFilter === 'padel' && category === 'padel') ||
-                               (currentFilter === 'travel' && category === 'viajes') ||
-                               (currentFilter === 'price' && g.prize.includes('💲')) ||
-                               (currentFilter === 'frikis' && category === 'frikis');
+                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
+                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                               (currentFilter === 'price' && prize.includes('💲')) ||
+                               (currentFilter === 'frikis' && prize.includes('🃏'));
                 }
                 if (searchQuery && !prize.includes(searchText)) isMatch = false;
                 return isMatch;
@@ -1763,11 +1678,10 @@
             const searchText = searchQuery.toLowerCase();
             let isMatch = true;
             if(currentFilter !== 'all') {
-                     const category = getCategoryFromPrize(g.prize);
-                     isMatch = (currentFilter === 'padel' && category === 'padel') ||
-                               (currentFilter === 'travel' && category === 'viajes') ||
-                               (currentFilter === 'price' && g.prize.includes('💲')) ||
-                               (currentFilter === 'frikis' && category === 'frikis');
+                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
+                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                               (currentFilter === 'price' && prize.includes('💲')) ||
+                               (currentFilter === 'frikis' && prize.includes('🃏'));
         }
         if (searchQuery && !prize.includes(searchText)) isMatch = false;
         return isMatch;
@@ -1901,7 +1815,7 @@
     }
     const closeMoveGiveawayModal = () => { moveGiveawayModal.classList.remove('is-visible'); }
 
-    const addGiveaway = (newGiveaway, source = 'manual') => {
+    const addGiveaway = (newGiveaway) => {
         const dateStr = newGiveaway.date;
         if (!dateStr) {
             alert('Por favor, selecciona una fecha para el sorteo.');
@@ -1911,13 +1825,8 @@
         giveaways[dateStr].push(newGiveaway);
         saveGiveaways();
         renderCalendar();
-        if (source === 'manual') {
-             addPoints(1, 'Añadir sorteo manual');
-             checkAchievements('add-manual');
-        } else if (source === 'ai') {
-             addPoints(5, 'Añadir sorteo con IA');
-             checkAchievements('add-ai');
-        }
+        addPoints(1);
+        checkAchievements('add-manual');
     };
     
     const moveGiveaway = (giveawayId, oldDate, newDate) => {
@@ -1947,24 +1856,16 @@
         const [wonGiveaway] = giveaways[dateStr].splice(giveawayIndex, 1);
         
         let points = 100;
-        let reason = `Ganar "${wonGiveaway.prize.substring(0, 20)}..."`;
-        const category = getCategoryFromPrize(wonGiveaway.prize);
-        if (['padel', 'viajes', 'frikis'].includes(category)) {
-            points += 25;
-            reason += ' (+25 PS bonus categoría)';
-        }
-        if (parsePrice(wonGiveaway.price) > 500) {
-             points += 250;
-             reason += ' (+250 PS bonus valor)';
-        }
-        addPoints(points, reason);
+        if (wonGiveaway.prize.includes('🥎') || wonGiveaway.prize.includes('🛩️') || wonGiveaway.prize.includes('🃏')) points += 25;
+        if (parsePrice(wonGiveaway.price) > 500) points += 250;
+        addPoints(points);
 
         wonGiveaway.wonDate = new Date().toISOString().slice(0, 10);
         wonGiveaways.push(wonGiveaway);
         if (!completedGiveaways[giveawayId]) {
             completedGiveaways[giveawayId] = true;
             completedGiveawayCount++;
-            addPoints(2, 'Completar sorteo ganado');
+            addPoints(2);
             saveCompletedGiveaways();
         }
         if (giveaways[dateStr].length === 0) {
@@ -1979,7 +1880,7 @@
     };
 
     const deleteWonGiveaway = (giveawayId) => {
-        if (confirm("¿Estás seguro de que quieres eliminar este sorteo de la vitrina? Esta acción no se puede deshacer.")) {
+        if (confirm("¿Estás seguro de que quieres eliminar este sorteo de la vitrina?")) {
             const wonGiveaway = wonGiveaways.find(g => g.id === giveawayId);
             if (wonGiveaway) {
                 if (completedGiveaways[wonGiveaway.id]) {
@@ -2295,7 +2196,9 @@
                     analysisResults[statusKey].pop();
                     return; 
                 }
-                addGiveaway(newGiveaway, 'ai');
+                addGiveaway(newGiveaway);
+                addPoints(5);
+                checkAchievements('add-ai');
                 break;
             case 'trash':
                 trashGiveaways.push({ ...editedData, id: Date.now().toString(), originalDate: editedData.date });
@@ -2541,39 +2444,13 @@
         
         const originalGiveawayWithDate = { ...originalGiveawayData, date: originalDate };
 
-        originalGiveawayDetails.innerHTML = generateGiveawayCardHTML(originalGiveawayWithDate);
-        discardedGiveawayDetails.innerHTML = generateGiveawayCardHTML(discardedGiveaway);
+        originalGiveawayDetails.innerHTML = generateGiveawayHTML(originalGiveawayWithDate);
+        discardedGiveawayDetails.innerHTML = generateGiveawayHTML(discardedGiveaway);
         
         mergeGiveawayBtn.dataset.giveawayId = discardedGiveaway.id;
         addAsNewBtn.dataset.giveawayId = discardedGiveaway.id;
         
         duplicateComparisonModal.classList.add('is-visible');
-    };
-
-    const generateGiveawayCardHTML = (giveaway) => {
-        if (!giveaway) return '';
-        
-        const date = giveaway.date || giveaway.originalDate || 'Sin fecha';
-        const accounts = giveaway.accounts ? giveaway.accounts.join(', ') : 'N/A';
-        const price = giveaway.price || 'N/A';
-        const status = giveaway.status || 'desconocido';
-
-        return `
-        <div class="giveaway-card">
-            <div class="flex justify-between items-start">
-                 <h3 class="flex-grow">${giveaway.prize || 'Sorteo sin nombre'}</h3>
-                 <span class="status-tag status-${status.replace(/_/g, '-')}">${status.replace(/_/g, ' ')}</span>
-            </div>
-            <div class="giveaway-card-details mt-2">
-                <div class="detail-item"><i class="fa-solid fa-calendar-days"></i> <span>${date}</span></div>
-                <div class="detail-item"><i class="fa-solid fa-at"></i> <span class="truncate">${accounts}</span></div>
-                <div class="detail-item"><i class="fa-solid fa-tags"></i> <span>${price}</span></div>
-            </div>
-            <div class="flex justify-end gap-2 mt-4">
-                 <button data-giveaway-id="${giveaway.id}" class="add-discarded-btn text-xs font-bold bg-green-300 px-3 py-1 rounded-full hover:bg-green-400">Restaurar</button>
-                 <button data-giveaway-id="${giveaway.id}" class="delete-discarded-btn text-xs font-bold bg-red-300 px-3 py-1 rounded-full hover:bg-red-400">Eliminar</button>
-            </div>
-        </div>`;
     };
 
     const renderDiscardedModal = () => { 
@@ -2905,40 +2782,16 @@
          showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
     };
 
-    // --- CÓDIGO DE INICIALIZACIÓN (MODO DEPURACIÓN) ---
-    console.log("✅ Script principal iniciado. Abajo comenzará la depuración paso a paso.");
-
-    try {
-        // ⬇️ INSTRUCCIONES DE DEPURACIÓN ⬇️
-        // Si la página sigue sin cargar, abre la consola (F12) y ve descomentando CADA PASO de uno en uno.
-        // Guarda el archivo y recarga la página cada vez. La página se romperá cuando descomentes el paso que contiene el error.
-
-        // PASO 1: (YA ACTIVO) Dibuja el fondo de estrellas.
-        animateStarryBackground();
-        console.log("Paso 1 completado: Fondo de estrellas OK.");
-
-        // PASO 2: Descomenta la siguiente línea y recarga. Debería aparecer el título "Misorteos".
-        // animateTitle();
-        console.log("Paso 2 completado. Si no ves el título, el error está en la función animateTitle().");
-
-        // PASO 3: Descomenta la siguiente línea y recarga. Debería aparecer el calendario y el mes.
-        // renderCalendar();
-        console.log("Paso 3 completado. Si no ves el calendario, el error está en la función renderCalendar().");
-
-        // PASO 4: Descomenta las siguientes líneas y recarga. El resto de la UI debería estar bien.
-        // updatePointsDisplay();
-        // if (userTitleEl) {
-        //     userTitleEl.textContent = userAchievements.title;
-        // }
-        console.log("Paso 4 completado. Si algo falla aquí, el error está en estas últimas líneas.");
-
-    } catch (error) {
-        // Si ves esto, el error está en la última línea que descomentaste.
-        console.error("❌ ¡ERROR FATAL DURANTE LA INICIALIZACIÓN!", error);
-        alert("¡ERROR! La página ha fallado al cargar. Revisa la consola de desarrollador (F12) para ver los detalles del error en color rojo.");
-    }
+    // --- CÓDIGO DE INICIALIZACIÓN ---
     
-    // --- ASIGNACIÓN DE EVENT LISTENERS ---
+    animateStarryBackground();
+    animateTitle();
+    renderCalendar();
+    updatePointsDisplay();
+    if (userTitleEl) {
+        userTitleEl.textContent = userAchievements.title;
+    }
+
     const setupModal = (button, modal, closeButton, onOpenCallback) => {
         const openAction = (e) => {
             e.preventDefault();
@@ -2961,30 +2814,8 @@
     };
     
     // Funciones de renderizado para los modales del menú
-    const renderTrophyModal = () => {
-        trophyModalBody.innerHTML = '';
-        if (wonGiveaways.length === 0) {
-            trophyModalBody.innerHTML = '<p class="text-center">Aún no has ganado ningún sorteo. ¡Sigue participando!</p>';
-            return;
-        }
-
-        wonGiveaways.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate)).forEach(giveaway => {
-            const card = document.createElement('div');
-            card.className = 'trophy-card';
-            
-            const wonDate = new Date(giveaway.wonDate + 'T00:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const accounts = (giveaway.accounts || []).join(', ');
-
-            card.innerHTML = `
-                <button class="trophy-delete-btn" data-giveaway-id="${giveaway.id}" title="Eliminar de la vitrina">&times;</button>
-                <h3>${giveaway.prize}</h3>
-                <p class="text-sm mt-2">Ganado el: <strong>${wonDate}</strong></p>
-                <p class="text-sm">Valor: <strong>${giveaway.price || 'N/A'}</strong></p>
-                <p class="text-xs mt-1 truncate">De: ${accounts}</p>
-            `;
-            trophyModalBody.appendChild(card);
-        });
-    };
+    const renderStatsModal = () => { /* Lógica para rellenar el modal de stats */ };
+    const renderTrophyModal = () => { /* Lógica para rellenar el modal de trofeos */ };
 
     // Setup de todos los botones para abrir modales
     setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
@@ -2996,11 +2827,7 @@
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockStats);
-    setupModal(openChartsModalBtn, chartsModal, closeChartsModalBtn, renderCharts);
-    setupModal(oracleBtn, oracleModal, closeOracleModalBtn, renderOracleModal);
-    setupModal(totalPsContainer, psHistoryModal, closePsHistoryModalBtn, renderPsHistoryModal);
-    setupModal(totalGiveawaysContainer, addHistoryModal, closeAddHistoryModalBtn, renderAddHistoryModal);
+    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     
     // Vista de IA a pantalla completa
@@ -3060,7 +2887,7 @@
                     buildModal(dateStr);
                     renderCalendar();
                 });
-                addPoints(2, 'Completar sorteo');
+                addPoints(2);
             } else {
                 delete completedGiveaways[giveawayId];
                 itemContainer.classList.remove('completed');
@@ -3097,10 +2924,9 @@
     discardedModalBody.addEventListener('click', (e) => { 
         const item = e.target.closest('.giveaway-item-discarded'); 
         if (!item) return;
-        const giveawayId = e.target.closest('[data-giveaway-id]').dataset.giveawayId;
+        const giveawayId = item.dataset.giveawayId;
         const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
         if (!giveaway) return;
-        
         if (e.target.closest('.add-discarded-btn')) {
             e.stopPropagation();
             openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
@@ -3129,8 +2955,8 @@
          }
     });
 
-    blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderBlockStats(); });
-    blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderBlockStats(); });
+    blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderStatsModal(); });
+    blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderStatsModal(); });
 
     addAsNewBtn.addEventListener('click', (e) => {
         const giveawayId = e.target.dataset.giveawayId;
@@ -3171,7 +2997,7 @@
     addGiveawayForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) };
-        addGiveaway(newGiveaway, 'manual');
+        addGiveaway(newGiveaway);
         closeAddGiveawayModal();
     });
 

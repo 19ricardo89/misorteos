@@ -37,6 +37,32 @@
             to { transform: rotate(360deg) scale(0); }
         }
 
+        /* --- ESTILOS NOTIFICACIÓN TOAST --- */
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            background-color: #302b63;
+            color: #f7d468;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #d4af37;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none;
+            animation-duration: 0.5s;
+            animation-fill-mode: forwards;
+        }
+        .notification-toast.show {
+            display: block;
+            animation-name: slideInRight;
+        }
+        .notification-toast.hide {
+            animation-name: slideOutRight;
+        }
+
         /* --- ESTILOS GENERALES --- */
         html, body {
             height: 100%;
@@ -741,6 +767,10 @@
     </style>
 </head>
 <body class="p-4">
+    <div id="notification-modal" class="notification-toast">
+        <h3 id="notification-title" class="font-bold text-lg"></h3>
+        <p id="notification-content"></p>
+    </div>
     <input type="file" id="zip-upload" class="hidden" accept=".zip">
     <div id="magic-stars-container"></div>
     
@@ -1040,9 +1070,13 @@
             <div id="stats-modal-body" class="text-left"></div>
             <hr class="border-yellow-600/20 my-4">
             <div class="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
-                <button id="manage-blocks-btn" class="bg-purple-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-purple-400 transition-colors">Gestionar Bloqueos</button>
-                <button id="share-stats-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">📲 Compartir Resumen</button>
-                <button id="open-charts-modal" class="bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors">Ver Gráficos 📈</button>
+                <button id="open-charts-modal" class="bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors">Gráficos 📈</button>
+                <button id="share-stats-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">Compartir 📲</button>
+            </div>
+            <hr class="border-yellow-600/20 my-4">
+            <div class="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
+                 <button id="oracle-proximity-btn" class="bg-indigo-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-indigo-400 transition-colors">🔮 Oráculo de Proximidad</button>
+                 <button id="oracle-prize-btn" class="bg-teal-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-teal-400 transition-colors">✨ Oráculo del Premio</button>
             </div>
         </div>
     </div>
@@ -1050,20 +1084,21 @@
     <div id="block-management-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">Gestión de Cuentas Bloqueadas</h2>
+                <h2 class="text-2xl sm:text-3xl">🚫 Gestión de Bloqueos</h2>
                 <button id="close-block-management-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
+            <p class="text-sm mb-4">Registra aquí cuando recibes un bloqueo para llevar un seguimiento.</p>
             <div class="flex justify-center items-center flex-wrap gap-2 sm:gap-4 mb-4">
-                <button id="block-like-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
-                    <span class="text-xl sm:text-2xl mr-2">👍🚫</span>
-                    <span class="hidden sm:inline">Bloquear 'Me gusta'</span>
+                <button id="block-like-btn" class="nav-btn p-3 sm:p-4 shadow-lg transition-transform duration-300 transform hover:scale-110 flex items-center gap-2">
+                    <span class="text-xl sm:text-2xl">👍</span>
+                    <span>Registrar Bloqueo de 'Like'</span>
                 </button>
-                <button id="block-comment-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
-                    <span class="text-xl sm:text-2xl mr-2">💬🚫</span>
-                    <span class="hidden sm:inline">Bloquear Comentarios</span>
+                <button id="block-comment-btn" class="nav-btn p-3 sm:p-4 shadow-lg transition-transform duration-300 transform hover:scale-110 flex items-center gap-2">
+                    <span class="text-xl sm:text-2xl">💬</span>
+                    <span>Registrar Bloqueo de Comentario</span>
                 </button>
             </div>
-            <div id="block-stats-container" class="text-left"></div>
+            <div id="block-stats-container" class="text-left mt-6"></div>
         </div>
     </div>
 
@@ -1504,14 +1539,24 @@
 
     // --- FUNCIONES DE LA APLICACIÓN ---
 
+    let notificationTimeout;
     const showNotification = (title, message) => {
         if (notificationTitle && notificationContent && notificationModal) {
+            // Si ya hay una notificación, la limpia para mostrar la nueva
+            clearTimeout(notificationTimeout);
+            notificationModal.classList.remove('show', 'hide');
+            
+            // Forzar un reflow para reiniciar la animación
+            void notificationModal.offsetWidth;
+
             notificationTitle.textContent = title;
             notificationContent.textContent = message;
-            notificationModal.classList.add('is-visible');
-            setTimeout(() => {
-                notificationModal.classList.remove('is-visible');
-            }, 4000);
+            notificationModal.classList.add('show');
+
+            notificationTimeout = setTimeout(() => {
+                notificationModal.classList.remove('show');
+                notificationModal.classList.add('hide');
+            }, 4000); // La notificación dura 4 segundos
         }
     };
 
@@ -1630,7 +1675,7 @@
                     userAchievements.unlocked.push(ach.id);
                     const title = ach.title || ach.name;
                     const isPrestige = ach.id.startsWith('t_');
-                    showNotification(`🏆 ${isPrestige ? 'Título Desbloqueado' : 'Logro Desbloqueado'}!`, title);
+                    showNotification(isPrestige ? '🏆 Título Desbloqueado' : '🏅 Logro Desbloqueado', title);
                     if (ach.ps) addPoints(ach.ps, `Logro: ${title}`);
                     if (isPrestige) {
                         userAchievements.title = ach.title;
@@ -2759,6 +2804,60 @@
         calculateAndRenderStats();
     };
 
+    let categoryPieChart = null;
+    let monthlyValueBarChart = null;
+
+    const renderCharts = () => {
+        const categoryCtx = document.getElementById('category-pie-chart').getContext('2d');
+        const monthlyCtx = document.getElementById('monthly-value-bar-chart').getContext('2d');
+
+        // Destruir gráficos anteriores para evitar solapamientos
+        if (categoryPieChart) categoryPieChart.destroy();
+        if (monthlyValueBarChart) monthlyValueBarChart.destroy();
+
+        // Datos para el gráfico de pastel (Victorias por Categoría)
+        const categoryWins = wonGiveaways.reduce((acc, g) => {
+            const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
+            acc[category] = (acc[category] || 0) + 1;
+            return acc;
+        }, {});
+
+        categoryPieChart = new Chart(categoryCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(categoryWins),
+                datasets: [{
+                    data: Object.values(categoryWins),
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#6b7280'],
+                    borderColor: '#fffbef',
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // Datos para el gráfico de barras (Valor por Mes)
+        const monthlyValues = wonGiveaways.reduce((acc, g) => {
+            const month = new Date(g.wonDate).getMonth(); // 0 = Enero, 11 = Diciembre
+            acc[month] = (acc[month] || 0) + parsePrice(g.price);
+            return acc;
+        }, Array(12).fill(0));
+
+        monthlyValueBarChart = new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [{
+                    label: 'Valor Total Ganado (€)',
+                    data: monthlyValues,
+                    backgroundColor: '#fde047',
+                    borderColor: '#f59e0b',
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+        });
+    };
+
     const renderAchievementsModal = (activeTab = 'logros') => {
         const unlockedIds = userAchievements.unlocked;
         
@@ -3113,6 +3212,90 @@
          showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
     };
 
+    const renderBlockManagementModal = () => {
+        const ONE_DAY_MS = 1000 * 60 * 60 * 24;
+        const likeBlocks = blockHistory.filter(b => b.type === 'like').sort((a, b) => new Date(a.date) - new Date(b.date));
+        const commentBlocks = blockHistory.filter(b => b.type === 'comment').sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        let avgLikeGap = 'N/A';
+        if (likeBlocks.length > 1) {
+            let totalGap = 0;
+            for (let i = 1; i < likeBlocks.length; i++) {
+                totalGap += (new Date(likeBlocks[i].date) - new Date(likeBlocks[i-1].date));
+            }
+            avgLikeGap = (totalGap / (likeBlocks.length - 1) / ONE_DAY_MS).toFixed(1);
+        }
+
+        let avgCommentGap = 'N/A';
+        if (commentBlocks.length > 1) {
+            let totalGap = 0;
+            for (let i = 1; i < commentBlocks.length; i++) {
+                totalGap += (new Date(commentBlocks[i].date) - new Date(commentBlocks[i-1].date));
+            }
+            avgCommentGap = (totalGap / (commentBlocks.length - 1) / ONE_DAY_MS).toFixed(1);
+        }
+        
+        blockStatsContainer.innerHTML = `
+            <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">Estadísticas de Bloqueos</h3>
+            <ul class="space-y-2">
+                <li>Total Bloqueos de 'Me Gusta': <strong>${likeBlocks.length}</strong></li>
+                <li>Tiempo medio entre bloqueos de 'Like': <strong>${avgLikeGap} días</strong></li>
+                <li class="pt-2 border-t border-yellow-600/10">Total Bloqueos de Comentario: <strong>${commentBlocks.length}</strong></li>
+                <li>Tiempo medio entre bloqueos de Comentario: <strong>${avgCommentGap} días</strong></li>
+            </ul>
+        `;
+    };
+
+    const consultarOraculo = (tipo) => {
+        const proximosSorteos = Object.values(giveaways).flat().filter(g => new Date(g.date) >= new Date(new Date().toDateString()));
+        
+        if (proximosSorteos.length === 0) {
+            showNotification('🔮 Oráculo Silencioso', 'No hay sorteos futuros para predecir.');
+            return;
+        }
+
+        if (tipo === 'proximidad') {
+            const mensajes = [
+                "Las estrellas se alinean, una victoria está cerca.",
+                "Siento una fuerte energía de suerte a tu alrededor.",
+                "La fortuna favorece a los audaces. ¡Tu momento llegará!",
+                "Las constelaciones son esquivas hoy, pero no pierdas la fe.",
+                "Un premio inesperado podría estar en tu camino."
+            ];
+            const veredicto = mensajes[Math.floor(Math.random() * mensajes.length)];
+            showNotification('🔮 Oráculo de Proximidad', veredicto);
+        }
+
+        if (tipo === 'premio') {
+            const sorteoElegido = proximosSorteos[Math.floor(Math.random() * proximosSorteos.length)];
+            showNotification('✨ Oráculo del Premio', `El cosmos susurra sobre... "${sorteoElegido.prize}"`);
+        }
+    };
+
+    const shareStats = () => {
+        const totalWon = wonGiveaways.length;
+        const totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
+        const winRate = Object.keys(completedGiveaways).length > 0 ? ((totalWon / Object.keys(completedGiveaways).length) * 100).toFixed(2) : 0;
+        const title = userAchievements.title;
+
+        const summaryText = `
+✨ Mi Resumen de Misorteos ✨
+- Título Actual: ${title}
+- Victorias Totales: ${totalWon} 🏆
+- Valor Acumulado: ${totalValueWon.toFixed(2)}€ 💰
+- Win Rate: ${winRate}% 🎯
+
+¡Generado desde mi app de sorteos!
+        `.trim();
+
+        navigator.clipboard.writeText(summaryText).then(() => {
+            showNotification('📋 Resumen Copiado', '¡Ya puedes pegarlo donde quieras!');
+        }).catch(err => {
+            console.error('Error al copiar: ', err);
+            showNotification('❌ Error', 'No se pudo copiar el resumen.');
+        });
+    };
+
     // --- CÓDIGO DE INICIALIZACIÓN ---
     
     animateStarryBackground();
@@ -3154,7 +3337,7 @@
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn);
+    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     setupModal(null, psSummaryModal, closePsSummaryModalBtn);
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
@@ -3321,8 +3504,21 @@
          }
     });
 
-    blockLikeBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'like', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); renderStatsModal(); });
-    blockCommentBtn.addEventListener('click', (e) => { e.preventDefault(); blockHistory.push({ type: 'comment', date: new Date().toISOString() }); saveBlockHistory(); showNotification('Bloqueo registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); renderStatsModal(); });
+    blockLikeBtn.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        blockHistory.push({ type: 'like', date: new Date().toISOString() }); 
+        saveBlockHistory(); 
+        showNotification('👍 Bloqueo Registrado', 'Se ha añadido un nuevo bloqueo de "Me gusta".'); 
+        renderBlockManagementModal(); 
+    });
+
+    blockCommentBtn.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        blockHistory.push({ type: 'comment', date: new Date().toISOString() }); 
+        saveBlockHistory(); 
+        showNotification('💬 Bloqueo Registrado', 'Se ha añadido un nuevo bloqueo de comentarios.'); 
+        renderBlockManagementModal(); 
+    });
 
     addAsNewBtn.addEventListener('click', (e) => {
         const giveawayId = e.target.dataset.giveawayId;
@@ -3391,6 +3587,12 @@
     if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
     if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
     if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
+
+    setupModal(openChartsModalBtn, chartsModal, closeChartsModalBtn, renderCharts);
+    
+    document.getElementById('oracle-proximity-btn').addEventListener('click', () => consultarOraculo('proximidad'));
+    document.getElementById('oracle-prize-btn').addEventListener('click', () => consultarOraculo('premio'));
+    document.getElementById('share-stats-btn').addEventListener('click', shareStats);
 
 </script>
 </body>

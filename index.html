@@ -288,7 +288,7 @@
         }
         
         /* Estilos para el nuevo contador */
-        #total-giveaways-container {
+        #total-giveaways-container, #total-ps-container {
             padding: 0.5rem 1rem;
             background-color: #302b63;
             border-radius: 9999px;
@@ -297,6 +297,12 @@
             font-weight: bold;
             border: 2px solid #d4af37;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        #total-giveaways-container:hover, #total-ps-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #f7d468;
         }
 
         /* --- NUEVA PALETA DE COLORES (VERSIÓN 2) --- */
@@ -732,16 +738,6 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
         }
-        
-        /* --- NUEVOS ESTILOS FASE 3.3 --- */
-        #total-giveaways-container, #total-ps-container {
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        #total-giveaways-container:hover, #total-ps-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #f7d468;
-        }
     </style>
 </head>
 <body class="p-4">
@@ -801,7 +797,7 @@
                  </button>
                  <div class="flex-1 text-center flex items-center justify-center gap-2 sm:gap-4">
                      <h2 id="user-title" class="text-xl sm:text-2xl font-bold text-yellow-500"></h2>
-                     <div id="total-ps-container" class="bg-yellow-500/20 text-yellow-300 font-bold px-3 sm:px-4 py-0.5 sm:py-1 rounded-full text-sm sm:text-lg border border-yellow-500/30">
+                     <div id="total-ps-container">
                         <span id="total-ps-count">0</span> PS ✨
                     </div>
                  </div>
@@ -824,7 +820,7 @@
         <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div id="total-giveaways-container" class="cursor-pointer">
+        <div id="total-giveaways-container">
             <span id="total-giveaways-count">0</span>
         </div>
         <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
@@ -1108,21 +1104,21 @@
         </div>
     </div>
 
-    <!-- NUEVOS MODALES FASE 3.3 -->
+    <!-- MODALES ACTUALIZADOS -->
     <div id="ps-summary-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">🏆 Últimos Premios Ganados</h2>
+                <h2 class="text-2xl sm:text-3xl">✨ Historial de Puntos (PS)</h2>
                 <button id="close-ps-summary-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
-            <div id="ps-summary-modal-body" class="space-y-3 max-h-[60vh] text-left"></div>
+            <div id="ps-summary-modal-body" class="space-y-2 max-h-[60vh] text-left"></div>
         </div>
     </div>
 
     <div id="recent-adds-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">✨ Sorteos Añadidos Recientemente</h2>
+                <h2 class="text-2xl sm:text-3xl">🗓️ Historial de Capturas</h2>
                 <button id="close-recent-adds-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
             <div id="recent-adds-modal-body" class="space-y-4 max-h-[60vh]"></div>
@@ -1253,7 +1249,7 @@
     let completedGiveaways = JSON.parse(localStorage.getItem(`completedGiveaways`)) || {};
     let wonGiveaways = JSON.parse(localStorage.getItem('wonGiveaways')) || [];
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
-    let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, monthly: 0, lastUpdatedMonth: new Date().getMonth() };
+    let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
     
     const achievementList = {
         bronze: [
@@ -1539,8 +1535,20 @@
         }
     };
 
-    const addPoints = (pointsToAdd) => {
+    const addPoints = (pointsToAdd, reason) => {
         userPoints.total += pointsToAdd;
+        if (!userPoints.log) {
+            userPoints.log = [];
+        }
+        userPoints.log.push({
+            points: pointsToAdd,
+            reason: reason,
+            date: new Date().toISOString()
+        });
+        // Mantener el log con un máximo de 30 entradas para no sobrecargar
+        if (userPoints.log.length > 30) {
+            userPoints.log = userPoints.log.slice(-30);
+        }
         saveUserPoints();
         updatePointsDisplay();
     };
@@ -1626,7 +1634,7 @@
                     const title = ach.title || ach.name;
                     const isPrestige = ach.id.startsWith('t_');
                     showNotification(`🏆 ${isPrestige ? 'Título Desbloqueado' : 'Logro Desbloqueado'}!`, title);
-                    if (ach.ps) addPoints(ach.ps);
+                    if (ach.ps) addPoints(ach.ps, `Logro: ${title}`);
                     if (isPrestige) {
                         userAchievements.title = ach.title;
                     }
@@ -1865,7 +1873,7 @@
         giveaways[dateStr].push(newGiveaway);
         saveGiveaways();
         renderCalendar();
-        addPoints(1);
+        addPoints(1, `Sorteo añadido: ${newGiveaway.prize.substring(0, 20)}...`);
         checkAchievements('add-manual');
     };
     
@@ -1897,16 +1905,17 @@
         const [wonGiveaway] = giveaways[dateStr].splice(giveawayIndex, 1);
         
         let points = 100;
+        let reason = `¡Has ganado "${wonGiveaway.prize}"!`;
         if (wonGiveaway.prize.includes('🥎') || wonGiveaway.prize.includes('🛩️') || wonGiveaway.prize.includes('🃏')) points += 25;
         if (parsePrice(wonGiveaway.price) > 500) points += 250;
-        addPoints(points);
+        addPoints(points, reason);
 
         wonGiveaway.wonDate = new Date().toISOString();
         wonGiveaways.push(wonGiveaway);
         if (!completedGiveaways[giveawayId]) {
             completedGiveaways[giveawayId] = true;
             completedGiveawayCount++;
-            addPoints(2);
+            addPoints(2, `Completado: ${wonGiveaway.prize.substring(0, 20)}...`);
             saveCompletedGiveaways();
         }
         if (giveaways[dateStr].length === 0) {
@@ -2239,7 +2248,7 @@
                     return; 
                 }
                 addGiveaway(newGiveaway);
-                addPoints(5);
+                addPoints(5, `Sorteo añadido con IA`);
                 checkAchievements('add-ai');
                 break;
             case 'trash':
@@ -3121,7 +3130,7 @@
                     buildModal(dateStr);
                     renderCalendar();
                 });
-                addPoints(2);
+                addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
             } else {
                 delete completedGiveaways[giveawayId];
                 itemContainer.classList.remove('completed');

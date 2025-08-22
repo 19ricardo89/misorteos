@@ -2689,7 +2689,7 @@ const initialDiscardedGiveaways = [
         },
         "originalDate": "2025-08-20",
         "prize_category": "otros"
-    }
+    },
   
 ];
 

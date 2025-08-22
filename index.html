@@ -1232,7 +1232,7 @@
             }, { once: true });
         }
     </script>
-    <script src="giveaways_new.js"></script>
+<script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script>
     // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
@@ -2801,19 +2801,23 @@
 
     const renderPsSummaryModal = () => {
         psSummaryModalBody.innerHTML = '';
-        if (wonGiveaways.length === 0) {
-            psSummaryModalBody.innerHTML = '<p class="text-center">Aún no has ganado ningún premio.</p>';
+        const log = userPoints.log || [];
+        if (log.length === 0) {
+            psSummaryModalBody.innerHTML = '<p class="text-center">Aún no has ganado puntos. ¡Empieza a participar!</p>';
             return;
         }
 
-        const recentWins = [...wonGiveaways].reverse().slice(0, 5);
+        const recentLogs = [...log].reverse().slice(0, 20);
 
-        recentWins.forEach(giveaway => {
-            const wonDate = new Date(giveaway.wonDate).toLocaleDateString('es-ES');
+        recentLogs.forEach(entry => {
+            const entryDate = new Date(entry.date).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
             const itemHTML = `
-                <div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20">
-                    <p class="font-bold text-yellow-900">${giveaway.prize}</p>
-                    <p class="text-sm">Ganado el: ${wonDate}</p>
+                <div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-green-600">+${entry.points} PS</p>
+                        <p class="text-sm text-yellow-900 truncate" style="max-width: 250px;">${entry.reason}</p>
+                    </div>
+                    <span class="text-xs text-gray-500 flex-shrink-0">${entryDate}</span>
                 </div>
             `;
             psSummaryModalBody.innerHTML += itemHTML;

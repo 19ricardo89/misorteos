@@ -1269,6 +1269,7 @@
     
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
+    
     <script>
     // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
 
@@ -2791,7 +2792,7 @@
             }
         };`;
 
-        const searchJsContent = \`// netlify/functions/search.js
+        const searchJsContent = `// netlify/functions/search.js
         exports.handler = async function (event, context) {
             const fetch = (await import('node-fetch')).default;
             const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -2803,7 +2804,21 @@
                 };
             }
             const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
-            const prompt = \\\`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.\\n\\n            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.\\n                * Producto: "\\\${query}"\\n                * Cuentas de Instagram: \\\${accounts.join(', ')}\\n\\n            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.\\n\\n            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:\\n                {\\n                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",\\n                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"\\n                }\\n\\n            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \\\`\\\`\\\`. \\\`;
+            const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
+    
+            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
+                * Producto: "\${query}"
+                * Cuentas de Instagram: \${accounts.join(', ')}
+
+            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
+
+            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:
+                {
+                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",
+                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
+                }
+
+            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. \`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -2836,7 +2851,7 @@
                     body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
                 };
             }
-        };\`;
+        };`;
 
         zip.file("index.html", indexHtmlContent);
         zip.file("giveaways_new.js", giveawaysContent);
@@ -2852,7 +2867,7 @@
             const link = document.createElement('a');
             link.href = URL.createObjectURL(content);
             const today = new Date().toISOString().slice(0, 10);
-            link.download = \`Misorteos-Backup-Completo-\${today}.zip\`;
+            link.download = `Misorteos-Backup-Completo-${today}.zip`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -2890,16 +2905,40 @@
          showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
     };
 
-    // --- CÓDIGO DE INICIALIZACIÓN ---
-    
-    animateStarryBackground();
-    animateTitle();
-    renderCalendar();
-    updatePointsDisplay();
-    if (userTitleEl) {
-        userTitleEl.textContent = userAchievements.title;
-    }
+    // --- CÓDIGO DE INICIALIZACIÓN (MODO DEPURACIÓN) ---
+    console.log("✅ Script principal iniciado. Abajo comenzará la depuración paso a paso.");
 
+    try {
+        // ⬇️ INSTRUCCIONES DE DEPURACIÓN ⬇️
+        // Si la página sigue sin cargar, abre la consola (F12) y ve descomentando CADA PASO de uno en uno.
+        // Guarda el archivo y recarga la página cada vez. La página se romperá cuando descomentes el paso que contiene el error.
+
+        // PASO 1: (YA ACTIVO) Dibuja el fondo de estrellas.
+        animateStarryBackground();
+        console.log("Paso 1 completado: Fondo de estrellas OK.");
+
+        // PASO 2: Descomenta la siguiente línea y recarga. Debería aparecer el título "Misorteos".
+        // animateTitle();
+        console.log("Paso 2 completado. Si no ves el título, el error está en la función animateTitle().");
+
+        // PASO 3: Descomenta la siguiente línea y recarga. Debería aparecer el calendario y el mes.
+        // renderCalendar();
+        console.log("Paso 3 completado. Si no ves el calendario, el error está en la función renderCalendar().");
+
+        // PASO 4: Descomenta las siguientes líneas y recarga. El resto de la UI debería estar bien.
+        // updatePointsDisplay();
+        // if (userTitleEl) {
+        //     userTitleEl.textContent = userAchievements.title;
+        // }
+        console.log("Paso 4 completado. Si algo falla aquí, el error está en estas últimas líneas.");
+
+    } catch (error) {
+        // Si ves esto, el error está en la última línea que descomentaste.
+        console.error("❌ ¡ERROR FATAL DURANTE LA INICIALIZACIÓN!", error);
+        alert("¡ERROR! La página ha fallado al cargar. Revisa la consola de desarrollador (F12) para ver los detalles del error en color rojo.");
+    }
+    
+    // --- ASIGNACIÓN DE EVENT LISTENERS ---
     const setupModal = (button, modal, closeButton, onOpenCallback) => {
         const openAction = (e) => {
             e.preventDefault();

@@ -1827,7 +1827,12 @@
         const detailsContainer = document.createElement('div');
         detailsContainer.className = 'text-right flex-shrink-0 ml-2';
         if (giveaway.price) {
-            detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
+            // --- INICIO DE LA MODIFICACIÓN ---
+            // Ahora, si el sorteo tiene una URL guardada, el enlace apuntará a ella.
+            // Si no, seguirá apuntando a una búsqueda en Google como antes.
+            const linkUrl = giveaway.url ? giveaway.url : `https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}`;
+            detailsContainer.innerHTML = `<a href="${linkUrl}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
+            // --- FIN DE LA MODIFICACIÓN ---
         }
 
         itemContainer.appendChild(leftSideContainer);
@@ -2458,16 +2463,29 @@
     }
 
     async function searchPrizeValue(aiData) {
-        const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
+        // 1. Limpiamos el premio de palabras genéricas que ensucian la búsqueda.
+        const prizeToSearch = (aiData.prize || '')
+            .replace(/sorteo/gi, '')
+            .replace(/gana/gi, '')
+            .replace(/consigue/gi, '')
+            .replace(/participa y/gi, '')
+            .trim();
+
         const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
-        if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
+
+        if (!prizeToSearch) {
+            return { prize: aiData.prize, value: "No encontrado", url: null };
+        }
+        
         const functionUrl = '/.netlify/functions/search';
         try {
+            // 2. Enviamos tanto el premio limpio como las cuentas para dar más contexto a la IA.
             const response = await fetch(functionUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: cleanedPrize, accounts: accounts })
+                body: JSON.stringify({ query: prizeToSearch, accounts: accounts })
             });
+
             if (!response.ok) {
                 throw new Error('La respuesta de la función de búsqueda no fue OK');
             }
@@ -2475,15 +2493,18 @@
             if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
                 const text = result.candidates[0].content.parts[0].text;
                 const parsedResult = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+                
                 let prizeWithEmoji = aiData.prize;
                 let numericValue = null;
                 if (parsedResult.value && parsedResult.value !== "No encontrado") {
                     numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
                 }
+                
                 if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
                 if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
                 if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
                 if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+                
                 return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
             } else {
                 throw new Error("Respuesta incompleta de la API de texto.");

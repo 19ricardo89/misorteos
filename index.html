@@ -116,7 +116,7 @@
         .modal-default-bg { background-color: #fffbef; }
         .modal-travel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=1170&auto=format&fit=crop'); }
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
-        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, .nav-menu { overflow-y: auto; }
+        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, .nav-menu { overflow-y: auto; }
 
         /* --- CORRECCIÓN UI MODAL IA --- */
         #ai-image-queue {
@@ -343,7 +343,7 @@
         }
 
         /* Títulos de los modales */
-        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2 {
+        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2 {
             color: #8c5a15; 
         }
         
@@ -733,6 +733,15 @@
             50% { transform: scale(1.02); }
         }
         
+        /* --- NUEVOS ESTILOS FASE 3.3 --- */
+        #total-giveaways-container, #total-ps-container {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        #total-giveaways-container:hover, #total-ps-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #f7d468;
+        }
     </style>
 </head>
 <body class="p-4">
@@ -815,7 +824,7 @@
         <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div id="total-giveaways-container">
+        <div id="total-giveaways-container" class="cursor-pointer">
             <span id="total-giveaways-count">0</span>
         </div>
         <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
@@ -826,6 +835,7 @@
         </button>
     </footer>
     
+    <!-- Modals de la aplicación -->
     <div id="trash-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1098,6 +1108,27 @@
         </div>
     </div>
 
+    <!-- NUEVOS MODALES FASE 3.3 -->
+    <div id="ps-summary-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">🏆 Últimos Premios Ganados</h2>
+                <button id="close-ps-summary-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            <div id="ps-summary-modal-body" class="space-y-3 max-h-[60vh] text-left"></div>
+        </div>
+    </div>
+
+    <div id="recent-adds-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">✨ Sorteos Añadidos Recientemente</h2>
+                <button id="close-recent-adds-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            <div id="recent-adds-modal-body" class="space-y-4 max-h-[60vh]"></div>
+        </div>
+    </div>
+
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
         <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold absolute top-2 right-4 z-10">&times;</button>
         
@@ -1205,7 +1236,6 @@
             }, { once: true });
         }
     </script>
-    
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script>
@@ -1411,6 +1441,7 @@
     const userTitleEl = document.getElementById('user-title');
     const totalPsCountEl = document.getElementById('total-ps-count');
     const statsModal = document.getElementById('stats-modal');
+    const statsModalBody = document.getElementById('stats-modal-body');
     const historyModal = document.getElementById('history-modal');
     const trophyModal = document.getElementById('trophy-modal');
     const achievementsModal = document.getElementById('achievements-modal');
@@ -1466,6 +1497,14 @@
     const notificationModal = document.getElementById('notification-modal');
     const notificationTitle = document.getElementById('notification-title');
     const notificationContent = document.getElementById('notification-content');
+    const totalPsContainer = document.getElementById('total-ps-container');
+    const psSummaryModal = document.getElementById('ps-summary-modal');
+    const closePsSummaryModalBtn = document.getElementById('close-ps-summary-modal');
+    const psSummaryModalBody = document.getElementById('ps-summary-modal-body');
+    const totalGiveawaysContainer = document.getElementById('total-giveaways-container');
+    const recentAddsModal = document.getElementById('recent-adds-modal');
+    const closeRecentAddsModalBtn = document.getElementById('close-recent-adds-modal');
+    const recentAddsModalBody = document.getElementById('recent-adds-modal-body');
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
@@ -1822,6 +1861,7 @@
             return;
         }
         if (!giveaways[dateStr]) giveaways[dateStr] = [];
+        newGiveaway.addDate = new Date().toISOString().slice(0, 10);
         giveaways[dateStr].push(newGiveaway);
         saveGiveaways();
         renderCalendar();
@@ -1833,7 +1873,8 @@
         if (giveaways[oldDate]) {
             const giveawayToMove = giveaways[oldDate].find(g => g.id === giveawayId);
             if (giveawayToMove) {
-                giveawayToMove.date = newDate; // Actualizar la fecha en el objeto
+                giveawayToMove.date = newDate;
+                giveawayToMove.moved = true; 
                 giveaways[oldDate] = giveaways[oldDate].filter(g => g.id !== giveawayId);
                 if (giveaways[oldDate].length === 0) delete giveaways[oldDate];
                 if (!giveaways[newDate]) giveaways[newDate] = [];
@@ -1860,7 +1901,7 @@
         if (parsePrice(wonGiveaway.price) > 500) points += 250;
         addPoints(points);
 
-        wonGiveaway.wonDate = new Date().toISOString().slice(0, 10);
+        wonGiveaway.wonDate = new Date().toISOString();
         wonGiveaways.push(wonGiveaway);
         if (!completedGiveaways[giveawayId]) {
             completedGiveaways[giveawayId] = true;
@@ -1875,6 +1916,7 @@
         saveWonGiveaways();
         closeModal();
         renderCalendar();
+        renderTrophyModal();
         showNotification('¡Enhorabuena!', `Has añadido "${wonGiveaway.prize}" a tu vitrina de trofeos.`);
         checkAchievements('win', wonGiveaway);
     };
@@ -2453,15 +2495,96 @@
         duplicateComparisonModal.classList.add('is-visible');
     };
 
+    const generateGiveawayCardHTML = (giveaway) => {
+        const statusClasses = {
+            duplicate: 'status-duplicate',
+            expired: 'status-expired',
+            foreign: 'status-foreign',
+            no_date: 'status-no_date',
+            not_a_giveaway: 'status-not_a_giveaway',
+            api_error: 'status-api_error',
+        };
+        const statusText = {
+            duplicate: 'Duplicado',
+            expired: 'Caducado',
+            foreign: 'Extranjero',
+            no_date: 'Sin Fecha',
+            not_a_giveaway: 'No es Sorteo',
+            api_error: 'Error API',
+        };
+
+        const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
+
+        return `
+            <div class="giveaway-card text-left">
+                <h3>${giveaway.prize || 'Premio no definido'}</h3>
+                <div class="giveaway-card-details">
+                    ${giveaway.date ? `
+                    <div class="detail-item">
+                        <i class="fa-solid fa-calendar-day"></i>
+                        <span>Fecha: <strong>${giveaway.date}</strong></span>
+                    </div>` : ''}
+                    ${accountsHTML ? `
+                    <div class="detail-item">
+                        <i class="fa-solid fa-at"></i>
+                        <span>Cuentas: ${accountsHTML}</span>
+                    </div>` : ''}
+                    ${giveaway.price ? `
+                    <div class="detail-item">
+                        <i class="fa-solid fa-coins"></i>
+                        <span>Valor: <strong>${giveaway.price}</strong></span>
+                    </div>` : ''}
+                    ${giveaway.status ? `
+                    <div class="detail-item">
+                        <i class="fa-solid fa-tag"></i>
+                        <span class="status-tag ${statusClasses[giveaway.status] || ''}">${statusText[giveaway.status] || giveaway.status}</span>
+                    </div>` : ''}
+                </div>
+                <div class="flex justify-end gap-2 mt-3">
+                    <button class="add-discarded-btn text-xs bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-plus mr-1"></i> Recuperar</button>
+                    <button class="delete-discarded-btn text-xs bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-trash-can mr-1"></i> Eliminar</button>
+                </div>
+            </div>
+        `;
+    };
+
+    const renderTrophyModal = () => {
+        trophyModalBody.innerHTML = '';
+        if (wonGiveaways.length === 0) {
+            trophyModalBody.innerHTML = '<p class="text-center col-span-full">Tu vitrina de trofeos está vacía. ¡Sigue participando!</p>';
+            return;
+        }
+
+        [...wonGiveaways].reverse().forEach(giveaway => {
+            const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
+            const wonDate = giveaway.wonDate ? new Date(giveaway.wonDate).toLocaleDateString('es-ES') : 'Fecha desconocida';
+            const trophyCard = `
+                <div class="trophy-card">
+                    <button class="trophy-delete-btn" data-giveaway-id="${giveaway.id}" title="Eliminar de la vitrina">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                    <h3 class="mb-2">${giveaway.prize}</h3>
+                    <div class="text-xs space-y-1 text-left">
+                        <p><i class="fa-solid fa-coins w-4 mr-1"></i> <strong>Valor:</strong> ${giveaway.price || 'No especificado'}</p>
+                        <p><i class="fa-solid fa-at w-4 mr-1"></i> ${accountsHTML}</p>
+                        <p><i class="fa-solid fa-calendar-check w-4 mr-1"></i> <strong>Ganado el:</strong> ${wonDate}</p>
+                    </div>
+                </div>
+            `;
+            trophyModalBody.innerHTML += trophyCard;
+        });
+    };
+    
     const renderDiscardedModal = () => { 
-        const discardedModalBody = document.getElementById('discarded-modal-body');
         discardedModalBody.innerHTML = ''; 
         const filteredGiveaways = discardedGiveaways.filter(g => discardedFilter === 'all' || g.status === discardedFilter); 
+        
         if (filteredGiveaways.length === 0) { 
-            discardedModalBody.innerHTML = '<p>No hay sorteos descartados con este filtro.</p>'; 
+            discardedModalBody.innerHTML = '<p class="text-center">No hay sorteos descartados con este filtro.</p>'; 
             return; 
         } 
-        filteredGiveaways.forEach(giveaway => { 
+        
+        [...filteredGiveaways].reverse().forEach(giveaway => { 
             const cardHTML = generateGiveawayCardHTML(giveaway);
             const itemContainer = document.createElement('div');
             itemContainer.className = `giveaway-item-discarded ${giveaway.status === 'duplicate' ? 'duplicate-item' : ''} mb-4`;
@@ -2493,6 +2616,76 @@
     };
     const closeDuplicateModal = () => { duplicateModal.classList.remove('is-visible'); };
     const addDiscardedToCalendar = (giveawayId) => { const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId); if (giveawayToAdd) { discardedGiveaways = discardedGiveaways.filter(g => g.id !== giveawayId); saveDiscardedGiveaways(); renderDiscardedModal(); openAddGiveawayModal({ date: giveawayToAdd.date, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price }); } };
+
+    const calculateAndRenderStats = () => {
+        // --- 📊 Resumen General ---
+        const allGiveaways = Object.values(giveaways).flat();
+        const totalRegistered = allGiveaways.length + wonGiveaways.length;
+        const totalCompleted = Object.keys(completedGiveaways).length;
+        const participationRate = totalRegistered > 0 ? ((totalCompleted / totalRegistered) * 100).toFixed(1) : 0;
+        const totalWon = wonGiveaways.length;
+
+        let statsHTML = `
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📊 Resumen General</h3>
+                <ul class="space-y-2">
+                    <li>Sorteos Totales Registrados: <strong>${totalRegistered}</strong></li>
+                    <li>Sorteos Completados (Participados): <strong>${totalCompleted}</strong></li>
+                    <li>Tasa de Participación: <strong>${participationRate}%</strong></li>
+                    <li>Sorteos Ganados: <strong>${totalWon} 🏆</strong></li>
+                </ul>
+            </div>
+        `;
+
+        // --- 🏆 Análisis de Victorias y Premios ---
+        const winRate = totalCompleted > 0 ? ((totalWon / totalCompleted) * 100).toFixed(2) : 0;
+        const totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
+        const averageValueWon = totalWon > 0 ? (totalValueWon / totalWon).toFixed(2) : 0;
+        
+        let mostValuablePrize = { prize: 'N/A', price: 0 };
+        let leastValuablePrize = { prize: 'N/A', price: Infinity };
+
+        if (totalWon > 0) {
+            mostValuablePrize = wonGiveaways.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max, wonGiveaways[0]);
+            leastValuablePrize = wonGiveaways.filter(g => parsePrice(g.price) > 0).reduce((min, g) => parsePrice(g.price) < parsePrice(min.price) ? g : min, wonGiveaways.find(g => parsePrice(g.price) > 0) || { prize: 'N/A', price: 0 });
+        }
+
+        const categoryWins = { padel: 0, viajes: 0, frikis: 0, otros: 0 };
+        wonGiveaways.forEach(g => {
+            if (g.prize.includes('🥎')) categoryWins.padel++;
+            else if (g.prize.includes('🛩️')) categoryWins.viajes++;
+            else if (g.prize.includes('🃏')) categoryWins.frikis++;
+            else categoryWins.otros++;
+        });
+
+        statsHTML += `
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🏆 Análisis de Victorias y Premios</h3>
+                <ul class="space-y-2">
+                    <li>Porcentaje de Éxito (Win Rate): <strong>${winRate}%</strong></li>
+                    <li>Valor Total de Premios: <strong>${totalValueWon.toFixed(2)}€</strong></li>
+                    <li>Valor Medio por Premio: <strong>${averageValueWon}€</strong></li>
+                    <li>Premio de Más Valor: <strong>${mostValuablePrize.prize} (${mostValuablePrize.price})</strong></li>
+                    <li>Premio Más Humilde: <strong>${leastValuablePrize.prize} (${leastValuablePrize.price})</strong></li>
+                    <li>
+                        Desglose de Victorias:
+                        <ul class="list-disc list-inside pl-4 text-sm">
+                            <li>Pádel: <strong>${categoryWins.padel}</strong></li>
+                            <li>Viajes: <strong>${categoryWins.viajes}</strong></li>
+                            <li>Frikis: <strong>${categoryWins.frikis}</strong></li>
+                            <li>Otros: <strong>${categoryWins.otros}</strong></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        `;
+
+        statsModalBody.innerHTML = statsHTML;
+    };
+    
+    const renderStatsModal = () => {
+        calculateAndRenderStats();
+    };
 
     const renderAchievementsModal = (activeTab = 'logros') => {
         const unlockedIds = userAchievements.unlocked;
@@ -2594,6 +2787,49 @@
                 userTitleEl.textContent = userAchievements.title;
                 renderAchievementsModal('titulos');
             });
+        });
+    };
+
+    const renderPsSummaryModal = () => {
+        psSummaryModalBody.innerHTML = '';
+        if (wonGiveaways.length === 0) {
+            psSummaryModalBody.innerHTML = '<p class="text-center">Aún no has ganado ningún premio.</p>';
+            return;
+        }
+
+        const recentWins = [...wonGiveaways].reverse().slice(0, 5);
+
+        recentWins.forEach(giveaway => {
+            const wonDate = new Date(giveaway.wonDate).toLocaleDateString('es-ES');
+            const itemHTML = `
+                <div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20">
+                    <p class="font-bold text-yellow-900">${giveaway.prize}</p>
+                    <p class="text-sm">Ganado el: ${wonDate}</p>
+                </div>
+            `;
+            psSummaryModalBody.innerHTML += itemHTML;
+        });
+    };
+
+    const renderRecentAddsModal = () => {
+        recentAddsModalBody.innerHTML = '';
+        const allGiveaways = Object.values(giveaways).flat();
+
+        const sortedGiveaways = allGiveaways
+            .filter(g => g.addDate)
+            .sort((a, b) => new Date(b.addDate) - new Date(a.addDate));
+
+        if (sortedGiveaways.length === 0) {
+            recentAddsModalBody.innerHTML = '<p class="text-center">No hay sorteos con fecha de adición registrada.</p>';
+            return;
+        }
+
+        const recentAdds = sortedGiveaways.slice(0, 5);
+
+        recentAdds.forEach(giveaway => {
+            let cardHTML = generateGiveawayCardHTML(giveaway);
+            cardHTML = cardHTML.replace(/<div class="flex justify-end gap-2 mt-3">[\s\S]*?<\/div>/, '');
+            recentAddsModalBody.innerHTML += cardHTML;
         });
     };
 
@@ -2813,10 +3049,6 @@
         });
     };
     
-    // Funciones de renderizado para los modales del menú
-    const renderStatsModal = () => { /* Lógica para rellenar el modal de stats */ };
-    const renderTrophyModal = () => { /* Lógica para rellenar el modal de trofeos */ };
-
     // Setup de todos los botones para abrir modales
     setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
@@ -2829,6 +3061,8 @@
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
     setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
+    setupModal(null, psSummaryModal, closePsSummaryModalBtn);
+    setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
     
     // Vista de IA a pantalla completa
     addAIBtn.addEventListener('click', (e) => {
@@ -2996,7 +3230,7 @@
 
     addGiveawayForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, addDate: new Date().toISOString().slice(0, 10) };
+        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value };
         addGiveaway(newGiveaway);
         closeAddGiveawayModal();
     });
@@ -3007,6 +3241,16 @@
             moveGiveaway(giveawayToMove.id, originalDateOfGiveaway, newGiveawayDateInput.value);
             closeMoveGiveawayModal();
         }
+    });
+
+    totalPsContainer.addEventListener('click', () => {
+        renderPsSummaryModal();
+        psSummaryModal.classList.add('is-visible');
+    });
+
+    totalGiveawaysContainer.addEventListener('click', () => {
+        renderRecentAddsModal();
+        recentAddsModal.classList.add('is-visible');
     });
 
     const downloadBtn = document.getElementById('download-btn');

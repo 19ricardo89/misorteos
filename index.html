@@ -2074,8 +2074,10 @@
             
             let resultData;
             try {
+                // --- PASO 1: Análisis de la imagen (gemini.js) ---
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
+                // --- LÓGICA DE DECISIÓN INICIAL ---
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
                 } else if (aiData.status === 'discard_no_date' || !aiData.date) {
@@ -2087,14 +2089,19 @@
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
                     
+                    // --- PASO 2: Búsqueda del precio (search.js) ---
+                    // Se ejecuta DESPUÉS de tener los datos de la imagen y ANTES de mostrar la tarjeta.
+                    const priceInfo = await searchPrizeValue(aiData);
+
+                    // --- LÓGICA DE DECISIÓN FINAL CON EL PRECIO ---
                     if (isForeign) {
-                        resultData = { ...aiData, accounts, status: 'foreign', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
                     } else if (existingGiveaway) {
-                        resultData = { ...aiData, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
-                        resultData = { ...aiData, accounts, status: 'expired', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
                     } else {
-                        const priceInfo = await searchPrizeValue(aiData);
+                        // Si es válido, se combinan todos los datos.
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'valid', originalFile: file };
                     }
                 }
@@ -2106,6 +2113,7 @@
                 }
             }
             
+            // --- PASO 3: Renderizar la tarjeta con TODOS los datos ---
             renderInteractiveCard(resultData);
         };
         reader.readAsDataURL(file);
@@ -2675,7 +2683,29 @@
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // --- 📊 Análisis Temporal y de Rachas ---
+        // --- 📊 Resumen General ---
+        const totalRegistered = allRegisteredGiveaways.length;
+        const totalCompleted = Object.keys(completedGiveaways).length;
+        const participationRate = totalRegistered > 0 ? ((totalCompleted / totalRegistered) * 100).toFixed(1) : 0;
+        const totalWon = wonGiveaways.length;
+
+        // --- 🏆 Análisis de Victorias y Premios ---
+        const winRate = totalCompleted > 0 ? ((totalWon / totalCompleted) * 100).toFixed(1) : 0;
+        const totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
+        const avgValuePerWin = totalWon > 0 ? (totalValueWon / totalWon).toFixed(2) : 0;
+        const prizesWithValues = wonGiveaways.filter(g => parsePrice(g.price) > 0);
+        const mostValuableWin = prizesWithValues.length ? prizesWithValues.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max) : null;
+        const leastValuableWin = prizesWithValues.length ? prizesWithValues.reduce((min, g) => parsePrice(g.price) < parsePrice(min.price) ? g : min) : null;
+        const categoryWins = wonGiveaways.reduce((acc, g) => {
+            const prize = g.prize || '';
+            if (prize.includes('🥎')) acc['Pádel 🥎'] = (acc['Pádel 🥎'] || 0) + 1;
+            else if (prize.includes('🛩️')) acc['Viajes 🛩️'] = (acc['Viajes 🛩️'] || 0) + 1;
+            else if (prize.includes('🃏')) acc['Frikis 🃏'] = (acc['Frikis 🃏'] || 0) + 1;
+            else acc['Otros'] = (acc['Otros'] || 0) + 1;
+            return acc;
+        }, {});
+
+        // --- 🗓️ Análisis Temporal y de Rachas ---
         const weekDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
         const winDayCounts = wonGiveaways.reduce((acc, g) => {
             const day = new Date(g.wonDate).getDay();
@@ -2684,8 +2714,44 @@
         }, {});
         const magicDayIndex = Object.keys(winDayCounts).length ? Object.keys(winDayCounts).reduce((a, b) => winDayCounts[a] > winDayCounts[b] ? a : b) : -1;
         const magicDay = magicDayIndex !== -1 ? weekDays[magicDayIndex] : 'N/A';
+        
+        const winsByWeek = wonGiveaways.reduce((acc, g) => {
+            const d = new Date(g.wonDate);
+            const year = d.getFullYear();
+            const week = Math.ceil((((d - new Date(year, 0, 1)) / ONE_DAY_MS) + 1) / 7);
+            const key = `${year}-W${week}`;
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
+        const recordWeek = Object.keys(winsByWeek).length ? Object.entries(winsByWeek).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
+
+        const winsByMonth = wonGiveaways.reduce((acc, g) => {
+            const key = new Date(g.wonDate).toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
+        const recordMonth = Object.keys(winsByMonth).length ? Object.entries(winsByMonth).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
 
         const sortedWins = [...wonGiveaways].sort((a, b) => new Date(a.wonDate) - new Date(b.wonDate));
+        let currentStreak = 0;
+        if (sortedWins.length > 0) {
+            let lastWin = new Date(sortedWins[sortedWins.length - 1].wonDate);
+            lastWin.setHours(0,0,0,0);
+            if ((today - lastWin) / ONE_DAY_MS <= 1) { // Si la última victoria fue hoy o ayer
+                currentStreak = 1;
+                for (let i = sortedWins.length - 2; i >= 0; i--) {
+                    const prevWin = new Date(sortedWins[i].wonDate);
+                    prevWin.setHours(0,0,0,0);
+                    if ((lastWin - prevWin) / ONE_DAY_MS === 1) {
+                        currentStreak++;
+                        lastWin = prevWin;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        
         let lastWinDate = sortedWins.length ? new Date(sortedWins[sortedWins.length - 1].wonDate) : null;
         lastWinDate?.setHours(0, 0, 0, 0);
         const daysSinceLastWin = lastWinDate ? Math.floor((today - lastWinDate) / ONE_DAY_MS) : 'N/A';
@@ -2708,20 +2774,7 @@
             return diff > max.diff ? { diff, prize: g.prize } : max;
         }, { diff: -1, prize: 'N/A' });
 
-        let temporalHTML = `
-            <div class="mb-6">
-                <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📊 Análisis Temporal y de Rachas</h3>
-                <ul class="space-y-2">
-                    <li>Día mágico para ganar: <strong>${magicDay}</strong></li>
-                    <li>Días desde la última victoria (sequía): <strong>${daysSinceLastWin}</strong></li>
-                    <li>Media de días entre premios: <strong>${avgDaysBetweenWins}</strong></li>
-                    <li>Victoria más rápida: <strong>${fastestWin.prize !== 'N/A' ? `${fastestWin.prize} (${(fastestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
-                    <li>Victoria más esperada: <strong>${slowestWin.prize !== 'N/A' ? `${slowestWin.prize} (${(slowestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
-                </ul>
-            </div>
-        `;
-
-        // --- 🏆 Análisis de Cuentas y Marcas ---
+        // --- 🕵️ Análisis de Cuentas y Marcas ---
         const allAccounts = allRegisteredGiveaways.flatMap(g => g.accounts || []);
         const accountFrequency = allAccounts.reduce((acc, account) => {
             acc[account] = (acc[account] || 0) + 1;
@@ -2740,34 +2793,38 @@
         const playedAccounts = {};
         allRegisteredGiveaways.forEach(g => {
             if(completedGiveaways[g.id]) {
-                g.accounts.forEach(acc => playedAccounts[acc] = (playedAccounts[acc] || 0) + 1);
+                (g.accounts || []).forEach(acc => playedAccounts[acc] = (playedAccounts[acc] || 0) + 1);
             }
         });
         const elusiveAccount = Object.entries(playedAccounts)
             .filter(([acc]) => !winAccountSet.has(acc))
             .sort((a, b) => b[1] - a[1])[0] || ['N/A', 0];
 
-
-        let accountsHTML = `
-            <div class="mb-6">
-                 <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🏆 Análisis de Cuentas y Marcas</h3>
-                 <ul class="space-y-2">
-                    <li>Top 5 Cuentas Frecuentes: <ol class="list-decimal list-inside pl-4 text-sm">${top5Frequent.map(acc => `<li>${acc[0]}: ${acc[1]} sorteos</li>`).join('')}</ol></li>
-                    <li>Top 5 Cuentas Talismán: <ol class="list-decimal list-inside pl-4 text-sm">${top5Talisman.map(acc => `<li>${acc[0]}: ${acc[1]} victorias</li>`).join('')}</ol></li>
-                    <li>La cuenta más esquiva: <strong>${elusiveAccount[0]} (${elusiveAccount[1]} participaciones)</strong></li>
-                    <li>Diversidad de victorias: <strong>Has ganado premios de ${winAccountSet.size} cuentas diferentes</strong></li>
-                 </ul>
-            </div>
-        `;
-
-        // --- ⭐ Análisis de Categorías y Hábitos ---
+        // --- 🧩 Análisis por Categoría ---
         const categoryValue = wonGiveaways.reduce((acc, g) => {
-            const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
+            const prize = g.prize || '';
+            const category = prize.includes('🥎') ? 'Pádel' : prize.includes('🛩️') ? 'Viajes' : prize.includes('🃏') ? 'Frikis' : 'Otros';
             acc[category] = (acc[category] || 0) + parsePrice(g.price);
             return acc;
         }, {});
         const mostProfitableCat = Object.keys(categoryValue).length ? Object.entries(categoryValue).sort((a, b) => b[1] - a[1])[0] : ['N/A', 0];
+
+        const categoryCompleted = allRegisteredGiveaways.reduce((acc, g) => {
+            if (completedGiveaways[g.id]) {
+                const prize = g.prize || '';
+                const category = prize.includes('🥎') ? 'Pádel' : prize.includes('🛩️') ? 'Viajes' : prize.includes('🃏') ? 'Frikis' : 'Otros';
+                acc[category] = (acc[category] || 0) + 1;
+            }
+            return acc;
+        }, {});
+        const categoryWinRates = Object.keys(categoryCompleted).map(cat => {
+            const wins = categoryWins[cat.replace(/ .*/, '')] || 0;
+            const rate = (wins / categoryCompleted[cat]) * 100;
+            return { category: cat, rate: rate.toFixed(1) };
+        }).sort((a,b) => b.rate - a.rate);
+        const bestAimCategory = categoryWinRates[0] || { category: 'N/A', rate: 0 };
         
+        // --- 📈 Análisis de Hábitos y Esfuerzo ---
         const addDateDiffs = allRegisteredGiveaways.filter(g => g.addDate).map(g => (new Date(g.date) - new Date(g.addDate)) / ONE_DAY_MS);
         const avgAntelacion = addDateDiffs.length ? (addDateDiffs.reduce((a, b) => a + b, 0) / addDateDiffs.length).toFixed(1) : 'N/A';
         
@@ -2775,8 +2832,13 @@
             acc[g.addDate] = (acc[g.addDate] || 0) + 1;
             return acc;
         }, {});
+        const avgAddsPerDay = Object.keys(addCountsByDay).length > 0 ? (allRegisteredGiveaways.filter(g => g.addDate).length / Object.keys(addCountsByDay).length).toFixed(1) : 0;
         const recordAdded = Object.keys(addCountsByDay).length ? Math.max(...Object.values(addCountsByDay)) : 0;
-        
+        const recordAddedDay = Object.keys(addCountsByDay).length ? Object.entries(addCountsByDay).find(entry => entry[1] === recordAdded)[0] : 'N/A';
+
+        const recordCompleted = 0; // Esta métrica es más compleja, la dejamos pendiente por ahora
+        const recordWonDay = Object.keys(winsByMonth).length ? Object.entries(winsByMonth).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
+
         const addedDayOfWeek = allRegisteredGiveaways.filter(g => g.addDate).reduce((acc, g) => {
             const day = new Date(g.addDate + 'T00:00:00').getDay();
             acc[day] = (acc[day] || 0) + 1;
@@ -2785,19 +2847,69 @@
         const signingDayIndex = Object.keys(addedDayOfWeek).length ? Object.keys(addedDayOfWeek).reduce((a, b) => addedDayOfWeek[a] > addedDayOfWeek[b] ? a : b) : -1;
         const signingDay = signingDayIndex !== -1 ? weekDays[signingDayIndex] : 'N/A';
 
-        let categoriesAndHabitsHTML = `
-            <div class="mb-6">
-                <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">⭐ Análisis de Categorías y Hábitos</h3>
-                 <ul class="space-y-2">
-                    <li>Categoría más rentable: <strong>${mostProfitableCat[0]} (${mostProfitableCat[1].toFixed(2)}€)</strong></li>
-                    <li>Media de antelación al añadir: <strong>${avgAntelacion} días</strong></li>
-                    <li>Tu día de "fichajes": <strong>${signingDay}</strong></li>
-                    <li>Récord de sorteos añadidos en un día: <strong>${recordAdded}</strong></li>
-                 </ul>
+        // --- RENDERIZADO DEL HTML ---
+        statsModalBody.innerHTML = `
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📊 Resumen General</h3>
+                    <ul class="space-y-1">
+                        <li>Sorteos Totales Registrados: <strong>${totalRegistered}</strong></li>
+                        <li>Sorteos Completados: <strong>${totalCompleted}</strong></li>
+                        <li>Tasa de Participación: <strong>${participationRate}%</strong></li>
+                        <li>Sorteos Ganados: <strong>${totalWon}</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🏆 Análisis de Victorias y Premios</h3>
+                    <ul class="space-y-1">
+                        <li>Porcentaje de Éxito (Win Rate): <strong>${winRate}%</strong></li>
+                        <li>Valor Total de Premios: <strong>${totalValueWon.toFixed(2)}€</strong></li>
+                        <li>Valor Medio por Premio: <strong>${avgValuePerWin}€</strong></li>
+                        <li>Premio de Más Valor: <strong>${mostValuableWin ? `${mostValuableWin.prize} (${mostValuableWin.price})` : 'N/A'}</strong></li>
+                        <li>Premio Más Humilde: <strong>${leastValuableWin ? `${leastValuableWin.prize} (${leastValuableWin.price})` : 'N/A'}</strong></li>
+                        <li>Victorias por Categoría: <ol class="list-disc list-inside pl-4 text-sm">${Object.entries(categoryWins).map(([cat, count]) => `<li>${cat}: ${count}</li>`).join('')}</ol></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🗓️ Análisis Temporal y de Rachas</h3>
+                    <ul class="space-y-1">
+                        <li>Día de la Semana Más Frecuente para Ganar: <strong>${magicDay}</strong></li>
+                        <li>Semana con Más Sorteos Ganados: <strong>${recordWeek[0]} (${recordWeek[1]} victorias)</strong></li>
+                        <li>Mes con Más Sorteos Ganados: <strong>${recordMonth[0]} (${recordMonth[1]} victorias)</strong></li>
+                        <li>Racha de Victorias Actual: <strong>${currentStreak} días</strong></li>
+                        <li>Días desde la Última Victoria (Sequía): <strong>${daysSinceLastWin}</strong></li>
+                        <li>Media de Días entre Premios: <strong>${avgDaysBetweenWins}</strong></li>
+                        <li>La Victoria Más Rápida: <strong>${fastestWin.prize !== 'N/A' ? `${fastestWin.prize} (${(fastestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
+                        <li>La Victoria Más Esperada: <strong>${slowestWin.prize !== 'N/A' ? `${slowestWin.prize} (${(slowestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🕵️ Análisis de Cuentas y Marcas</h3>
+                    <ul class="space-y-1">
+                        <li>Top 5 Cuentas Más Frecuentes: <ol class="list-decimal list-inside pl-4 text-sm">${top5Frequent.map(acc => `<li>${acc[0]}: ${acc[1]} sorteos</li>`).join('') || '<li>N/A</li>'}</ol></li>
+                        <li>Top 5 Cuentas Talismán: <ol class="list-decimal list-inside pl-4 text-sm">${top5Talisman.map(acc => `<li>${acc[0]}: ${acc[1]} victorias</li>`).join('') || '<li>N/A</li>'}</ol></li>
+                        <li>La Cuenta Más Esquiva: <strong>${elusiveAccount[0]} (${elusiveAccount[1]} participaciones)</strong></li>
+                        <li>Diversidad de Victorias: <strong>Has ganado de ${winAccountSet.size} cuentas únicas</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🧩 Análisis por Categoría</h3>
+                    <ul class="space-y-1">
+                        <li>Categoría Más Rentable: <strong>${mostProfitableCat[0]} (${mostProfitableCat[1].toFixed(2)}€)</strong></li>
+                        <li>Categoría con Mejor Puntería: <strong>${bestAimCategory.category} (${bestAimCategory.rate}%)</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📈 Análisis de Hábitos y Esfuerzo</h3>
+                    <ul class="space-y-1">
+                        <li>Media de Antelación (al añadir): <strong>${avgAntelacion} días</strong></li>
+                        <li>Media de Sorteos Añadidos al Día: <strong>${avgAddsPerDay}</strong></li>
+                        <li>Día Récord (Añadidos): <strong>${recordAdded} sorteos el ${recordAddedDay}</strong></li>
+                        <li>Tu "Día de Fichajes": <strong>${signingDay}</strong></li>
+                    </ul>
+                </div>
             </div>
         `;
-        
-        statsModalBody.innerHTML = temporalHTML + accountsHTML + categoriesAndHabitsHTML;
     };
     
     const renderStatsModal = () => {

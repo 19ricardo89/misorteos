@@ -1955,7 +1955,7 @@
         wonGiveaway.wonDate = new Date().toISOString();
         wonGiveaways.push(wonGiveaway);
         if (!completedGiveaways[giveawayId]) {
-            completedGiveaways[giveawayId] = true;
+            completedGiveaways[giveawayId] = new Date().toISOString().slice(0, 10);
             completedGiveawayCount++;
             addPoints(2, `Completado: ${wonGiveaway.prize.substring(0, 20)}...`);
             saveCompletedGiveaways();
@@ -2674,542 +2674,163 @@
         const allRegisteredGiveaways = [...allGiveaways, ...wonGiveaways];
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
-        // --- 📊 Análisis Temporal y de Rachas ---
         const weekDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-        const winDayCounts = wonGiveaways.reduce((acc, g) => {
-            const day = new Date(g.wonDate).getDay();
-            acc[day] = (acc[day] || 0) + 1;
-            return acc;
-        }, {});
-        const magicDayIndex = Object.keys(winDayCounts).length ? Object.keys(winDayCounts).reduce((a, b) => winDayCounts[a] > winDayCounts[b] ? a : b) : -1;
-        const magicDay = magicDayIndex !== -1 ? weekDays[magicDayIndex] : 'N/A';
 
-        const sortedWins = [...wonGiveaways].sort((a, b) => new Date(a.wonDate) - new Date(b.wonDate));
-        let lastWinDate = sortedWins.length ? new Date(sortedWins[sortedWins.length - 1].wonDate) : null;
-        lastWinDate?.setHours(0, 0, 0, 0);
-        const daysSinceLastWin = lastWinDate ? Math.floor((today - lastWinDate) / ONE_DAY_MS) : 'N/A';
+        // --- 📊 Resumen General ---
+        const totalRegistered = allRegisteredGiveaways.length;
+        const totalCompleted = Object.keys(completedGiveaways).length;
+        const participationRate = totalRegistered > 0 ? ((totalCompleted / totalRegistered) * 100).toFixed(1) : 0;
+        const totalWon = wonGiveaways.length;
+
+        // --- 🏆 Análisis de Victorias y Premios ---
+        const winRate = totalCompleted > 0 ? ((totalWon / totalCompleted) * 100).toFixed(2) : 0;
+        const totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
+        const averageValueWon = totalWon > 0 ? (totalValueWon / totalWon).toFixed(2) : 0;
+        const mostValuablePrize = totalWon > 0 ? wonGiveaways.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max, wonGiveaways[0]) : { prize: 'N/A', price: '0€' };
+        const leastValuablePrize = totalWon > 0 ? wonGiveaways.filter(g => parsePrice(g.price) > 0).reduce((min, g) => parsePrice(g.price) < parsePrice(min.price) ? g : min, { prize: 'N/A', price: 'Infinity€' }) : { prize: 'N/A', price: '0€' };
+
+        const categoryWins = { 'Pádel 🥎': 0, 'Viajes 🛩️': 0, 'Frikis 🃏': 0, 'Otros': 0 };
+        wonGiveaways.forEach(g => {
+            if (g.prize.includes('🥎')) categoryWins['Pádel 🥎']++;
+            else if (g.prize.includes('🛩️')) categoryWins['Viajes 🛩️']++;
+            else if (g.prize.includes('🃏')) categoryWins['Frikis 🃏']++;
+            else categoryWins['Otros']++;
+        });
+
+        // --- 🗓️ Análisis Temporal y de Rachas ---
+        const getWeekNumber = (d) => {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / ONE_DAY_MS) + 1) / 7);
+        };
+        const winDayCounts = wonGiveaways.reduce((acc, g) => { const day = weekDays[new Date(g.wonDate).getDay()]; acc[day] = (acc[day] || 0) + 1; return acc; }, {});
+        const magicDay = Object.keys(winDayCounts).length ? Object.entries(winDayCounts).sort((a, b) => b[1] - a[1])[0][0] : 'N/A';
+        const winWeekCounts = wonGiveaways.reduce((acc, g) => { const week = getWeekNumber(new Date(g.wonDate)); acc[week] = (acc[week] || 0) + 1; return acc; }, {});
+        const bestWeek = Object.keys(winWeekCounts).length ? Object.entries(winWeekCounts).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
+        const winMonthCounts = wonGiveaways.reduce((acc, g) => { const month = new Date(g.wonDate).getMonth(); acc[month] = (acc[month] || 0) + 1; return acc; }, {});
+        const bestMonth = Object.keys(winMonthCounts).length ? Object.entries(winMonthCounts).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
         
-        let winGaps = [];
-        for (let i = 1; i < sortedWins.length; i++) {
-            const date1 = new Date(sortedWins[i-1].wonDate);
-            const date2 = new Date(sortedWins[i].wonDate);
-            winGaps.push(Math.round((date2 - date1) / ONE_DAY_MS));
+        const sortedWinDates = [...wonGiveaways].map(g => new Date(g.wonDate).setHours(0,0,0,0)).sort((a, b) => b - a);
+        let currentStreak = 0;
+        if (sortedWinDates.length > 0) {
+            let lastDate = new Date(today);
+            for (let i = 0; i < sortedWinDates.length; i++) {
+                const diff = (lastDate - sortedWinDates[i]) / ONE_DAY_MS;
+                if (diff <= 1) { currentStreak++; lastDate = sortedWinDates[i]; } 
+                else { break; }
+            }
         }
+        const lastWinDate = sortedWinDates.length ? new Date(sortedWinDates[0]) : null;
+        const daysSinceLastWin = lastWinDate ? Math.floor((today - lastWinDate) / ONE_DAY_MS) : 'N/A';
+        const winGaps = [];
+        for (let i = 1; i < sortedWinDates.length; i++) { winGaps.push((sortedWinDates[i - 1] - sortedWinDates[i]) / ONE_DAY_MS); }
         const avgDaysBetweenWins = winGaps.length ? (winGaps.reduce((a, b) => a + b, 0) / winGaps.length).toFixed(1) : 'N/A';
-        
-        const fastestWin = wonGiveaways.filter(g => g.addDate).reduce((min, g) => {
-            const diff = new Date(g.wonDate) - new Date(g.addDate);
-            return diff < min.diff ? { diff, prize: g.prize } : min;
-        }, { diff: Infinity, prize: 'N/A' });
-        
-        const slowestWin = wonGiveaways.filter(g => g.addDate).reduce((max, g) => {
-            const diff = new Date(g.wonDate) - new Date(g.addDate);
-            return diff > max.diff ? { diff, prize: g.prize } : max;
-        }, { diff: -1, prize: 'N/A' });
+        const fastestWin = wonGiveaways.filter(g => g.addDate).reduce((min, g) => { const diff = new Date(g.wonDate) - new Date(g.addDate); return diff < min.diff ? { diff, prize: g.prize } : min; }, { diff: Infinity, prize: 'N/A' });
+        const slowestWin = wonGiveaways.filter(g => g.addDate).reduce((max, g) => { const diff = new Date(g.wonDate) - new Date(g.addDate); return diff > max.diff ? { diff, prize: g.prize } : max; }, { diff: -1, prize: 'N/A' });
 
-        let temporalHTML = `
-            <div class="mb-6">
-                <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📊 Análisis Temporal y de Rachas</h3>
-                <ul class="space-y-2">
-                    <li>Día mágico para ganar: <strong>${magicDay}</strong></li>
-                    <li>Días desde la última victoria (sequía): <strong>${daysSinceLastWin}</strong></li>
-                    <li>Media de días entre premios: <strong>${avgDaysBetweenWins}</strong></li>
-                    <li>Victoria más rápida: <strong>${fastestWin.prize !== 'N/A' ? `${fastestWin.prize} (${(fastestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
-                    <li>Victoria más esperada: <strong>${slowestWin.prize !== 'N/A' ? `${slowestWin.prize} (${(slowestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
-                </ul>
-            </div>
-        `;
-
-        // --- 🏆 Análisis de Cuentas y Marcas ---
-        const allAccounts = allRegisteredGiveaways.flatMap(g => g.accounts || []);
-        const accountFrequency = allAccounts.reduce((acc, account) => {
-            acc[account] = (acc[account] || 0) + 1;
-            return acc;
-        }, {});
+        // --- 🕵️ Análisis de Cuentas y Marcas ---
+        const accountFrequency = allRegisteredGiveaways.flatMap(g => g.accounts || []).reduce((acc, account) => { acc[account] = (acc[account] || 0) + 1; return acc; }, {});
         const top5Frequent = Object.entries(accountFrequency).sort((a, b) => b[1] - a[1]).slice(0, 5);
-
         const winAccounts = wonGiveaways.flatMap(g => g.accounts || []);
-        const talismanFrequency = winAccounts.reduce((acc, account) => {
-            acc[account] = (acc[account] || 0) + 1;
-            return acc;
-        }, {});
+        const talismanFrequency = winAccounts.reduce((acc, account) => { acc[account] = (acc[account] || 0) + 1; return acc; }, {});
         const top5Talisman = Object.entries(talismanFrequency).sort((a, b) => b[1] - a[1]).slice(0, 5);
-        
         const winAccountSet = new Set(winAccounts);
         const playedAccounts = {};
+        allRegisteredGiveaways.forEach(g => { if(completedGiveaways[g.id]) { g.accounts.forEach(acc => playedAccounts[acc] = (playedAccounts[acc] || 0) + 1); } });
+        const elusiveAccount = Object.entries(playedAccounts).filter(([acc]) => !winAccountSet.has(acc)).sort((a, b) => b[1] - a[1])[0] || ['N/A', 0];
+
+        // --- 🧩 Análisis por Categoría ---
+        const categoryValue = wonGiveaways.reduce((acc, g) => { const cat = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros'; acc[cat] = (acc[cat] || 0) + parsePrice(g.price); return acc; }, {});
+        const mostProfitableCat = Object.keys(categoryValue).length ? Object.entries(categoryValue).sort((a, b) => b[1] - a[1])[0] : ['N/A', 0];
+        const categoryPlays = { 'Pádel': 0, 'Viajes': 0, 'Frikis': 0, 'Otros': 0 };
         allRegisteredGiveaways.forEach(g => {
             if(completedGiveaways[g.id]) {
-                g.accounts.forEach(acc => playedAccounts[acc] = (playedAccounts[acc] || 0) + 1);
+                const cat = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
+                categoryPlays[cat]++;
             }
         });
-        const elusiveAccount = Object.entries(playedAccounts)
-            .filter(([acc]) => !winAccountSet.has(acc))
-            .sort((a, b) => b[1] - a[1])[0] || ['N/A', 0];
-
-
-        let accountsHTML = `
-            <div class="mb-6">
-                 <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🏆 Análisis de Cuentas y Marcas</h3>
-                 <ul class="space-y-2">
-                    <li>Top 5 Cuentas Frecuentes: <ol class="list-decimal list-inside pl-4 text-sm">${top5Frequent.map(acc => `<li>${acc[0]}: ${acc[1]} sorteos</li>`).join('')}</ol></li>
-                    <li>Top 5 Cuentas Talismán: <ol class="list-decimal list-inside pl-4 text-sm">${top5Talisman.map(acc => `<li>${acc[0]}: ${acc[1]} victorias</li>`).join('')}</ol></li>
-                    <li>La cuenta más esquiva: <strong>${elusiveAccount[0]} (${elusiveAccount[1]} participaciones)</strong></li>
-                    <li>Diversidad de victorias: <strong>Has ganado premios de ${winAccountSet.size} cuentas diferentes</strong></li>
-                 </ul>
-            </div>
-        `;
-
-        // --- ⭐ Análisis de Categorías y Hábitos ---
-        const categoryValue = wonGiveaways.reduce((acc, g) => {
-            const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
-            acc[category] = (acc[category] || 0) + parsePrice(g.price);
-            return acc;
-        }, {});
-        const mostProfitableCat = Object.keys(categoryValue).length ? Object.entries(categoryValue).sort((a, b) => b[1] - a[1])[0] : ['N/A', 0];
+        const categoryWinRates = Object.keys(categoryPlays).map(cat => ({
+            name: cat,
+            rate: categoryPlays[cat] > 0 ? (((categoryWins[`${cat} 🥎`] || categoryWins[`${cat} 🛩️`] || categoryWins[`${cat} 🃏`] || categoryWins[cat] || 0) / categoryPlays[cat]) * 100) : 0
+        })).sort((a, b) => b.rate - a.rate)[0] || { name: 'N/A', rate: 0 };
         
+        // --- 📈 Análisis de Hábitos y Esfuerzo ---
         const addDateDiffs = allRegisteredGiveaways.filter(g => g.addDate).map(g => (new Date(g.date) - new Date(g.addDate)) / ONE_DAY_MS);
         const avgAntelacion = addDateDiffs.length ? (addDateDiffs.reduce((a, b) => a + b, 0) / addDateDiffs.length).toFixed(1) : 'N/A';
-        
-        const addCountsByDay = allRegisteredGiveaways.filter(g => g.addDate).reduce((acc, g) => {
-            acc[g.addDate] = (acc[g.addDate] || 0) + 1;
-            return acc;
-        }, {});
-        const recordAdded = Object.keys(addCountsByDay).length ? Math.max(...Object.values(addCountsByDay)) : 0;
-        
-        const addedDayOfWeek = allRegisteredGiveaways.filter(g => g.addDate).reduce((acc, g) => {
-            const day = new Date(g.addDate + 'T00:00:00').getDay();
-            acc[day] = (acc[day] || 0) + 1;
-            return acc;
-        }, {});
-        const signingDayIndex = Object.keys(addedDayOfWeek).length ? Object.keys(addedDayOfWeek).reduce((a, b) => addedDayOfWeek[a] > addedDayOfWeek[b] ? a : b) : -1;
-        const signingDay = signingDayIndex !== -1 ? weekDays[signingDayIndex] : 'N/A';
+        const addCountsByDay = allRegisteredGiveaways.filter(g => g.addDate).reduce((acc, g) => { acc[g.addDate] = (acc[g.addDate] || 0) + 1; return acc; }, {});
+        const recordAdded = Object.keys(addCountsByDay).length ? Object.entries(addCountsByDay).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
+        const avgAddedPerDay = Object.keys(addCountsByDay).length ? (allRegisteredGiveaways.filter(g => g.addDate).length / Object.keys(addCountsByDay).length).toFixed(1) : 'N/A';
+        const completionCountsByDay = Object.values(completedGiveaways).reduce((acc, date) => { acc[date] = (acc[date] || 0) + 1; return acc; }, {});
+        const recordCompleted = Object.keys(completionCountsByDay).length ? Object.entries(completionCountsByDay).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
+        const winCountsByDay = wonGiveaways.reduce((acc, g) => { const date = g.wonDate.slice(0, 10); acc[date] = (acc[date] || 0) + 1; return acc; }, {});
+        const recordWon = Object.keys(winCountsByDay).length ? Object.entries(winCountsByDay).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
+        const addedDayOfWeek = allRegisteredGiveaways.filter(g => g.addDate).reduce((acc, g) => { const day = weekDays[new Date(g.addDate + 'T00:00:00').getDay()]; acc[day] = (acc[day] || 0) + 1; return acc; }, {});
+        const signingDay = Object.keys(addedDayOfWeek).length ? Object.entries(addedDayOfWeek).sort((a,b)=>b[1]-a[1])[0][0] : 'N/A';
 
-        let categoriesAndHabitsHTML = `
-            <div class="mb-6">
-                <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">⭐ Análisis de Categorías y Hábitos</h3>
-                 <ul class="space-y-2">
-                    <li>Categoría más rentable: <strong>${mostProfitableCat[0]} (${mostProfitableCat[1].toFixed(2)}€)</strong></li>
-                    <li>Media de antelación al añadir: <strong>${avgAntelacion} días</strong></li>
-                    <li>Tu día de "fichajes": <strong>${signingDay}</strong></li>
-                    <li>Récord de sorteos añadidos en un día: <strong>${recordAdded}</strong></li>
-                 </ul>
-            </div>
-        `;
-        
-        statsModalBody.innerHTML = temporalHTML + accountsHTML + categoriesAndHabitsHTML;
-    };
-    
-    const renderStatsModal = () => {
-        calculateAndRenderStats();
-    };
-
-    let categoryPieChart = null;
-    let monthlyValueBarChart = null;
-
-    const renderCharts = () => {
-        const categoryCtx = document.getElementById('category-pie-chart').getContext('2d');
-        const monthlyCtx = document.getElementById('monthly-value-bar-chart').getContext('2d');
-
-        // Destruir gráficos anteriores para evitar solapamientos
-        if (categoryPieChart) categoryPieChart.destroy();
-        if (monthlyValueBarChart) monthlyValueBarChart.destroy();
-
-        // Datos para el gráfico de pastel (Victorias por Categoría)
-        const categoryWins = wonGiveaways.reduce((acc, g) => {
-            const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
-            acc[category] = (acc[category] || 0) + 1;
-            return acc;
-        }, {});
-
-        categoryPieChart = new Chart(categoryCtx, {
-            type: 'pie',
-            data: {
-                labels: Object.keys(categoryWins),
-                datasets: [{
-                    data: Object.values(categoryWins),
-                    backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#6b7280'],
-                    borderColor: '#fffbef',
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-        });
-
-        // Datos para el gráfico de barras (Valor por Mes)
-        const monthlyValues = wonGiveaways.reduce((acc, g) => {
-            const month = new Date(g.wonDate).getMonth(); // 0 = Enero, 11 = Diciembre
-            acc[month] = (acc[month] || 0) + parsePrice(g.price);
-            return acc;
-        }, Array(12).fill(0));
-
-        monthlyValueBarChart = new Chart(monthlyCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                datasets: [{
-                    label: 'Valor Total Ganado (€)',
-                    data: monthlyValues,
-                    backgroundColor: '#fde047',
-                    borderColor: '#f59e0b',
-                    borderWidth: 1
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
-        });
-    };
-
-    const renderAchievementsModal = (activeTab = 'logros') => {
-        const unlockedIds = userAchievements.unlocked;
-        
-        const achievementGroups = {
-            'Logros de Bronce 🥉': achievementList.bronze,
-            'Logros de Plata 🥈': achievementList.silver,
-            'Logros de Oro 🥇': achievementList.gold,
-            'Logros de Platino 💎': achievementList.platinum,
-            'Logros Míticos 🏆': achievementList.diamond,
-        };
-        let achievementsHTML = '';
-        for (const groupName in achievementGroups) {
-            achievementsHTML += `<h3 class="text-xl font-bold text-yellow-700 mt-4 mb-2">${groupName}</h3>`;
-            achievementsHTML += '<div class="space-y-3">';
-            achievementsHTML += achievementGroups[groupName].map(ach => {
-                const isUnlocked = unlockedIds.includes(ach.id);
-                return `
-                <div class="achievement-item ${isUnlocked ? '' : 'locked'} bg-yellow-100/50 p-4 rounded-lg flex items-center gap-4">
-                    <div class="ach-icon text-4xl">${ach.icon}</div>
-                    <div class="flex-grow">
-                        <h4 class="font-bold text-lg">${ach.name}</h4>
-                        <p class="text-sm">${ach.desc}</p>
-                    </div>
-                    ${isUnlocked ? `<div class="text-right flex-shrink-0"><span class="font-bold text-green-600">+${ach.ps} PS</span></div>` : ''}
-                </div>`;
-            }).join('');
-            achievementsHTML += '</div>';
+        const sortedCompletionDates = [...new Set(Object.values(completedGiveaways))].map(d => new Date(d).setHours(0,0,0,0)).sort((a, b) => a - b);
+        let maxMarathon = 0, currentMarathon = 0;
+        if(sortedCompletionDates.length > 0) {
+            maxMarathon = 1; currentMarathon = 1;
+            for (let i = 1; i < sortedCompletionDates.length; i++) {
+                const diff = (sortedCompletionDates[i] - sortedCompletionDates[i-1]) / ONE_DAY_MS;
+                if (diff === 1) { currentMarathon++; } 
+                else { maxMarathon = Math.max(maxMarathon, currentMarathon); currentMarathon = 1; }
+            }
+            maxMarathon = Math.max(maxMarathon, currentMarathon);
         }
 
-        const titlesHTML = achievementList.prestige.map(item => {
-            const isUnlocked = unlockedIds.includes(item.id);
-            const isSelected = userAchievements.title === item.title;
-            return `
-                <div class="title-item ${isUnlocked ? '' : 'locked'} ${isSelected ? 'selected' : ''} border-2 border-transparent p-4 rounded-lg flex flex-col items-center justify-center text-center gap-2 bg-yellow-100/50">
-                    <div class="text-5xl">👑</div>
-                    <h4 class="font-bold text-lg">${item.title}</h4>
-                    <p class="text-xs italic text-gray-600">${item.req}</p>
-                    ${isUnlocked ? `<button data-title="${item.title}" class="select-title-btn mt-2 py-1 px-3 rounded-full text-xs font-bold ${isSelected ? 'bg-green-500 text-white cursor-default' : 'bg-yellow-500 text-yellow-900'}">${isSelected ? 'Seleccionado' : 'Seleccionar'}</button>` : ''}
-                </div>
-            `;
-        }).join('');
-
-        let meritsHTML = achievementList.merits.map(ach => {
-             const isUnlocked = unlockedIds.includes(ach.id);
-             return `
-                <div class="achievement-item ${isUnlocked ? '' : 'locked'} bg-blue-100/50 p-4 rounded-lg flex items-center gap-4 border-l-4 border-blue-400">
-                    <div class="ach-icon text-4xl">${ach.icon}</div>
-                    <div class="flex-grow">
-                        <h4 class="font-bold text-lg">${ach.name}</h4>
-                        <p class="text-sm">${ach.desc}</p>
-                    </div>
-                    ${isUnlocked ? `<div class="text-right flex-shrink-0"><span class="font-bold text-green-600">+${ach.ps} PS</span></div>` : ''}
-                </div>`;
-        }).join('');
-
-        const psInfoHTML = `
-            <div class="p-4 bg-yellow-100/50 rounded-lg space-y-3">
-                <h3 class="text-xl font-bold text-yellow-800">¿Cómo funcionan los Puntos de Sorteo (PS)?</h3>
-                <p class="text-sm">Los PS miden tu progreso y dedicación. ¡Acumúlalos para desbloquear títulos y demostrar tu maestría!</p>
-                <ul class="list-disc list-inside text-sm space-y-2">
-                    <li><strong>+1 PS</strong> por cada sorteo añadido manualmente.</li>
-                    <li><strong>+2 PS</strong> por cada sorteo completado.</li>
-                    <li><strong>+5 PS</strong> por cada sorteo añadido con la IA.</li>
-                    <li><strong>+5 a 250 PS</strong> al desbloquear un logro, mérito o título.</li>
-                    <li><strong>+100 PS</strong> por ganar un sorteo.</li>
-                    <li><strong>+25 PS (Bonus)</strong> si el premio ganado es de categoría (Pádel, Viajes o Friki).</li>
-                    <li><strong>+250 PS (Bonus)</strong> si el premio ganado supera los 500€ de valor.</li>
+        // --- RENDERIZADO DEL HTML ---
+        statsModalBody.innerHTML = `
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-yellow-800">📊 Resumen General</h3>
+                <ul class="text-sm space-y-1">
+                    <li>Sorteos Totales Registrados: <strong>${totalRegistered}</strong></li>
+                    <li>Sorteos Completados: <strong>${totalCompleted}</strong></li>
+                    <li>Tasa de Participación: <strong>${participationRate}%</strong></li>
+                    <li>Sorteos Ganados: <strong>${totalWon}</strong></li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-yellow-800">🏆 Análisis de Victorias</h3>
+                <ul class="text-sm space-y-1">
+                    <li>Porcentaje de Éxito (Win Rate): <strong>${winRate}%</strong></li>
+                    <li>Valor Total de Premios: <strong>${totalValueWon.toFixed(2)}€</strong></li>
+                    <li>Valor Medio por Premio: <strong>${averageValueWon}€</strong></li>
+                    <li>Premio de Más Valor: <strong>${mostValuablePrize.prize} (${mostValuablePrize.price})</strong></li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-yellow-800">🗓️ Análisis Temporal y de Rachas</h3>
+                <ul class="text-sm space-y-1">
+                    <li>Tu día mágico para ganar: <strong>${magicDay}</strong></li>
+                    <li>Semana con más victorias: <strong>Semana ${bestWeek[0]} (${bestWeek[1]} victorias)</strong></li>
+                    <li>Mes con más victorias: <strong>${new Date(0, bestMonth[0]).toLocaleString('es-ES', {month: 'long'})} (${bestMonth[1]} victorias)</strong></li>
+                    <li>Racha de victorias actual: <strong>${currentStreak} días</strong></li>
+                    <li>Días desde la última victoria: <strong>${daysSinceLastWin}</strong></li>
+                </ul>
+            </div>
+             <div class="mb-4">
+                <h3 class="text-lg font-bold text-yellow-800">🕵️ Análisis de Cuentas</h3>
+                <ul class="text-sm space-y-1">
+                    <li>Top 5 Cuentas Más Frecuentes: <ol class="list-decimal list-inside pl-4">${top5Frequent.map(acc => `<li>${acc[0]}: ${acc[1]}</li>`).join('') || 'N/A'}</ol></li>
+                    <li>Top 5 Cuentas Talismán: <ol class="list-decimal list-inside pl-4">${top5Talisman.map(acc => `<li>${acc[0]}: ${acc[1]}</li>`).join('') || 'N/A'}</ol></li>
+                    <li>La cuenta más esquiva: <strong>${elusiveAccount[0]} (${elusiveAccount[1]} part.)</strong></li>
+                    <li>Diversidad de victorias: <strong>${winAccountSet.size} cuentas</strong></li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-yellow-800">📈 Análisis de Hábitos y Esfuerzo</h3>
+                <ul class="text-sm space-y-1">
+                    <li>Media de antelación al añadir: <strong>${avgAntelacion} días</strong></li>
+                    <li>Tu "Día de Fichajes": <strong>${signingDay}</strong></li>
+                    <li>Maratón de participación: <strong>${maxMarathon} días seguidos</strong></li>
+                    <li>Día Récord (Añadidos): <strong>${recordAdded[1]} sorteos (el ${recordAdded[0]})</strong></li>
+                    <li>Día Récord (Completados): <strong>${recordCompleted[1]} sorteos (el ${recordCompleted[0]})</strong></li>
+                    <li>Día Récord (Ganados): <strong>${recordWon[1]} sorteos (el ${recordWon[0]})</strong></li>
                 </ul>
             </div>
         `;
-
-        achievementsModalBody.innerHTML = `
-            <div class="achievement-tabs flex flex-wrap gap-x-4 border-b border-yellow-600/20 mb-4">
-                <button data-tab="logros" class="py-2 px-4 font-bold ${activeTab === 'logros' ? 'active' : ''}">Logros</button>
-                <button data-tab="titulos" class="py-2 px-4 font-bold ${activeTab === 'titulos' ? 'active' : ''}">Títulos de Prestigio</button>
-                <button data-tab="meritos" class="py-2 px-4 font-bold ${activeTab === 'meritos' ? 'active' : ''}">Méritos Únicos</button>
-                <button data-tab="ps_info" class="py-2 px-4 font-bold ${activeTab === 'ps_info' ? 'active' : ''}">Sistema de Puntos</button>
-            </div>
-            <div id="achievements-content" class="space-y-3">
-                <div class="tab-content ${activeTab === 'logros' ? '' : 'hidden'}" data-tab-content="logros">${achievementsHTML}</div>
-                <div class="tab-content ${activeTab === 'titulos' ? '' : 'hidden'}" data-tab-content="titulos"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${titlesHTML}</div></div>
-                <div class="tab-content ${activeTab === 'meritos' ? '' : 'hidden'}" data-tab-content="meritos"><div class="space-y-3">${meritsHTML}</div></div>
-                <div class="tab-content ${activeTab === 'ps_info' ? '' : 'hidden'}" data-tab-content="ps_info">${psInfoHTML}</div>
-            </div>
-        `;
-
-        achievementsModalBody.querySelectorAll('.achievement-tabs button').forEach(button => {
-            button.addEventListener('click', () => {
-                renderAchievementsModal(button.dataset.tab);
-            });
-        });
-
-        achievementsModalBody.querySelectorAll('.select-title-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                userAchievements.title = button.dataset.title;
-                saveUserAchievements();
-                userTitleEl.textContent = userAchievements.title;
-                renderAchievementsModal('titulos');
-            });
-        });
-    };
-
-    const renderPsSummaryModal = () => {
-        psSummaryModalBody.innerHTML = '';
-        const log = userPoints.log || [];
-        if (log.length === 0) {
-            psSummaryModalBody.innerHTML = '<p class="text-center">Aún no has ganado puntos. ¡Empieza a participar!</p>';
-            return;
-        }
-
-        const recentLogs = [...log].reverse().slice(0, 20);
-
-        recentLogs.forEach(entry => {
-            const entryDate = new Date(entry.date).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-            const itemHTML = `
-                <div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-green-600">+${entry.points} PS</p>
-                        <p class="text-sm text-yellow-900 truncate" style="max-width: 250px;">${entry.reason}</p>
-                    </div>
-                    <span class="text-xs text-gray-500 flex-shrink-0">${entryDate}</span>
-                </div>
-            `;
-            psSummaryModalBody.innerHTML += itemHTML;
-        });
-    };
-
-    const renderRecentAddsModal = () => {
-        recentAddsModalBody.innerHTML = '';
-        const allGiveaways = Object.values(giveaways).flat();
-
-        const sortedGiveaways = allGiveaways
-            .filter(g => g.addDate)
-            .sort((a, b) => new Date(b.addDate) - new Date(a.addDate));
-
-        if (sortedGiveaways.length === 0) {
-            recentAddsModalBody.innerHTML = '<p class="text-center">No hay sorteos con fecha de adición registrada.</p>';
-            return;
-        }
-
-        const groupedByDate = sortedGiveaways.reduce((acc, g) => {
-            const date = g.addDate;
-            if (!acc[date]) {
-                acc[date] = [];
-            }
-            acc[date].push(g);
-            return acc;
-        }, {});
-
-        for (const date in groupedByDate) {
-            const dayContainer = document.createElement('div');
-            const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-            let dayHTML = `<h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1 text-left">${formattedDate}</h3>`;
-            dayHTML += '<div class="space-y-2">';
-            groupedByDate[date].forEach(giveaway => {
-                 dayHTML += `
-                    <div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 text-left">
-                        <p class="font-bold text-yellow-900 truncate">${giveaway.prize}</p>
-                        <p class="text-sm text-gray-600">Finaliza el: ${giveaway.date}</p>
-                    </div>
-                 `;
-            });
-            dayHTML += '</div>';
-            dayContainer.innerHTML = dayHTML;
-            recentAddsModalBody.appendChild(dayContainer);
-        }
-    };
-
-    const downloadSourceCode = () => {
-        showNotification('Preparando descarga...', 'Se está generando el archivo .zip con tus datos actualizados.');
-        const zip = new JSZip();
-
-        const giveawaysContent = `window.giveaways = ${JSON.stringify(giveaways, null, 4)};`;
-        const discardedGiveawaysContent = `const initialDiscardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};\n\nif (localStorage.getItem('discardedGiveaways') === null) {\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\n}\n\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];`;
-        
-        const indexHtmlContent = document.documentElement.outerHTML;
-
-        const netlifyTomlContent = `[build]
-          command = "npm install"
-          functions = "netlify/functions"`;
-
-        const packageJsonContent = `{
-          "name": "misorteos-functions",
-          "version": "1.0.0",
-          "description": "Dependencias para las funciones de Netlify",
-          "dependencies": {
-            "node-fetch": "^3.3.2"
-          }
-        }`;
-
-        const geminiJsContent = `// netlify/functions/gemini.js
-        exports.handler = async function (event, context) {
-            const fetch = (await import('node-fetch')).default;
-            const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-            const body = JSON.parse(event.body);
-            const { base64Data, dynamicPrompt } = body;
-            if (!base64Data || !dynamicPrompt) {
-                return {
-                    statusCode: 400,
-                    body: JSON.stringify({ error: 'Faltan datos en la petición.' })
-                };
-            }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
-            const payload = {
-                contents: [{
-                    role: "user",
-                    parts: [
-                        { text: dynamicPrompt },
-                        { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }
-                    ]
-                }]
-            };
-            try {
-                const geminiResponse = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!geminiResponse.ok) {
-                    const errorBody = await geminiResponse.json();
-                    console.error("Error desde la API de Gemini:", errorBody);
-                    return {
-                        statusCode: geminiResponse.status,
-                        body: JSON.stringify({ error: 'La API de Gemini devolvió un error.', details: errorBody })
-                    };
-                }
-                const data = await geminiResponse.json();
-                return {
-                    statusCode: 200,
-                    body: JSON.stringify(data)
-                };
-            } catch (error) {
-                console.error("Error en la función de Netlify:", error);
-                return {
-                    statusCode: 500,
-                    body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
-                };
-            }
-        };`;
-
-        const searchJsContent = `// netlify/functions/search.js
-        exports.handler = async function (event, context) {
-            const fetch = (await import('node-fetch')).default;
-            const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-            const { query, accounts } = JSON.parse(event.body);
-            if (!query) {
-                return {
-                    statusCode: 400,
-                    body: JSON.stringify({ error: 'Falta la consulta (query).' })
-                };
-            }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
-            const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
-    
-            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
-                * Producto: "\${query}"
-                * Cuentas de Instagram: \${accounts.join(', ')}
-
-            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
-
-            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:
-                {
-                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",
-                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
-                }
-
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. \`;
-            const payload = {
-                contents: [{
-                    role: "user",
-                    parts: [{ text: prompt }]
-                }]
-            };
-            try {
-                const geminiResponse = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!geminiResponse.ok) {
-                    const errorBody = await geminiResponse.json();
-                    console.error("Error desde la API de Gemini (en search.js):", errorBody);
-                    return {
-                        statusCode: geminiResponse.status,
-                        body: JSON.stringify({ error: 'La API de Gemini devolvió un error en la búsqueda.', details: errorBody })
-                    };
-                }
-                const data = await geminiResponse.json();
-                return {
-                    statusCode: 200,
-                    body: JSON.stringify(data)
-                };
-            } catch (error) {
-                console.error("Error en la función search.js:", error);
-                return {
-                    statusCode: 500,
-                    body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
-                };
-            }
-        };`;
-
-        zip.file("index.html", indexHtmlContent);
-        zip.file("giveaways_new.js", giveawaysContent);
-        zip.file("discardedGiveaways_new.js", discardedGiveawaysContent);
-        zip.file("netlify.toml", netlifyTomlContent);
-        zip.file("package.json", packageJsonContent);
-
-        const functionsFolder = zip.folder("netlify").folder("functions");
-        functionsFolder.file("gemini.js", geminiJsContent);
-        functionsFolder.file("search.js", searchJsContent);
-
-        zip.generateAsync({ type: "blob" }).then(function(content) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(content);
-            const today = new Date().toISOString().slice(0, 10);
-            link.download = `Misorteos-Backup-Completo-${today}.zip`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-    };
-    
-    const restoreFromBackup = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { JSZip.loadAsync(e.target.result).then(zip => { const giveawaysFile = zip.file("giveaways_new.js"); const discardedFile = zip.file("discardedGiveaways_new.js"); const foreignFile = zip.file("foreignAccounts.js"); if (!giveawaysFile || !discardedFile || !foreignFile) { showNotification('Error', 'El archivo .zip no parece una copia de seguridad válida.'); return; } Promise.all([giveawaysFile.async("string"), discardedFile.async("string"), foreignFile.async("string")]) .then(contents => { try { const giveawaysContent = contents[0].replace('window.giveaways = ', '').slice(0, -1); const discardedContent = contents[1].replace('window.discardedGiveaways = ', '').slice(0, -1); const foreignContent = contents[2].replace('window.foreignAccounts = ', '').slice(0, -1); const parsedGiveaways = JSON.parse(giveawaysContent); const parsedDiscarded = JSON.parse(discardedContent); const parsedForeign = JSON.parse(foreignContent); if (confirm("¿Seguro que quieres restaurar esta copia? Se borrarán todos los datos actuales y se reemplazarán por los del archivo.")) { giveaways = parsedGiveaways; discardedGiveaways = parsedDiscarded; foreignAccounts = parsedForeign; saveGiveaways(); saveDiscardedGiveaways(); saveForeignAccounts(); renderCalendar(); showNotification('¡Éxito!', 'La copia de seguridad se ha restaurado correctamente.'); } } catch (error) { showNotification('Error de formato', 'No se pudo leer el contenido del archivo .zip.'); console.error("Error al parsear la copia de seguridad:", error); } }); }); }; reader.readAsArrayBuffer(file); };
-
-    const toggleNavMenu = () => {
-        navMenu.classList.toggle('is-open');
-        menuOverlay.style.display = navMenu.classList.contains('is-open') ? 'block' : 'none';
-    };
-
-    const renderForeignAccountsModal = () => {
-         foreignAccountsModalBody.innerHTML = '';
-         if (foreignAccounts.length === 0) {
-             foreignAccountsModalBody.innerHTML = '<p class="text-center">No hay cuentas extranjeras bloqueadas.</p>';
-             return;
-         }
-         foreignAccounts.forEach(account => {
-             const itemContainer = document.createElement('div');
-             itemContainer.className = 'flex justify-between items-center p-3 bg-red-100/50 rounded-lg shadow-inner border border-red-600/20';
-             itemContainer.innerHTML = `
-                 <span class="font-bold">${account}</span>
-                 <button class="remove-foreign-account-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-400" data-account-name="${account}"><i class="fa-solid fa-trash-can"></i></button>
-             `;
-             foreignAccountsModalBody.appendChild(itemContainer);
-         });
-    };
-
-    const removeForeignAccount = (accountName) => {
-         foreignAccounts = foreignAccounts.filter(acc => acc !== accountName);
-         saveForeignAccounts();
-         renderForeignAccountsModal();
-         showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
     };
 
     const renderBlockManagementModal = () => {
@@ -3393,7 +3014,7 @@
                     checkbox.checked = true;
                     const giveawayId = checkbox.dataset.giveawayId;
                     if (!completedGiveaways[giveawayId]) {
-                         completedGiveaways[giveawayId] = true;
+                         completedGiveaways[giveawayId] = new Date().toISOString().slice(0, 10);
                          const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
                          if(giveaway) {
                             addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
@@ -3430,7 +3051,7 @@
         if (e.target.type === 'checkbox') {
             const itemContainer = e.target.closest('.giveaway-item');
             if (e.target.checked) {
-                completedGiveaways[giveawayId] = true;
+                completedGiveaways[giveawayId] = new Date().toISOString().slice(0, 10); // Guardamos la fecha actual
                 animateShootingStar(itemContainer, () => {
                     itemContainer.classList.add('completed');
                     buildModal(dateStr);

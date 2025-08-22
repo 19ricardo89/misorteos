@@ -16,17 +16,19 @@ exports.handler = async function (event, context) {
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     
     // --- INICIO DEL PROMPT MODIFICADO Y MEJORADO ---
+    // Este nuevo prompt es más directivo, forzando a la IA a seguir una jerarquía
+    // y a ser más persistente en la búsqueda del precio.
     const prompt = `Actúa como un asistente de investigación de mercado experto y minucioso. Tu única tarea es encontrar el precio y el enlace de un producto específico siguiendo una jerarquía estricta.
 
     **Producto a buscar:** "${query}"
 
     **Jerarquía de Búsqueda:**
 
-    1.  **Prioridad 1 (Máxima):** Busca el producto ("${query}") directamente en la **página web oficial de la marca del producto**. Ignora las webs de las cuentas de Instagram que organizan el sorteo, a menos que sean la propia marca del producto. Por ejemplo, para un "iPhone 16", busca en apple.com.
+    1.  **Prioridad 1 (Máxima):** Busca el producto ("${query}") directamente en la **página web oficial de la marca del producto**. Ignora las webs de las cuentas de Instagram que organizan el sorteo, a menos que sean la propia marca del producto. Por ejemplo, para un "iPhone 16", busca en apple.com. Para "Zapatillas NNormal Tomir 2.0", busca en nnormal.com.
 
-    2.  **Prioridad 2 (Solo si falla la Prioridad 1):** Si no encuentras la web oficial de la marca o el producto no está disponible allí, realiza una búsqueda general en Google para encontrar el precio y una tienda de confianza que lo venda.
+    2.  **Prioridad 2 (Solo si falla la Prioridad 1):** Si no encuentras la web oficial de la marca o el producto no está disponible allí, realiza una búsqueda general en Google para encontrar el precio y una tienda de confianza que lo venda (ej: Amazon, El Corte Inglés, etc.).
 
-    3.  **Insistencia:** Sé persistente. Intenta variaciones del nombre del producto si es necesario para encontrar una coincidencia.
+    3.  **Insistencia:** Sé persistente. Intenta variaciones del nombre del producto si es necesario para encontrar una coincidencia. El objetivo es encontrar un precio.
 
     **Formato de Salida Obligatorio:**
     Devuelve tu respuesta única y exclusivamente como un objeto JSON válido, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. La estructura debe ser:

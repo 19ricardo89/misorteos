@@ -2664,8 +2664,7 @@ const initialDiscardedGiveaways = [
             "accounts": [
                 "@chocolatestorras",
                 "@casa_carriot"
-            ],
-            "date": "2025-08-20"
+            ]
         },
         "originalDate": "2025-08-20",
         "prize_category": "otros"
@@ -2684,12 +2683,11 @@ const initialDiscardedGiveaways = [
             "price": "80€",
             "accounts": [
                 "@esthersalamancamadero"
-            ],
-            "date": "2025-08-23"
+            ]
         },
         "originalDate": "2025-08-20",
         "prize_category": "otros"
-    },
+    }
   
 ];
 

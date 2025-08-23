@@ -764,6 +764,51 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
         }
+
+        /* --- NUEVOS ESTILOS PARA PESTAÑAS Y GRÁFICOS --- */
+        .stats-tabs button {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 3px solid transparent;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            color: #b45309; /* Un color menos intenso para las inactivas */
+        }
+        .stats-tabs button.active {
+            color: #f7d468; /* Dorado brillante para la activa */
+            background-color: rgba(247, 212, 104, 0.1);
+            border-bottom-color: #f7d468;
+        }
+        .stats-tab-content {
+            display: none; /* Ocultar todos los paneles por defecto */
+        }
+        .stats-tab-content.active {
+            display: block; /* Mostrar solo el panel activo */
+            animation: fadeInScale 0.4s ease-out;
+        }
+        .heatmap-container {
+            width: 100%;
+            overflow-x: auto; /* Para calendarios anchos en móviles */
+        }
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            font-size: 0.7rem;
+        }
+        .heatmap-day {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            background-color: #fef3c7; /* Color base para días sin victorias */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .heatmap-header {
+            font-weight: bold;
+            text-align: center;
+        }
+        /* --- FIN DE NUEVOS ESTILOS --- */
     </style>
 </head>
 <body class="p-4">
@@ -1062,19 +1107,78 @@
     </div>
     
     <div id="stats-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+        <div class="modal-content w-full max-w-4xl rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">📊 Estadísticas de Sorteos</h2>
+                <h2 class="text-2xl sm:text-3xl">📊 Estadísticas y Estrategia</h2>
                 <button id="close-stats-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
-            <div id="stats-modal-body" class="text-left"></div>
-            <hr class="border-yellow-600/20 my-4">
-            <div class="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
-                <button id="open-charts-modal" class="bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors">Gráficos 📈</button>
-                <button id="share-stats-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">Compartir 📲</button>
+
+            <!-- Pestañas de Navegación -->
+            <div class="stats-tabs flex flex-wrap border-b border-yellow-600/20 mb-4">
+                <button data-tab="resumen" class="active">Resumen</button>
+                <button data-tab="rendimiento">Rendimiento</button>
+                <button data-tab="estrategia">Estrategia</button>
+                <button data-tab="redes">Redes</button>
+                <button data-tab="graficos">Gráficos</button>
             </div>
-            <hr class="border-yellow-600/20 my-4">
-            <div class="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
+
+            <!-- Contenido de las Pestañas -->
+            <div id="stats-modal-body" class="text-left max-h-[65vh] overflow-y-auto pr-2">
+                <!-- Pestaña 1: Resumen (Métricas existentes) -->
+                <div id="tab-resumen" class="stats-tab-content active">
+                    <!-- Aquí se cargarán dinámicamente las estadísticas de resumen que ya tenías -->
+                </div>
+
+                <!-- Pestaña 2: Análisis de Rendimiento -->
+                <div id="tab-rendimiento" class="stats-tab-content">
+                    <!-- Contenido se cargará dinámicamente -->
+                </div>
+
+                <!-- Pestaña 3: Análisis Estratégico -->
+                <div id="tab-estrategia" class="stats-tab-content">
+                    <!-- Contenido se cargará dinámicamente -->
+                </div>
+
+                <!-- Pestaña 4: Análisis de Redes -->
+                <div id="tab-redes" class="stats-tab-content">
+                    <!-- Contenido se cargará dinámicamente -->
+                </div>
+
+                <!-- Pestaña 5: Gráficos -->
+                <div id="tab-graficos" class="stats-tab-content">
+                    <div id="charts-modal-body" class="flex flex-col gap-8">
+                        <!-- Gráficos existentes -->
+                        <div class="chart-container h-64 md:h-80">
+                            <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Victorias por Categoría</h3>
+                            <canvas id="category-pie-chart"></canvas>
+                        </div>
+                        <div class="chart-container h-64 md:h-80">
+                            <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Valor de Premios Ganados por Mes</h3>
+                            <canvas id="monthly-value-bar-chart"></canvas>
+                        </div>
+                        <!-- Nuevos Gráficos -->
+                        <div class="chart-container h-64 md:h-80">
+                            <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">📈 Crecimiento de Victorias Acumuladas</h3>
+                            <canvas id="wins-growth-line-chart"></canvas>
+                        </div>
+                        <div class="chart-container h-64 md:h-80">
+                            <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">🎯 Dispersión: Antelación vs Valor del Premio</h3>
+                            <canvas id="value-vs-anticipation-scatter-chart"></canvas>
+                        </div>
+                         <div class="chart-container h-64 md:h-80">
+                            <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">🕸️ Radar: Tu Estilo de Cazador</h3>
+                            <canvas id="hunter-style-radar-chart"></canvas>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">🗓️ Mapa de Calor: Tu Calendario de la Suerte</h3>
+                            <div id="luck-heatmap-container" class="heatmap-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <hr class="border-yellow-600/20 my-4">
+             <div class="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
+                 <button id="share-stats-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">Compartir 📲</button>
                  <button id="oracle-proximity-btn" class="bg-indigo-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-indigo-400 transition-colors">🔮 Oráculo de Proximidad</button>
                  <button id="oracle-prize-btn" class="bg-teal-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-teal-400 transition-colors">✨ Oráculo del Premio</button>
             </div>
@@ -1099,25 +1203,6 @@
                 </button>
             </div>
             <div id="block-stats-container" class="text-left mt-6"></div>
-        </div>
-    </div>
-
-    <div id="charts-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-4xl rounded-2xl shadow-2xl modal-default-bg p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">Gráficos de Estadísticas</h2>
-                <button id="close-charts-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <div id="charts-modal-body">
-                <div class="chart-container">
-                    <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Victorias por Categoría</h3>
-                    <canvas id="category-pie-chart"></canvas>
-                </div>
-                <div class="chart-container">
-                    <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Valor de Premios Ganados por Mes</h3>
-                    <canvas id="monthly-value-bar-chart"></canvas>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1197,6 +1282,9 @@
             </button>
         </div>
     </section>
+    
+        <script src="giveaways_new.js"></script>
+    <script src="discardedGiveaways_new.js"></script>
     <script id="animations-script">
         function animateStarryBackground() {
             const starsContainer = document.getElementById('magic-stars-container');
@@ -1264,8 +1352,6 @@
             }, { once: true });
         }
     </script>
-<script src="giveaways_new.js"></script>
-    <script src="discardedGiveaways_new.js"></script>
     <script>
     // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
 
@@ -1497,9 +1583,6 @@
     const closeMoveGiveawayModalBtn = document.getElementById('close-move-giveaway-modal');
     const moveGiveawayForm = document.getElementById('move-giveaway-form');
     const newGiveawayDateInput = document.getElementById('new-giveaway-date');
-    const openChartsModalBtn = document.getElementById('open-charts-modal');
-    const chartsModal = document.getElementById('charts-modal');
-    const closeChartsModalBtn = document.getElementById('close-charts-modal');
     const duplicateComparisonModal = document.getElementById('duplicate-comparison-modal');
     const closeDuplicateComparisonModalBtn = document.getElementById('close-duplicate-comparison-modal');
     const originalGiveawayDetails = document.getElementById('original-giveaway-details');
@@ -1827,12 +1910,7 @@
         const detailsContainer = document.createElement('div');
         detailsContainer.className = 'text-right flex-shrink-0 ml-2';
         if (giveaway.price) {
-            // --- INICIO DE LA MODIFICACIÓN ---
-            // Ahora, si el sorteo tiene una URL guardada, el enlace apuntará a ella.
-            // Si no, seguirá apuntando a una búsqueda en Google como antes.
-            const linkUrl = giveaway.url ? giveaway.url : `https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}`;
-            detailsContainer.innerHTML = `<a href="${linkUrl}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
-            // --- FIN DE LA MODIFICACIÓN ---
+            detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
         }
 
         itemContainer.appendChild(leftSideContainer);
@@ -2463,29 +2541,16 @@
     }
 
     async function searchPrizeValue(aiData) {
-        // 1. Limpiamos el premio de palabras genéricas que ensucian la búsqueda.
-        const prizeToSearch = (aiData.prize || '')
-            .replace(/sorteo/gi, '')
-            .replace(/gana/gi, '')
-            .replace(/consigue/gi, '')
-            .replace(/participa y/gi, '')
-            .trim();
-
+        const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
         const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
-
-        if (!prizeToSearch) {
-            return { prize: aiData.prize, value: "No encontrado", url: null };
-        }
-        
+        if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
         const functionUrl = '/.netlify/functions/search';
         try {
-            // 2. Enviamos tanto el premio limpio como las cuentas para dar más contexto a la IA.
             const response = await fetch(functionUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: prizeToSearch, accounts: accounts })
+                body: JSON.stringify({ query: cleanedPrize, accounts: accounts })
             });
-
             if (!response.ok) {
                 throw new Error('La respuesta de la función de búsqueda no fue OK');
             }
@@ -2493,18 +2558,15 @@
             if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
                 const text = result.candidates[0].content.parts[0].text;
                 const parsedResult = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
-                
                 let prizeWithEmoji = aiData.prize;
                 let numericValue = null;
                 if (parsedResult.value && parsedResult.value !== "No encontrado") {
                     numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
                 }
-                
                 if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
                 if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
                 if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
                 if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
-                
                 return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
             } else {
                 throw new Error("Respuesta incompleta de la API de texto.");
@@ -2704,172 +2766,102 @@
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // --- 📊 Resumen General ---
+        // --- CÁLCULOS GENERALES ---
         const totalRegistered = allRegisteredGiveaways.length;
         const totalCompleted = Object.keys(completedGiveaways).length;
-        const participationRate = totalRegistered > 0 ? ((totalCompleted / totalRegistered) * 100).toFixed(1) : 0;
         const totalWon = wonGiveaways.length;
-
-        // --- 🏆 Análisis de Victorias y Premios ---
-        const winRate = totalCompleted > 0 ? ((totalWon / totalCompleted) * 100).toFixed(1) : 0;
         const totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
+        const participationRate = totalRegistered > 0 ? ((totalCompleted / totalRegistered) * 100).toFixed(1) : 0;
+        const winRate = totalCompleted > 0 ? ((totalWon / totalCompleted) * 100).toFixed(2) : 0; // Más precisión
         const avgValuePerWin = totalWon > 0 ? (totalValueWon / totalWon).toFixed(2) : 0;
         const prizesWithValues = wonGiveaways.filter(g => parsePrice(g.price) > 0);
         const mostValuableWin = prizesWithValues.length ? prizesWithValues.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max) : null;
-        const leastValuableWin = prizesWithValues.length ? prizesWithValues.reduce((min, g) => parsePrice(g.price) < parsePrice(min.price) ? g : min) : null;
-        const categoryWins = wonGiveaways.reduce((acc, g) => {
-            const prize = g.prize || '';
-            if (prize.includes('🥎')) acc['Pádel 🥎'] = (acc['Pádel 🥎'] || 0) + 1;
-            else if (prize.includes('🛩️')) acc['Viajes 🛩️'] = (acc['Viajes 🛩️'] || 0) + 1;
-            else if (prize.includes('🃏')) acc['Frikis 🃏'] = (acc['Frikis 🃏'] || 0) + 1;
-            else acc['Otros'] = (acc['Otros'] || 0) + 1;
-            return acc;
-        }, {});
-
-        // --- 🗓️ Análisis Temporal y de Rachas ---
-        const weekDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-        const winDayCounts = wonGiveaways.reduce((acc, g) => {
-            const day = new Date(g.wonDate).getDay();
-            acc[day] = (acc[day] || 0) + 1;
-            return acc;
-        }, {});
-        const magicDayIndex = Object.keys(winDayCounts).length ? Object.keys(winDayCounts).reduce((a, b) => winDayCounts[a] > winDayCounts[b] ? a : b) : -1;
-        const magicDay = magicDayIndex !== -1 ? weekDays[magicDayIndex] : 'N/A';
         
-        const winsByWeek = wonGiveaways.reduce((acc, g) => {
-            const d = new Date(g.wonDate);
-            const year = d.getFullYear();
-            const week = Math.ceil((((d - new Date(year, 0, 1)) / ONE_DAY_MS) + 1) / 7);
-            const key = `${year}-W${week}`;
-            acc[key] = (acc[key] || 0) + 1;
+        // --- NUEVOS CÁLCULOS DE RENDIMIENTO ---
+        const eficienciaParticipacion = totalWon > 0 ? (totalCompleted / totalWon).toFixed(1) : '∞';
+        const valorPorParticipacion = totalCompleted > 0 ? (totalValueWon / totalCompleted).toFixed(2) : 0;
+
+        let estiloCazador = "Equilibrado ⚖️";
+        if (parseFloat(winRate) > 1.5 && participationRate < 50) {
+            estiloCazador = "Francotirador 🎯";
+        } else if (parseFloat(winRate) < 1 && participationRate > 75) {
+            estiloCazador = "Ametralladora 💥";
+        }
+
+        // --- NUEVOS CÁLCULOS ESTRATÉGICOS ---
+        const exitosPorValor = {
+            modestos: { wins: 0, completed: 0 },
+            intermedios: { wins: 0, completed: 0 },
+            grandes: { wins: 0, completed: 0 }
+        };
+
+        const allCompletedGiveaways = allRegisteredGiveaways.filter(g => completedGiveaways[g.id]);
+        
+        allCompletedGiveaways.forEach(g => {
+            const value = parsePrice(g.price);
+            const isWon = wonGiveaways.some(wg => wg.id === g.id);
+            if (value < 50) {
+                exitosPorValor.modestos.completed++;
+                if (isWon) exitosPorValor.modestos.wins++;
+            } else if (value >= 50 && value <= 250) {
+                exitosPorValor.intermedios.completed++;
+                if (isWon) exitosPorValor.intermedios.wins++;
+            } else {
+                exitosPorValor.grandes.completed++;
+                if (isWon) exitosPorValor.grandes.wins++;
+            }
+        });
+
+        const tasaExitoModestos = exitosPorValor.modestos.completed > 0 ? ((exitosPorValor.modestos.wins / exitosPorValor.modestos.completed) * 100).toFixed(1) : 0;
+        const tasaExitoIntermedios = exitosPorValor.intermedios.completed > 0 ? ((exitosPorValor.intermedios.wins / exitosPorValor.intermedios.completed) * 100).toFixed(1) : 0;
+        const tasaExitoGrandes = exitosPorValor.grandes.completed > 0 ? ((exitosPorValor.grandes.wins / exitosPorValor.grandes.completed) * 100).toFixed(1) : 0;
+
+        const sorteosCercanos = allRegisteredGiveaways.filter(g => {
+            const diff = (new Date(g.date) - today) / ONE_DAY_MS;
+            return diff >= 0 && diff <= 7;
+        });
+        const sorteosLejanos = allRegisteredGiveaways.filter(g => (new Date(g.date) - today) / ONE_DAY_MS > 30);
+        
+        const participacionCercanos = sorteosCercanos.filter(g => completedGiveaways[g.id]).length;
+        const participacionLejanos = sorteosLejanos.filter(g => completedGiveaways[g.id]).length;
+
+        const tasaParticipacionCercanos = sorteosCercanos.length > 0 ? ((participacionCercanos / sorteosCercanos.length) * 100).toFixed(1) : 0;
+        const tasaParticipacionLejanos = sorteosLejanos.length > 0 ? ((participacionLejanos / sorteosLejanos.length) * 100).toFixed(1) : 0;
+
+        // --- NUEVOS CÁLCULOS PREDICTIVOS Y DE REDES ---
+        const winsLast30Days = wonGiveaways.filter(g => (today - new Date(g.wonDate)) / ONE_DAY_MS <= 30).length;
+        const totalDaysWithWins = new Set(wonGiveaways.map(g => new Date(g.wonDate).toDateString())).size;
+        const historicalWinRatePerDay = totalDaysWithWins > 0 ? totalWon / totalDaysWithWins : 0;
+        const currentWinRatePerDay = winsLast30Days / 30;
+        const rachaCaliente = currentWinRatePerDay > historicalWinRatePerDay && winsLast30Days > 1;
+
+        const talismanFrequency = wonGiveaways.flatMap(g => g.accounts || []).reduce((acc, account) => {
+            acc[account] = (acc[account] || 0) + 1;
             return acc;
         }, {});
-        const recordWeek = Object.keys(winsByWeek).length ? Object.entries(winsByWeek).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
-
-        const winsByMonth = wonGiveaways.reduce((acc, g) => {
-            const key = new Date(g.wonDate).toLocaleString('es-ES', { month: 'long', year: 'numeric' });
-            acc[key] = (acc[key] || 0) + 1;
-            return acc;
-        }, {});
-        const recordMonth = Object.keys(winsByMonth).length ? Object.entries(winsByMonth).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
-
-        const sortedWins = [...wonGiveaways].sort((a, b) => new Date(a.wonDate) - new Date(b.wonDate));
-        let currentStreak = 0;
-        if (sortedWins.length > 0) {
-            let lastWin = new Date(sortedWins[sortedWins.length - 1].wonDate);
-            lastWin.setHours(0,0,0,0);
-            if ((today - lastWin) / ONE_DAY_MS <= 1) { // Si la última victoria fue hoy o ayer
-                currentStreak = 1;
-                for (let i = sortedWins.length - 2; i >= 0; i--) {
-                    const prevWin = new Date(sortedWins[i].wonDate);
-                    prevWin.setHours(0,0,0,0);
-                    if ((lastWin - prevWin) / ONE_DAY_MS === 1) {
-                        currentStreak++;
-                        lastWin = prevWin;
-                    } else {
-                        break;
+        const topTalismanes = Object.entries(talismanFrequency).sort((a, b) => b[1] - a[1]).slice(0, 3);
+        const sorteosPendientesTalismanes = allGiveaways.filter(g => !completedGiveaways[g.id] && g.accounts.some(acc => topTalismanes.map(t => t[0]).includes(acc))).length;
+        
+        const colaboraciones = {};
+        allRegisteredGiveaways.forEach(g => {
+            if (g.accounts && g.accounts.length > 1) {
+                for (let i = 0; i < g.accounts.length; i++) {
+                    for (let j = i + 1; j < g.accounts.length; j++) {
+                        const pair = [g.accounts[i], g.accounts[j]].sort().join('|');
+                        colaboraciones[pair] = (colaboraciones[pair] || 0) + 1;
                     }
                 }
             }
-        }
-        
-        let lastWinDate = sortedWins.length ? new Date(sortedWins[sortedWins.length - 1].wonDate) : null;
-        lastWinDate?.setHours(0, 0, 0, 0);
-        const daysSinceLastWin = lastWinDate ? Math.floor((today - lastWinDate) / ONE_DAY_MS) : 'N/A';
-        
-        let winGaps = [];
-        for (let i = 1; i < sortedWins.length; i++) {
-            const date1 = new Date(sortedWins[i-1].wonDate);
-            const date2 = new Date(sortedWins[i].wonDate);
-            winGaps.push(Math.round((date2 - date1) / ONE_DAY_MS));
-        }
-        const avgDaysBetweenWins = winGaps.length ? (winGaps.reduce((a, b) => a + b, 0) / winGaps.length).toFixed(1) : 'N/A';
-        
-        const fastestWin = wonGiveaways.filter(g => g.addDate).reduce((min, g) => {
-            const diff = new Date(g.wonDate) - new Date(g.addDate);
-            return diff < min.diff ? { diff, prize: g.prize } : min;
-        }, { diff: Infinity, prize: 'N/A' });
-        
-        const slowestWin = wonGiveaways.filter(g => g.addDate).reduce((max, g) => {
-            const diff = new Date(g.wonDate) - new Date(g.addDate);
-            return diff > max.diff ? { diff, prize: g.prize } : max;
-        }, { diff: -1, prize: 'N/A' });
-
-        // --- 🕵️ Análisis de Cuentas y Marcas ---
-        const allAccounts = allRegisteredGiveaways.flatMap(g => g.accounts || []);
-        const accountFrequency = allAccounts.reduce((acc, account) => {
-            acc[account] = (acc[account] || 0) + 1;
-            return acc;
-        }, {});
-        const top5Frequent = Object.entries(accountFrequency).sort((a, b) => b[1] - a[1]).slice(0, 5);
-
-        const winAccounts = wonGiveaways.flatMap(g => g.accounts || []);
-        const talismanFrequency = winAccounts.reduce((acc, account) => {
-            acc[account] = (acc[account] || 0) + 1;
-            return acc;
-        }, {});
-        const top5Talisman = Object.entries(talismanFrequency).sort((a, b) => b[1] - a[1]).slice(0, 5);
-        
-        const winAccountSet = new Set(winAccounts);
-        const playedAccounts = {};
-        allRegisteredGiveaways.forEach(g => {
-            if(completedGiveaways[g.id]) {
-                (g.accounts || []).forEach(acc => playedAccounts[acc] = (playedAccounts[acc] || 0) + 1);
-            }
         });
-        const elusiveAccount = Object.entries(playedAccounts)
-            .filter(([acc]) => !winAccountSet.has(acc))
-            .sort((a, b) => b[1] - a[1])[0] || ['N/A', 0];
-
-        // --- 🧩 Análisis por Categoría ---
-        const categoryValue = wonGiveaways.reduce((acc, g) => {
-            const prize = g.prize || '';
-            const category = prize.includes('🥎') ? 'Pádel' : prize.includes('🛩️') ? 'Viajes' : prize.includes('🃏') ? 'Frikis' : 'Otros';
-            acc[category] = (acc[category] || 0) + parsePrice(g.price);
-            return acc;
-        }, {});
-        const mostProfitableCat = Object.keys(categoryValue).length ? Object.entries(categoryValue).sort((a, b) => b[1] - a[1])[0] : ['N/A', 0];
-
-        const categoryCompleted = allRegisteredGiveaways.reduce((acc, g) => {
-            if (completedGiveaways[g.id]) {
-                const prize = g.prize || '';
-                const category = prize.includes('🥎') ? 'Pádel' : prize.includes('🛩️') ? 'Viajes' : prize.includes('🃏') ? 'Frikis' : 'Otros';
-                acc[category] = (acc[category] || 0) + 1;
-            }
-            return acc;
-        }, {});
-        const categoryWinRates = Object.keys(categoryCompleted).map(cat => {
-            const wins = categoryWins[cat.replace(/ .*/, '')] || 0;
-            const rate = (wins / categoryCompleted[cat]) * 100;
-            return { category: cat, rate: rate.toFixed(1) };
-        }).sort((a,b) => b.rate - a.rate);
-        const bestAimCategory = categoryWinRates[0] || { category: 'N/A', rate: 0 };
-        
-        // --- 📈 Análisis de Hábitos y Esfuerzo ---
-        const addDateDiffs = allRegisteredGiveaways.filter(g => g.addDate).map(g => (new Date(g.date) - new Date(g.addDate)) / ONE_DAY_MS);
-        const avgAntelacion = addDateDiffs.length ? (addDateDiffs.reduce((a, b) => a + b, 0) / addDateDiffs.length).toFixed(1) : 'N/A';
-        
-        const addCountsByDay = allRegisteredGiveaways.filter(g => g.addDate).reduce((acc, g) => {
-            acc[g.addDate] = (acc[g.addDate] || 0) + 1;
-            return acc;
-        }, {});
-        const avgAddsPerDay = Object.keys(addCountsByDay).length > 0 ? (allRegisteredGiveaways.filter(g => g.addDate).length / Object.keys(addCountsByDay).length).toFixed(1) : 0;
-        const recordAdded = Object.keys(addCountsByDay).length ? Math.max(...Object.values(addCountsByDay)) : 0;
-        const recordAddedDay = Object.keys(addCountsByDay).length ? Object.entries(addCountsByDay).find(entry => entry[1] === recordAdded)[0] : 'N/A';
-
-        const recordCompleted = 0; // Esta métrica es más compleja, la dejamos pendiente por ahora
-        const recordWonDay = Object.keys(winsByMonth).length ? Object.entries(winsByMonth).sort((a,b) => b[1] - a[1])[0] : ['N/A', 0];
-
-        const addedDayOfWeek = allRegisteredGiveaways.filter(g => g.addDate).reduce((acc, g) => {
-            const day = new Date(g.addDate + 'T00:00:00').getDay();
-            acc[day] = (acc[day] || 0) + 1;
-            return acc;
-        }, {});
-        const signingDayIndex = Object.keys(addedDayOfWeek).length ? Object.keys(addedDayOfWeek).reduce((a, b) => addedDayOfWeek[a] > addedDayOfWeek[b] ? a : b) : -1;
-        const signingDay = signingDayIndex !== -1 ? weekDays[signingDayIndex] : 'N/A';
+        const topColaboradores = Object.entries(colaboraciones).sort((a, b) => b[1] - a[1]).slice(0, 3);
 
         // --- RENDERIZADO DEL HTML ---
-        statsModalBody.innerHTML = `
+        const resumenTab = document.getElementById('tab-resumen');
+        const rendimientoTab = document.getElementById('tab-rendimiento');
+        const estrategiaTab = document.getElementById('tab-estrategia');
+        const redesTab = document.getElementById('tab-redes');
+
+        resumenTab.innerHTML = `
             <div class="space-y-4">
                 <div>
                     <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📊 Resumen General</h3>
@@ -2881,52 +2873,65 @@
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🏆 Análisis de Victorias y Premios</h3>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🏆 Victorias y Premios</h3>
                     <ul class="space-y-1">
                         <li>Porcentaje de Éxito (Win Rate): <strong>${winRate}%</strong></li>
                         <li>Valor Total de Premios: <strong>${totalValueWon.toFixed(2)}€</strong></li>
                         <li>Valor Medio por Premio: <strong>${avgValuePerWin}€</strong></li>
                         <li>Premio de Más Valor: <strong>${mostValuableWin ? `${mostValuableWin.prize} (${mostValuableWin.price})` : 'N/A'}</strong></li>
-                        <li>Premio Más Humilde: <strong>${leastValuableWin ? `${leastValuableWin.prize} (${leastValuableWin.price})` : 'N/A'}</strong></li>
-                        <li>Victorias por Categoría: <ol class="list-disc list-inside pl-4 text-sm">${Object.entries(categoryWins).map(([cat, count]) => `<li>${cat}: ${count}</li>`).join('')}</ol></li>
                     </ul>
                 </div>
-                 <div>
-                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🗓️ Análisis Temporal y de Rachas</h3>
-                    <ul class="space-y-1">
-                        <li>Día de la Semana Más Frecuente para Ganar: <strong>${magicDay}</strong></li>
-                        <li>Semana con Más Sorteos Ganados: <strong>${recordWeek[0]} (${recordWeek[1]} victorias)</strong></li>
-                        <li>Mes con Más Sorteos Ganados: <strong>${recordMonth[0]} (${recordMonth[1]} victorias)</strong></li>
-                        <li>Racha de Victorias Actual: <strong>${currentStreak} días</strong></li>
-                        <li>Días desde la Última Victoria (Sequía): <strong>${daysSinceLastWin}</strong></li>
-                        <li>Media de Días entre Premios: <strong>${avgDaysBetweenWins}</strong></li>
-                        <li>La Victoria Más Rápida: <strong>${fastestWin.prize !== 'N/A' ? `${fastestWin.prize} (${(fastestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
-                        <li>La Victoria Más Esperada: <strong>${slowestWin.prize !== 'N/A' ? `${slowestWin.prize} (${(slowestWin.diff / ONE_DAY_MS).toFixed(0)} días)` : 'N/A'}</strong></li>
-                    </ul>
-                </div>
+            </div>
+        `;
+
+        rendimientoTab.innerHTML = `
+             <div class="space-y-4">
                 <div>
-                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🕵️ Análisis de Cuentas y Marcas</h3>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📈 Análisis de Rendimiento y Eficiencia</h3>
                     <ul class="space-y-1">
-                        <li>Top 5 Cuentas Más Frecuentes: <ol class="list-decimal list-inside pl-4 text-sm">${top5Frequent.map(acc => `<li>${acc[0]}: ${acc[1]} sorteos</li>`).join('') || '<li>N/A</li>'}</ol></li>
-                        <li>Top 5 Cuentas Talismán: <ol class="list-decimal list-inside pl-4 text-sm">${top5Talisman.map(acc => `<li>${acc[0]}: ${acc[1]} victorias</li>`).join('') || '<li>N/A</li>'}</ol></li>
-                        <li>La Cuenta Más Esquiva: <strong>${elusiveAccount[0]} (${elusiveAccount[1]} participaciones)</strong></li>
-                        <li>Diversidad de Victorias: <strong>Has ganado de ${winAccountSet.size} cuentas únicas</strong></li>
+                        <li>Eficiencia de Participación: <strong>1 victoria cada ${eficienciaParticipacion} participaciones</strong></li>
+                        <li>Valor por Participación (VPP): <strong>${valorPorParticipacion}€ por cada sorteo completado</strong></li>
+                        <li>Índice de Estilo: <strong>${estiloCazador}</strong></li>
                     </ul>
                 </div>
+            </div>
+        `;
+
+        estrategiaTab.innerHTML = `
+            <div class="space-y-4">
                 <div>
-                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🧩 Análisis por Categoría</h3>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🎯 Análisis Estratégico y de Oportunidad</h3>
                     <ul class="space-y-1">
-                        <li>Categoría Más Rentable: <strong>${mostProfitableCat[0]} (${mostProfitableCat[1].toFixed(2)}€)</strong></li>
-                        <li>Categoría con Mejor Puntería: <strong>${bestAimCategory.category} (${bestAimCategory.rate}%)</strong></li>
+                        <li><strong>Tasa de Éxito por Valor:</strong>
+                            <ol class="list-disc list-inside pl-4 text-sm">
+                                <li>Premios < 50€: <strong>${tasaExitoModestos}%</strong></li>
+                                <li>Premios 50€ - 250€: <strong>${tasaExitoIntermedios}%</strong></li>
+                                <li>Premios > 250€: <strong>${tasaExitoGrandes}%</strong></li>
+                            </ol>
+                        </li>
+                        <li class="pt-2"><strong>Análisis de "Fatiga de Calendario":</strong>
+                             <ol class="list-disc list-inside pl-4 text-sm">
+                                <li>Participación (próximos 7 días): <strong>${tasaParticipacionCercanos}%</strong></li>
+                                <li>Participación (> 30 días): <strong>${tasaParticipacionLejanos}%</strong></li>
+                            </ol>
+                        </li>
                     </ul>
                 </div>
+            </div>
+        `;
+        
+        redesTab.innerHTML = `
+            <div class="space-y-4">
                 <div>
-                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📈 Análisis de Hábitos y Esfuerzo</h3>
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🔮 Análisis Predictivo y de Redes</h3>
                     <ul class="space-y-1">
-                        <li>Media de Antelación (al añadir): <strong>${avgAntelacion} días</strong></li>
-                        <li>Media de Sorteos Añadidos al Día: <strong>${avgAddsPerDay}</strong></li>
-                        <li>Día Récord (Añadidos): <strong>${recordAdded} sorteos el ${recordAddedDay}</strong></li>
-                        <li>Tu "Día de Fichajes": <strong>${signingDay}</strong></li>
+                        <li>Indicador de "Racha Caliente": <strong class="${rachaCaliente ? 'text-green-500' : 'text-red-500'}">${rachaCaliente ? 'ACTIVADO 🔥' : 'INACTIVO'}</strong></li>
+                        <li>Radar de "Talismanes Activos": <strong>${sorteosPendientesTalismanes} sorteos pendientes de tus 3 cuentas top</strong></li>
+                        <li><strong>Top Colaboradores Frecuentes:</strong>
+                             <ol class="list-decimal list-inside pl-4 text-sm">
+                                ${topColaboradores.map(c => `<li>${c[0].replace('|', ' & ')} (${c[1]} veces)</li>`).join('') || '<li>N/A</li>'}
+                            </ol>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -2939,22 +2944,27 @@
 
     let categoryPieChart = null;
     let monthlyValueBarChart = null;
+    let winsGrowthLineChart = null;
+    let valueVsAnticipationScatterChart = null;
+    let hunterStyleRadarChart = null;
+
 
     const renderCharts = () => {
-        const categoryCtx = document.getElementById('category-pie-chart').getContext('2d');
-        const monthlyCtx = document.getElementById('monthly-value-bar-chart').getContext('2d');
-
         // Destruir gráficos anteriores para evitar solapamientos
         if (categoryPieChart) categoryPieChart.destroy();
         if (monthlyValueBarChart) monthlyValueBarChart.destroy();
+        if (winsGrowthLineChart) winsGrowthLineChart.destroy();
+        if (valueVsAnticipationScatterChart) valueVsAnticipationScatterChart.destroy();
+        if (hunterStyleRadarChart) hunterStyleRadarChart.destroy();
 
-        // Datos para el gráfico de pastel (Victorias por Categoría)
+
+        // --- Gráfico 1: Victorias por Categoría (Pie) ---
+        const categoryCtx = document.getElementById('category-pie-chart').getContext('2d');
         const categoryWins = wonGiveaways.reduce((acc, g) => {
             const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
             acc[category] = (acc[category] || 0) + 1;
             return acc;
         }, {});
-
         categoryPieChart = new Chart(categoryCtx, {
             type: 'pie',
             data: {
@@ -2968,13 +2978,13 @@
             options: { responsive: true, maintainAspectRatio: false }
         });
 
-        // Datos para el gráfico de barras (Valor por Mes)
+        // --- Gráfico 2: Valor por Mes (Bar) ---
+        const monthlyCtx = document.getElementById('monthly-value-bar-chart').getContext('2d');
         const monthlyValues = wonGiveaways.reduce((acc, g) => {
-            const month = new Date(g.wonDate).getMonth(); // 0 = Enero, 11 = Diciembre
+            const month = new Date(g.wonDate).getMonth();
             acc[month] = (acc[month] || 0) + parsePrice(g.price);
             return acc;
         }, Array(12).fill(0));
-
         monthlyValueBarChart = new Chart(monthlyCtx, {
             type: 'bar',
             data: {
@@ -2989,6 +2999,137 @@
             },
             options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
         });
+
+        // --- NUEVO Gráfico 3: Crecimiento de Victorias (Line) ---
+        const winsGrowthCtx = document.getElementById('wins-growth-line-chart').getContext('2d');
+        const sortedWins = [...wonGiveaways].sort((a,b) => new Date(a.wonDate) - new Date(b.wonDate));
+        const cumulativeWins = [];
+        const winLabels = [];
+        sortedWins.forEach((win, index) => {
+            cumulativeWins.push(index + 1);
+            winLabels.push(new Date(win.wonDate).toLocaleDateString('es-ES'));
+        });
+        winsGrowthLineChart = new Chart(winsGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: winLabels,
+                datasets: [{
+                    label: 'Victorias Acumuladas',
+                    data: cumulativeWins,
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // --- NUEVO Gráfico 4: Dispersión Antelación vs Valor (Scatter) ---
+        const scatterCtx = document.getElementById('value-vs-anticipation-scatter-chart').getContext('2d');
+        const scatterData = wonGiveaways
+            .filter(g => g.addDate && parsePrice(g.price) > 0)
+            .map(g => ({
+                x: (new Date(g.date) - new Date(g.addDate)) / (1000 * 60 * 60 * 24), // Días de antelación
+                y: parsePrice(g.price)
+            }));
+        valueVsAnticipationScatterChart = new Chart(scatterCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Victoria',
+                    data: scatterData,
+                    backgroundColor: 'rgba(239, 68, 68, 0.7)'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Días de Antelación al Añadir' } },
+                    y: { title: { display: true, text: 'Valor del Premio (€)' } }
+                }
+            }
+        });
+        
+        // --- NUEVO Gráfico 5: Estilo de Cazador (Radar) ---
+        const radarCtx = document.getElementById('hunter-style-radar-chart').getContext('2d');
+        const totalCompleted = Object.keys(completedGiveaways).length;
+        const totalWon = wonGiveaways.length;
+        const winRate = totalCompleted > 0 ? (totalWon / totalCompleted) * 100 : 0;
+        const avgValue = totalWon > 0 ? (wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0) / totalWon) : 0;
+        const participationRate = Object.values(giveaways).flat().length > 0 ? (totalCompleted / Object.values(giveaways).flat().length) * 100 : 0;
+        const diversity = new Set(wonGiveaways.flatMap(g => g.accounts)).size;
+        
+        // Normalizar valores para el radar (ej. de 0 a 100)
+        const normalizedWinRate = Math.min(winRate * 20, 100); // Un 5% de winrate es 100
+        const normalizedAvgValue = Math.min(avgValue / 2, 100); // 200€ de valor medio es 100
+        const normalizedParticipation = Math.min(participationRate, 100);
+        const normalizedDiversity = Math.min(diversity * 2, 100); // 50 cuentas únicas es 100
+
+        hunterStyleRadarChart = new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Precisión (Tasa Éxito)', 'Valor Medio', 'Volumen (Participación)', 'Diversidad de Cuentas'],
+                datasets: [{
+                    label: 'Tu Estilo',
+                    data: [normalizedWinRate, normalizedAvgValue, normalizedParticipation, normalizedDiversity],
+                    backgroundColor: 'rgba(253, 224, 71, 0.2)',
+                    borderColor: '#f59e0b',
+                    pointBackgroundColor: '#f59e0b'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { r: { beginAtZero: true, max: 100 } }
+            }
+        });
+
+        // --- NUEVO Gráfico 6: Mapa de Calor ---
+        const heatmapContainer = document.getElementById('luck-heatmap-container');
+        heatmapContainer.innerHTML = ''; // Limpiar
+        const winsByDay = wonGiveaways.reduce((acc, g) => {
+            const date = new Date(g.wonDate).toISOString().slice(0, 10);
+            acc[date] = (acc[date] || 0) + 1;
+            return acc;
+        }, {});
+        const maxWinsInADay = Math.max(0, ...Object.values(winsByDay));
+        const currentYear = new Date().getFullYear();
+        const firstDayOfYear = new Date(currentYear, 0, 1);
+        const daysInYear = (new Date(currentYear, 11, 31) - firstDayOfYear) / (1000 * 60 * 60 * 24) + 1;
+        
+        const heatmap = document.createElement('div');
+        heatmap.className = 'heatmap';
+        
+        // Headers de días
+        ['D', 'L', 'M', 'X', 'J', 'V', 'S'].forEach(day => {
+            const headerEl = document.createElement('div');
+            headerEl.className = 'heatmap-header';
+            headerEl.textContent = day;
+            heatmap.appendChild(headerEl);
+        });
+
+        // Offset para el primer día del año
+        for (let i = 0; i < firstDayOfYear.getDay(); i++) {
+            heatmap.innerHTML += '<div></div>';
+        }
+
+        for (let i = 0; i < daysInYear; i++) {
+            const dayDate = new Date(firstDayOfYear);
+            dayDate.setDate(firstDayOfYear.getDate() + i);
+            const dateStr = dayDate.toISOString().slice(0, 10);
+            const wins = winsByDay[dateStr] || 0;
+            const dayEl = document.createElement('div');
+            dayEl.className = 'heatmap-day';
+            dayEl.title = `${dateStr}: ${wins} victoria(s)`;
+            if (wins > 0) {
+                const opacity = wins / (maxWinsInADay || 1);
+                dayEl.style.backgroundColor = `rgba(34, 197, 94, ${opacity})`;
+                dayEl.textContent = wins;
+                dayEl.style.color = 'white';
+            }
+            heatmap.appendChild(dayEl);
+        }
+        heatmapContainer.appendChild(heatmap);
     };
 
     const renderAchievementsModal = (activeTab = 'logros') => {
@@ -3461,7 +3602,11 @@
     };
     
     // Setup de todos los botones para abrir modales
-    setupModal(statsBtn, statsModal, closeStatsModalBtn, renderStatsModal);
+    setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {
+        renderStatsModal();
+        // Retrasamos ligeramente el renderizado de gráficos para asegurar que el modal es visible
+        setTimeout(renderCharts, 50); 
+    });
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
     setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
     setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
@@ -3720,13 +3865,38 @@
     if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
     if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
     if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
-
-    setupModal(openChartsModalBtn, chartsModal, closeChartsModalBtn, renderCharts);
     
+    // Añadimos el listener para las pestañas del modal de estadísticas
+    const statsTabsContainer = document.querySelector('.stats-tabs');
+    if (statsTabsContainer) {
+        statsTabsContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+
+            const tabId = button.dataset.tab;
+            
+            // Actualizar botones
+            statsTabsContainer.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // Actualizar contenido
+            document.querySelectorAll('.stats-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+
+            // Si se abre la pestaña de gráficos, asegurarse de que se renderizan
+            if (tabId === 'graficos') {
+                setTimeout(renderCharts, 50);
+            }
+        });
+    }
+
     document.getElementById('oracle-proximity-btn').addEventListener('click', () => consultarOraculo('proximidad'));
     document.getElementById('oracle-prize-btn').addEventListener('click', () => consultarOraculo('premio'));
     document.getElementById('share-stats-btn').addEventListener('click', shareStats);
 
 </script>
+
 </body>
 </html>

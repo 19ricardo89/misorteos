@@ -2621,12 +2621,10 @@
 
         // Buscamos el sorteo original completo para obtener su fecha actual
         let originalGiveawayComplete = null;
-        let originalDate = null;
         for (const date in giveaways) {
             const found = giveaways[date].find(g => g.id === originalGiveawayData.id);
             if (found) {
                 originalGiveawayComplete = found;
-                originalDate = date;
                 break;
             }
         }
@@ -2637,18 +2635,18 @@
         }
 
         // Helper para generar el HTML de cada tarjeta de sorteo
-        const generateDetailsHTML = (giveaway, date) => {
+        const generateDetailsHTML = (giveaway) => {
              const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
              return `
                 <div class="detail-item mb-2"><strong>Premio:</strong> ${giveaway.prize || 'N/A'}</div>
                 <div class="detail-item mb-2"><strong>Cuentas:</strong> ${accountsHTML || 'N/A'}</div>
                 <div class="detail-item mb-2"><strong>Valor:</strong> ${giveaway.price || 'N/A'}</div>
-                ${date ? `<div class="detail-item"><strong>Fecha en Calendario:</strong> ${date}</div>` : ''}
+                <div class="detail-item"><strong>Fecha del Sorteo:</strong> ${giveaway.date || 'No encontrada'}</div>
              `;
         };
 
-        originalGiveawayDetails.innerHTML = generateDetailsHTML(originalGiveawayComplete, originalDate);
-        discardedGiveawayDetails.innerHTML = generateDetailsHTML(discardedGiveaway, discardedGiveaway.originalDate);
+        originalGiveawayDetails.innerHTML = generateDetailsHTML(originalGiveawayComplete);
+        discardedGiveawayDetails.innerHTML = generateDetailsHTML(discardedGiveaway);
         
         // Asignamos el ID del sorteo DESCARTADO a los botones para actuar sobre él
         mergeGiveawayBtn.dataset.giveawayId = discardedGiveaway.id;
@@ -3917,5 +3915,7 @@
     document.getElementById('oracle-proximity-btn').addEventListener('click', () => consultarOraculo('proximidad'));
     document.getElementById('oracle-prize-btn').addEventListener('click', () => consultarOraculo('premio'));
     document.getElementById('share-stats-btn').addEventListener('click', shareStats);
+    deleteAllTrashBtn.addEventListener('click', deleteAllTrash);
+    deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
 
 </script>

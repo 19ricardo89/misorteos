@@ -3937,6 +3937,158 @@ window.giveaways = {
             "accounts": [
                 "@druni_perfumerias"
             ]
+        },
+        {
+            "id": "sorteo-23-eroski",
+            "prize": "Vale de 100€ en Eroski",
+            "price": "100€",
+            "accounts": [
+                "@eroskioficial"
+            ]
+        },
+        {
+            "id": "sorteo-23-leonairjordan",
+            "prize": "Kit de limpieza para coche",
+            "price": "60€",
+            "accounts": [
+                "@leon_airjordan"
+            ]
+        },
+        {
+            "id": "sorteo-23-conarena",
+            "prize": "Lote de chuches",
+            "price": "40€",
+            "accounts": [
+                "@conarenaenlaspies"
+            ]
+        },
+        {
+            "id": "sorteo-23-lgespana",
+            "prize": "Lavadora LG 💲",
+            "price": "500€",
+            "accounts": [
+                "@lg_espana2"
+            ]
+        },
+        {
+            "id": "sorteo-23-cositasdemama",
+            "prize": "Muñeca",
+            "price": "30€",
+            "accounts": [
+                "@cositas_demama_f"
+            ]
+        },
+        {
+            "id": "sorteo-23-andreardriguezc",
+            "prize": "2 lotes de material escolar",
+            "price": "100€",
+            "accounts": [
+                "@andreardriguezc"
+            ]
+        },
+        {
+            "id": "sorteo-23-carrefour-tech",
+            "prize": "Pack tecnológico: Tablet + Barra de sonido + Proyector",
+            "price": "350€",
+            "accounts": [
+                "@carrefoures"
+            ]
+        },
+        {
+            "id": "sorteo-23-sandrinaferre",
+            "prize": "3kg de chuches",
+            "price": "30€",
+            "accounts": [
+                "@sandrina_ferre29"
+            ]
+        },
+        {
+            "id": "sorteo-23-deliaplaneta",
+            "prize": "Pack Tiburón 🃏",
+            "price": "50€",
+            "accounts": [
+                "@deliaplaneta"
+            ]
+        },
+        {
+            "id": "sorteo-23-fabiomnz",
+            "prize": "Mochila + Vale de 800€ 💲",
+            "price": "850€",
+            "accounts": [
+                "@fabiomnz"
+            ]
+        },
+        {
+            "id": "sorteo-23-pprimor-solares",
+            "prize": "12 lotes de productos solares",
+            "price": "400€",
+            "accounts": [
+                "@pprimor"
+            ]
+        },
+        {
+            "id": "sorteo-23-elaitedepadel",
+            "prize": "Pack de pádel 🥎",
+            "price": "120€",
+            "accounts": [
+                "@elaitedepadel"
+            ]
+        },
+        {
+            "id": "sorteo-23-druni-got2b",
+            "prize": "Lote de productos Got2b",
+            "price": "40€",
+            "accounts": [
+                "@druni_perfumerias"
+            ]
+        },
+        {
+            "id": "sorteo-23-vichymumlife",
+            "prize": "Lote de material escolar (compartir)",
+            "price": "80€",
+            "accounts": [
+                "@vichy_mumlife"
+            ]
+        },
+        {
+            "id": "sorteo-23-alohacamp",
+            "prize": "Agenda + Vale de 100€ en Alohacamp 🛩️",
+            "price": "120€",
+            "accounts": [
+                "@alohacamp_es"
+            ]
+        },
+        {
+            "id": "sorteo-23-theoutletstore",
+            "prize": "Vale de 100€ en Desigual",
+            "price": "100€",
+            "accounts": [
+                "@theoutletstore"
+            ]
+        },
+        {
+            "id": "sorteo-23-realeetaa",
+            "prize": "Chanclas + 2 cajas de atún",
+            "price": "45€",
+            "accounts": [
+                "@realeetaa"
+            ]
+        },
+        {
+            "id": "sorteo-23-psicoimportanta",
+            "prize": "Lote de material escolar",
+            "price": "80€",
+            "accounts": [
+                "@psico_importanta"
+            ]
+        },
+        {
+            "id": "sorteo-23-andreaardriguezc2",
+            "prize": "2 lotes de material escolar",
+            "price": "100€",
+            "accounts": [
+                "@andrea.ardriguezc"
+            ]
         }
     ],
     "2025-08-24": [
@@ -4226,6 +4378,264 @@ window.giveaways = {
             "accounts": [
                 "@theoutletstores",
                 "@desigual"
+            ]
+        },
+        {
+            "id": "sorteo-24-neusmoya",
+            "prize": "Dúo de zapatillas y material escolar",
+            "price": "120€",
+            "accounts": [
+                "@neusmoya.podologia"
+            ]
+        },
+        {
+            "id": "sorteo-24-mellamansara",
+            "prize": "Mochila + Vale de 50€",
+            "price": "80€",
+            "accounts": [
+                "@mellamansara"
+            ]
+        },
+        {
+            "id": "sorteo-24-estelacortes",
+            "prize": "Estancia en hotel 🛩️",
+            "price": "150€",
+            "accounts": [
+                "@estela.cortes_"
+            ]
+        },
+        {
+            "id": "sorteo-24-druni-australian",
+            "prize": "2 lotes solares Australian Gold",
+            "price": "80€",
+            "accounts": [
+                "@druni_perfumerias"
+            ]
+        },
+        {
+            "id": "sorteo-24-sephora",
+            "prize": "Neceser con cosméticos",
+            "price": "70€",
+            "accounts": [
+                "@sephora_spain"
+            ]
+        },
+        {
+            "id": "sorteo-24-arantxastyles",
+            "prize": "Pack de productos YSL",
+            "price": "100€",
+            "accounts": [
+                "@arantxa_styles"
+            ]
+        },
+        {
+            "id": "sorteo-24-mamadeunpelirrojo",
+            "prize": "Maleta de cabina",
+            "price": "60€",
+            "accounts": [
+                "@mamadeunpelirrojo"
+            ]
+        },
+        {
+            "id": "sorteo-24-prixton",
+            "prize": "Cámara de fotos + lote de productos",
+            "price": "150€",
+            "accounts": [
+                "@prixton_es"
+            ]
+        },
+        {
+            "id": "sorteo-24-sevillalover",
+            "prize": "Vale de 150€",
+            "price": "150€",
+            "accounts": [
+                "@sevillalovercom"
+            ]
+        },
+        {
+            "id": "sorteo-24-losmundosdekatia",
+            "prize": "3 bolsas de chuches",
+            "price": "30€",
+            "accounts": [
+                "@losmundosdekatia_",
+                "@cocinacercadelmar"
+            ]
+        },
+        {
+            "id": "sorteo-24-malumecerda",
+            "prize": "Lote de productos de lavanda",
+            "price": "40€",
+            "accounts": [
+                "@malumecerda"
+            ]
+        },
+        {
+            "id": "sorteo-24-antoniojuan",
+            "prize": "Muñeca + pack de ropa",
+            "price": "75€",
+            "accounts": [
+                "@antoniojuandollsofficial"
+            ]
+        },
+        {
+            "id": "sorteo-24-maestrapaloma",
+            "prize": "Juego de mesa 🃏",
+            "price": "30€",
+            "accounts": [
+                "@maestra_paloma_experimentos"
+            ]
+        },
+        {
+            "id": "sorteo-24-carrefour-escolar",
+            "prize": "2 lotes escolares",
+            "price": "100€",
+            "accounts": [
+                "@carrefoures"
+            ]
+        },
+        {
+            "id": "sorteo-24-roca",
+            "prize": "Espejo de baño",
+            "price": "120€",
+            "accounts": [
+                "@roca.esp"
+            ]
+        },
+        {
+            "id": "sorteo-24-carnesur",
+            "prize": "Lote de carne",
+            "price": "80€",
+            "accounts": [
+                "@carnesur"
+            ]
+        },
+        {
+            "id": "sorteo-24-footonmars",
+            "prize": "Abono de temporada + 2 zapatillas Converse",
+            "price": "250€",
+            "accounts": [
+                "@footonmars"
+            ]
+        },
+        {
+            "id": "sorteo-24-safta",
+            "prize": "Lote de productos de Stitch 🃏",
+            "price": "70€",
+            "accounts": [
+                "@saftaoficial"
+            ]
+        },
+        {
+            "id": "sorteo-24-alijuguetes",
+            "prize": "Lote de material escolar",
+            "price": "80€",
+            "accounts": [
+                "@alijuguetes"
+            ]
+        },
+        {
+            "id": "sorteo-24-tcl",
+            "prize": "Pack tecnológico: Tablet + Móvil 💲",
+            "price": "450€",
+            "accounts": [
+                "@tcl_espana",
+                "@aguakmzero"
+            ]
+        },
+        {
+            "id": "sorteo-24-okaaspain",
+            "prize": "3 pares de zapatos",
+            "price": "150€",
+            "accounts": [
+                "@okaaspain"
+            ]
+        },
+        {
+            "id": "sorteo-24-autoescuelazafra",
+            "prize": "Nintendo Switch 2 🃏",
+            "price": "400€",
+            "accounts": [
+                "@autoescuela_zafra"
+            ]
+        },
+        {
+            "id": "sorteo-24-marvimundo-nivea",
+            "prize": "Lote de productos Nivea",
+            "price": "50€",
+            "accounts": [
+                "@marvimundo"
+            ]
+        },
+        {
+            "id": "sorteo-24-grecaviajes",
+            "prize": "Vale de 36€",
+            "price": "36€",
+            "accounts": [
+                "@greca viajes"
+            ]
+        },
+        {
+            "id": "sorteo-24-funkypok",
+            "prize": "Vale de 40€",
+            "price": "40€",
+            "accounts": [
+                "@funkypok"
+            ]
+        },
+        {
+            "id": "sorteo-24-campuebla",
+            "prize": "Estancia en apartamentos rurales 🛩️",
+            "price": "180€",
+            "accounts": [
+                "@campuebla_apartamentos"
+            ]
+        },
+        {
+            "id": "sorteo-24-parquecomedor",
+            "prize": "Colchón",
+            "price": "300€",
+            "accounts": [
+                "@parquecomedor"
+            ]
+        },
+        {
+            "id": "sorteo-24-weekendesk",
+            "prize": "Secador + Planchas de pelo + Escapada romántica 🛩️",
+            "price": "250€",
+            "accounts": [
+                "@weekendesk"
+            ]
+        },
+        {
+            "id": "sorteo-24-pirelli",
+            "prize": "2 packs de productos oficiales Pirelli",
+            "price": "100€",
+            "accounts": [
+                "@pirelli_es"
+            ]
+        },
+        {
+            "id": "sorteo-24-garciamillan",
+            "prize": "Nevera Polarbox + lote de productos",
+            "price": "70€",
+            "accounts": [
+                "@garciamillan.es"
+            ]
+        },
+        {
+            "id": "sorteo-24-marymarcasta",
+            "prize": "Lote de cremas",
+            "price": "60€",
+            "accounts": [
+                "@marymarcasta"
+            ]
+        },
+        {
+            "id": "sorteo-24-aceiteecologico",
+            "prize": "Lote de productos de aceite",
+            "price": "40€",
+            "accounts": [
+                "@aceiteecologico"
             ]
         }
     ],

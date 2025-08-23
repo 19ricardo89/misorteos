@@ -89,7 +89,7 @@
         .moving-star { animation: move-star linear infinite, twinkle 2s infinite ease-in-out; }
 
         /* --- TÍTULO --- */
-        .title-container { position: relative; text-align: center; padding-top: 1rem; margin-bottom: 2rem; flex-shrink: 0; }
+        .title-container { position: relative; text-align: center; padding-top: 1rem; margin-bottom: 0.5rem; flex-shrink: 0; } /* Margen inferior reducido */
         .magic-title { font-size: clamp(3.5rem, 12vw, 6rem); color: #f7d468; text-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37; letter-spacing: 10px; display: inline-block; position: relative; white-space: nowrap; }
         .magic-title .letter { display: inline-block; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; position: relative; }
         .sparkle, .fountain-sparkle { position: absolute; background: #f7d468; border-radius: 50%; box-shadow: 0 0 15px #f7d468; }
@@ -313,9 +313,12 @@
             overflow-y: auto;
         }
         
-        /* --- AJUSTES RESPONSIVE PARA EL HEADER --- */
+        /* --- AJUSTES RESPONSIVE PARA EL HEADER (NUEVO) --- */
         #user-title {
+            color: #C0C0C0; /* Color Plata */
+            text-shadow: 0 0 5px #FFFFFF, 0 0 10px #C0C0C0, 0 0 15px #C0C0C0; /* Efecto brillo */
             font-size: 1.1rem; /* Más pequeño en móvil */
+            text-align: center;
         }
         #total-ps-container {
             padding: 0.25rem 0.75rem;
@@ -882,16 +885,19 @@
         </div>
         
         <header class="flex items-center justify-between p-4 mb-4 flex-shrink-0 w-full max-w-4xl">
-            <button id="open-nav-menu" class="nav-menu-btn rounded-full">
-                <i class="fa-solid fa-bars text-xl"></i>
-            </button>
-            <div class="flex-1 flex items-center justify-center gap-2 sm:gap-4">
-                <h2 id="user-title" class="font-bold text-yellow-500 truncate text-center"></h2>
-                <div id="total-ps-container">
-                   <span id="total-ps-count">0</span> PS ✨
-               </div>
+            <div class="w-12 flex-shrink-0">
+                <button id="open-nav-menu" class="nav-menu-btn rounded-full">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
             </div>
-            <div class="w-12"></div> <!-- Espaciador para centrar el título -->
+            <div class="flex-1 flex items-center justify-center gap-2 sm:gap-4 mx-2">
+                <h2 id="user-title" class="font-bold truncate"></h2>
+            </div>
+            <div class="w-auto flex-shrink-0">
+                 <div id="total-ps-container">
+                    <span id="total-ps-count">0</span> PS ✨
+                </div>
+            </div>
         </header>
 
         <div class="w-full max-w-4xl mx-auto flex items-center justify-between mb-4 flex-shrink-0 px-4">
@@ -973,12 +979,12 @@
     <div id="add-giveaway-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 id="add-giveaway-modal-title" class="text-2xl sm:text-3xl">Añadir Nuevo Sorteo</h2>
+                <h2 id="add-giveaway-modal-title" class="text-2xl sm:text-3xl">Añadir/Editar Sorteo</h2>
                 <button id="close-add-giveaway-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
             <div id="add-giveaway-form-body">
                 <form id="add-giveaway-form" class="space-y-4">
-                    <div>
+                    <input type="hidden" id="giveaway-id"> <div>
                         <label for="giveaway-date" class="block font-bold">Fecha del Sorteo:</label>
                         <input type="date" id="giveaway-date" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
                     </div>
@@ -1034,41 +1040,26 @@
         </div>
     </div>
     
-    <div id="duplicate-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">Sorteo Duplicado Detectado</h2>
-                <button id="close-duplicate-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <p class="mb-4">Este sorteo ya existe en tu calendario. ¿Quieres añadirlo de nuevo?</p>
-            <div id="duplicate-giveaway-info" class="flex flex-col gap-4 text-left mb-4">
-                </div>
-            <div class="flex justify-center space-x-4">
-                <button id="confirm-restore-btn" class="bg-green-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-green-400 transition-colors">Añadir de nuevo</button>
-                <button id="cancel-restore-btn" class="bg-gray-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-gray-400 transition-colors">Cancelar</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="duplicate-comparison-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+    <div id="discarded-duplicate-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">Comparar Sorteos Duplicados</h2>
-                <button id="close-duplicate-comparison-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <h2 class="text-2xl sm:text-3xl">Comparar Sorteo Duplicado</h2>
+                <button id="close-discarded-duplicate-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex-1 p-4 bg-yellow-100/50 rounded-lg border border-yellow-600/20 text-left">
-                    <h3 class="text-xl font-bold mb-2">Sorteo Original</h3>
+                    <h3 class="text-xl font-bold mb-2">Sorteo Original (Activo)</h3>
                     <div id="original-giveaway-details"></div>
                 </div>
                 <div class="flex-1 p-4 bg-red-100/50 rounded-lg border border-red-600/20 text-left">
-                    <h3 class="text-xl font-bold mb-2">Sorteo Descartado</h3>
+                    <h3 class="text-xl font-bold mb-2">Sorteo Duplicado (Descartado)</h3>
                     <div id="discarded-giveaway-details"></div>
                 </div>
             </div>
-            <div class="flex justify-center space-x-4 mt-6">
-                <button id="merge-giveaway-btn" class="bg-green-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-green-400 transition-colors">Fusionar</button>
-                <button id="add-as-new-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">Añadir como nuevo</button>
+            <div class="flex justify-center flex-wrap space-x-4 mt-6">
+                <button id="merge-discarded-btn" class="bg-purple-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-purple-400 transition-colors">Fusionar Datos</button>
+                <button id="edit-discarded-btn" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">Editar y Guardar</button>
+                <button id="close-comparison-and-discard-btn" class="bg-gray-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-gray-400 transition-colors">Descartar</button>
             </div>
         </div>
     </div>
@@ -1127,7 +1118,6 @@
                 <button id="close-stats-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
 
-            <!-- Pestañas de Navegación -->
             <div class="stats-tabs flex flex-wrap border-b border-yellow-600/20 mb-4">
                 <button data-tab="resumen" class="active">Resumen</button>
                 <button data-tab="rendimiento">Rendimiento</button>
@@ -1136,32 +1126,21 @@
                 <button data-tab="graficos">Gráficos</button>
             </div>
 
-            <!-- Contenido de las Pestañas -->
             <div id="stats-modal-body" class="text-left max-h-[65vh] overflow-y-auto pr-2">
-                <!-- Pestaña 1: Resumen (Métricas existentes) -->
                 <div id="tab-resumen" class="stats-tab-content active">
-                    <!-- Aquí se cargarán dinámicamente las estadísticas de resumen que ya tenías -->
-                </div>
+                    </div>
 
-                <!-- Pestaña 2: Análisis de Rendimiento -->
                 <div id="tab-rendimiento" class="stats-tab-content">
-                    <!-- Contenido se cargará dinámicamente -->
-                </div>
+                    </div>
 
-                <!-- Pestaña 3: Análisis Estratégico -->
                 <div id="tab-estrategia" class="stats-tab-content">
-                    <!-- Contenido se cargará dinámicamente -->
-                </div>
+                    </div>
 
-                <!-- Pestaña 4: Análisis de Redes -->
                 <div id="tab-redes" class="stats-tab-content">
-                    <!-- Contenido se cargará dinámicamente -->
-                </div>
+                    </div>
 
-                <!-- Pestaña 5: Gráficos -->
                 <div id="tab-graficos" class="stats-tab-content">
                     <div id="charts-modal-body" class="flex flex-col gap-8">
-                        <!-- Gráficos existentes -->
                         <div class="chart-container h-64 md:h-80">
                             <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Victorias por Categoría</h3>
                             <canvas id="category-pie-chart"></canvas>
@@ -1170,7 +1149,6 @@
                             <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">Valor de Premios Ganados por Mes</h3>
                             <canvas id="monthly-value-bar-chart"></canvas>
                         </div>
-                        <!-- Nuevos Gráficos -->
                         <div class="chart-container h-64 md:h-80">
                             <h3 class="text-lg font-bold mb-2 text-center text-yellow-700">📈 Crecimiento de Victorias Acumuladas</h3>
                             <canvas id="wins-growth-line-chart"></canvas>
@@ -1529,6 +1507,7 @@
     const addGiveawayModal = document.getElementById('add-giveaway-modal');
     const closeAddGiveawayModalBtn = document.getElementById('close-add-giveaway-modal');
     const addGiveawayForm = document.getElementById('add-giveaway-form');
+    const giveawayIdInput = document.getElementById('giveaway-id');
     const giveawayDateInput = document.getElementById('giveaway-date');
     const giveawayPrizeInput = document.getElementById('giveaway-prize');
     const giveawayAccountsInput = document.getElementById('giveaway-accounts');
@@ -1587,21 +1566,17 @@
     const closeDiscardedModalBtn = document.getElementById('close-discarded-modal');
     const discardedModalBody = document.getElementById('discarded-modal-body');
     const deleteAllDiscardedBtn = document.getElementById('delete-all-discarded-btn');
-    const duplicateModal = document.getElementById('duplicate-modal');
-    const closeDuplicateModalBtn = document.getElementById('close-duplicate-modal');
-    const duplicateGiveawayInfo = document.getElementById('duplicate-giveaway-info');
-    const confirmRestoreBtn = document.getElementById('confirm-restore-btn');
-    const cancelRestoreBtn = document.getElementById('cancel-restore-btn');
     const moveGiveawayModal = document.getElementById('move-giveaway-modal');
     const closeMoveGiveawayModalBtn = document.getElementById('close-move-giveaway-modal');
     const moveGiveawayForm = document.getElementById('move-giveaway-form');
     const newGiveawayDateInput = document.getElementById('new-giveaway-date');
-    const duplicateComparisonModal = document.getElementById('duplicate-comparison-modal');
-    const closeDuplicateComparisonModalBtn = document.getElementById('close-duplicate-comparison-modal');
+    const discardedDuplicateModal = document.getElementById('discarded-duplicate-modal');
+    const closeDiscardedDuplicateModalBtn = document.getElementById('close-discarded-duplicate-modal');
     const originalGiveawayDetails = document.getElementById('original-giveaway-details');
     const discardedGiveawayDetails = document.getElementById('discarded-giveaway-details');
-    const mergeGiveawayBtn = document.getElementById('merge-giveaway-btn');
-    const addAsNewBtn = document.getElementById('add-as-new-btn');
+    const mergeDiscardedBtn = document.getElementById('merge-discarded-btn');
+    const editDiscardedBtn = document.getElementById('edit-discarded-btn');
+    const closeComparisonAndDiscardBtn = document.getElementById('close-comparison-and-discard-btn');
     const manageForeignAccountsBtn = document.getElementById('manage-foreign-accounts-btn');
     const foreignAccountsModal = document.getElementById('foreign-accounts-modal');
     const closeForeignAccountsModalBtn = document.getElementById('close-foreign-accounts-modal');
@@ -1638,21 +1613,16 @@
     let notificationTimeout;
     const showNotification = (title, message) => {
         if (notificationTitle && notificationContent && notificationModal) {
-            // Si ya hay una notificación, la limpia para mostrar la nueva
             clearTimeout(notificationTimeout);
             notificationModal.classList.remove('show', 'hide');
-            
-            // Forzar un reflow para reiniciar la animación
             void notificationModal.offsetWidth;
-
             notificationTitle.textContent = title;
             notificationContent.textContent = message;
             notificationModal.classList.add('show');
-
             notificationTimeout = setTimeout(() => {
                 notificationModal.classList.remove('show');
                 notificationModal.classList.add('hide');
-            }, 4000); // La notificación dura 4 segundos
+            }, 4000);
         }
     };
 
@@ -1675,18 +1645,9 @@
 
     const addPoints = (pointsToAdd, reason) => {
         userPoints.total += pointsToAdd;
-        if (!userPoints.log) {
-            userPoints.log = [];
-        }
-        userPoints.log.push({
-            points: pointsToAdd,
-            reason: reason,
-            date: new Date().toISOString()
-        });
-        // Mantener el log con un máximo de 30 entradas para no sobrecargar
-        if (userPoints.log.length > 30) {
-            userPoints.log = userPoints.log.slice(-30);
-        }
+        if (!userPoints.log) userPoints.log = [];
+        userPoints.log.push({ points: pointsToAdd, reason: reason, date: new Date().toISOString() });
+        if (userPoints.log.length > 30) userPoints.log = userPoints.log.slice(-30);
         saveUserPoints();
         updatePointsDisplay();
     };
@@ -1700,11 +1661,11 @@
 
     const calculateSimilarity = (str1, str2) => {
         const lev = (s1, s2) => {
-            const matrix = [];
-            for (let i = 0; i <= s2.length; i++) { matrix[i] = [i]; }
-            for (let j = 0; j <= s1.length; j++) { matrix[0][j] = j; }
-            for (let i = 1; i <= s2.length; i++) {
-                for (let j = 1; j <= s1.length; j++) {
+            const matrix = Array(s2.length + 1).fill(null).map(() => Array(s1.length + 1).fill(null));
+            for (let i = 0; i <= s1.length; i += 1) matrix[0][i] = i;
+            for (let i = 0; i <= s2.length; i += 1) matrix[i][0] = i;
+            for (let i = 1; i <= s2.length; i += 1) {
+                for (let j = 1; j <= s1.length; j += 1) {
                     const cost = s1[j - 1] === s2[i - 1] ? 0 : 1;
                     matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
                 }
@@ -1713,8 +1674,8 @@
         };
         const longer = str1.length > str2.length ? str1 : str2;
         const shorter = str1.length > str2.length ? str2 : str1;
-        const distance = lev(longer, shorter);
-        return (longer.length - distance) / longer.length;
+        if (longer.length === 0) return 1.0;
+        return (longer.length - lev(longer, shorter)) / parseFloat(longer.length);
     };
 
     const checkAchievements = (action, data = null) => {
@@ -1978,10 +1939,11 @@
     
     const openAddGiveawayModal = (data = {}) => {
         addGiveawayForm.reset();
-        if (data.prize) giveawayPrizeInput.value = data.prize;
-        if (data.accounts) giveawayAccountsInput.value = data.accounts;
-        if (data.price) giveawayPriceInput.value = data.price;
-        if (data.date) giveawayDateInput.value = data.date;
+        giveawayIdInput.value = data.id || ''; // Guardar ID para edición
+        giveawayPrizeInput.value = data.prize || '';
+        giveawayAccountsInput.value = data.accounts ? (Array.isArray(data.accounts) ? data.accounts.join(', ') : data.accounts) : '';
+        giveawayPriceInput.value = data.price || '';
+        giveawayDateInput.value = data.date || '';
         addGiveawayModal.classList.add('is-visible');
     };
     
@@ -2000,19 +1962,45 @@
     }
     const closeMoveGiveawayModal = () => { moveGiveawayModal.classList.remove('is-visible'); }
 
-    const addGiveaway = (newGiveaway) => {
-        const dateStr = newGiveaway.date;
+    const addOrUpdateGiveaway = (giveawayData) => {
+        const dateStr = giveawayData.date;
         if (!dateStr) {
             alert('Por favor, selecciona una fecha para el sorteo.');
             return;
         }
-        if (!giveaways[dateStr]) giveaways[dateStr] = [];
-        newGiveaway.addDate = new Date().toISOString().slice(0, 10);
-        giveaways[dateStr].push(newGiveaway);
+
+        // Si tiene ID, es una edición
+        if (giveawayData.id) {
+            let found = false;
+            for (const date in giveaways) {
+                const index = giveaways[date].findIndex(g => g.id === giveawayData.id);
+                if (index !== -1) {
+                    const originalGiveaway = giveaways[date][index];
+                    // Si la fecha ha cambiado, moverlo
+                    if (date !== dateStr) {
+                        giveaways[date].splice(index, 1);
+                        if (giveaways[date].length === 0) delete giveaways[date];
+                        if (!giveaways[dateStr]) giveaways[dateStr] = [];
+                        giveaways[dateStr].push({ ...originalGiveaway, ...giveawayData });
+                    } else {
+                        // Si no, solo actualizar
+                        giveaways[date][index] = { ...originalGiveaway, ...giveawayData };
+                    }
+                    found = true;
+                    break;
+                }
+            }
+        } else { // Si no, es uno nuevo
+            if (!giveaways[dateStr]) giveaways[dateStr] = [];
+            giveawayData.id = Date.now().toString();
+            giveawayData.addDate = new Date().toISOString().slice(0, 10);
+            giveaways[dateStr].push(giveawayData);
+            addPoints(1, `Sorteo añadido: ${giveawayData.prize.substring(0, 20)}...`);
+            checkAchievements('add-manual');
+        }
+
         saveGiveaways();
         renderCalendar();
-        addPoints(1, `Sorteo añadido: ${newGiveaway.prize.substring(0, 20)}...`);
-        checkAchievements('add-manual');
     };
     
     const moveGiveaway = (giveawayId, oldDate, newDate) => {
@@ -2393,7 +2381,7 @@
                     analysisResults[statusKey].pop();
                     return; 
                 }
-                addGiveaway(newGiveaway);
+                addOrUpdateGiveaway(newGiveaway);
                 addPoints(5, `Sorteo añadido con IA`);
                 checkAchievements('add-ai');
                 break;
@@ -2624,8 +2612,8 @@
     const deleteAllDiscarded = () => { if(confirm("¿Estás seguro de que quieres eliminar todos los sorteos descartados?")) { discardedGiveaways = []; saveDiscardedGiveaways(); renderDiscardedModal(); showNotification('Sorteos descartados eliminados', 'Se han eliminado todos los sorteos de la lista de descartados.'); } }
     const deleteDiscardedGiveaway = (giveawayId) => { discardedGiveaways = discardedGiveaways.filter(g => g.id !== giveawayId); saveDiscardedGiveaways(); renderDiscardedModal(); }
 
-    const showDuplicateComparisonModal = (discardedGiveaway) => {
-        const originalGiveawayData = discardedGiveaways.find(g => g.id === discardedGiveaway.id)?.originalGiveaway;
+    const showDiscardedDuplicateModal = (discardedGiveaway) => {
+        const originalGiveawayData = discardedGiveaway.originalGiveaway;
         if (!originalGiveawayData) {
             console.error("No se encontró el sorteo original para comparar.");
             return;
@@ -2641,66 +2629,24 @@
         
         const originalGiveawayWithDate = { ...originalGiveawayData, date: originalDate };
 
-        originalGiveawayDetails.innerHTML = generateGiveawayHTML(originalGiveawayWithDate);
-        discardedGiveawayDetails.innerHTML = generateGiveawayHTML(discardedGiveaway);
-        
-        mergeGiveawayBtn.dataset.giveawayId = discardedGiveaway.id;
-        addAsNewBtn.dataset.giveawayId = discardedGiveaway.id;
-        
-        duplicateComparisonModal.classList.add('is-visible');
-    };
-
-    const generateGiveawayCardHTML = (giveaway) => {
-        const statusClasses = {
-            duplicate: 'status-duplicate',
-            expired: 'status-expired',
-            foreign: 'status-foreign',
-            no_date: 'status-no_date',
-            not_a_giveaway: 'status-not_a_giveaway',
-            api_error: 'status-api_error',
-        };
-        const statusText = {
-            duplicate: 'Duplicado',
-            expired: 'Caducado',
-            foreign: 'Extranjero',
-            no_date: 'Sin Fecha',
-            not_a_giveaway: 'No es Sorteo',
-            api_error: 'Error API',
-        };
-
-        const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
-
-        return `
+        const generateDetailsHTML = (g) => `
             <div class="giveaway-card text-left">
-                <h3>${giveaway.prize || 'Premio no definido'}</h3>
+                <h3>${g.prize || 'N/A'}</h3>
                 <div class="giveaway-card-details">
-                    ${giveaway.date ? `
-                    <div class="detail-item">
-                        <i class="fa-solid fa-calendar-day"></i>
-                        <span>Fecha: <strong>${giveaway.date}</strong></span>
-                    </div>` : ''}
-                    ${accountsHTML ? `
-                    <div class="detail-item">
-                        <i class="fa-solid fa-at"></i>
-                        <span>Cuentas: ${accountsHTML}</span>
-                    </div>` : ''}
-                    ${giveaway.price ? `
-                    <div class="detail-item">
-                        <i class="fa-solid fa-coins"></i>
-                        <span>Valor: <strong>${giveaway.price}</strong></span>
-                    </div>` : ''}
-                    ${giveaway.status ? `
-                    <div class="detail-item">
-                        <i class="fa-solid fa-tag"></i>
-                        <span class="status-tag ${statusClasses[giveaway.status] || ''}">${statusText[giveaway.status] || giveaway.status}</span>
-                    </div>` : ''}
-                </div>
-                <div class="flex justify-end gap-2 mt-3">
-                    <button class="add-discarded-btn text-xs bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-plus mr-1"></i> Recuperar</button>
-                    <button class="delete-discarded-btn text-xs bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-trash-can mr-1"></i> Eliminar</button>
+                    ${g.date ? `<div class="detail-item"><i class="fa-solid fa-calendar-day"></i><span>Fecha: <strong>${g.date}</strong></span></div>` : ''}
+                    ${g.accounts && g.accounts.length > 0 ? `<div class="detail-item"><i class="fa-solid fa-at"></i><span>Cuentas: ${(g.accounts || []).join(', ')}</span></div>` : ''}
+                    ${g.price ? `<div class="detail-item"><i class="fa-solid fa-coins"></i><span>Valor: <strong>${g.price}</strong></span></div>` : ''}
                 </div>
             </div>
         `;
+        
+        originalGiveawayDetails.innerHTML = generateDetailsHTML(originalGiveawayWithDate);
+        discardedGiveawayDetails.innerHTML = generateDetailsHTML(discardedGiveaway);
+        
+        mergeDiscardedBtn.dataset.discardedId = discardedGiveaway.id;
+        editDiscardedBtn.dataset.discardedId = discardedGiveaway.id;
+        
+        discardedDuplicateModal.classList.add('is-visible');
     };
 
     const renderTrophyModal = () => {
@@ -2749,29 +2695,6 @@
         }); 
     };
 
-    const openDuplicateModal = (discardedGiveaway, originalGiveaway) => {
-        const previewContainer = document.getElementById('duplicate-giveaway-info');
-        
-        const originalCardHTML = generateGiveawayCardHTML({ ...originalGiveaway, date: originalGiveaway.date });
-        const discardedCardHTML = generateGiveawayCardHTML(discardedGiveaway);
-
-        previewContainer.innerHTML = `
-            <div>
-                <h4 class="font-bold text-lg mb-2 text-gray-700">Sorteo Original (Ya guardado)</h4>
-                ${originalCardHTML}
-            </div>
-            <div>
-                <h4 class="font-bold text-lg mb-2 text-red-800">Sorteo Descartado (Nuevo)</h4>
-                ${discardedCardHTML}
-            </div>
-        `;
-        
-        confirmRestoreBtn.dataset.giveawayId = discardedGiveaway.id;
-        duplicateModal.classList.add('is-visible');
-    };
-    const closeDuplicateModal = () => { duplicateModal.classList.remove('is-visible'); };
-    const addDiscardedToCalendar = (giveawayId) => { const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId); if (giveawayToAdd) { discardedGiveaways = discardedGiveaways.filter(g => g.id !== giveawayId); saveDiscardedGiveaways(); renderDiscardedModal(); openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price }); } };
-
     const calculateAndRenderStats = () => {
         const ONE_DAY_MS = 1000 * 60 * 60 * 24;
         const allGiveaways = Object.values(giveaways).flat();
@@ -2784,8 +2707,6 @@
         const totalCompleted = Object.keys(completedGiveaways).length;
         const totalWon = wonGiveaways.length;
         const totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
-        const participationRate = totalRegistered > 0 ? ((totalCompleted / totalRegistered) * 100).toFixed(1) : 0;
-        const winRate = totalCompleted > 0 ? ((totalWon / totalCompleted) * 100).toFixed(2) : 0;
         const avgValuePerWin = totalWon > 0 ? (totalValueWon / totalWon).toFixed(2) : 0;
         const prizesWithValues = wonGiveaways.filter(g => parsePrice(g.price) > 0);
         const mostValuableWin = prizesWithValues.length ? prizesWithValues.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max) : null;
@@ -2800,6 +2721,8 @@
         }, {});
 
         // --- CÁLCULOS DE RENDIMIENTO ---
+        const participationRate = totalRegistered > 0 ? ((totalCompleted / totalRegistered) * 100).toFixed(1) : 0;
+        const winRate = totalCompleted > 0 ? ((totalWon / totalCompleted) * 100).toFixed(2) : 0;
         const eficienciaParticipacion = totalWon > 0 ? (totalCompleted / totalWon).toFixed(1) : '∞';
         const valorPorParticipacion = totalCompleted > 0 ? (totalValueWon / totalCompleted).toFixed(2) : 0;
         let estiloCazador = "Equilibrado ⚖️";
@@ -3612,7 +3535,6 @@
     // Setup de todos los botones para abrir modales
     setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {
         renderStatsModal();
-        // Retrasamos ligeramente el renderizado de gráficos para asegurar que el modal es visible
         setTimeout(renderCharts, 50); 
     });
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
@@ -3624,37 +3546,27 @@
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
     setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
-    setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
+    setupModal(null, discardedDuplicateModal, closeDiscardedDuplicateModalBtn);
     setupModal(null, psSummaryModal, closePsSummaryModalBtn);
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
     
     // Vista de IA a pantalla completa
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (navMenu.classList.contains('is-open')) {
-            toggleNavMenu();
-        }
+        if (navMenu.classList.contains('is-open')) toggleNavMenu();
         aiFullscreenView.classList.add('is-visible');
     });
-    closeAiViewBtn.addEventListener('click', () => {
-        aiFullscreenView.classList.remove('is-visible');
-    });
-    aiSummaryCloseBtn.addEventListener('click', () => {
-        aiFullscreenView.classList.remove('is-visible');
-    });
+    closeAiViewBtn.addEventListener('click', () => aiFullscreenView.classList.remove('is-visible'));
+    aiSummaryCloseBtn.addEventListener('click', () => aiFullscreenView.classList.remove('is-visible'));
 
     const closeZoomModal = () => { if(zoomModal) zoomModal.classList.remove('is-visible'); };
-    if (analysisImagePreview) {
-        analysisImagePreview.addEventListener('click', () => {
-            if (zoomedImage && zoomModal) {
-                zoomedImage.src = analysisImagePreview.src;
-                zoomModal.classList.add('is-visible');
-            }
-        });
-    }
-    if (zoomModal) {
-        zoomModal.addEventListener('click', closeZoomModal);
-    }
+    if (analysisImagePreview) analysisImagePreview.addEventListener('click', () => {
+        if (zoomedImage && zoomModal) {
+            zoomedImage.src = analysisImagePreview.src;
+            zoomModal.classList.add('is-visible');
+        }
+    });
+    if (zoomModal) zoomModal.addEventListener('click', closeZoomModal);
     
     openNavMenuBtn.addEventListener('click', toggleNavMenu);
     closeNavMenuBtn.addEventListener('click', toggleNavMenu);
@@ -3672,18 +3584,15 @@
         const dateStr = modal.dataset.date;
         if (!dateStr) return;
 
-        if (e.target.id === 'select-all-btn' || e.target.closest('#select-all-btn')) {
-            const checkboxes = modalBody.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
+        if (e.target.closest('#select-all-btn')) {
+            modalBody.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (!checkbox.checked) {
                     checkbox.checked = true;
                     const giveawayId = checkbox.dataset.giveawayId;
                     if (!completedGiveaways[giveawayId]) {
                          completedGiveaways[giveawayId] = true;
                          const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
-                         if(giveaway) {
-                            addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
-                         }
+                         if(giveaway) addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
                     }
                 }
             });
@@ -3694,9 +3603,8 @@
             return; 
         }
 
-        if (e.target.id === 'deselect-all-btn' || e.target.closest('#deselect-all-btn')) {
-            const checkboxes = modalBody.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
+        if (e.target.closest('#deselect-all-btn')) {
+            modalBody.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (checkbox.checked) {
                     checkbox.checked = false;
                     delete completedGiveaways[checkbox.dataset.giveawayId];
@@ -3771,9 +3679,7 @@
             e.stopPropagation(); 
             deleteDiscardedGiveaway(giveawayId); 
         } else if (giveaway.status === 'duplicate' && giveaway.originalGiveaway) { 
-            showDuplicateComparisonModal(giveaway); 
-        } else {
-            openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+            showDiscardedDuplicateModal(giveaway); 
         }
     });
 
@@ -3806,46 +3712,16 @@
         renderBlockManagementModal(); 
     });
 
-    addAsNewBtn.addEventListener('click', (e) => {
-        const giveawayId = e.target.dataset.giveawayId;
-        if (!giveawayId) return;
-        const giveawayToAdd = discardedGiveaways.find(g => g.id === giveawayId);
-        if (giveawayToAdd) {
-            deleteDiscardedGiveaway(giveawayId);
-            openAddGiveawayModal({ date: giveawayToAdd.date || giveawayToAdd.originalDate, prize: giveawayToAdd.prize, accounts: (giveawayToAdd.accounts || []).join(', '), price: giveawayToAdd.price });
-            duplicateComparisonModal.classList.remove('is-visible');
-        }
-    });
-
-    mergeGiveawayBtn.addEventListener('click', (e) => {
-        const giveawayId = e.target.dataset.giveawayId;
-        if (!giveawayId) return;
-        const discarded = discardedGiveaways.find(g => g.id === giveawayId);
-        if (discarded && discarded.originalGiveaway) {
-            let original = null;
-            for (const date in giveaways) {
-                const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id);
-                if (found) { original = found; break; }
-            }
-            if (original) {
-                if (!original.price && discarded.price) original.price = discarded.price;
-                if (!original.date && discarded.date) original.date = discarded.date;
-                deleteDiscardedGiveaway(giveawayId);
-                saveGiveaways();
-                renderCalendar();
-                showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.');
-                checkAchievements('merge');
-                duplicateComparisonModal.classList.remove('is-visible');
-            } else {
-                showNotification('Error', 'No se encontró el sorteo original para fusionar.');
-            }
-        }
-    });
-
     addGiveawayForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value };
-        addGiveaway(newGiveaway);
+        const giveawayData = { 
+            id: giveawayIdInput.value,
+            date: giveawayDateInput.value, 
+            prize: giveawayPrizeInput.value, 
+            accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), 
+            price: giveawayPriceInput.value 
+        };
+        addOrUpdateGiveaway(giveawayData);
         closeAddGiveawayModal();
     });
 
@@ -3882,27 +3758,75 @@
 
             const tabId = button.dataset.tab;
             
-            // Actualizar botones
             statsTabsContainer.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            // Actualizar contenido
             document.querySelectorAll('.stats-tab-content').forEach(content => {
                 content.classList.remove('active');
             });
             document.getElementById(`tab-${tabId}`).classList.add('active');
 
-            // Si se abre la pestaña de gráficos, asegurarse de que se renderizan
             if (tabId === 'graficos') {
                 setTimeout(renderCharts, 50);
             }
         });
     }
 
+    // Listeners para el nuevo modal de comparación de duplicados
+    closeDiscardedDuplicateModalBtn.addEventListener('click', () => discardedDuplicateModal.classList.remove('is-visible'));
+    
+    closeComparisonAndDiscardBtn.addEventListener('click', () => discardedDuplicateModal.classList.remove('is-visible'));
+
+    editDiscardedBtn.addEventListener('click', (e) => {
+        const discardedId = e.target.dataset.discardedId;
+        const giveaway = discardedGiveaways.find(g => g.id === discardedId);
+        if (giveaway) {
+            openAddGiveawayModal({
+                id: giveaway.id, // Pasamos el ID para que sepa que es una edición
+                date: giveaway.date || giveaway.originalDate,
+                prize: giveaway.prize,
+                accounts: giveaway.accounts,
+                price: giveaway.price
+            });
+            discardedDuplicateModal.classList.remove('is-visible');
+        }
+    });
+
+    mergeDiscardedBtn.addEventListener('click', (e) => {
+        const discardedId = e.target.dataset.discardedId;
+        const discarded = discardedGiveaways.find(g => g.id === discardedId);
+        if (discarded && discarded.originalGiveaway) {
+            let original = null;
+            let originalDate = null;
+            for (const date in giveaways) {
+                const found = giveaways[date].find(g => g.id === discarded.originalGiveaway.id);
+                if (found) { 
+                    original = found; 
+                    originalDate = date;
+                    break; 
+                }
+            }
+            if (original) {
+                // Fusionar datos: si el original no tiene un dato, lo coge del descartado
+                if (!original.price && discarded.price) original.price = discarded.price;
+                if (!original.date && discarded.date) original.date = discarded.date;
+                if (discarded.prize.length > original.prize.length) original.prize = discarded.prize;
+
+                deleteDiscardedGiveaway(discardedId);
+                saveGiveaways();
+                renderCalendar();
+                showNotification('Sorteo Fusionado', 'Se han actualizado los datos del sorteo original.');
+                checkAchievements('merge');
+                discardedDuplicateModal.classList.remove('is-visible');
+            } else {
+                showNotification('Error', 'No se encontró el sorteo original para fusionar.');
+            }
+        }
+    });
+
+
     document.getElementById('oracle-proximity-btn').addEventListener('click', () => consultarOraculo('proximidad'));
     document.getElementById('oracle-prize-btn').addEventListener('click', () => consultarOraculo('premio'));
     document.getElementById('share-stats-btn').addEventListener('click', shareStats);
 
 </script>
-</body>
-</html>

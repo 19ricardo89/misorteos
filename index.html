@@ -1286,6 +1286,7 @@
     </section>
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
+    <script src="foreignAccounts.js"></script> 
     <script id="animations-script">
         function animateStarryBackground() {
             const starsContainer = document.getElementById('magic-stars-container');
@@ -1496,7 +1497,6 @@
     
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
     let trashGiveaways = JSON.parse(localStorage.getItem('trashGiveaways')) || [];
-    let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || [];
     let discardedGiveaways;
     const savedDiscarded = localStorage.getItem('discardedGiveaways');
     if (savedDiscarded) {
@@ -1504,6 +1504,8 @@
     } else {
          discardedGiveaways = window.discardedGiveaways || [];
     }
+
+    let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || (window.foreignAccounts || []);
 
     // --- Referencias a elementos del DOM ---
     const monthYearEl = document.getElementById('month-year');
@@ -3321,6 +3323,9 @@
         const giveawaysContent = `window.giveaways = ${JSON.stringify(giveaways, null, 4)};`;
         const discardedGiveawaysContent = `const initialDiscardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};\n\nif (localStorage.getItem('discardedGiveaways') === null) {\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\n}\n\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];`;
         
+        // --- LÍNEA AÑADIDA ---
+        const foreignAccountsContent = `window.foreignAccounts = ${JSON.stringify(foreignAccounts, null, 4)};`;
+        
         const indexHtmlContent = document.documentElement.outerHTML;
 
         const netlifyTomlContent = `[build]
@@ -3450,6 +3455,8 @@
         zip.file("index.html", indexHtmlContent);
         zip.file("giveaways_new.js", giveawaysContent);
         zip.file("discardedGiveaways_new.js", discardedGiveawaysContent);
+        // --- LÍNEA AÑADIDA ---
+        zip.file("foreignAccounts.js", foreignAccountsContent);
         zip.file("netlify.toml", netlifyTomlContent);
         zip.file("package.json", packageJsonContent);
 

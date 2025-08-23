@@ -1,4 +1,3 @@
-// La lista estática de sorteos descartados, para la inicialización inicial
 const initialDiscardedGiveaways = [
     {
         "id": "1723871991475",
@@ -12,7 +11,7 @@ const initialDiscardedGiveaways = [
         "originalDate": "2025-07-23",
         "prize_category": "otros"
     },
-      {
+    {
         "id": "1723872202683",
         "date": "2025-08-20",
         "prize": "Lote de productos",
@@ -2687,12 +2686,48 @@ const initialDiscardedGiveaways = [
         },
         "originalDate": "2025-08-20",
         "prize_category": "otros"
+    },
+    {
+        "prize": "LOTE DE PRODUCTOS ISMAX",
+        "accounts": [
+            "@ismax_paper"
+        ],
+        "date": "2025-08-28",
+        "ends_at_time": null,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "Products",
+        "price": "80€ (estimado)",
+        "url": null,
+        "originalGiveaway": {
+            "id": "1755938965755",
+            "date": "2025-08-28",
+            "prize": "LOTE DE PRODUCTOS ISMAX",
+            "accounts": [
+                "@ismax_paper"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        "originalFile": {},
+        "id": "1755938989350"
+    },
+    {
+        "id": "1755939031376",
+        "date": "2025-08-01",
+        "prize": "Air Fryer de Oster",
+        "accounts": [
+            "nutricionista.paulajara"
+        ],
+        "price": "",
+        "addDate": "2025-08-23",
+        "status": "foreign",
+        "originalDate": "2025-08-01"
     }
-  
 ];
 
-// Comprueba si ya hay una lista de sorteos descartados en localStorage
-// Si no existe, guarda la lista inicial. Si ya existe, usa la que está guardada.
 if (localStorage.getItem('discardedGiveaways') === null) {
     localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));
 }

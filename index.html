@@ -3775,13 +3775,10 @@
         const giveaway = discardedGiveaways.find(g => g.id === giveawayId);
         if (!giveaway) return;
 
-        // --- INICIO DE LA MODIFICACIÓN ---
         if (giveaway.status === 'duplicate') {
-            // Si es un duplicado, siempre mostramos el modal de comparación.
             showDuplicateComparisonModal(giveaway);
-            return; // Detenemos la ejecución para no hacer más nada.
+            return;
         }
-        // --- FIN DE LA MODIFICACIÓN ---
 
         if (e.target.closest('.add-discarded-btn')) {
             e.stopPropagation();
@@ -3792,8 +3789,17 @@
             e.stopPropagation(); 
             deleteDiscardedGiveaway(giveawayId); 
         } else {
-            // Para el resto de casos (expired, foreign, etc.), abre el formulario de añadir.
             openAddGiveawayModal({ date: giveaway.date || giveaway.originalDate, prize: giveaway.prize, accounts: (giveaway.accounts || []).join(', '), price: giveaway.price });
+        }
+    });
+
+    foreignAccountsModalBody.addEventListener('click', (e) => {
+        const removeBtn = e.target.closest('.remove-foreign-account-btn');
+        if (removeBtn) {
+            const accountName = removeBtn.dataset.accountName;
+            if (accountName) {
+                removeForeignAccount(accountName);
+            }
         }
     });
 

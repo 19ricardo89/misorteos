@@ -2172,7 +2172,57 @@
 
             const hoy = new Date();
             const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-            const dynamicPrompt = `<ROL_Y_CONTEXTO>Actuarás como un Analista de Datos experto y extremadamente meticuloso. Tu única función es analizar imágenes de sorteos de redes sociales y extraer información en un formato JSON estricto. CONTEXTO CRÍTICO: La fecha actual es ${fechaFormateada}. Usa esta fecha como referencia para todas las evaluaciones de tiempo.</ROL_Y_CONTEXTO><TAREA_PRINCIPAL>Analiza la imagen proporcionada y extrae la información solicitada. Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown adicional como \`\`\`json. Si la imagen NO es un sorteo, devuelve el siguiente JSON: {"status": "not_a_giveaway"}.</TAREA_PRINCIPAL><DEFINICION_FORMATO_JSON>El objeto JSON debe tener la siguiente estructura y reglas:{"prize": "string | null","accounts": ["string"],"date": "string | null","ends_at_time": "string | null", "status": "string","is_spanish": boolean,"prize_category": "string"}**REGLA DE ORO PARA LA FECHA:** Si el texto menciona "anuncio de ganadores el día X", la fecha de finalización del sorteo ("date") es el día ANTERIOR (X-1). Esta regla tiene máxima prioridad.</REGLAS_CRITICAS_FINALES>`;
+            
+            const dynamicPrompt = `
+<ROL_Y_OBJETIVO>
+Actuarás como un Asistente de Extracción de Datos hiper-meticuloso, especializado en analizar imágenes de sorteos en redes sociales. Tu único objetivo es analizar la imagen proporcionada y devolver un objeto JSON válido con la información extraída, sin ningún texto o explicación adicional.
+</ROL_Y_OBJETIVO>
+
+<CONTEXTO_CRITICO>
+La fecha de hoy es ${fechaFormateada}. Utiliza esta fecha como referencia indispensable para determinar si un sorteo ha expirado.
+</CONTEXTO_CRITICO>
+
+<INSTRUCCION_PRINCIPAL>
+Analiza la imagen y extrae la información solicitada siguiendo estrictamente la estructura y las reglas definidas a continuación. Tu respuesta DEBE SER ÚNICAMENTE el objeto JSON. Si la imagen NO es un sorteo, devuelve exclusivamente: {"status": "not_a_giveaway"}.
+</INSTRUCCION_PRINCIPAL>
+
+<ESTRUCTURA_JSON_REQUERIDA>
+{
+  "prize": "string | null",           // Descripción detallada y atractiva del premio.
+  "accounts": ["string"],             // Array con los nombres de usuario de las cuentas organizadoras, SIEMPRE sin el '@'.
+  "date": "string | null",            // La FECHA FINAL DE PARTICIPACIÓN en formato YYYY-MM-DD. Sigue las reglas de fecha a continuación.
+  "ends_at_time": "string | null",    // La hora de finalización en formato HH:MM solo si se especifica una hora que NO sea 23:59 o 00:00.
+  "status": "string",                 // Estado inicial. Usa "valid" si tiene fecha y es un sorteo, o "no_date" si no encuentras una fecha clara.
+  "is_spanish": boolean,              // 'true' si el sorteo parece ser de España, 'false' en caso contrario (basado en lenguaje, empresas, etc.).
+  "prize_category": "string"          // Categoriza el premio en una de estas opciones: 'viajes', 'padel', 'tecnologia', 'frikis', 'moda', 'belleza', 'comida', 'experiencias', 'hogar', 'otros'.
+}
+</ESTRUCTURA_JSON_REQUERIDA>
+
+<REGLAS_DE_FECHA_OBLIGATORIAS>
+Esta es la parte más importante. La 'date' en el JSON es el último día para participar. Aplica estas reglas en orden de prioridad:
+
+1.  **Anuncio de Ganadores**: Si el texto dice "anuncio de ganadores el día X", la fecha final de participación ('date') es SIEMPRE el día ANTERIOR (X-1).
+    * Ejemplo: "Anunciaremos los ganadores el 25 de agosto" -> date: "2025-08-24".
+
+2.  **Finalización sin Hora Específica**: Si solo se menciona un día de finalización ("termina el día X", "hasta el día X") y no se especifica una hora, la fecha final de participación ('date') es el día ANTERIOR (X-1).
+    * Ejemplo: "El sorteo termina el 24 de agosto" -> date: "2025-08-23".
+
+3.  **Finalización a Medianoche (Fin del día)**: Si dice que termina el "día X a las 23:59h", la fecha final de participación ('date') es ese mismo día X.
+    * Ejemplo: "Válido hasta el 24 de agosto a las 23:59" -> date: "2025-08-24".
+
+4.  **Finalización a Medianoche (Inicio del día)**: Si dice que termina el "día X a las 00:00h", se entiende que es al inicio de ese día, por lo que la fecha final de participación ('date') es el día ANTERIOR (X-1).
+    * Ejemplo: "Acaba el 24 de agosto a las 00:00" -> date: "2025-08-23".
+
+5.  **Finalización a una Hora Concreta**: Si termina el "día X a una hora específica" (ej. 12:00h, 16:00h, 22:00h), la fecha final de participación ('date') es ese mismo día X y DEBES rellenar el campo 'ends_at_time' con esa hora.
+    * Ejemplo: "Puedes participar hasta el 24 de agosto a las 16:00h" -> date: "2025-08-24", ends_at_time: "16:00".
+</REGLAS_DE_FECHA_OBLIGATORIAS>
+
+<REGLAS_ADICIONALES>
+- **Cuentas**: Extrae TODOS los nombres de usuario sin el símbolo '@'. Si no se mencionan, devuelve un array vacío.
+- **Premio**: Sé descriptivo. Si sortean "un lote de productos" y la imagen muestra que son de la marca "Nivea", especifícalo: "Lote de productos Nivea".
+- **Sin Fecha**: Si tras analizar todo el texto no encuentras ninguna fecha, mes o día límite, devuelve 'null' en el campo 'date' y "no_date" en 'status'.
+</REGLAS_ADICIONALES>
+`;
             
             let resultData;
             try {

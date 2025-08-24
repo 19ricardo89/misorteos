@@ -1704,6 +1704,14 @@
     const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
     const saveVisGiveaways = () => localStorage.setItem('visGiveaways', JSON.stringify(visGiveaways));
 
+    const getConfidenceEmoji = (score) => {
+        if (score === null || score === undefined) return '❔';
+        if (score >= 0.95) return '🎯'; // Muy Alta
+        if (score >= 0.8) return '👍';  // Alta
+        if (score >= 0.6) return '🤔';  // Media
+        return '❓'; // Baja
+    };
+
     const updatePointsDisplay = () => {
         if (totalPsCountEl) {
             totalPsCountEl.textContent = userPoints.total;
@@ -2299,29 +2307,29 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
 **PRIORIDAD 1: Regla de Conflicto "Fin vs. Ganadores".**
 - Si el texto menciona explícitamente una fecha de finalización Y una fecha de anuncio de ganadores, la fecha de FINALIZACIÓN tiene prioridad.
 - *Ejemplo:* "El sorteo termina el día 24 y los ganadores se anuncian el 25".
-- `date` DEBE SER la fecha de finalización mencionada (el día 24).
-- `ends_at_time` será `null` a menos que se especifique una hora para la finalización.
+- \`date\` DEBE SER la fecha de finalización mencionada (el día 24).
+- \`ends_at_time\` será \`null\` a menos que se especifique una hora para la finalización.
 
 **PRIORIDAD 2: Regla de "Día + Hora" (Condición Conjunta).**
 - Esta regla se aplica SOLO SI se encuentran AMBAS cosas: un DÍA y una HORA específica.
 - *Ejemplo:* "Válido hasta el 24 de agosto a las 23:59h".
-- `date` DEBE SER la fecha exacta mencionada (el día 24).
-- `ends_at_time` DEBE contener la hora extraída ("23:59h").
+- \`date\` DEBE SER la fecha exacta mencionada (el día 24).
+- \`ends_at_time\` DEBE contener la hora extraída ("23:59h").
 
 **PRIORIDAD 3: Regla de "Anuncio de Ganadores" (Sin Hora).**
 - Si el texto SOLO menciona la fecha en que se anuncian los ganadores.
 - *Ejemplo:* "Los ganadores se dirán el día 25".
-- `date` DEBE SER el día ANTERIOR al mencionado (el día 24).
-- `ends_at_time` debe ser `null`.
+- \`date\` DEBE SER el día ANTERIOR al mencionado (el día 24).
+- \`ends_at_time\` debe ser \`null\`.
 
 **PRIORIDAD 4: Regla de "Fin de Sorteo" (Sin Hora).**
 - Si el texto SOLO menciona la fecha en que termina el sorteo.
 - *Ejemplo:* "El sorteo termina el día 24".
-- `date` DEBE SER el día ANTERIOR al mencionado (el día 23).
-- `ends_at_time` debe ser `null`.
+- \`date\` DEBE SER el día ANTERIOR al mencionado (el día 23).
+- \`ends_at_time\` debe ser \`null\`.
 
 **Caso Final: Sin Fecha.**
-- Si no se encuentra ninguna fecha clara, `date` es `null` y `status` es "no_date".
+- Si no se encuentra ninguna fecha clara, \`date\` es \`null\` y \`status\` es "no_date".
 </REGLAS_DE_FECHA_JERARQUICAS_V2.2>
 
 <REGLAS_ADICIONALES_DE_EXTRACCION>
@@ -2331,7 +2339,7 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
     3.  **Reglas de Exclusión (MUY IMPORTANTE):** Ignora activamente cualquier nombre de usuario que provenga de la sección de comentarios o de la sección de "Me gusta".
 
 - **REGLAS DE EXTRACCIÓN Y SÍNTESIS DEL PREMIO:**
-    1.  **Objetivo:** Tu objetivo es crear un campo `prize` que sea conciso (máximo 15-20 palabras), descriptivo y de alto valor informativo. Debe caber en una sola línea.
+    1.  **Objetivo:** Tu objetivo es crear un campo \`prize\` que sea conciso (máximo 15-20 palabras), descriptivo y de alto valor informativo. Debe caber en una sola línea.
     2.  **Síntesis de Información:** Debes sintetizar la información del texto del post Y la información visual de la imagen (logos, empaques de productos, marcas visibles).
     3.  **Jerarquía de Resumen (si el texto es muy largo):**
         -   **Primero:** Menciona siempre los artículos de alto valor de forma explícita (ej: "PS5", "iPhone 16", "Thermomix").
@@ -2339,13 +2347,13 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
         -   **Tercero:** Agrupa elementos variados bajo un término descriptivo (ej: "Lote de merchandising", "Pack de material escolar", "Cesta de productos gourmet").
         -   **Cuarto:** Describe experiencias de forma clara y breve (ej: "Estancia en hotel para dos", "Cena degustación").
     4.  **Ejemplos Prácticos:**
-        -   *Si el texto dice "Sorteamos un súper lote para que te cuides este verano bajo el sol" y la imagen muestra 5 botes de Nivea Sun:* `prize` debe ser "Lote de productos solares Nivea".
-        -   *Si el texto dice "Gana una camiseta exclusiva, una gorra, una sudadera y una increíble PlayStation 5":* `prize` debe ser "Lote de merchandising y una PS5".
-        -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* `prize` debe ser "Estancia de fin de semana en hotel de lujo para dos".
+        -   *Si el texto dice "Sorteamos un súper lote para que te cuides este verano bajo el sol" y la imagen muestra 5 botes de Nivea Sun:* \`prize\` debe ser "Lote de productos solares Nivea".
+        -   *Si el texto dice "Gana una camiseta exclusiva, una gorra, una sudadera y una increíble PlayStation 5":* \`prize\` debe ser "Lote de merchandising y una PS5".
+        -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* \`prize\` debe ser "Estancia de fin de semana en hotel de lujo para dos".
 
 - **Categoría de Premio**: Analiza el premio y clasifícalo en una de las categorías listadas.
-- **Número de Ganadores (`winner_count`)**: Busca pistas como "10 ganadores", "un ganador". Si no se especifica, asume 1.
-- **Puntuación de Confianza (`confidence_score`)**: Evalúa tu propia certeza sobre la extracción de la fecha (0.0-1.0). Si es 100% clara, pon 1.0. Si es ambigua, usa un valor más bajo. Este valor es crítico.
+- **Número de Ganadores (\`winner_count\`)**: Busca pistas como "10 ganadores", "un ganador". Si no se especifica, asume 1.
+- **Puntuación de Confianza (\`confidence_score\`)**: Evalúa tu propia certeza sobre la extracción de la fecha (0.0-1.0). Si es 100% clara, pon 1.0. Si es ambigua, usa un valor más bajo. Este valor es crítico.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 `;
             
@@ -2440,7 +2448,8 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
         
         switch(resultData.status) {
             case 'valid':
-                title = '✅ Sorteo Válido Detectado';
+                const confidenceEmoji = getConfidenceEmoji(resultData.confidence_score);
+                title = `✅ Sorteo Válido ${confidenceEmoji}`;
                 cardStatusClass = 'card-status-valid';
                 buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-save" class="btn-save">Guardar</button>`;
                 cardHTML = `
@@ -2475,7 +2484,8 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
                 `;
                 break;
             case 'expired':
-                title = '⏳ Sorteo Caducado';
+                const confidenceEmojiExpired = getConfidenceEmoji(resultData.confidence_score);
+                title = `⏳ Sorteo Caducado ${confidenceEmojiExpired}`;
                 cardStatusClass = 'card-status-expired';
                 buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar Fecha</button><button id="btn-trash" class="btn-trash">A la Papelera</button>`;
                 cardHTML = `
@@ -2489,7 +2499,8 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
             `;
                 break;
             case 'foreign':
-                title = '👽 Sorteo Extranjero';
+                const confidenceEmojiForeign = getConfidenceEmoji(resultData.confidence_score);
+                title = `👽 Sorteo Extranjero ${confidenceEmojiForeign}`;
                 cardStatusClass = 'card-status-foreign';
                 buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-mark-foreign" class="btn-foreign">Marcar como Extranjero</button>`;
                 cardHTML = `
@@ -2799,7 +2810,6 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
             return { prize: aiData.prize, value: "No encontrado", url: null };
         }
     }
-    
     const deleteGiveawayFromCalendar = (dateStr, giveawayId) => { if (giveaways[dateStr]) { const giveawayToTrash = giveaways[dateStr].find(g => g.id === giveawayId); if (giveawayToTrash) { trashGiveaways.push({...giveawayToTrash, originalDate: dateStr}); saveTrashGiveaways(); giveaways[dateStr] = giveaways[dateStr].filter(g => g.id !== giveawayId); if (giveaways[dateStr].length === 0) delete giveaways[dateStr]; saveGiveaways(); renderCalendar(); closeModal(); } } };
     
     const deleteForeignGiveaway = (dateStr, giveawayId) => {
@@ -3615,7 +3625,7 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
                   "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
                 }
 
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. \`;
+            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \\\`\\\`\\\`. \`;
             const payload = {
                 contents: [{
                     role: "user",

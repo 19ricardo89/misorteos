@@ -1658,7 +1658,6 @@
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
-
     // --- FUNCIONES DE LA APLICACIÓN ---
 
     let notificationTimeout;
@@ -1840,21 +1839,31 @@
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+                // --- INICIO DEL CÓDIGO CORREGIDO ---
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
-                let isMatch = true;
-                if(currentFilter !== 'all') {
-                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
-                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                               (currentFilter === 'price' && prize.includes('💲')) ||
-                               (currentFilter === 'frikis' && prize.includes('🃏')) ||
-                               (currentFilter === 'moda' && prize.includes('👠')) ||
-                               (currentFilter === 'belleza' && prize.includes('💄')) ||
-                               (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                               (currentFilter === 'tecnologia' && prize.includes('💻'));
+
+                let matchesSearch = !searchQuery || prize.includes(searchText);
+                if (!matchesSearch) {
+                    return false;
                 }
-                if (searchQuery && !prize.includes(searchText)) isMatch = false;
-                return isMatch;
+
+                if (currentFilter === 'all') {
+                    return true;
+                }
+
+                const matchesCategory =
+                    (currentFilter === 'padel' && prize.includes('🥎')) ||
+                    (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                    (currentFilter === 'price' && prize.includes('💲')) ||
+                    (currentFilter === 'frikis' && prize.includes('🃏')) ||
+                    (currentFilter === 'moda' && prize.includes('👠')) ||
+                    (currentFilter === 'belleza' && prize.includes('💄')) ||
+                    (currentFilter === 'hogar' && prize.includes('🏠')) ||
+                    (currentFilter === 'tecnologia' && prize.includes('💻'));
+
+                return matchesCategory;
+                // --- FIN DEL CÓDIGO CORREGIDO ---
             });
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
@@ -1884,21 +1893,31 @@
 
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+            // --- INICIO DEL CÓDIGO CORREGIDO ---
             const prize = g.prize ? g.prize.toLowerCase() : '';
             const searchText = searchQuery.toLowerCase();
-            let isMatch = true;
-            if(currentFilter !== 'all') {
-                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
-                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                               (currentFilter === 'price' && prize.includes('💲')) ||
-                               (currentFilter === 'frikis' && prize.includes('🃏')) ||
-                               (currentFilter === 'moda' && prize.includes('👠')) ||
-                               (currentFilter === 'belleza' && prize.includes('💄')) ||
-                               (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                               (currentFilter === 'tecnologia' && prize.includes('💻'));
+
+            let matchesSearch = !searchQuery || prize.includes(searchText);
+            if (!matchesSearch) {
+                return false;
             }
-            if (searchQuery && !prize.includes(searchText)) isMatch = false;
-            return isMatch;
+
+            if (currentFilter === 'all') {
+                return true;
+            }
+
+            const matchesCategory =
+                (currentFilter === 'padel' && prize.includes('🥎')) ||
+                (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                (currentFilter === 'price' && prize.includes('💲')) ||
+                (currentFilter === 'frikis' && prize.includes('🃏')) ||
+                (currentFilter === 'moda' && prize.includes('👠')) ||
+                (currentFilter === 'belleza' && prize.includes('💄')) ||
+                (currentFilter === 'hogar' && prize.includes('🏠')) ||
+                (currentFilter === 'tecnologia' && prize.includes('💻'));
+
+            return matchesCategory;
+            // --- FIN DEL CÓDIGO CORREGIDO ---
         });
     
         dayGiveaways.sort((a, b) => {
@@ -1989,6 +2008,8 @@
 
             actionsContainer.appendChild(postCompleteActions);
             itemContainer.appendChild(actionsContainer);
+
+            modalBody.appendChild(itemContainer);
 
             if (giveaway.prize.includes('🥎')) hasPadel = true;
             if (giveaway.prize.includes('🛩️')) hasTravel = true;
@@ -3765,7 +3786,7 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
     };
     
     setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {
-        renderStatsModal();
+        calculateAndRenderStats();
         setTimeout(renderCharts, 50); 
     });
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
@@ -3776,7 +3797,7 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
+    //setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     setupModal(null, psSummaryModal, closePsSummaryModalBtn);
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);

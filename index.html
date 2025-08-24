@@ -142,7 +142,7 @@
         .modal-default-bg { background-color: #fffbef; }
         .modal-travel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=1170&auto=format&fit=crop'); }
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
-        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, .nav-menu { overflow-y: auto; }
+        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu { overflow-y: auto; }
 
         /* --- CORRECCIÓN UI MODAL IA --- */
         #ai-image-queue {
@@ -255,6 +255,10 @@
         }
         .shooting-star-line:hover::before {
             transform: scaleX(1);
+        }
+        .shooting-star-line .relative.z-10 {
+            color: #6a3805; /* Marrón oscuro para mejor contraste */
+            font-weight: bold;
         }
         .menu-link {
             font-size: 1rem;
@@ -369,11 +373,11 @@
         }
 
         /* NUEVO: Estilos para los botones de acción (mover, eliminar) */
-        .win-giveaway-btn, .move-giveaway-btn, .delete-giveaway-btn {
+        .win-giveaway-btn, .move-giveaway-btn, .delete-giveaway-btn, .vis-giveaway-btn {
             background-color: #fdecc8 !important; /* Fondo sólido y visible */
             color: #78350f !important; /* Icono en marrón muy oscuro */
         }
-        .win-giveaway-btn:hover, .move-giveaway-btn:hover, .delete-giveaway-btn:hover {
+        .win-giveaway-btn:hover, .move-giveaway-btn:hover, .delete-giveaway-btn:hover, .vis-giveaway-btn:hover {
             background-color: #f7d468 !important; /* Fondo más intenso al pasar el ratón */
         }
         .win-giveaway-btn {
@@ -847,6 +851,10 @@
             <span class="text-xl sm:text-2xl">🧠✨</span>
             <span>Añadir IA</span>
         </a>
+        <a href="#" id="vis-review-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
+            <span class="text-xl sm:text-2xl">🌟</span>
+            <span>Revisión VIS</span>
+        </a>
         <a href="#" id="search-menu-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
             <span class="text-xl sm:text-2xl">🔭</span>
             <span>Búsqueda</span>
@@ -1012,18 +1020,30 @@
                 <div class="mb-8">
                     <input type="text" id="search-input-modal" placeholder="Buscar sorteos..." class="w-full p-4 rounded-full bg-web-gradient text-[#f0e6d2] placeholder-[#f0e6d2] border border-yellow-500/20 focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="grid grid-cols-2 gap-4 mb-6">
                     <a href="#" onclick="setFilterAndRender('padel'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
-                        <span class="relative z-10 text-[#f0e6d2]">Pádel 🥎</span>
+                        <span class="relative z-10">Pádel 🥎</span>
                     </a>
                     <a href="#" onclick="setFilterAndRender('travel'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
-                        <span class="relative z-10 text-[#f0e6d2]">Escapadas ✈️</span>
+                        <span class="relative z-10">Escapadas ✈️</span>
                     </a>
                     <a href="#" onclick="setFilterAndRender('price'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
-                        <span class="relative z-10 text-[#f0e6d2]">+500€ 💲</span>
+                        <span class="relative z-10">+500€ 💲</span>
                     </a>
                     <a href="#" onclick="setFilterAndRender('frikis'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
-                        <span class="relative z-10 text-[#f0e6d2]">Frikis 🃏</span>
+                        <span class="relative z-10">Frikis 🃏</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('moda'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Moda 👠</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('belleza'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Belleza 💄</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('hogar'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Hogar 🏠</span>
+                    </a>
+                     <a href="#" onclick="setFilterAndRender('tecnologia'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Tecnología 💻</span>
                     </a>
                 </div>
                 <div class="flex justify-center">
@@ -1246,6 +1266,17 @@
         </div>
     </div>
 
+    <div id="vis-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">Very Important Sorteos 💫</h2>
+                <button id="close-vis-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            <div id="vis-modal-body" class="space-y-4 max-h-[60vh]">
+                </div>
+        </div>
+    </div>
+
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
         <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold absolute top-2 right-4 z-10">&times;</button>
         
@@ -1285,77 +1316,6 @@
             </button>
         </div>
     </section>
-    <script src="giveaways_new.js"></script>
-    <script src="discardedGiveaways_new.js"></script>
-    <script src="foreignAccounts.js"></script> 
-    <script id="animations-script">
-        function animateStarryBackground() {
-            const starsContainer = document.getElementById('magic-stars-container');
-            if (!starsContainer) return;
-            starsContainer.innerHTML = ''; // Limpiar estrellas viejas si se llama de nuevo
-            for (let i = 0; i < 100; i++) {
-                let star = document.createElement('div');
-                star.classList.add('star');
-                let size = Math.random() * 3;
-                star.style.width = `${size}px`; star.style.height = `${size}px`;
-                star.style.top = `${Math.random() * 100}%`; star.style.left = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 4}s`;
-                if(Math.random() > 0.8) {
-                    star.classList.add('moving-star');
-                    star.style.animationDuration = `${Math.random() * 50 + 50}s`;
-                }
-                starsContainer.appendChild(star);
-            }
-        }
-
-        function animateTitle() {
-            const titleEl = document.getElementById('main-title');
-            if (!titleEl || titleEl.textContent.length > 0) return; // No re-animar si ya tiene texto
-            const titleText = "Misorteos";
-            titleEl.innerHTML = titleText.split('').map(char => `<span class="letter" style="position: relative;">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
-            const letters = Array.from(titleEl.children);
-            const revealDuration = letters.length * 150;
-
-            letters.forEach((letter, index) => {
-                setTimeout(() => {
-                    letter.style.opacity = '1'; letter.style.transform = 'translateY(0)';
-                    for(let i = 0; i < 3; i++) {
-                        const sparkle = document.createElement('span');
-                        sparkle.classList.add('sparkle');
-                        sparkle.style.top = `${Math.random()*80-40}%`; sparkle.style.left = `${Math.random()*80-40}%`;
-                        sparkle.style.animation = `letter-reveal-sparkle 0.5s ${i * 0.1}s ease-out forwards`;
-                        letter.appendChild(sparkle);
-                        setTimeout(() => sparkle.remove(), 1000);
-                    }
-                }, index * 150);
-            });
-            
-            setTimeout(() => {
-                setInterval(() => {
-                    if (document.hidden) return; // No animar si la pestaña no está visible
-                    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
-                    if (randomLetter.innerText.trim() === '') return;
-                    const sparkle = document.createElement('span');
-                    sparkle.classList.add('fountain-sparkle');
-                    sparkle.style.left = `${Math.random() * 80 + 10}%`;
-                    randomLetter.appendChild(sparkle);
-                    setTimeout(() => sparkle.remove(), 1500);
-                }, 200);
-            }, revealDuration);
-        }
-
-        function animateShootingStar(itemContainer, callback) {
-            const star = document.createElement('div');
-            star.className = 'shooting-star';
-            itemContainer.appendChild(star);
-            
-            star.addEventListener('animationend', () => {
-                star.remove();
-                if (callback) callback();
-            }, { once: true });
-        }
-    </script>
-    <script>
     // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
 
     // Carga de datos desde localStorage o valores por defecto
@@ -1507,6 +1467,7 @@
     }
 
     let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || (window.foreignAccounts || []);
+    let visGiveaways = JSON.parse(localStorage.getItem('visGiveaways')) || [];
 
     // --- Referencias a elementos del DOM ---
     const monthYearEl = document.getElementById('month-year');
@@ -1620,6 +1581,9 @@
     const recentAddsModal = document.getElementById('recent-adds-modal');
     const closeRecentAddsModalBtn = document.getElementById('close-recent-adds-modal');
     const recentAddsModalBody = document.getElementById('recent-adds-modal-body');
+    const visReviewBtn = document.getElementById('vis-review-btn');
+    const visModal = document.getElementById('vis-modal');
+    const closeVisModalBtn = document.getElementById('close-vis-modal');
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
@@ -1629,21 +1593,16 @@
     let notificationTimeout;
     const showNotification = (title, message) => {
         if (notificationTitle && notificationContent && notificationModal) {
-            // Si ya hay una notificación, la limpia para mostrar la nueva
             clearTimeout(notificationTimeout);
             notificationModal.classList.remove('show', 'hide');
-            
-            // Forzar un reflow para reiniciar la animación
             void notificationModal.offsetWidth;
-
             notificationTitle.textContent = title;
             notificationContent.textContent = message;
             notificationModal.classList.add('show');
-
             notificationTimeout = setTimeout(() => {
                 notificationModal.classList.remove('show');
                 notificationModal.classList.add('hide');
-            }, 4000); // La notificación dura 4 segundos
+            }, 4000);
         }
     };
 
@@ -1657,6 +1616,7 @@
     const saveUserPoints = () => localStorage.setItem('userPoints', JSON.stringify(userPoints));
     const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
     const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
+    const saveVisGiveaways = () => localStorage.setItem('visGiveaways', JSON.stringify(visGiveaways));
 
     const updatePointsDisplay = () => {
         if (totalPsCountEl) {
@@ -1674,7 +1634,6 @@
             reason: reason,
             date: new Date().toISOString()
         });
-        // Mantener el log con un máximo de 30 entradas para no sobrecargar
         if (userPoints.log.length > 30) {
             userPoints.log = userPoints.log.slice(-30);
         }
@@ -1817,7 +1776,11 @@
                      isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
                                (currentFilter === 'travel' && prize.includes('🛩️')) ||
                                (currentFilter === 'price' && prize.includes('💲')) ||
-                               (currentFilter === 'frikis' && prize.includes('🃏'));
+                               (currentFilter === 'frikis' && prize.includes('🃏')) ||
+                               (currentFilter === 'moda' && prize.includes('👠')) ||
+                               (currentFilter === 'belleza' && prize.includes('💄')) ||
+                               (currentFilter === 'hogar' && prize.includes('🏠')) ||
+                               (currentFilter === 'tecnologia' && prize.includes('💻'));
                 }
                 if (searchQuery && !prize.includes(searchText)) isMatch = false;
                 return isMatch;
@@ -1885,7 +1848,7 @@
         leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
 
         const controlsContainer = document.createElement('div');
-        controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0';
+        controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0 space-y-1';
         
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -1899,6 +1862,7 @@
         winBtn.innerHTML = `🏆`;
         winBtn.dataset.giveawayId = giveaway.id;
         winBtn.dataset.giveawayDate = dateStr;
+        winBtn.style.display = completedGiveaways[giveaway.id] ? 'block' : 'none'; // Solo visible si está completado
         controlsContainer.appendChild(winBtn);
 
         const prizeContainer = document.createElement('div');
@@ -1921,28 +1885,39 @@
         itemContainer.appendChild(detailsContainer);
 
         const actionsContainer = document.createElement('div');
-        actionsContainer.className = 'flex flex-col items-center ml-2 space-y-2';
+        actionsContainer.className = 'flex flex-col items-center ml-2 space-y-1';
+
+        // Botón de Mover (siempre visible)
         const moveBtn = document.createElement('button');
-        moveBtn.className = 'move-giveaway-btn p-1 rounded-full';
+        moveBtn.className = 'move-giveaway-btn p-1 rounded-full text-sm';
         moveBtn.innerHTML = `<i class="fa-solid fa-calendar-alt"></i>`;
         moveBtn.dataset.giveawayId = giveaway.id;
         moveBtn.dataset.giveawayDate = dateStr;
         actionsContainer.appendChild(moveBtn);
+
+        // Contenedor para botones que aparecen al completar
+        const postCompleteActions = document.createElement('div');
+        postCompleteActions.className = 'flex flex-col items-center space-y-1';
+        postCompleteActions.style.display = completedGiveaways[giveaway.id] ? 'flex' : 'none'; // Se muestra si está completado
+
+        // Botón de Enviar a VIS
+        const visBtn = document.createElement('button');
+        visBtn.className = 'vis-giveaway-btn p-1 rounded-full text-lg';
+        visBtn.innerHTML = `💫`;
+        visBtn.dataset.giveawayId = giveaway.id;
+        visBtn.dataset.giveawayDate = dateStr;
+        postCompleteActions.appendChild(visBtn);
+        
+        // Botón de Eliminar
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full';
+        deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full text-sm';
         deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
         deleteBtn.dataset.giveawayId = giveaway.id;
         deleteBtn.dataset.giveawayDate = dateStr;
-        actionsContainer.appendChild(deleteBtn);
-        const deleteForeignBtn = document.createElement('button');
-        deleteForeignBtn.className = 'delete-giveaway-foreign-btn p-1 rounded-full';
-        deleteForeignBtn.innerHTML = `<i class="fa-solid fa-earth-americas"></i>`;
-        deleteForeignBtn.dataset.giveawayId = giveaway.id;
-        deleteForeignBtn.dataset.giveawayDate = dateStr;
-        actionsContainer.appendChild(deleteForeignBtn);
-        
+        postCompleteActions.appendChild(deleteBtn);
+
+        actionsContainer.appendChild(postCompleteActions);
         itemContainer.appendChild(actionsContainer);
-        modalBody.appendChild(itemContainer);
 
         if (giveaway.prize.includes('🥎')) hasPadel = true;
         if (giveaway.prize.includes('🛩️')) hasTravel = true;
@@ -2242,7 +2217,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
                     
                     // --- PASO 2: Búsqueda del precio (search.js) ---
-                    // Se ejecuta DESPUÉS de tener los datos de la imagen y ANTES de mostrar la tarjeta.
                     const priceInfo = await searchPrizeValue(aiData);
 
                     // --- LÓGICA DE DECISIÓN FINAL CON EL PRECIO ---
@@ -2253,7 +2227,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
                     } else if (isExpired) {
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
                     } else {
-                        // Si es válido, se combinan todos los datos.
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'valid', originalFile: file };
                     }
                 }
@@ -2265,13 +2238,12 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
                 }
             }
             
-            // --- PASO 3: Renderizar la tarjeta con TODOS los datos ---
             renderInteractiveCard(resultData);
         };
         reader.readAsDataURL(file);
     }
 
-    function typewriterEffect(element, text = '', speed = 25) { // Ralentizado un poco
+    function typewriterEffect(element, text = '', speed = 25) {
         let i = 0;
         if (!element) return;
         element.value = '';
@@ -2340,7 +2312,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
                 cardStatusClass = 'card-status-duplicate';
                 buttonsHTML = `<button id="btn-merge" class="btn-merge">Fusionar</button><button id="btn-add-new" class="btn-save">Añadir como Nuevo</button><button id="btn-discard" class="btn-discard">Descartar</button>`;
                 
-                // Generamos la vista de comparación directamente aquí
                 const analyzedGiveawayHTML = generateGiveawayDetailsHTML(resultData, "Sorteo Analizado (Nuevo)");
                 const originalGiveawayHTML = generateGiveawayDetailsHTML(resultData.originalGiveaway, "Sorteo Original (Existente)");
 
@@ -2457,10 +2428,9 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         };
         const statusKey = statusMap[action] || data.status;
 
-        // Simplificar el manejo de errores
         const errorKeys = ['api_error', 'no_date', 'not_a_giveaway'];
         if (errorKeys.includes(statusKey)) {
-            analysisResults.api_error.push(editedData); // Agrupar todos los fallos
+            analysisResults.api_error.push(editedData);
         } else if (analysisResults[statusKey]) {
             analysisResults[statusKey].push(editedData);
         }
@@ -2671,6 +2641,10 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
                 if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
                 if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
                 if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
+                if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
+                if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
+                if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
+                if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
                 if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
                 return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
             } else {
@@ -2723,14 +2697,13 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             return;
         }
 
-        // Buscamos el sorteo original completo para obtener su fecha actual
         let originalGiveawayComplete = null;
-        let originalDate = null; // Variable para guardar la fecha
+        let originalDate = null;
         for (const date in giveaways) {
             const found = giveaways[date].find(g => g.id === originalGiveawayData.id);
             if (found) {
                 originalGiveawayComplete = found;
-                originalDate = date; // Guardamos la fecha del calendario
+                originalDate = date;
                 break;
             }
         }
@@ -2740,8 +2713,7 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             return;
         }
 
-        // Helper para generar el HTML de cada tarjeta de sorteo
-        const generateDetailsHTML = (giveaway, date) => { // La función ahora acepta una fecha
+        const generateDetailsHTML = (giveaway, date) => {
              const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
              return `
                 <div class="detail-item mb-2"><strong>Premio:</strong> ${giveaway.prize || 'N/A'}</div>
@@ -2751,11 +2723,9 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
              `;
         };
 
-        // Pasamos la fecha correcta a la función para cada sorteo
         originalGiveawayDetails.innerHTML = generateDetailsHTML(originalGiveawayComplete, originalDate);
         discardedGiveawayDetails.innerHTML = generateDetailsHTML(discardedGiveaway, discardedGiveaway.date);
         
-        // Asignamos el ID del sorteo DESCARTADO a todos los botones para que sepan sobre cuál actuar
         mergeGiveawayBtn.dataset.giveawayId = discardedGiveaway.id;
         addAsNewBtn.dataset.giveawayId = discardedGiveaway.id;
         document.getElementById('delete-discarded-comp-btn').dataset.giveawayId = discardedGiveaway.id;
@@ -2892,7 +2862,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // --- CÁLCULOS GENERALES ---
         const totalRegistered = allRegisteredGiveaways.length;
         const totalCompleted = Object.keys(completedGiveaways).length;
         const totalWon = wonGiveaways.length;
@@ -2912,7 +2881,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             return acc;
         }, {});
 
-        // --- CÁLCULOS DE RENDIMIENTO ---
         const eficienciaParticipacion = totalWon > 0 ? (totalCompleted / totalWon).toFixed(1) : '∞';
         const valorPorParticipacion = totalCompleted > 0 ? (totalValueWon / totalCompleted).toFixed(2) : 0;
         let estiloCazador = "Equilibrado ⚖️";
@@ -2922,7 +2890,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             estiloCazador = "Ametralladora 💥";
         }
 
-        // --- CÁLCULOS ESTRATÉGICOS ---
         const exitosPorValor = { modestos: { wins: 0, completed: 0 }, intermedios: { wins: 0, completed: 0 }, grandes: { wins: 0, completed: 0 } };
         const allCompletedGiveaways = allRegisteredGiveaways.filter(g => completedGiveaways[g.id]);
         allCompletedGiveaways.forEach(g => {
@@ -2950,7 +2917,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         const tasaParticipacionCercanos = sorteosCercanos.length > 0 ? ((participacionCercanos / sorteosCercanos.length) * 100).toFixed(1) : 0;
         const tasaParticipacionLejanos = sorteosLejanos.length > 0 ? ((participacionLejanos / sorteosLejanos.length) * 100).toFixed(1) : 0;
 
-        // --- CÁLCULOS DE REDES Y PREDICTIVOS ---
         const winsLast30Days = wonGiveaways.filter(g => (today - new Date(g.wonDate)) / ONE_DAY_MS <= 30).length;
         const totalDaysWithWins = new Set(wonGiveaways.map(g => new Date(g.wonDate).toDateString())).size;
         const historicalWinRatePerDay = totalDaysWithWins > 30 ? totalWon / totalDaysWithWins : 0;
@@ -2974,7 +2940,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         });
         const topColaboradores = Object.entries(colaboraciones).sort((a, b) => b[1] - a[1]).slice(0, 3);
 
-        // --- RENDERIZADO DEL HTML ---
         const resumenTab = document.getElementById('tab-resumen');
         const rendimientoTab = document.getElementById('tab-rendimiento');
         const estrategiaTab = document.getElementById('tab-estrategia');
@@ -3059,27 +3024,19 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         `;
     };
     
-    const renderStatsModal = () => {
-        calculateAndRenderStats();
-    };
-
     let categoryPieChart = null;
     let monthlyValueBarChart = null;
     let winsGrowthLineChart = null;
     let valueVsAnticipationScatterChart = null;
     let hunterStyleRadarChart = null;
 
-
     const renderCharts = () => {
-        // Destruir gráficos anteriores para evitar solapamientos
         if (categoryPieChart) categoryPieChart.destroy();
         if (monthlyValueBarChart) monthlyValueBarChart.destroy();
         if (winsGrowthLineChart) winsGrowthLineChart.destroy();
         if (valueVsAnticipationScatterChart) valueVsAnticipationScatterChart.destroy();
         if (hunterStyleRadarChart) hunterStyleRadarChart.destroy();
 
-
-        // --- Gráfico 1: Victorias por Categoría (Pie) ---
         const categoryCtx = document.getElementById('category-pie-chart').getContext('2d');
         const categoryWins = wonGiveaways.reduce((acc, g) => {
             const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
@@ -3099,7 +3056,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             options: { responsive: true, maintainAspectRatio: false }
         });
 
-        // --- Gráfico 2: Valor por Mes (Bar) ---
         const monthlyCtx = document.getElementById('monthly-value-bar-chart').getContext('2d');
         const monthlyValues = wonGiveaways.reduce((acc, g) => {
             const month = new Date(g.wonDate).getMonth();
@@ -3121,7 +3077,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
         });
 
-        // --- NUEVO Gráfico 3: Crecimiento de Victorias (Line) ---
         const winsGrowthCtx = document.getElementById('wins-growth-line-chart').getContext('2d');
         const sortedWins = [...wonGiveaways].sort((a,b) => new Date(a.wonDate) - new Date(b.wonDate));
         const cumulativeWins = [];
@@ -3146,12 +3101,11 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             options: { responsive: true, maintainAspectRatio: false }
         });
         
-        // --- NUEVO Gráfico 4: Dispersión Antelación vs Valor (Scatter) ---
         const scatterCtx = document.getElementById('value-vs-anticipation-scatter-chart').getContext('2d');
         const scatterData = wonGiveaways
             .filter(g => g.addDate && parsePrice(g.price) > 0)
             .map(g => ({
-                x: (new Date(g.date) - new Date(g.addDate)) / (1000 * 60 * 60 * 24), // Días de antelación
+                x: (new Date(g.date) - new Date(g.addDate)) / (1000 * 60 * 60 * 24),
                 y: parsePrice(g.price)
             }));
         valueVsAnticipationScatterChart = new Chart(scatterCtx, {
@@ -3172,7 +3126,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             }
         });
         
-        // --- NUEVO Gráfico 5: Estilo de Cazador (Radar) ---
         const radarCtx = document.getElementById('hunter-style-radar-chart').getContext('2d');
         const totalCompleted = Object.keys(completedGiveaways).length;
         const totalWon = wonGiveaways.length;
@@ -3181,11 +3134,10 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         const participationRate = Object.values(giveaways).flat().length > 0 ? (totalCompleted / Object.values(giveaways).flat().length) * 100 : 0;
         const diversity = new Set(wonGiveaways.flatMap(g => g.accounts)).size;
         
-        // Normalizar valores para el radar (ej. de 0 a 100)
-        const normalizedWinRate = Math.min(winRate * 20, 100); // Un 5% de winrate es 100
-        const normalizedAvgValue = Math.min(avgValue / 2, 100); // 200€ de valor medio es 100
+        const normalizedWinRate = Math.min(winRate * 20, 100);
+        const normalizedAvgValue = Math.min(avgValue / 2, 100);
         const normalizedParticipation = Math.min(participationRate, 100);
-        const normalizedDiversity = Math.min(diversity * 2, 100); // 50 cuentas únicas es 100
+        const normalizedDiversity = Math.min(diversity * 2, 100);
 
         hunterStyleRadarChart = new Chart(radarCtx, {
             type: 'radar',
@@ -3205,9 +3157,8 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             }
         });
 
-        // --- NUEVO Gráfico 6: Mapa de Calor ---
         const heatmapContainer = document.getElementById('luck-heatmap-container');
-        heatmapContainer.innerHTML = ''; // Limpiar
+        heatmapContainer.innerHTML = '';
         const winsByDay = wonGiveaways.reduce((acc, g) => {
             const date = new Date(g.wonDate).toISOString().slice(0, 10);
             acc[date] = (acc[date] || 0) + 1;
@@ -3221,7 +3172,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         const heatmap = document.createElement('div');
         heatmap.className = 'heatmap';
         
-        // Headers de días
         ['D', 'L', 'M', 'X', 'J', 'V', 'S'].forEach(day => {
             const headerEl = document.createElement('div');
             headerEl.className = 'heatmap-header';
@@ -3229,7 +3179,6 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             heatmap.appendChild(headerEl);
         });
 
-        // Offset para el primer día del año
         for (let i = 0; i < firstDayOfYear.getDay(); i++) {
             heatmap.innerHTML += '<div></div>';
         }
@@ -3694,6 +3643,42 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         });
     };
 
+    const renderVisModal = () => {
+        const visModalBody = document.getElementById('vis-modal-body');
+        visModalBody.innerHTML = ''; // Limpiamos el contenido anterior
+
+        if (visGiveaways.length === 0) {
+            visModalBody.innerHTML = '<p class="text-gray-500">Tu sala de revisión está vacía. Completa un sorteo y envíalo aquí para un seguimiento especial.</p>';
+            return;
+        }
+
+        [...visGiveaways].reverse().forEach(giveaway => {
+            const card = document.createElement('div');
+            card.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner flex flex-col sm:flex-row justify-between items-center border border-yellow-600/20 text-left gap-3';
+            
+            const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
+
+            card.innerHTML = `
+                <div class="flex-grow w-full">
+                    <p class="font-bold text-yellow-900">${giveaway.prize}</p>
+                    <p class="text-sm">${accountsHTML}</p>
+                    <p class="text-xs text-gray-600">Finaliza: ${giveaway.date} | Valor: ${giveaway.price || 'N/A'}</p>
+                </div>
+                <div class="flex-shrink-0 flex items-center gap-2 w-full sm:w-auto">
+                    <button class="reviewed-vis-btn w-1/2 sm:w-auto bg-gray-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-gray-600 transition-colors text-sm" data-giveaway-id="${giveaway.id}">Revisado</button>
+                    <button class="won-vis-btn w-1/2 sm:w-auto bg-green-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-green-600 transition-colors text-sm" data-giveaway-id="${giveaway.id}">Ganado 🏆</button>
+                </div>
+            `;
+            visModalBody.appendChild(card);
+        });
+    };
+
+    const removeFromVIS = (giveawayId) => {
+        visGiveaways = visGiveaways.filter(g => g.id !== giveawayId);
+        saveVisGiveaways();
+        renderVisModal();
+    };
+
     // --- CÓDIGO DE INICIALIZACIÓN ---
     
     animateStarryBackground();
@@ -3725,10 +3710,8 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         });
     };
     
-    // Setup de todos los botones para abrir modales
     setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {
         renderStatsModal();
-        // Retrasamos ligeramente el renderizado de gráficos para asegurar que el modal es visible
         setTimeout(renderCharts, 50); 
     });
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
@@ -3743,8 +3726,8 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     setupModal(null, psSummaryModal, closePsSummaryModalBtn);
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
+    setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
     
-    // Vista de IA a pantalla completa
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (navMenu.classList.contains('is-open')) {
@@ -3828,9 +3811,9 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
 
         const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
         if (!giveaway) return;
+        const itemContainer = e.target.closest('.giveaway-item');
 
         if (e.target.type === 'checkbox') {
-            const itemContainer = e.target.closest('.giveaway-item');
             if (e.target.checked) {
                 completedGiveaways[giveawayId] = true;
                 animateShootingStar(itemContainer, () => {
@@ -3847,8 +3830,40 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             }
             saveCompletedGiveaways();
             checkAchievements('complete', { giveawayDate: dateStr });
+            
+            // Lógica para la Sala VIS
+            if (e.target.checked) {
+                const giveawayPrice = parsePrice(giveaway.price);
+                if (giveawayPrice >= 500) {
+                    const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
+                    if (!isAlreadyInVIS) {
+                        visGiveaways.push(giveaway);
+                        saveVisGiveaways();
+                        showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se añadió a Revisión VIS por su alto valor.`);
+                    }
+                }
+            }
+            // Mostrar/ocultar botones al cambiar el checkbox
+            const postCompleteActions = itemContainer.querySelector('.flex-col.items-center.space-y-1');
+            const winBtn = itemContainer.querySelector('.win-giveaway-btn');
+            if (e.target.checked) {
+                if (postCompleteActions) postCompleteActions.style.display = 'flex';
+                if (winBtn) winBtn.style.display = 'block';
+            } else {
+                if (postCompleteActions) postCompleteActions.style.display = 'none';
+                if (winBtn) winBtn.style.display = 'none';
+            }
         } else if (e.target.closest('.win-giveaway-btn')) {
             markAsWon(giveawayId, dateStr);
+        } else if (e.target.closest('.vis-giveaway-btn')) {
+            const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
+            if (!isAlreadyInVIS) {
+                visGiveaways.push(giveaway);
+                saveVisGiveaways();
+                showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se ha enviado a tu sala de revisión.`);
+            } else {
+                showNotification('Ya en la lista', 'Este sorteo ya está en tu sala de revisión.');
+            }
         } else if (e.target.closest('.move-giveaway-btn')) {
             openMoveGiveawayModal(giveaway, dateStr);
         } else if (e.target.closest('.delete-giveaway-btn')) {
@@ -3859,6 +3874,26 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
                 deleteForeignGiveaway(dateStr, giveawayId);
             }
+        }
+    });
+
+    visModal.addEventListener('click', (e) => {
+        const giveawayId = e.target.dataset.giveawayId;
+        if (!giveawayId) return;
+
+        const giveaway = visGiveaways.find(g => g.id === giveawayId);
+        if (!giveaway) return;
+
+        if (e.target.closest('.reviewed-vis-btn')) {
+            if (confirm(`¿Confirmas que ya se han anunciado los ganadores de "${giveaway.prize}" y no has ganado?`)) {
+                removeFromVIS(giveawayId);
+                showNotification('Sorteo Revisado', 'Se ha quitado de tu lista de seguimiento.');
+            }
+        }
+
+        if (e.target.closest('.won-vis-btn')) {
+            markAsWon(giveaway.id, giveaway.date); 
+            removeFromVIS(giveaway.id);
         }
     });
 
@@ -3977,7 +4012,7 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
         if (giveawayId) {
             if (confirm("¿Estás seguro de que quieres eliminar este sorteo descartado permanentemente?")) {
                 deleteDiscardedGiveaway(giveawayId);
-                closeDuplicateComparisonModalBtn.click(); // Cierra el modal de comparación
+                closeDuplicateComparisonModalBtn.click();
                 showNotification('Sorteo Eliminado', 'El sorteo descartado ha sido eliminado permanentemente.');
             }
         }
@@ -4023,17 +4058,14 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
 
             const tabId = button.dataset.tab;
             
-            // Actualizar botones
             statsTabsContainer.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            // Actualizar contenido
             document.querySelectorAll('.stats-tab-content').forEach(content => {
                 content.classList.remove('active');
             });
             document.getElementById(`tab-${tabId}`).classList.add('active');
 
-            // Si se abre la pestaña de gráficos, asegurarse de que se renderizan
             if (tabId === 'graficos') {
                 setTimeout(renderCharts, 50);
             }
@@ -4045,7 +4077,3 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
     document.getElementById('share-stats-btn').addEventListener('click', shareStats);
     deleteAllTrashBtn.addEventListener('click', deleteAllTrash);
     deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
-
-</script>
-</body>
-</html>

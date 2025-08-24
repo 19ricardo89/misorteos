@@ -372,29 +372,45 @@
             color: #8c5a15 !important; /* Un tono más claro al pasar el ratón */
         }
 
-        /* NUEVO: Estilos para los botones de acción (mover, eliminar) */
-        .win-giveaway-btn, .move-giveaway-btn, .delete-giveaway-btn, .vis-giveaway-btn {
-            background-color: #fdecc8 !important; /* Fondo sólido y visible */
-            color: #78350f !important; /* Icono en marrón muy oscuro */
+        /* --- NUEVO: Estilos para los botones de acción (mover, eliminar) --- */
+        .move-giveaway-btn {
+            background-color: #fdecc8 !important;
+            color: #78350f !important;
         }
-        .win-giveaway-btn:hover, .move-giveaway-btn:hover, .delete-giveaway-btn:hover, .vis-giveaway-btn:hover {
-            background-color: #f7d468 !important; /* Fondo más intenso al pasar el ratón */
+        .move-giveaway-btn:hover {
+             background-color: #f7d468 !important;
         }
-        .win-giveaway-btn {
-            color: #ca8a04 !important; /* Icono dorado para ganar */
-            margin-top: 4px;
-            padding: 2px;
-            width: 28px;
-            height: 28px;
-            border-radius: 9999px;
+        .delete-giveaway-btn { /* Botón Papelera - ROJO */
+            background-color: #fee2e2 !important;
+            color: #b91c1c !important;
         }
-        .delete-giveaway-foreign-btn {
-            background-color: #fecaca !important; /* Fondo rojo claro para el botón de extranjero */
-            color: #991b1b !important; /* Icono en rojo oscuro */
+        .delete-giveaway-btn:hover {
+            background-color: #fca5a5 !important;
+        }
+        .delete-giveaway-foreign-btn { /* Botón Extranjero - AZUL */
+            background-color: #dbeafe !important;
+            color: #1e40af !important;
         }
         .delete-giveaway-foreign-btn:hover {
-            background-color: #f87171 !important;
+            background-color: #93c5fd !important;
         }
+        .win-giveaway-btn { /* Botón Ganado - ORO */
+            background-color: #fef3c7 !important;
+            color: #b45309 !important;
+            border: 1px solid #fde047;
+        }
+        .win-giveaway-btn:hover {
+            background-color: #fde68a !important;
+        }
+        .vis-giveaway-btn { /* Botón VIS - PLATA */
+            background-color: #e5e7eb !important;
+            color: #4b5563 !important;
+            border: 1px solid #d1d5db;
+        }
+        .vis-giveaway-btn:hover {
+            background-color: #d1d5db !important;
+        }
+
 
         /* Títulos de los modales */
         #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2 {
@@ -1938,6 +1954,7 @@
             const itemContainer = document.createElement('div');
             itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
+            // --- CONTENEDOR IZQUIERDO (CHECKBOX Y BOTONES DE COMPLETADO) ---
             const leftSideContainer = document.createElement('div');
             leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
 
@@ -1951,14 +1968,27 @@
             checkbox.checked = completedGiveaways[giveaway.id];
             controlsContainer.appendChild(checkbox);
             
+            const postCompleteActions = document.createElement('div');
+            postCompleteActions.className = 'flex flex-col items-center space-y-1 mt-1';
+            postCompleteActions.style.display = completedGiveaways[giveaway.id] ? 'flex' : 'none';
+
             const winBtn = document.createElement('button');
-            winBtn.className = 'win-giveaway-btn';
+            winBtn.className = 'win-giveaway-btn p-1 rounded-full text-lg';
             winBtn.innerHTML = `🏆`;
             winBtn.dataset.giveawayId = giveaway.id;
             winBtn.dataset.giveawayDate = dateStr;
-            winBtn.style.display = completedGiveaways[giveaway.id] ? 'block' : 'none'; // Solo visible si está completado
-            controlsContainer.appendChild(winBtn);
+            postCompleteActions.appendChild(winBtn);
 
+            const visBtn = document.createElement('button');
+            visBtn.className = 'vis-giveaway-btn p-1 rounded-full text-lg';
+            visBtn.innerHTML = `🌟`;
+            visBtn.dataset.giveawayId = giveaway.id;
+            visBtn.dataset.giveawayDate = dateStr;
+            postCompleteActions.appendChild(visBtn);
+
+            controlsContainer.appendChild(postCompleteActions);
+
+            // --- CONTENEDOR DEL PREMIO Y CUENTAS ---
             const prizeContainer = document.createElement('div');
             prizeContainer.className = 'overflow-hidden';
 
@@ -1969,44 +1999,41 @@
             leftSideContainer.appendChild(controlsContainer);
             leftSideContainer.appendChild(prizeContainer);
 
+            // --- CONTENEDOR DERECHO (VALOR) ---
             const detailsContainer = document.createElement('div');
             detailsContainer.className = 'text-right flex-shrink-0 ml-2';
             if (giveaway.price) {
                 detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
             }
 
-            itemContainer.appendChild(leftSideContainer);
-            itemContainer.appendChild(detailsContainer);
-
+            // --- CONTENEDOR DE ACCIONES (MOVER, PAPELERA, EXTRANJERO) ---
             const actionsContainer = document.createElement('div');
             actionsContainer.className = 'flex flex-col items-center ml-2 space-y-1';
 
             const moveBtn = document.createElement('button');
             moveBtn.className = 'move-giveaway-btn p-1 rounded-full text-sm';
-            moveBtn.innerHTML = `<i class="fa-solid fa-calendar-alt"></i>`;
+            moveBtn.innerHTML = `<i class="fa-solid fa-calendar-days"></i>`;
             moveBtn.dataset.giveawayId = giveaway.id;
             moveBtn.dataset.giveawayDate = dateStr;
             actionsContainer.appendChild(moveBtn);
-
-            const postCompleteActions = document.createElement('div');
-            postCompleteActions.className = 'flex flex-col items-center space-y-1';
-            postCompleteActions.style.display = completedGiveaways[giveaway.id] ? 'flex' : 'none';
-
-            const visBtn = document.createElement('button');
-            visBtn.className = 'vis-giveaway-btn p-1 rounded-full text-lg';
-            visBtn.innerHTML = `💫`;
-            visBtn.dataset.giveawayId = giveaway.id;
-            visBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(visBtn);
             
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full text-sm';
             deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
             deleteBtn.dataset.giveawayId = giveaway.id;
             deleteBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(deleteBtn);
+            actionsContainer.appendChild(deleteBtn);
 
-            actionsContainer.appendChild(postCompleteActions);
+            const foreignBtn = document.createElement('button');
+            foreignBtn.className = 'delete-giveaway-foreign-btn p-1 rounded-full text-sm';
+            foreignBtn.innerHTML = `<i class="fa-solid fa-globe"></i>`;
+            foreignBtn.dataset.giveawayId = giveaway.id;
+            foreignBtn.dataset.giveawayDate = dateStr;
+            actionsContainer.appendChild(foreignBtn);
+
+            // --- ENSAMBLAJE FINAL DEL ITEM ---
+            itemContainer.appendChild(leftSideContainer);
+            itemContainer.appendChild(detailsContainer);
             itemContainer.appendChild(actionsContainer);
 
             modalBody.appendChild(itemContainer);
@@ -2021,6 +2048,7 @@
         else modalContent.classList.add('modal-default-bg');
         modal.dataset.date = dateStr;
     };
+
 
     const openModal = (dateStr) => { 
         if (navMenu.classList.contains('is-open')) {
@@ -3906,25 +3934,11 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
             saveCompletedGiveaways();
             checkAchievements('complete', { giveawayDate: dateStr });
             
-            if (e.target.checked) {
-                const giveawayPrice = parsePrice(giveaway.price);
-                if (giveawayPrice >= 500) {
-                    const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
-                    if (!isAlreadyInVIS) {
-                        visGiveaways.push(giveaway);
-                        saveVisGiveaways();
-                        showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se añadió a Revisión VIS por su alto valor.`);
-                    }
-                }
-            }
-            const postCompleteActions = itemContainer.querySelector('.flex-col.items-center.space-y-1');
-            const winBtn = itemContainer.querySelector('.win-giveaway-btn');
+            const postCompleteActions = itemContainer.querySelector('.flex-col.items-center.space-y-1.mt-1');
             if (e.target.checked) {
                 if (postCompleteActions) postCompleteActions.style.display = 'flex';
-                if (winBtn) winBtn.style.display = 'block';
             } else {
                 if (postCompleteActions) postCompleteActions.style.display = 'none';
-                if (winBtn) winBtn.style.display = 'none';
             }
         } else if (e.target.closest('.win-giveaway-btn')) {
             markAsWon(giveawayId, dateStr);

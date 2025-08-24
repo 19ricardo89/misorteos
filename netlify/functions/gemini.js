@@ -1,23 +1,16 @@
 // netlify/functions/gemini.js
-
 exports.handler = async function (event, context) {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
     const body = JSON.parse(event.body);
     const { base64Data, dynamicPrompt } = body;
-
     if (!base64Data || !dynamicPrompt) {
         return {
             statusCode: 400,
             body: JSON.stringify({ error: 'Faltan datos en la petición.' })
         };
     }
-
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-    // He cambiado el modelo a gemini-1.5-flash-latest, ya que 2.5 no existe y podría ser parte del problema.
-    // Si usas un modelo específico, vuelve a poner el que tenías.
-
     const payload = {
         contents: [{
             role: "user",
@@ -27,36 +20,25 @@ exports.handler = async function (event, context) {
             ]
         }]
     };
-
     try {
         const geminiResponse = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-
-        // --- INICIO DEL CÓDIGO AÑADIDO PARA MEJORAR EL MANEJO DE ERRORES ---
         if (!geminiResponse.ok) {
             const errorBody = await geminiResponse.json();
             console.error("Error desde la API de Gemini:", errorBody);
-
             return {
                 statusCode: geminiResponse.status,
-                body: JSON.stringify({ 
-                    error: 'La API de Gemini devolvió un error.', 
-                    details: errorBody.error ? { message: errorBody.error.message, code: errorBody.error.code } : errorBody 
-                })
+                body: JSON.stringify({ error: 'La API de Gemini devolvió un error.', details: errorBody })
             };
         }
-        // --- FIN DEL CÓDIGO AÑADIDO ---
-
         const data = await geminiResponse.json();
-
         return {
             statusCode: 200,
             body: JSON.stringify(data)
         };
-
     } catch (error) {
         console.error("Error en la función de Netlify:", error);
         return {

@@ -1316,6 +1316,78 @@
             </button>
         </div>
     </section>
+    <script src="giveaways_new.js"></script>
+    <script src="discardedGiveaways_new.js"></script>
+    <script src="foreignAccounts.js"></script> 
+    <script id="animations-script">
+        function animateStarryBackground() {
+            const starsContainer = document.getElementById('magic-stars-container');
+            if (!starsContainer) return;
+            starsContainer.innerHTML = ''; // Limpiar estrellas viejas si se llama de nuevo
+            for (let i = 0; i < 100; i++) {
+                let star = document.createElement('div');
+                star.classList.add('star');
+                let size = Math.random() * 3;
+                star.style.width = `${size}px`; star.style.height = `${size}px`;
+                star.style.top = `${Math.random() * 100}%`; star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 4}s`;
+                if(Math.random() > 0.8) {
+                    star.classList.add('moving-star');
+                    star.style.animationDuration = `${Math.random() * 50 + 50}s`;
+                }
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function animateTitle() {
+            const titleEl = document.getElementById('main-title');
+            if (!titleEl || titleEl.textContent.length > 0) return; // No re-animar si ya tiene texto
+            const titleText = "Misorteos";
+            titleEl.innerHTML = titleText.split('').map(char => `<span class="letter" style="position: relative;">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+            const letters = Array.from(titleEl.children);
+            const revealDuration = letters.length * 150;
+
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    letter.style.opacity = '1'; letter.style.transform = 'translateY(0)';
+                    for(let i = 0; i < 3; i++) {
+                        const sparkle = document.createElement('span');
+                        sparkle.classList.add('sparkle');
+                        sparkle.style.top = `${Math.random()*80-40}%`; sparkle.style.left = `${Math.random()*80-40}%`;
+                        sparkle.style.animation = `letter-reveal-sparkle 0.5s ${i * 0.1}s ease-out forwards`;
+                        letter.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 1000);
+                    }
+                }, index * 150);
+            });
+            
+            setTimeout(() => {
+                setInterval(() => {
+                    if (document.hidden) return; // No animar si la pestaña no está visible
+                    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+                    if (randomLetter.innerText.trim() === '') return;
+                    const sparkle = document.createElement('span');
+                    sparkle.classList.add('fountain-sparkle');
+                    sparkle.style.left = `${Math.random() * 80 + 10}%`;
+                    randomLetter.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 1500);
+                }, 200);
+            }, revealDuration);
+        }
+
+        function animateShootingStar(itemContainer, callback) {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            itemContainer.appendChild(star);
+            
+            star.addEventListener('animationend', () => {
+                star.remove();
+                if (callback) callback();
+            }, { once: true });
+        }
+    </script>
+    <script>
+    
     // --- COMIENZO DEL SCRIPT PRINCIPAL DE LA APLICACIÓN ---
 
     // Carga de datos desde localStorage o valores por defecto
@@ -4077,3 +4149,7 @@ Esta es la parte más importante. La 'date' en el JSON es el último día para p
     document.getElementById('share-stats-btn').addEventListener('click', shareStats);
     deleteAllTrashBtn.addEventListener('click', deleteAllTrash);
     deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
+   
+</script>
+</body>
+</html>

@@ -1,15 +1,6 @@
 window.giveaways = {
     "2025-08-08": [
         {
-            "id": "sorteo2",
-            "prize": "Colchón Poseidón 💲",
-            "price": "600€",
-            "accounts": [
-                "@magicbadalona",
-                "@maxcolchon.es"
-            ]
-        },
-        {
             "id": "sorteo-8-mikpadel",
             "prize": "Pala Adidas Metalbone PRO-EDT 🥎",
             "price": "425€",
@@ -197,14 +188,6 @@ window.giveaways = {
             "accounts": [
                 "@miravia"
             ]
-        },
-        {
-            "id": "sorteo-8-fansdepastoret",
-            "prize": "lote productos",
-            "price": "30€",
-            "accounts": [
-                "@fansdepastoret"
-            ]
         }
     ],
     "2025-08-09": [
@@ -358,14 +341,6 @@ window.giveaways = {
         }
     ],
     "2025-08-10": [
-        {
-            "id": "sorteo-10-tiendapadel5",
-            "prize": "Pala Adidas Metalbone Pro Edt 2025 (firmada) 🥎",
-            "price": "425€",
-            "accounts": [
-                "@tiendapadel5"
-            ]
-        },
         {
             "id": "sorteo-10-carmenllatas",
             "prize": "1000€ en material de acampada 💲",
@@ -3485,7 +3460,8 @@ window.giveaways = {
             "accounts": [
                 "@chocolatestorras",
                 "@casa_carriot"
-            ]
+            ],
+            "date": "2025-08-20"
         },
         {
             "id": "sorteo-20-agenda",
@@ -3493,7 +3469,8 @@ window.giveaways = {
             "price": "100€",
             "accounts": [
                 "@alehop_es"
-            ]
+            ],
+            "date": "2025-08-20"
         },
         {
             "id": "sorteo-20-cenapalm",
@@ -3911,7 +3888,8 @@ window.giveaways = {
             "price": "80€",
             "accounts": [
                 "@esthersalamancamadero"
-            ]
+            ],
+            "date": "2025-08-20"
         },
         {
             "id": "sorteo-23-consola-retro",
@@ -3922,172 +3900,11 @@ window.giveaways = {
             ]
         },
         {
-            "id": "sorteo-23-lote-pañales",
-            "prize": "Un lote de pañales, toallitas y canastilla",
-            "price": "80€",
-            "accounts": [
-                "@mamadeelena",
-                "@silviatrillof"
-            ]
-        },
-        {
             "id": "sorteo-23-lote-australiangold",
             "prize": "2 lotes de productos Australian Gold",
             "price": "80€",
             "accounts": [
                 "@druni_perfumerias"
-            ]
-        },
-        {
-            "id": "sorteo-23-eroski",
-            "prize": "Vale de 100€ en Eroski",
-            "price": "100€",
-            "accounts": [
-                "@eroskioficial"
-            ]
-        },
-        {
-            "id": "sorteo-23-leonairjordan",
-            "prize": "Kit de limpieza para coche",
-            "price": "60€",
-            "accounts": [
-                "@leon_airjordan"
-            ]
-        },
-        {
-            "id": "sorteo-23-conarena",
-            "prize": "Lote de chuches",
-            "price": "40€",
-            "accounts": [
-                "@conarenaenlaspies"
-            ]
-        },
-        {
-            "id": "sorteo-23-lgespana",
-            "prize": "Lavadora LG 💲",
-            "price": "500€",
-            "accounts": [
-                "@lg_espana2"
-            ]
-        },
-        {
-            "id": "sorteo-23-cositasdemama",
-            "prize": "Muñeca",
-            "price": "30€",
-            "accounts": [
-                "@cositas_demama_f"
-            ]
-        },
-        {
-            "id": "sorteo-23-andreardriguezc",
-            "prize": "2 lotes de material escolar",
-            "price": "100€",
-            "accounts": [
-                "@andreardriguezc"
-            ]
-        },
-        {
-            "id": "sorteo-23-carrefour-tech",
-            "prize": "Pack tecnológico: Tablet + Barra de sonido + Proyector",
-            "price": "350€",
-            "accounts": [
-                "@carrefoures"
-            ]
-        },
-        {
-            "id": "sorteo-23-sandrinaferre",
-            "prize": "3kg de chuches",
-            "price": "30€",
-            "accounts": [
-                "@sandrina_ferre29"
-            ]
-        },
-        {
-            "id": "sorteo-23-deliaplaneta",
-            "prize": "Pack Tiburón 🃏",
-            "price": "50€",
-            "accounts": [
-                "@deliaplaneta"
-            ]
-        },
-        {
-            "id": "sorteo-23-fabiomnz",
-            "prize": "Mochila + Vale de 800€ 💲",
-            "price": "850€",
-            "accounts": [
-                "@fabiomnz"
-            ]
-        },
-        {
-            "id": "sorteo-23-pprimor-solares",
-            "prize": "12 lotes de productos solares",
-            "price": "400€",
-            "accounts": [
-                "@pprimor"
-            ]
-        },
-        {
-            "id": "sorteo-23-elaitedepadel",
-            "prize": "Pack de pádel 🥎",
-            "price": "120€",
-            "accounts": [
-                "@elaitedepadel"
-            ]
-        },
-        {
-            "id": "sorteo-23-druni-got2b",
-            "prize": "Lote de productos Got2b",
-            "price": "40€",
-            "accounts": [
-                "@druni_perfumerias"
-            ]
-        },
-        {
-            "id": "sorteo-23-vichymumlife",
-            "prize": "Lote de material escolar (compartir)",
-            "price": "80€",
-            "accounts": [
-                "@vichy_mumlife"
-            ]
-        },
-        {
-            "id": "sorteo-23-alohacamp",
-            "prize": "Agenda + Vale de 100€ en Alohacamp 🛩️",
-            "price": "120€",
-            "accounts": [
-                "@alohacamp_es"
-            ]
-        },
-        {
-            "id": "sorteo-23-theoutletstore",
-            "prize": "Vale de 100€ en Desigual",
-            "price": "100€",
-            "accounts": [
-                "@theoutletstore"
-            ]
-        },
-        {
-            "id": "sorteo-23-realeetaa",
-            "prize": "Chanclas + 2 cajas de atún",
-            "price": "45€",
-            "accounts": [
-                "@realeetaa"
-            ]
-        },
-        {
-            "id": "sorteo-23-psicoimportanta",
-            "prize": "Lote de material escolar",
-            "price": "80€",
-            "accounts": [
-                "@psico_importanta"
-            ]
-        },
-        {
-            "id": "sorteo-23-andreaardriguezc2",
-            "prize": "2 lotes de material escolar",
-            "price": "100€",
-            "accounts": [
-                "@andrea.ardriguezc"
             ]
         }
     ],
@@ -4381,262 +4198,284 @@ window.giveaways = {
             ]
         },
         {
-            "id": "sorteo-24-neusmoya",
-            "prize": "Dúo de zapatillas y material escolar",
-            "price": "120€",
+            "id": "1755976162971",
+            "date": "2025-08-24",
+            "prize": "COLCHONETA HINCHABLE INTEX",
             "accounts": [
-                "@neusmoya.podologia"
-            ]
+                "@wortenes"
+            ],
+            "price": "35€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "10:30"
         },
         {
-            "id": "sorteo-24-mellamansara",
-            "prize": "Mochila + Vale de 50€",
-            "price": "80€",
+            "id": "1755976761666",
+            "date": "2025-08-24",
+            "prize": "dos COLLECTOR'S EDITION de NIKODERIKO: THE MAGICAL WORLD - DIRECTOR'S CUT para Nintendo Switch y PlayStation 5",
             "accounts": [
-                "@mellamansara"
-            ]
+                "@videojuegosgame"
+            ],
+            "price": "120€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
         },
         {
-            "id": "sorteo-24-estelacortes",
-            "prize": "Estancia en hotel 🛩️",
-            "price": "150€",
+            "id": "1756059355809",
+            "date": "2025-08-24",
+            "prize": "Lote",
             "accounts": [
-                "@estela.cortes_"
-            ]
+                "@marymarcasta",
+                "@nala_spain_"
+            ],
+            "price": "No encontrado",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59"
         },
         {
-            "id": "sorteo-24-druni-australian",
-            "prize": "2 lotes solares Australian Gold",
-            "price": "80€",
+            "id": "1756059400222",
+            "date": "2025-08-24",
+            "prize": "Una Nevera Polarbox Naranja Sorbete + Un lote de productos que incluye: 1 Gazpacho Receta Andaluza de 1L, 1 Gazpacho Suaves sin Pepino de 1L, 1 Gazpacho Mediterráneo de 1L, 1 Gazpacho de Fresón de 750ml, 1 Salmorejo Receta Tradicional de 1L, 1 Salmorejo Sin Pan de 1L y 1 Salmorejo de Remolacha de 750ml",
             "accounts": [
-                "@druni_perfumerias"
-            ]
+                "@garciamillan.es",
+                "@polarboxstyle_official"
+            ],
+            "price": "180€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
         },
         {
-            "id": "sorteo-24-sephora",
-            "prize": "Neceser con cosméticos",
-            "price": "70€",
+            "id": "1756059413695",
+            "date": "2025-08-24",
+            "prize": "ROLL&RACE",
             "accounts": [
-                "@sephora_spain"
-            ]
+                "@rollandrace.eu"
+            ],
+            "price": "60€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
         },
         {
-            "id": "sorteo-24-arantxastyles",
-            "prize": "Pack de productos YSL",
-            "price": "100€",
-            "accounts": [
-                "@arantxa_styles"
-            ]
-        },
-        {
-            "id": "sorteo-24-mamadeunpelirrojo",
-            "prize": "Maleta de cabina",
-            "price": "60€",
-            "accounts": [
-                "@mamadeunpelirrojo"
-            ]
-        },
-        {
-            "id": "sorteo-24-prixton",
-            "prize": "Cámara de fotos + lote de productos",
-            "price": "150€",
-            "accounts": [
-                "@prixton_es"
-            ]
-        },
-        {
-            "id": "sorteo-24-sevillalover",
-            "prize": "Vale de 150€",
-            "price": "150€",
-            "accounts": [
-                "@sevillalovercom"
-            ]
-        },
-        {
-            "id": "sorteo-24-losmundosdekatia",
-            "prize": "3 bolsas de chuches",
-            "price": "30€",
-            "accounts": [
-                "@losmundosdekatia_",
-                "@cocinacercadelmar"
-            ]
-        },
-        {
-            "id": "sorteo-24-malumecerda",
-            "prize": "Lote de productos de lavanda",
-            "price": "40€",
-            "accounts": [
-                "@malumecerda"
-            ]
-        },
-        {
-            "id": "sorteo-24-antoniojuan",
-            "prize": "Muñeca + pack de ropa",
-            "price": "75€",
-            "accounts": [
-                "@antoniojuandollsofficial"
-            ]
-        },
-        {
-            "id": "sorteo-24-maestrapaloma",
-            "prize": "Juego de mesa 🃏",
-            "price": "30€",
-            "accounts": [
-                "@maestra_paloma_experimentos"
-            ]
-        },
-        {
-            "id": "sorteo-24-carrefour-escolar",
-            "prize": "2 lotes escolares",
-            "price": "100€",
-            "accounts": [
-                "@carrefoures"
-            ]
-        },
-        {
-            "id": "sorteo-24-roca",
-            "prize": "Espejo de baño",
-            "price": "120€",
-            "accounts": [
-                "@roca.esp"
-            ]
-        },
-        {
-            "id": "sorteo-24-carnesur",
-            "prize": "Lote de carne",
-            "price": "80€",
-            "accounts": [
-                "@carnesur"
-            ]
-        },
-        {
-            "id": "sorteo-24-footonmars",
-            "prize": "Abono de temporada + 2 zapatillas Converse",
-            "price": "250€",
-            "accounts": [
-                "@footonmars"
-            ]
-        },
-        {
-            "id": "sorteo-24-safta",
-            "prize": "Lote de productos de Stitch 🃏",
-            "price": "70€",
-            "accounts": [
-                "@saftaoficial"
-            ]
-        },
-        {
-            "id": "sorteo-24-alijuguetes",
-            "prize": "Lote de material escolar",
-            "price": "80€",
-            "accounts": [
-                "@alijuguetes"
-            ]
-        },
-        {
-            "id": "sorteo-24-tcl",
-            "prize": "Pack tecnológico: Tablet + Móvil 💲",
-            "price": "450€",
-            "accounts": [
-                "@tcl_espana",
-                "@aguakmzero"
-            ]
-        },
-        {
-            "id": "sorteo-24-okaaspain",
-            "prize": "3 pares de zapatos",
-            "price": "150€",
-            "accounts": [
-                "@okaaspain"
-            ]
-        },
-        {
-            "id": "sorteo-24-autoescuelazafra",
-            "prize": "Nintendo Switch 2 🃏",
-            "price": "400€",
-            "accounts": [
-                "@autoescuela_zafra"
-            ]
-        },
-        {
-            "id": "sorteo-24-marvimundo-nivea",
-            "prize": "Lote de productos Nivea",
-            "price": "50€",
-            "accounts": [
-                "@marvimundo"
-            ]
-        },
-        {
-            "id": "sorteo-24-grecaviajes",
-            "prize": "Vale de 36€",
-            "price": "36€",
-            "accounts": [
-                "@greca viajes"
-            ]
-        },
-        {
-            "id": "sorteo-24-funkypok",
-            "prize": "Vale de 40€",
-            "price": "40€",
-            "accounts": [
-                "@funkypok"
-            ]
-        },
-        {
-            "id": "sorteo-24-campuebla",
-            "prize": "Estancia en apartamentos rurales 🛩️",
-            "price": "180€",
+            "id": "1756059429147",
+            "date": "2025-08-24",
+            "prize": "2 noches en uno de sus apartamentos de 1 dormitorio, alquiler de 2 bicis BTT (una mañana o tarde), entradas para la Fuente de Baños (si fueran necesarias), 15% de descuento en el Balneario de Montanejos, 10% en el Bar Las Fuentes y 1€ de descuento por persona para el Tren Turistico",
             "accounts": [
                 "@campuebla_apartamentos"
-            ]
+            ],
+            "price": "250€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
         },
         {
-            "id": "sorteo-24-parquecomedor",
-            "prize": "Colchón",
-            "price": "300€",
-            "accounts": [
-                "@parquecomedor"
-            ]
-        },
-        {
-            "id": "sorteo-24-weekendesk",
-            "prize": "Secador + Planchas de pelo + Escapada romántica 🛩️",
-            "price": "250€",
-            "accounts": [
-                "@weekendesk"
-            ]
-        },
-        {
-            "id": "sorteo-24-pirelli",
-            "prize": "2 packs de productos oficiales Pirelli",
-            "price": "100€",
+            "id": "1756059443239",
+            "date": "2025-08-24",
+            "prize": "uno de los 2 packs de merchandising oficial Pirelli",
             "accounts": [
                 "@pirelli_es"
-            ]
+            ],
+            "price": "50€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
         },
         {
-            "id": "sorteo-24-garciamillan",
-            "prize": "Nevera Polarbox + lote de productos",
-            "price": "70€",
+            "id": "1756059453008",
+            "date": "2025-08-24",
+            "prize": "3 bolsas de chuches",
             "accounts": [
-                "@garciamillan.es"
-            ]
+                "@vidalgolosinas",
+                "@losmundosdekatia_"
+            ],
+            "price": "15€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59"
         },
         {
-            "id": "sorteo-24-marymarcasta",
-            "prize": "Lote de cremas",
-            "price": "60€",
+            "id": "1756059462534",
+            "date": "2025-08-24",
+            "prize": "Pack secador + plancha My glamour set de Ufesa, junto a un caja regalo \"Escapada romántica\" de Weekendesk.",
             "accounts": [
-                "@marymarcasta"
-            ]
+                "@ufesa_oficial",
+                "@weekendesk"
+            ],
+            "price": "120€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
         },
         {
-            "id": "sorteo-24-aceiteecologico",
-            "prize": "Lote de productos de aceite",
-            "price": "40€",
+            "id": "1756059481210",
+            "date": "2025-08-24",
+            "prize": "2 lotes completos de AUSTRALIAN GOLD",
             "accounts": [
-                "@aceiteecologico"
-            ]
+                "@druni_perfumerias"
+            ],
+            "price": "70€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1756059493042",
+            "date": "2025-08-24",
+            "prize": "No se especifica un premio concreto, solo se menciona un sorteo relacionado con productos de Pan Cotá.",
+            "accounts": [
+                "@pan_cota",
+                "@cocinacercadelmar"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756059518373",
+            "date": "2025-08-24",
+            "prize": "tote bag con los esenciales de verano de las marcas más HOT! Valorado en más de 300€.",
+            "accounts": [
+                "@sephora_spain",
+                "@ricardo89"
+            ],
+            "price": "150€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756059536213",
+            "date": "2025-08-24",
+            "prize": "pack YSL",
+            "accounts": [
+                "@arantxa_styles"
+            ],
+            "price": "150€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756059548039",
+            "date": "2025-08-24",
+            "prize": "1 KING BOX ElPozo King Upp y 1 Cámara Digital Xplorer DV900",
+            "accounts": [
+                "@elpozo_king",
+                "@prixton_es"
+            ],
+            "price": "85€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756059563442",
+            "date": "2025-08-24",
+            "prize": "elegir tu color favorito de maleta",
+            "accounts": [
+                "@mamadeunpelirrojo",
+                "@kendi_world_official"
+            ],
+            "price": "100€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756059585014",
+            "date": "2025-08-24",
+            "prize": "3 vales para viajar",
+            "accounts": [
+                "@marta.e.g",
+                "@oxfordgeneration_es"
+            ],
+            "price": "300€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:55h"
+        },
+        {
+            "id": "1756059608736",
+            "date": "2025-08-24",
+            "prize": "3 vales para viajar",
+            "accounts": [
+                "@oxfordgeneration_es",
+                "@marta.e.g",
+                "@mellamansara"
+            ],
+            "price": "300€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:55h"
+        },
+        {
+            "id": "1756059625066",
+            "date": "2025-08-24",
+            "prize": "Un par de zapatos para niño/a",
+            "accounts": [
+                "@neusmoya.podologa",
+                "@mirpratur",
+                "@centpeussabateria"
+            ],
+            "price": "35€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756059637794",
+            "date": "2025-08-24",
+            "prize": "Envío disponible a PENÍNSULA Y BALEARES",
+            "accounts": [
+                "@psico_mporienta",
+                "@prysebrand"
+            ],
+            "price": "10€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756059966658",
+            "date": "2025-08-24",
+            "prize": "3 personas en Peñíscola 💲",
+            "accounts": [
+                "@estela.cortes",
+                "@e.f_tiffany"
+            ],
+            "price": "600€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756059975323",
+            "date": "2025-08-24",
+            "prize": "tarjeta regalo de 150€ de El Corte Inglés para material escolar",
+            "accounts": [
+                "@sevillalovercom"
+            ],
+            "price": "150€",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756060038431",
+            "date": "2025-08-24",
+            "prize": "100 euros para gastar (70 para el primer ganador y 30 para el segundo)",
+            "accounts": [
+                "@passarellapop",
+                "@funkypok"
+            ],
+            "price": "100€",
+            "url": null,
+            "addDate": "2025-08-24",
+            "ends_at_time": "23:59 pm"
         }
     ],
     "2025-08-25": [
@@ -4817,6 +4656,30 @@ window.giveaways = {
                 "@lalixatina",
                 "@interestela_"
             ]
+        },
+        {
+            "id": "1755976116066",
+            "date": "2025-08-25",
+            "prize": "Peluche exclusivo del lince Pimi + Set de desayuno con cuenco y taza",
+            "accounts": [
+                "@SelectaVisión"
+            ],
+            "price": "45€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755977012602",
+            "date": "2025-08-25",
+            "prize": "cinta de correr MERACH W50",
+            "accounts": [
+                "@Merachfit.eu"
+            ],
+            "price": "399.00€",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
         }
     ],
     "2025-08-26": [
@@ -4907,6 +4770,44 @@ window.giveaways = {
                 "@oxfordgeneration_es",
                 "@noeliadopazo"
             ]
+        },
+        {
+            "id": "1755976619133",
+            "date": "2025-08-26",
+            "prize": "3 vales de 100€ de Soyde + 3 tarjetas regalo de 100€ de Vertbaudet 💲",
+            "accounts": [
+                "@vertbaudet_es",
+                "@etiquetas_soyde"
+            ],
+            "price": "600€",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "2025-08-25"
+        },
+        {
+            "id": "1755977019100",
+            "date": "2025-08-26",
+            "prize": "Merach NovaWalk W50 WalkPad con 12% de inclinación automática",
+            "accounts": [
+                "@merachfit.eu",
+                "@sergiocuho"
+            ],
+            "price": "299€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755977027978",
+            "date": "2025-08-26",
+            "prize": "3 LOTES llenos de olor rico, cuidado y diversión",
+            "accounts": [
+                "@arenalperfumerias"
+            ],
+            "price": "60€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
         }
     ],
     "2025-08-27": [
@@ -4969,6 +4870,19 @@ window.giveaways = {
                 "@naoswinwear",
                 "@voladora_co"
             ]
+        },
+        {
+            "id": "1755977325583",
+            "date": "2025-08-27",
+            "prize": "4 ENTRADAS para ir al cine a ver la película \"Heidi, el rescate del lince\"",
+            "accounts": [
+                "@selectavision",
+                "@esthersalamancamelero"
+            ],
+            "price": "40€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "2025-08-27T23:59:59"
         }
     ],
     "2025-08-28": [
@@ -5042,6 +4956,94 @@ window.giveaways = {
             "url": null,
             "addDate": "2025-08-23",
             "ends_at_time": null
+        },
+        {
+            "id": "1755976598937",
+            "date": "2025-08-28",
+            "prize": "un cargador mini y ultraplano, una estación meteorológica y una power pack",
+            "accounts": [
+                "@hama.spain"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "12:00"
+        },
+        {
+            "id": "1755976886277",
+            "date": "2025-08-28",
+            "prize": "2* W50 Walking Pads",
+            "accounts": [
+                "@merachfit.eu"
+            ],
+            "price": "299.98€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755976940879",
+            "date": "2025-08-28",
+            "prize": "plancha INFINITE LOOK STYLE",
+            "accounts": [
+                "@postquamoficial"
+            ],
+            "price": "49.99€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:55"
+        },
+        {
+            "id": "1755977003282",
+            "date": "2025-08-28",
+            "prize": "3 lotes completos de REVLON",
+            "accounts": [
+                "@druni_perfumerias",
+                "@revlon_es"
+            ],
+            "price": "150€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1755977166929",
+            "date": "2025-08-28",
+            "prize": "Pack 4 suavizantes",
+            "accounts": [
+                "@sandrinaferre29",
+                "@maiiite",
+                "@productosmoguer"
+            ],
+            "price": "12€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1755977303061",
+            "date": "2025-08-28",
+            "prize": "3 Surtidos Mediterráneos Hida (3x Tomate frito 340g, 3x Pisto 340g, 2x Cebolla frita 340g, 2x Asadillo 340g, 1x Calabacín y Cebolla 340g, 1x Tomate Frito Light 340g)",
+            "accounts": [
+                "@hida_alimentacion"
+            ],
+            "price": "35€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:55h"
+        },
+        {
+            "id": "1755977369787",
+            "date": "2025-08-28",
+            "prize": "lote de NIVEA",
+            "accounts": [
+                "@mamadeunpelirrojo",
+                "@cosmeflash"
+            ],
+            "price": "30€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
         }
     ],
     "2025-08-29": [
@@ -5110,6 +5112,82 @@ window.giveaways = {
                 "@granvia2"
             ],
             "date": "2025-08-29"
+        },
+        {
+            "id": "1755976216179",
+            "date": "2025-08-29",
+            "prize": "Una noche para 2 adultos y 2 peques en @vilarsrurals con desayuno incluido",
+            "accounts": [
+                "@vilarsrurals",
+                "@laioaneta"
+            ],
+            "price": "200€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1755976326464",
+            "date": "2025-08-29",
+            "prize": "3 cámaras instantáneas @gofunly_camera para peques (3 a 12 años)",
+            "accounts": [
+                "@mamadeunpelirrijo",
+                "@gofunly_camera"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755976799773",
+            "date": "2025-08-29",
+            "prize": "Juego de mesa Caída Libre",
+            "accounts": [
+                "@caidalibre.juego",
+                "@testandopinion"
+            ],
+            "price": "35€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1755976847629",
+            "date": "2025-08-29",
+            "prize": "1 cooler bag, Set de cubiertos, Sandwich box, Bento lunch + Bento cube, Klip It 1L + Klip It 400ml, Mini Bites To Go",
+            "accounts": [
+                "@sayez_mobles"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755976933398",
+            "date": "2025-08-29",
+            "prize": "Kidizoom Smartwatch MAX azul de VTech",
+            "accounts": [
+                "@vtech_juguetes"
+            ],
+            "price": "59.99€",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755977137185",
+            "date": "2025-08-29",
+            "prize": "Lote suavizantes",
+            "accounts": [
+                "@giotto_spain",
+                "@orientacionandujar"
+            ],
+            "price": "30€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
         }
     ],
     "2025-08-30": [
@@ -5128,6 +5206,30 @@ window.giveaways = {
             "accounts": [
                 "@kanyou.dogs"
             ]
+        },
+        {
+            "id": "1755976101853",
+            "date": "2025-08-30",
+            "prize": "una almohada para un descanso confortable",
+            "accounts": [
+                "@Boncolchón"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755976610160",
+            "date": "2025-08-30",
+            "prize": "Juego educativo \"Aprender a escribir\", Pizarra Clásica Magnética de doble cara, Mapa de Europa magnética",
+            "accounts": [
+                "@janod_espana"
+            ],
+            "price": "49.99€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
         }
     ],
     "2025-08-31": [
@@ -5340,6 +5442,68 @@ window.giveaways = {
             "accounts": [
                 "@cachito.mio"
             ]
+        },
+        {
+            "id": "1755976184857",
+            "date": "2025-08-31",
+            "prize": "super lote con más de 3kg de chuches",
+            "accounts": [
+                "@vidalgolosinas",
+                "@make_baby_up"
+            ],
+            "price": "30€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1755976271043",
+            "date": "2025-08-31",
+            "prize": "Giotto Cera Est. 12 Uds., Lápiz De Grafito Giotto Matita Hb Con Goma., Giotto Happy Gomma, Giotto Sacapuntas Fluo., Giotto Decor Materials Est. 12 Uds., Giotto Turbo Maxi Est. 12 Uds., GIOTTO Stick blíster 2 x 20 g, Giotto Acuarelas 30 Mm. Est. 12 Uds. + Pincel, Plastilina Giotto Caja 6 Colores Fluo, Plastilina Giotto Caja 6 Colores Glitter, Plastilina Giotto Caja 6 Colores Pastel, Plastilina Giotto Caja 12 Colores Clásicos, Giotto Turbo Maxi Skin Tones Estuche 6 uds, Giotto Colors 3.0 Est. 12 Uds., Giotto Stilnovo Skin Tones Est. 12 Uds., Giotto Turbo Color Est. 12 Uds., Giotto Témpera Surtido 25 MI. Est. 6 Uds + Pincel, Alb Esp 23x32,5 10H Guarro Acuarela Basik 370g, Alb Esp Micr 23x32,5 20H Guarro Dibujo Basik Liso 130g, Cartulinas Canson Iris 185 g/m2 24x32 c, A4 10H, Giotto Stilnovo Est. 50 Uds., Giotto Turbo Color Skin Tones Estuche 12 uds",
+            "accounts": [
+                "@arenalperfumerias"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1755976814894",
+            "date": "2025-08-31",
+            "prize": "mochila de pingüino de la marca Affenzahn valorada en más de 43 € junto con 2 paquetes de toallitas Dodot etapas",
+            "accounts": [
+                "@nappy.es"
+            ],
+            "price": "55€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755976823251",
+            "date": "2025-08-31",
+            "prize": "Un par de zapatos colegiales y un par de deportivos Pablosky, un pack de Alpino la mar de alucinante: 1 Pack de 18 lápices, 1 Pack de 12 rotul",
+            "accounts": [
+                "@pabloskyshoes",
+                "@alpinocolores"
+            ],
+            "price": "85€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1755977187813",
+            "date": "2025-08-31",
+            "prize": "1 Mini blender Serie 5000",
+            "accounts": [
+                "@PhilipsHogar"
+            ],
+            "price": "79.99€",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
         }
     ],
     "2025-09-01": [
@@ -5428,6 +5592,19 @@ window.giveaways = {
                 "@druni_perfumerias"
             ],
             "date": "2025-09-02"
+        },
+        {
+            "id": "1755976972499",
+            "date": "2025-09-02",
+            "prize": "tres packs llenos de diseño, color y mucho mimo",
+            "accounts": [
+                "@miniland_esp",
+                "@biomecanics"
+            ],
+            "price": "90€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
         }
     ],
     "2025-09-03": [
@@ -5465,6 +5642,30 @@ window.giveaways = {
                 "@chocolinas_es"
             ],
             "date": "2025-09-02"
+        },
+        {
+            "id": "1755976345609",
+            "date": "2025-09-03",
+            "prize": "un lote",
+            "accounts": [
+                "@muchasperfumerias"
+            ],
+            "price": "50€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59H"
+        },
+        {
+            "id": "1755977079596",
+            "date": "2025-09-03",
+            "prize": "6 Gel Power + 6 Abrillantadores",
+            "accounts": [
+                "@asevi.es"
+            ],
+            "price": "70€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:55"
         }
     ],
     "2025-09-05": [
@@ -5569,6 +5770,18 @@ window.giveaways = {
             "accounts": [
                 "@suravian"
             ]
+        },
+        {
+            "id": "1755976835545",
+            "date": "2025-09-10",
+            "prize": "un zapatero",
+            "accounts": [
+                "@sayez_mobles"
+            ],
+            "price": "100€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
         }
     ],
     "2025-09-11": [
@@ -5670,6 +5883,19 @@ window.giveaways = {
             "accounts": [
                 "@sevillalovercom"
             ]
+        },
+        {
+            "id": "1755976393169",
+            "date": "2025-09-22",
+            "prize": "este lote",
+            "accounts": [
+                "@pprimor",
+                "@viviennesabospain"
+            ],
+            "price": "80€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
         }
     ],
     "2025-09-23": [
@@ -5770,6 +5996,92 @@ window.giveaways = {
                 "@suenaviajando_"
             ],
             "date": "2025-12-08"
+        }
+    ],
+    "2025-10-11": [
+        {
+            "id": "1755946567688",
+            "date": "2025-10-11",
+            "prize": "billete a Santo Domingo 💲",
+            "accounts": [
+                "@viajestaunus"
+            ],
+            "price": "800€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        }
+    ],
+    "2025-09-29": [
+        {
+            "id": "1755946587059",
+            "date": "2025-09-29",
+            "prize": "1 convite duplo para a White Party + 1 kit Novex",
+            "accounts": [
+                "@sfhpalmela",
+                "@novex.pt"
+            ],
+            "price": "80€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        }
+    ],
+    "2025-09-21": [
+        {
+            "id": "1755976143498",
+            "date": "2025-09-21",
+            "prize": "unas Ray-Ban + un pack de Avena Café y Avena Matcha",
+            "accounts": [
+                "@lave.vida",
+                "@laurasanchezz.r"
+            ],
+            "price": "85€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        }
+    ],
+    "2025-09-16": [
+        {
+            "id": "1755976224982",
+            "date": "2025-09-16",
+            "prize": "un exclusivo cupón",
+            "accounts": [
+                "@carnicaschico"
+            ],
+            "price": "10€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "2025-09-15"
+        }
+    ],
+    "2025-09-04": [
+        {
+            "id": "1755976354814",
+            "date": "2025-09-04",
+            "prize": "Mochilita reversible STITCH + Saquito de merienda + galletas",
+            "accounts": [
+                "@dulce.tentacion121",
+                "@bellala.sorteos"
+            ],
+            "price": "35€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755977071602",
+            "date": "2025-09-04",
+            "prize": "mochila con todo lo que hay en su interior y la oportunidad de ganar TRES tarjetas con 1000€ para visitar tu Comunidad Autónoma favorita",
+            "accounts": [
+                "@oxfordgeneration_es",
+                "@izanibanezz"
+            ],
+            "price": "150€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
         }
     ]
 };

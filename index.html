@@ -2270,23 +2270,23 @@
         reader.onload = async (event) => {
             const base64Data = event.target.result;
             analysisImagePreview.src = base64Data;
-
-            const hoy = new Date();
-            const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
             
-            const dynamicPrompt = `
+            let resultData;
+
+            try {
+                // --- PASO 1: EXTRAER DATOS BÁSICOS DE LA IMAGEN ---
+                const hoy = new Date();
+                const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                const dynamicPrompt = `
 <ROL_Y_OBJETIVO>
 Actuarás como un Asistente de Extracción de Datos de élite, con una precisión casi quirúrgica. Tu especialidad es analizar imágenes de sorteos de redes sociales para un analista de datos senior. Tu único objetivo es devolver un objeto JSON perfectamente estructurado y válido, sin ningún texto, saludo o explicación adicional. La precisión y el cumplimiento de las reglas son de máxima prioridad.
 </ROL_Y_OBJETIVO>
-
 <CONTEXTO_CRITICO>
 La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para determinar si un sorteo ha expirado.
 </CONTEXTO_CRITICO>
-
 <INSTRUCCION_PRINCIPAL>
 Analiza la imagen y extrae la información solicitada siguiendo la estructura y las reglas jerárquicas definidas a continuación. Tu respuesta DEBE SER ÚNICAMENTE el objeto JSON. Si la imagen NO es un sorteo, devuelve exclusivamente: {"status": "not_a_giveaway"}.
 </INSTRUCCION_PRINCIPAL>
-
 <ESTRUCTURA_JSON_REQUERIDA>
 {
   "prize": "string | null",
@@ -2300,44 +2300,36 @@ Analiza la imagen y extrae la información solicitada siguiendo la estructura y 
   "confidence_score": float (0.0 a 1.0)
 }
 </ESTRUCTURA_JSON_REQUERIDA>
-
 <REGLAS_DE_FECHA_JERARQUICAS_V2.2>
 Aplica estas reglas en estricto orden de prioridad. La primera regla que coincida con la información de la imagen es la que se debe usar, ignorando todas las posteriores.
-
 **PRIORIDAD 1: Regla de Conflicto "Fin vs. Ganadores".**
 - Si el texto menciona explícitamente una fecha de finalización Y una fecha de anuncio de ganadores, la fecha de FINALIZACIÓN tiene prioridad.
 - *Ejemplo:* "El sorteo termina el día 24 y los ganadores se anuncian el 25".
 - \`date\` DEBE SER la fecha de finalización mencionada (el día 24).
 - \`ends_at_time\` será \`null\` a menos que se especifique una hora para la finalización.
-
 **PRIORIDAD 2: Regla de "Día + Hora" (Condición Conjunta).**
 - Esta regla se aplica SOLO SI se encuentran AMBAS cosas: un DÍA y una HORA específica.
 - *Ejemplo:* "Válido hasta el 24 de agosto a las 23:59h".
 - \`date\` DEBE SER la fecha exacta mencionada (el día 24).
 - \`ends_at_time\` DEBE contener la hora extraída ("23:59h").
-
 **PRIORIDAD 3: Regla de "Anuncio de Ganadores" (Sin Hora).**
 - Si el texto SOLO menciona la fecha en que se anuncian los ganadores.
 - *Ejemplo:* "Los ganadores se dirán el día 25".
 - \`date\` DEBE SER el día ANTERIOR al mencionado (el día 24).
 - \`ends_at_time\` debe ser \`null\`.
-
 **PRIORIDAD 4: Regla de "Fin de Sorteo" (Sin Hora).**
 - Si el texto SOLO menciona la fecha en que termina el sorteo.
 - *Ejemplo:* "El sorteo termina el día 24".
 - \`date\` DEBE SER el día ANTERIOR al mencionado (el día 23).
 - \`ends_at_time\` debe ser \`null\`.
-
 **Caso Final: Sin Fecha.**
 - Si no se encuentra ninguna fecha clara, \`date\` es \`null\` y \`status\` es "no_date".
 </REGLAS_DE_FECHA_JERARQUICAS_V2.2>
-
 <REGLAS_ADICIONALES_DE_EXTRACCION>
 - **Cuentas (Extracción Inteligente y Completa):**
     1.  **Prioridad 1 (Cuenta Principal):** Identifica y extrae **siempre** el nombre de usuario de la cuenta que ha realizado la publicación del sorteo. Generalmente se encuentra en la parte superior de la imagen, junto a la foto de perfil.
     2.  **Prioridad 2 (Cuentas Adicionales):** Además de la principal, extrae cualquier otra cuenta mencionada en el texto como requisito para participar (ej: "sigue a...", "en colaboración con...").
     3.  **Reglas de Exclusión (MUY IMPORTANTE):** Ignora activamente cualquier nombre de usuario que provenga de la sección de comentarios o de la sección de "Me gusta".
-
 - **REGLAS DE EXTRACCIÓN Y SÍNTESIS DEL PREMIO:**
     1.  **Objetivo:** Tu objetivo es crear un campo \`prize\` que sea conciso (máximo 15-20 palabras), descriptivo y de alto valor informativo. Debe caber en una sola línea.
     2.  **Síntesis de Información:** Debes sintetizar la información del texto del post Y la información visual de la imagen (logos, empaques de productos, marcas visibles).
@@ -2350,38 +2342,44 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
         -   *Si el texto dice "Sorteamos un súper lote para que te cuides este verano bajo el sol" y la imagen muestra 5 botes de Nivea Sun:* \`prize\` debe ser "Lote de productos solares Nivea".
         -   *Si el texto dice "Gana una camiseta exclusiva, una gorra, una sudadera y una increíble PlayStation 5":* \`prize\` debe ser "Lote de merchandising y una PS5".
         -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* \`prize\` debe ser "Estancia de fin de semana en hotel de lujo para dos".
-
 - **Categoría de Premio**: Analiza el premio y clasifícalo en una de las categorías listadas.
 - **Número de Ganadores (\`winner_count\`)**: Busca pistas como "10 ganadores", "un ganador". Si no se especifica, asume 1.
 - **Puntuación de Confianza (\`confidence_score\`)**: Evalúa tu propia certeza sobre la extracción de la fecha (0.0-1.0). Si es 100% clara, pon 1.0. Si es ambigua, usa un valor más bajo. Este valor es crítico.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 `;
-            
-            let resultData;
-            try {
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
-                
+
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
                 } else if (aiData.status === 'discard_no_date' || !aiData.date) {
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
                 } else {
+                    // --- PASO 2: BUSCAR EL PRECIO DEL PREMIO EXTRAÍDO ---
+                    let priceInfo = { value: 'No encontrado', url: null, prize: aiData.prize };
+                    try {
+                        priceInfo = await searchPrizeValue(aiData);
+                    } catch (searchError) {
+                        console.error("Fallo en la función searchPrizeValue:", searchError);
+                        priceInfo.value = 'Error Búsqueda';
+                    }
+
+                    // --- PASO 3: COMBINAR Y CLASIFICAR EL RESULTADO FINAL ---
                     const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
                     const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
                     
-                    const priceInfo = await searchPrizeValue(aiData);
+                    const finalPrize = priceInfo.prize || aiData.prize;
 
                     if (isForeign) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: finalPrize, accounts, status: 'foreign', originalFile: file };
                     } else if (existingGiveaway) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: finalPrize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: finalPrize, accounts, status: 'expired', originalFile: file };
                     } else {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'valid', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: finalPrize, accounts, status: 'valid', originalFile: file };
                     }
                 }
             } catch (error) {
@@ -2392,6 +2390,7 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
                 }
             }
             
+            // --- PASO 4: MOSTRAR LA TARJETA INTERACTIVA CON TODOS LOS DATOS ---
             renderInteractiveCard(resultData);
         };
         reader.readAsDataURL(file);
@@ -2793,14 +2792,15 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
                 if (parsedResult.value && parsedResult.value !== "No encontrado") {
                     numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
                 }
-                if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
-                if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
-                if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
-                if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
-                if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
-                if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
-                if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
-                if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+                if (aiData.prize_category === 'padel' && !prizeWithEmoji.includes('🥎')) prizeWithEmoji += ' 🥎';
+                if (aiData.prize_category === 'viajes' && !prizeWithEmoji.includes('🛩️')) prizeWithEmoji += ' 🛩️';
+                if (aiData.prize_category === 'frikis' && !prizeWithEmoji.includes('🃏')) prizeWithEmoji += ' 🃏';
+                if (aiData.prize_category === 'moda' && !prizeWithEmoji.includes('👠')) prizeWithEmoji += ' 👠';
+                if (aiData.prize_category === 'belleza' && !prizeWithEmoji.includes('💄')) prizeWithEmoji += ' 💄';
+                if (aiData.prize_category === 'hogar' && !prizeWithEmoji.includes('🏠')) prizeWithEmoji += ' 🏠';
+                if (aiData.prize_category === 'tecnologia' && !prizeWithEmoji.includes('💻')) prizeWithEmoji += ' 💻';
+                if (!isNaN(numericValue) && numericValue > 500 && !prizeWithEmoji.includes('💲')) prizeWithEmoji += ' 💲';
+                
                 return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
             } else {
                 throw new Error("Respuesta incompleta de la API de texto.");

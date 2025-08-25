@@ -2264,7 +2264,6 @@
             showAISummary();
         }
     }
-
     async function processImage(file) {
         const reader = new FileReader();
         reader.onload = async (event) => {
@@ -2300,31 +2299,33 @@ Analiza la imagen y extrae la información solicitada siguiendo la estructura y 
   "confidence_score": float (0.0 a 1.0)
 }
 </ESTRUCTURA_JSON_REQUERIDA>
-<REGLAS_DE_FECHA_JERARQUICAS_V2.2>
+<REGLAS_DE_FECHA_JERARQUICAS_V2.2_CORREGIDO>
 Aplica estas reglas en estricto orden de prioridad. La primera regla que coincida con la información de la imagen es la que se debe usar, ignorando todas las posteriores.
-**PRIORIDAD 1: Regla de Conflicto "Fin vs. Ganadores".**
-- Si el texto menciona explícitamente una fecha de finalización Y una fecha de anuncio de ganadores, la fecha de FINALIZACIÓN tiene prioridad.
+
+**PRIORIDAD 1: Regla de "Día + Hora" (Condición Conjunta).**
+- Esta es ahora la regla más importante. Se aplica si se encuentran AMBAS cosas: un DÍA y una HORA específica.
+- *Ejemplo:* "Válido hasta el 31 de agosto a las 23:59h".
+- \`date\` DEBE SER la fecha exacta mencionada (el día 31).
+- \`ends_at_time\` DEBE contener la hora extraída ("23:59h").
+
+**PRIORIDAD 2: Regla de Conflicto "Fin vs. Ganadores".**
+- Si el texto menciona una fecha de finalización Y una fecha de anuncio de ganadores, la fecha de FINALIZACIÓN tiene prioridad.
 - *Ejemplo:* "El sorteo termina el día 24 y los ganadores se anuncian el 25".
 - \`date\` DEBE SER la fecha de finalización mencionada (el día 24).
-- \`ends_at_time\` será \`null\` a menos que se especifique una hora para la finalización.
-**PRIORIDAD 2: Regla de "Día + Hora" (Condición Conjunta).**
-- Esta regla se aplica SOLO SI se encuentran AMBAS cosas: un DÍA y una HORA específica.
-- *Ejemplo:* "Válido hasta el 24 de agosto a las 23:59h".
-- \`date\` DEBE SER la fecha exacta mencionada (el día 24).
-- \`ends_at_time\` DEBE contener la hora extraída ("23:59h").
+
 **PRIORIDAD 3: Regla de "Anuncio de Ganadores" (Sin Hora).**
 - Si el texto SOLO menciona la fecha en que se anuncian los ganadores.
 - *Ejemplo:* "Los ganadores se dirán el día 25".
 - \`date\` DEBE SER el día ANTERIOR al mencionado (el día 24).
-- \`ends_at_time\` debe ser \`null\`.
+
 **PRIORIDAD 4: Regla de "Fin de Sorteo" (Sin Hora).**
 - Si el texto SOLO menciona la fecha en que termina el sorteo.
 - *Ejemplo:* "El sorteo termina el día 24".
 - \`date\` DEBE SER el día ANTERIOR al mencionado (el día 23).
-- \`ends_at_time\` debe ser \`null\`.
+
 **Caso Final: Sin Fecha.**
 - Si no se encuentra ninguna fecha clara, \`date\` es \`null\` y \`status\` es "no_date".
-</REGLAS_DE_FECHA_JERARQUICAS_V2.2>
+</REGLAS_DE_FECHA_JERARQUICAS_V2.2_CORREGIDO>
 <REGLAS_ADICIONALES_DE_EXTRACCION>
 - **Cuentas (Extracción Inteligente y Completa):**
     1.  **Prioridad 1 (Cuenta Principal):** Identifica y extrae **siempre** el nombre de usuario de la cuenta que ha realizado la publicación del sorteo. Generalmente se encuentra en la parte superior de la imagen, junto a la foto de perfil.
@@ -2338,13 +2339,9 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
         -   **Segundo:** Usa las marcas importantes que identifiques en la imagen para describir lotes genéricos (ej: "Lote de productos solares Nivea" en lugar de "lote de productos para el verano").
         -   **Tercero:** Agrupa elementos variados bajo un término descriptivo (ej: "Lote de merchandising", "Pack de material escolar", "Cesta de productos gourmet").
         -   **Cuarto:** Describe experiencias de forma clara y breve (ej: "Estancia en hotel para dos", "Cena degustación").
-    4.  **Ejemplos Prácticos:**
-        -   *Si el texto dice "Sorteamos un súper lote para que te cuides este verano bajo el sol" y la imagen muestra 5 botes de Nivea Sun:* \`prize\` debe ser "Lote de productos solares Nivea".
-        -   *Si el texto dice "Gana una camiseta exclusiva, una gorra, una sudadera y una increíble PlayStation 5":* \`prize\` debe ser "Lote de merchandising y una PS5".
-        -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* \`prize\` debe ser "Estancia de fin de semana en hotel de lujo para dos".
 - **Categoría de Premio**: Analiza el premio y clasifícalo en una de las categorías listadas.
 - **Número de Ganadores (\`winner_count\`)**: Busca pistas como "10 ganadores", "un ganador". Si no se especifica, asume 1.
-- **Puntuación de Confianza (\`confidence_score\`)**: Evalúa tu propia certeza sobre la extracción de la fecha (0.0-1.0). Si es 100% clara, pon 1.0. Si es ambigua, usa un valor más bajo. Este valor es crítico.
+- **Puntuación de Confianza (\`confidence_score\`)**: Evalúa tu propia certeza sobre la extracción de la fecha (0.0 a 1.0). Si es 100% clara, pon 1.0. Si es ambigua, usa un valor más bajo. Este valor es crítico.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 `;
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
@@ -2768,7 +2765,8 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
             throw error;
         }
     }
-async function searchPrizeValue(aiData) {
+
+    async function searchPrizeValue(aiData) {
         const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
         const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
         if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
@@ -2786,9 +2784,6 @@ async function searchPrizeValue(aiData) {
                 throw new Error('La respuesta de la función de búsqueda no fue OK');
             }
 
-            // --- LÓGICA SIMPLIFICADA ---
-            // Ya no necesitamos desempacar la respuesta de Gemini,
-            // porque la función de Netlify nos devuelve el JSON final directamente.
             const parsedResult = await response.json(); 
             
             let prizeWithEmoji = aiData.prize;
@@ -2797,7 +2792,6 @@ async function searchPrizeValue(aiData) {
                 numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
             }
 
-            // Añadir emojis basados en la categoría y el valor
             if (aiData.prize_category === 'padel' && !prizeWithEmoji.includes('🥎')) prizeWithEmoji += ' 🥎';
             if (aiData.prize_category === 'viajes' && !prizeWithEmoji.includes('🛩️')) prizeWithEmoji += ' 🛩️';
             if (aiData.prize_category === 'frikis' && !prizeWithEmoji.includes('🃏')) prizeWithEmoji += ' 🃏';
@@ -2811,7 +2805,6 @@ async function searchPrizeValue(aiData) {
 
         } catch (error) {
             console.error("Error en searchPrizeValue:", error);
-            // Devolvemos un valor que indica el fallo para depuración
             return { prize: aiData.prize, value: "Error Búsqueda", url: null };
         }
     }
@@ -3609,58 +3602,80 @@ async function searchPrizeValue(aiData) {
             const fetch = (await import('node-fetch')).default;
             const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
             const { query, accounts } = JSON.parse(event.body);
+
             if (!query) {
                 return {
                     statusCode: 400,
-                    body: JSON.stringify({ error: 'Falta la consulta (query).' })
+                    body: JSON.stringify({ value: '0', url: null, error: 'Falta la consulta (query).' })
                 };
             }
+
             const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
-            const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
-    
-            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
-                * Producto: "\${query}"
-                * Cuentas de Instagram: \${accounts.join(', ')}
 
-            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
+            const prompt = \\\`
+                Actúa como un Tasador Experto de Productos y Experiencias. Tu única misión es determinar un valor de mercado fiable para el premio de un sorteo.
 
-            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:
+                **Directiva Principal (Regla de Oro):** Tu objetivo es devolver SIEMPRE un valor numérico estimado. El valor "0" está prohibido, a menos que el premio sea literalmente "nada". Para todos los demás casos, DEBES proporcionar una estimación monetaria siguiendo el protocolo.
+
+                **Premio a Valorar:** "\${query}"
+                **Cuentas/Marcas Asociadas:** \${accounts.join(', ')}
+
+                **PROTOCOLO DE VALORACIÓN (OBLIGATORIO Y SECUENCIAL):**
+
+                1.  **BÚSQUEDA EXACTA:**
+                    a. Intenta encontrar el precio del producto exacto en las **webs oficiales** de las marcas asociadas.
+                    b. Si no lo encuentras, búscalo en **Amazon**.
+                    c. Si sigue sin aparecer, realiza una búsqueda exhaustiva en **Google**. Un producto casi siempre tiene un precio en algún sitio.
+
+                2.  **PROTOCOLO DE ESTIMACIÓN (SI LA BÚSQUEDA EXACTA FALLA):**
+                    a. Si no encuentras el producto exacto, tu tarea es encontrar entre 3 y 5 productos de **características, marca y calidad MUY SIMILARES**.
+                    b. **Calcula el precio medio** de esos productos similares que has encontrado. Este será tu valor estimado.
+                    c. Para **experiencias** (entradas, viajes, cenas), busca precios de servicios comparables en la misma ciudad/región y ofrece una estimación conservadora. (Ej: "Entrada doble Dino Expo" -> busca "precio entrada exposición dinosaurios españa").
+
+                **FORMATO DE SALIDA (REGLAS ESTRICTAS E INQUEBRANTABLES):**
+                Tu respuesta DEBE SER única y exclusivamente un objeto JSON válido.
                 {
-                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",
-                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
+                  "value": "string",
+                  "url": "string"
                 }
 
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \\\`\\\`\\\`. \`;
-            const payload = {
-                contents: [{
-                    role: "user",
-                    parts: [{ text: prompt }]
-                }]
-            };
+                -   El campo \\"value\\" DEBE ser un **string que contenga ÚNICAMENTE el número total del valor** (ej: "179.99", "85.50", "1200"). NO incluyas el símbolo '€' ni ningún otro texto.
+                -   **Repito: NUNCA devuelvas "0"** a menos que sea imposible realizar una estimación, lo cual es extremadamente improbable.
+                -   El campo \\"url\\" debe ser el enlace más relevante de tu hallazgo (ya sea del producto exacto o de uno de los similares usados para la media) o \\null\\.
+            \\\`;
+
             try {
                 const geminiResponse = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
+
                 if (!geminiResponse.ok) {
-                    const errorBody = await geminiResponse.json();
-                    console.error("Error desde la API de Gemini (en search.js):", errorBody);
-                    return {
-                        statusCode: geminiResponse.status,
-                        body: JSON.stringify({ error: 'La API de Gemini devolvió un error en la búsqueda.', details: errorBody })
-                    };
+                    throw new Error(\\\`La API de Gemini devolvió el estado: \${geminiResponse.status}\\\`);
                 }
+
                 const data = await geminiResponse.json();
-                return {
-                    statusCode: 200,
-                    body: JSON.stringify(data)
-                };
+
+                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                    const text = data.candidates[0].content.parts[0].text;
+                    const jsonMatch = text.match(/\\{[\\s\\S]*\\}/);
+                    if (jsonMatch) {
+                        return {
+                            statusCode: 200,
+                            headers: { 'Content-Type': 'application/json' },
+                            body: jsonMatch[0] 
+                        };
+                    }
+                }
+                
+                throw new Error("La respuesta de la IA no contenía un JSON válido.");
+
             } catch (error) {
                 console.error("Error en la función search.js:", error);
                 return {
                     statusCode: 500,
-                    body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
+                    body: JSON.stringify({ value: '0', url: null, error: error.message })
                 };
             }
         };`;

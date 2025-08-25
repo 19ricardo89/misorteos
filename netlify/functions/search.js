@@ -13,30 +13,23 @@ exports.handler = async function (event, context) {
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
-    const prompt = `Actúa como un experto asistente de investigación de mercado. Tu tarea es encontrar el precio de mercado y el enlace de compra de un producto a partir de una descripción, que puede ser imprecisa o demasiado larga.
+    // --- PROMPT MEJORADO ---
+    // Es más directo y menos propenso a errores de formato.
+    const prompt = `
+        Tu único objetivo es encontrar el precio de mercado aproximado y un enlace de compra para el siguiente producto.
+        
+        Producto a buscar: "${query}"
+        Posibles marcas/tiendas asociadas (cuentas de Instagram): ${accounts.join(', ')}
 
-**ESTRATEGIA DE BÚSQUEDA INTELIGENTE (OBLIGATORIA):**
+        Prioriza la búsqueda en las webs oficiales de las marcas o en tiendas de referencia (Amazon, PcComponentes, etc.).
 
-1.  **DECONSTRUCCIÓN:** Analiza la descripción del producto proporcionada ("${query}") e identifica sus componentes esenciales:
-    * **Marca Principal:** (Ej: TCL, Gigabyte, Samsung)
-    * **Modelo / Identificador Único:** (Ej: 25G64, GS25F2) - ¡Esta es la parte más importante!
-    * **Tipo de Producto:** (Ej: Monitor, Teclado, Móvil)
-    * **Características Clave (Opcional):** (Ej: 25 pulgadas, 300Hz, QD-Mini LED)
+        Devuelve tu respuesta ÚNICA Y EXCLUSIVAMENTE como un objeto JSON válido con la siguiente estructura. No añadas texto, explicaciones, ni formato markdown como \`\`\`.
 
-2.  **PRIORIZACIÓN:** La consulta de búsqueda más efectiva casi siempre será la combinación de **"Marca" + "Modelo"**. Las características adicionales a veces ayudan, pero a menudo añaden ruido.
-
-3.  **EJECUCIÓN DE BÚSQUEDA:**
-    * **Intento 1 (Búsqueda Prioritaria):** Realiza una búsqueda en la web utilizando la consulta optimizada (Marca + Modelo). Por ejemplo, si la descripción es "Monitor Gaming TCL 25G64 300Hz", tu búsqueda interna debería ser \`"TCL 25G64 precio"\` o \`"Monitor TCL 25G64"\`.
-    * **Intento 2 (Búsqueda Amplia):** Si el primer intento falla, amplía la búsqueda usando la Marca y el Tipo de Producto. Ejemplo: \`"Monitor TCL 25 pulgadas"\`.
-    * **Prioridad de Fuentes:** Busca primero en la web oficial de la marca (si se puede deducir de las cuentas: ${accounts.join(', ')}) y luego en tiendas de referencia como Amazon, PcComponentes, etc.
-
-4.  **FORMATO DE SALIDA:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura, basándote en el resultado más fiable que encuentres:
-    {
-      "value": "string del precio encontrado, e.g., '179.00€', 'No encontrado'",
-      "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
-    }
-
-Tu respuesta debe ser solo el objeto JSON, sin texto adicional, explicaciones o formato Markdown.`;
+        {
+          "value": "string con el precio encontrado (ej: '179.00€') o 'No encontrado' si es imposible hallarlo.",
+          "url": "string con la URL más relevante donde encontraste el precio, o null."
+        }
+    `;
 
     const payload = {
         contents: [{

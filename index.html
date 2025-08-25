@@ -2289,7 +2289,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
 1.  **Paso 1: Extracción de Texto (OCR Interno):** Realiza un reconocimiento óptico de caracteres (OCR) exhaustivo para obtener TODO el texto visible en la imagen, incluyendo el texto del post, la descripción del perfil y cualquier texto superpuesto en la imagen misma.
 2.  **Paso 2: Análisis de Contenido:** Basado en el texto extraído, identifica los elementos clave del sorteo: premio, cuentas organizadoras y, crucialmente, cualquier mención de fechas o plazos.
 3.  **Paso 3: Aplicación de Reglas de Fecha:** Aplica el siguiente conjunto de reglas jerárquicas para determinar la fecha de finalización. DEBES seguir el orden estrictamente. En cuanto una regla coincida, úsala para determinar la fecha y DETÉN el proceso de decisión de fechas.
-4.  **Paso 4: Generación de JSON:** Construye y devuelve únicamente el objeto JSON final con todos los datos extraídos. Si la imagen NO es un sorteo, devuelve exclusivamente: `{"status": "not_a_giveaway"}`.
+4.  **Paso 4: Generación de JSON:** Construye y devuelve únicamente el objeto JSON final con todos los datos extraídos. Si la imagen NO es un sorteo, devuelve exclusivamente: \`{"status": "not_a_giveaway"}\`.
 </PROCESO_DE_ANALISIS_PASO_A_PASO>
 
 <ESTRUCTURA_JSON_REQUERIDA>
@@ -2313,40 +2313,40 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
 **PRIORIDAD 1: Regla de "Fecha y Hora Específica".**
 -   **Condición:** El texto especifica una fecha de finalización Y una hora exacta (ej: "hasta el 26 a las 14:00h", "finaliza el 30 de agosto a las 22:00").
 -   **Acción:**
-    1.  `date` = La fecha mencionada (ej: "2025-08-26").
-    2.  `ends_at_time` = La hora exacta extraída (ej: "14:00h").
-    3.  `is_priority_time` = `true` SI Y SOLO SI la hora NO es "23:59" o "medianoche". En todos los demás casos, es `false`.
+    1.  \`date\` = La fecha mencionada (ej: "2025-08-26").
+    2.  \`ends_at_time\` = La hora exacta extraída (ej: "14:00h").
+    3.  \`is_priority_time\` = \`true\` SI Y SOLO SI la hora NO es "23:59" o "medianoche". En todos los demás casos, es \`false\`.
     4.  **DETENTE.**
 
 **PRIORIDAD 2: Regla de "Conflicto de Fechas (Fin vs. Anuncio)".**
 -   **Condición:** El texto menciona explícitamente una fecha de FIN (ej: "el sorteo termina el día 27") Y TAMBIÉN menciona una fecha POSTERIOR para anunciar ganadores (ej: "el ganador se dirá el día 28").
 -   **Acción:**
-    1.  `date` = La fecha de FIN mencionada (ej: "2025-08-27").
-    2.  `ends_at_time` = null.
-    3.  `is_priority_time` = `false`.
+    1.  \`date\` = La fecha de FIN mencionada (ej: "2025-08-27").
+    2.  \`ends_at_time\` = null.
+    3.  \`is_priority_time\` = \`false\`.
     4.  **DETENTE.**
 
 **PRIORIDAD 3: Regla de "Solo Fecha de Fin Explícita".**
 -   **Condición:** El texto menciona SOLAMENTE una fecha de fin explícita (ej: "válido hasta el 30 de agosto", "finaliza el 30/08") y no hay mención de fecha de anuncio de ganadores.
 -   **Acción:**
-    1.  `date` = El día **ANTERIOR** al mencionado (ej: si dice 30, anota "2025-08-29").
-    2.  `ends_at_time` = null.
-    3.  `is_priority_time` = `false`.
+    1.  \`date\` = El día **ANTERIOR** al mencionado (ej: si dice 30, anota "2025-08-29").
+    2.  \`ends_at_time\` = null.
+    3.  \`is_priority_time\` = \`false\`.
     4.  **DETENTE.**
 
 **PRIORIDAD 4: Regla de "Solo Fecha de Anuncio de Ganadores".**
 -   **Condición:** El texto no cumple ninguna regla anterior y SOLO menciona la fecha en que se anuncian los ganadores (ej: "anunciaremos el ganador el día 28").
 -   **Acción:**
-    1.  `date` = El día **ANTERIOR** al mencionado (ej: si dice 28, anota "2025-08-27").
-    2.  `ends_at_time` = null.
-    3.  `is_priority_time` = `false`.
+    1.  \`date\` = El día **ANTERIOR** al mencionado (ej: si dice 28, anota "2025-08-27").
+    2.  \`ends_at_time\` = null.
+    3.  \`is_priority_time\` = \`false\`.
     4.  **DETENTE.**
 
 **PRIORIDAD 5: Caso por Defecto "Sin Fecha Clara".**
 -   **Condición:** Si ninguna de las reglas anteriores se puede aplicar.
 -   **Acción:**
-    1.  `date` = null.
-    2.  `status` = "no_date".
+    1.  \`date\` = null.
+    2.  \`status\` = "no_date".
     3.  **DETENTE.**
 </REGLAS_JERARQUICAS_DE_FECHA_V3.0>
 
@@ -2354,10 +2354,13 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
 - **Cuentas:** Extrae SIEMPRE el nombre de usuario de la cuenta que publica (junto a la foto de perfil) y cualquier otra cuenta mencionada como requisito ("sigue a...", "colaboración con..."). Ignora las cuentas de los comentarios o de los "me gusta".
 - **Premio:** Sé conciso y descriptivo. Resume el premio en una sola línea, combinando texto e información visual (marcas, productos).
 - **Categoría:** Clasifica el premio en una de las categorías válidas.
-- **Confianza:** Evalúa tu certeza en la extracción de la FECHA. Si es 100% clara, `confidence_score` es 1.0. Si es ambigua o deducida, usa un valor inferior.
+- **Confianza:** Evalúa tu certeza en la extracción de la FECHA. Si es 100% clara, \`confidence_score\` es 1.0. Si es ambigua o deducida, usa un valor inferior.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 `;
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
+                if (aiData.is_priority_time) {
+                    aiData.prize = '⏰ ' + aiData.prize;
+                }
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
                 } else if (aiData.status === 'discard_no_date' || !aiData.date) {
@@ -2373,7 +2376,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
                     }
 
                     // --- PASO 3: COMBINAR Y CLASIFICAR EL RESULTADO FINAL ---
-                    const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
+                    const accounts = (aiData.accounts || []).map(acc => \`@\${acc.replace('@', '')}\`);
                     const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
@@ -2392,7 +2395,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
                     }
                 }
             } catch (error) {
-                console.error(`Error al analizar la imagen ${file.name}:`, error);
+                console.error(\`Error al analizar la imagen \${file.name}:\`, error);
                 resultData = { prize: 'Error de análisis', status: 'api_error', error: error.message, originalFile: file };
                 if (file) {
                     giveawaysWithErrors.push(file);

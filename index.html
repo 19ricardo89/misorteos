@@ -2276,6 +2276,7 @@
                 // --- PASO 1: EXTRAER DATOS BÁSICOS DE LA IMAGEN ---
                 const hoy = new Date();
                 const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                
                 const dynamicPrompt = `
 <ROL_Y_OBJETIVO>
 Actuarás como un Analista de Inteligencia de Redes Sociales de élite. Tu especialidad es analizar capturas de pantalla de sorteos de Instagram para extraer datos con precisión quirúrgica. Tu única misión es devolver un objeto JSON perfectamente estructurado, sin texto, saludos o explicaciones adicionales. La precisión, el contexto y el seguimiento estricto de las reglas son de máxima prioridad.
@@ -2289,7 +2290,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
 1.  **Paso 1: Extracción de Texto (OCR Interno):** Realiza un reconocimiento óptico de caracteres (OCR) exhaustivo para obtener TODO el texto visible en la imagen, incluyendo el texto del post, la descripción del perfil y cualquier texto superpuesto en la imagen misma.
 2.  **Paso 2: Análisis de Contenido:** Basado en el texto extraído, identifica los elementos clave del sorteo: premio, cuentas organizadoras y, crucialmente, cualquier mención de fechas o plazos.
 3.  **Paso 3: Aplicación de Reglas de Fecha:** Aplica el siguiente conjunto de reglas jerárquicas para determinar la fecha de finalización. DEBES seguir el orden estrictamente. En cuanto una regla coincida, úsala para determinar la fecha y DETÉN el proceso de decisión de fechas.
-4.  **Paso 4: Generación de JSON:** Construye y devuelve únicamente el objeto JSON final con todos los datos extraídos. Si la imagen NO es un sorteo, devuelve exclusivamente:' {"status": "not_a_giveaway"}'.
+4.  **Paso 4: Generación de JSON:** Construye y devuelve únicamente el objeto JSON final con todos los datos extraídos. Si la imagen NO es un sorteo, devuelve exclusivamente: '{"status": "not_a_giveaway"}'.
 </PROCESO_DE_ANALISIS_PASO_A_PASO>
 
 <ESTRUCTURA_JSON_REQUERIDA>
@@ -2407,7 +2408,6 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
         };
         reader.readAsDataURL(file);
     }
-
     function typewriterEffect(element, text = '', speed = 25) {
         let i = 0;
         if (!element) return;

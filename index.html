@@ -2358,10 +2358,6 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 `;
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
-if (aiData.is_priority_time) {
-    aiData.prize = '⏰ ' + aiData.prize;
-}
-
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
                 } else if (aiData.status === 'discard_no_date' || !aiData.date) {

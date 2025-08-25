@@ -13,36 +13,39 @@ exports.handler = async function (event, context) {
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
-    // --- INICIO DEL PROMPT AVANZADO ---
+    // --- INICIO DEL PROMPT "TASADOR EXPERTO" v2 ---
     const prompt = `
-        Actúa como un analista de e-commerce experto. Tu misión es determinar el valor de mercado exacto de un premio de sorteo y proporcionar una fuente fiable.
+        Actúa como un Tasador Experto de Productos y Experiencias. Tu única misión es determinar un valor de mercado fiable para el premio de un sorteo.
 
-        **Premio a Analizar:** "${query}"
+        **Directiva Principal (Regla de Oro):** Tu objetivo es devolver SIEMPRE un valor numérico estimado. El valor "0" está prohibido, a menos que el premio sea literalmente "nada". Para todos los demás casos, DEBES proporcionar una estimación monetaria siguiendo el protocolo.
+
+        **Premio a Valorar:** "${query}"
         **Cuentas/Marcas Asociadas:** ${accounts.join(', ')}
 
-        **PROTOCOLO DE BÚSQUEDA JERÁRQUICO (OBLIGATORIO):**
-        Sigue estos pasos en orden estricto. Si encuentras un resultado fiable, detén la búsqueda y úsalo.
-        1.  **Búsqueda en Webs Oficiales:** Primero, intenta encontrar el producto en la web oficial de las marcas/cuentas asociadas. Este es el precio más fiable.
-        2.  **Búsqueda en Plataformas Principales:** Si no lo encuentras, búscalo en grandes plataformas como Amazon, PcComponentes, MediaMarkt, Miravia o AliExpress.
-        3.  **Búsqueda General:** Como último recurso, realiza una búsqueda general en Google para encontrar el precio en otros blogs o tiendas.
+        **PROTOCOLO DE VALORACIÓN (OBLIGATORIO Y SECUENCIAL):**
 
-        **REGLAS DE CÁLCULO DE VALOR (OBLIGATORIO):**
-        -   **Si el premio es un "lote", "pack" o "cesta":** Debes identificar los productos principales dentro del lote, buscar su valor de mercado individualmente y devolver la **suma total** de sus precios.
-        -   **Si el premio es una experiencia (viaje, cena):** Estima un valor de mercado conservador y razonable para esa experiencia.
+        1.  **BÚSQUEDA EXACTA:**
+            a. Intenta encontrar el precio del producto exacto en las **webs oficiales** de las marcas asociadas.
+            b. Si no lo encuentras, búscalo en **Amazon**.
+            c. Si sigue sin aparecer, realiza una búsqueda exhaustiva en **Google**. Un producto casi siempre tiene un precio en algún sitio.
 
-        **FORMATO DE SALIDA (MUY IMPORTANTE):**
-        Tu respuesta DEBE SER única y exclusivamente un objeto JSON válido. NO incluyas texto, explicaciones ni formato markdown.
+        2.  **PROTOCOLO DE ESTIMACIÓN (SI LA BÚSQUEDA EXACTA FALLA):**
+            a. Si no encuentras el producto exacto, tu tarea es encontrar entre 3 y 5 productos de **características, marca y calidad MUY SIMILARES**.
+            b. **Calcula el precio medio** de esos productos similares que has encontrado. Este será tu valor estimado.
+            c. Para **experiencias** (entradas, viajes, cenas), busca precios de servicios comparables en la misma ciudad/región y ofrece una estimación conservadora. (Ej: "Entrada doble Dino Expo" -> busca "precio entrada exposición dinosaurios españa").
+
+        **FORMATO DE SALIDA (REGLAS ESTRICTAS E INQUEBRANTABLES):**
+        Tu respuesta DEBE SER única y exclusivamente un objeto JSON válido.
         {
           "value": "string",
           "url": "string"
         }
 
-        **REGLAS DEL FORMATO JSON:**
-        -   El campo \`"value"\` DEBE ser un string que contenga ÚNICAMENTE el número total del valor en euros (ej: "179.99", "85.50", "1200"). NO incluyas el símbolo '€'.
-        -   Si después de seguir todo el protocolo de búsqueda te es absolutamente imposible determinar un precio, el valor del campo \`"value"\` DEBE SER "0".
-        -   El campo \`"url"\` debe ser el enlace más relevante que encontraste o \`null\` si no hallaste una fuente directa.
+        -   El campo \`"value"\` DEBE ser un **string que contenga ÚNICAMENTE el número total del valor** (ej: "179.99", "85.50", "1200"). NO incluyas el símbolo '€' ni ningún otro texto.
+        -   **Repito: NUNCA devuelvas "0"** a menos que sea imposible realizar una estimación, lo cual es extremadamente improbable.
+        -   El campo \`"url"\` debe ser el enlace más relevante de tu hallazgo (ya sea del producto exacto o de uno de los similares usados para la media) o \`null\`.
     `;
-    // --- FIN DEL PROMPT AVANZADO ---
+    // --- FIN DEL PROMPT ---
 
     try {
         const geminiResponse = await fetch(apiUrl, {

@@ -5825,7 +5825,7 @@ window.giveaways = {
         {
             "id": "1756145014978",
             "date": "2025-08-31",
-            "prize": "Lote compuesto de mochila, tupper y botella de acero inoxidable, lápices de colores, rotuladores, tijeras, ceras, pinturas y pegamento con glitter.",
+            "prize": "Lote compuesto por mochila, tupper y botella de acero inoxidable, lápices de colores, rotuladores, tijeras, ceras, pinturas y pegamento con glitter.",
             "accounts": [
                 "@janod_espana",
                 "@lilliputiens_spain"

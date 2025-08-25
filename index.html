@@ -2768,8 +2768,7 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
             throw error;
         }
     }
-
-    async function searchPrizeValue(aiData) {
+async function searchPrizeValue(aiData) {
         const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
         const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
         if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
@@ -2786,7 +2785,16 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
             const result = await response.json();
             if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
                 const text = result.candidates[0].content.parts[0].text;
-                const parsedResult = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+                
+                // --- LÓGICA MEJORADA PARA EXTRAER EL JSON ---
+                // Busca el JSON incluso si hay texto antes o después.
+                const jsonMatch = text.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    throw new Error("No se encontró un objeto JSON en la respuesta de la búsqueda.");
+                }
+                const parsedResult = JSON.parse(jsonMatch[0]);
+                // --- FIN DE LA MEJORA ---
+                
                 let prizeWithEmoji = aiData.prize;
                 let numericValue = null;
                 if (parsedResult.value && parsedResult.value !== "No encontrado") {
@@ -2807,7 +2815,7 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
             }
         } catch (error) {
             console.error("Error en la búsqueda del valor:", error);
-            return { prize: aiData.prize, value: "No encontrado", url: null };
+            return { prize: aiData.prize, value: "Error de Búsqueda", url: null };
         }
     }
     const deleteGiveawayFromCalendar = (dateStr, giveawayId) => { if (giveaways[dateStr]) { const giveawayToTrash = giveaways[dateStr].find(g => g.id === giveawayId); if (giveawayToTrash) { trashGiveaways.push({...giveawayToTrash, originalDate: dateStr}); saveTrashGiveaways(); giveaways[dateStr] = giveaways[dateStr].filter(g => g.id !== giveawayId); if (giveaways[dateStr].length === 0) delete giveaways[dateStr]; saveGiveaways(); renderCalendar(); closeModal(); } } };

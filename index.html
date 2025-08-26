@@ -372,45 +372,29 @@
             color: #8c5a15 !important; /* Un tono más claro al pasar el ratón */
         }
 
-        /* --- NUEVO: Estilos para los botones de acción con colores --- */
-        .move-giveaway-btn {
-            background-color: #fdecc8 !important;
-            color: #78350f !important;
+        /* NUEVO: Estilos para los botones de acción (mover, eliminar) */
+        .win-giveaway-btn, .move-giveaway-btn, .delete-giveaway-btn, .vis-giveaway-btn {
+            background-color: #fdecc8 !important; /* Fondo sólido y visible */
+            color: #78350f !important; /* Icono en marrón muy oscuro */
         }
-        .move-giveaway-btn:hover {
-             background-color: #f7d468 !important;
+        .win-giveaway-btn:hover, .move-giveaway-btn:hover, .delete-giveaway-btn:hover, .vis-giveaway-btn:hover {
+            background-color: #f7d468 !important; /* Fondo más intenso al pasar el ratón */
         }
-        .delete-giveaway-btn { /* Botón Papelera - ROJO */
-            background-color: #fee2e2 !important;
-            color: #b91c1c !important;
+        .win-giveaway-btn {
+            color: #ca8a04 !important; /* Icono dorado para ganar */
+            margin-top: 4px;
+            padding: 2px;
+            width: 28px;
+            height: 28px;
+            border-radius: 9999px;
         }
-        .delete-giveaway-btn:hover {
-            background-color: #fca5a5 !important;
-        }
-        .delete-giveaway-foreign-btn { /* Botón Extranjero - AZUL */
-            background-color: #dbeafe !important;
-            color: #1e40af !important;
+        .delete-giveaway-foreign-btn {
+            background-color: #fecaca !important; /* Fondo rojo claro para el botón de extranjero */
+            color: #991b1b !important; /* Icono en rojo oscuro */
         }
         .delete-giveaway-foreign-btn:hover {
-            background-color: #93c5fd !important;
+            background-color: #f87171 !important;
         }
-        .win-giveaway-btn { /* Botón Ganado - ORO */
-            background-color: #fef3c7 !important;
-            color: #b45309 !important;
-            border: 1px solid #fde047;
-        }
-        .win-giveaway-btn:hover {
-            background-color: #fde68a !important;
-        }
-        .vis-giveaway-btn { /* Botón VIS - PLATA */
-            background-color: #e5e7eb !important;
-            color: #4b5563 !important;
-            border: 1px solid #d1d5db;
-        }
-        .vis-giveaway-btn:hover {
-            background-color: #d1d5db !important;
-        }
-
 
         /* Títulos de los modales */
         #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2 {
@@ -1674,6 +1658,7 @@
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
+
     // --- FUNCIONES DE LA APLICACIÓN ---
 
     let notificationTimeout;
@@ -1703,14 +1688,6 @@
     const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
     const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
     const saveVisGiveaways = () => localStorage.setItem('visGiveaways', JSON.stringify(visGiveaways));
-
-    const getConfidenceEmoji = (score) => {
-        if (score === null || score === undefined) return '❔';
-        if (score >= 0.95) return '🎯'; // Muy Alta
-        if (score >= 0.8) return '👍';  // Alta
-        if (score >= 0.6) return '🤔';  // Media
-        return '❓'; // Baja
-    };
 
     const updatePointsDisplay = () => {
         if (totalPsCountEl) {
@@ -1863,31 +1840,21 @@
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
-                // --- INICIO DEL CÓDIGO CORREGIDO ---
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
-
-                let matchesSearch = !searchQuery || prize.includes(searchText);
-                if (!matchesSearch) {
-                    return false;
+                let isMatch = true;
+                if(currentFilter !== 'all') {
+                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
+                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                               (currentFilter === 'price' && prize.includes('💲')) ||
+                               (currentFilter === 'frikis' && prize.includes('🃏')) ||
+                               (currentFilter === 'moda' && prize.includes('👠')) ||
+                               (currentFilter === 'belleza' && prize.includes('💄')) ||
+                               (currentFilter === 'hogar' && prize.includes('🏠')) ||
+                               (currentFilter === 'tecnologia' && prize.includes('💻'));
                 }
-
-                if (currentFilter === 'all') {
-                    return true;
-                }
-
-                const matchesCategory =
-                    (currentFilter === 'padel' && prize.includes('🥎')) ||
-                    (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                    (currentFilter === 'price' && prize.includes('💲')) ||
-                    (currentFilter === 'frikis' && prize.includes('🃏')) ||
-                    (currentFilter === 'moda' && prize.includes('👠')) ||
-                    (currentFilter === 'belleza' && prize.includes('💄')) ||
-                    (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                    (currentFilter === 'tecnologia' && prize.includes('💻'));
-
-                return matchesCategory;
-                // --- FIN DEL CÓDIGO CORREGIDO ---
+                if (searchQuery && !prize.includes(searchText)) isMatch = false;
+                return isMatch;
             });
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
@@ -1917,31 +1884,21 @@
 
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
-            // --- INICIO DEL CÓDIGO CORREGIDO ---
             const prize = g.prize ? g.prize.toLowerCase() : '';
             const searchText = searchQuery.toLowerCase();
-
-            let matchesSearch = !searchQuery || prize.includes(searchText);
-            if (!matchesSearch) {
-                return false;
+            let isMatch = true;
+            if(currentFilter !== 'all') {
+                     isMatch = (currentFilter === 'padel' && prize.includes('🥎')) ||
+                               (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                               (currentFilter === 'price' && prize.includes('💲')) ||
+                               (currentFilter === 'frikis' && prize.includes('🃏')) ||
+                               (currentFilter === 'moda' && prize.includes('👠')) ||
+                               (currentFilter === 'belleza' && prize.includes('💄')) ||
+                               (currentFilter === 'hogar' && prize.includes('🏠')) ||
+                               (currentFilter === 'tecnologia' && prize.includes('💻'));
             }
-
-            if (currentFilter === 'all') {
-                return true;
-            }
-
-            const matchesCategory =
-                (currentFilter === 'padel' && prize.includes('🥎')) ||
-                (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                (currentFilter === 'price' && prize.includes('💲')) ||
-                (currentFilter === 'frikis' && prize.includes('🃏')) ||
-                (currentFilter === 'moda' && prize.includes('👠')) ||
-                (currentFilter === 'belleza' && prize.includes('💄')) ||
-                (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                (currentFilter === 'tecnologia' && prize.includes('💻'));
-
-            return matchesCategory;
-            // --- FIN DEL CÓDIGO CORREGIDO ---
+            if (searchQuery && !prize.includes(searchText)) isMatch = false;
+            return isMatch;
         });
     
         dayGiveaways.sort((a, b) => {
@@ -1962,12 +1919,11 @@
             const itemContainer = document.createElement('div');
             itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
-            // --- CONTENEDOR IZQUIERDO (CHECKBOX Y BOTONES DE COMPLETADO) ---
             const leftSideContainer = document.createElement('div');
             leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
 
             const controlsContainer = document.createElement('div');
-            controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0';
+            controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0 space-y-1';
             
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -1976,27 +1932,14 @@
             checkbox.checked = completedGiveaways[giveaway.id];
             controlsContainer.appendChild(checkbox);
             
-            const postCompleteActions = document.createElement('div');
-            postCompleteActions.className = 'flex flex-col items-center space-y-1 mt-1';
-            postCompleteActions.style.display = completedGiveaways[giveaway.id] ? 'flex' : 'none';
-
             const winBtn = document.createElement('button');
-            winBtn.className = 'win-giveaway-btn p-1 rounded-full text-lg';
+            winBtn.className = 'win-giveaway-btn';
             winBtn.innerHTML = `🏆`;
             winBtn.dataset.giveawayId = giveaway.id;
             winBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(winBtn);
+            winBtn.style.display = completedGiveaways[giveaway.id] ? 'block' : 'none'; // Solo visible si está completado
+            controlsContainer.appendChild(winBtn);
 
-            const visBtn = document.createElement('button');
-            visBtn.className = 'vis-giveaway-btn p-1 rounded-full text-lg';
-            visBtn.innerHTML = `🌟`;
-            visBtn.dataset.giveawayId = giveaway.id;
-            visBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(visBtn);
-
-            controlsContainer.appendChild(postCompleteActions);
-
-            // --- CONTENEDOR DEL PREMIO Y CUENTAS ---
             const prizeContainer = document.createElement('div');
             prizeContainer.className = 'overflow-hidden';
 
@@ -2007,44 +1950,45 @@
             leftSideContainer.appendChild(controlsContainer);
             leftSideContainer.appendChild(prizeContainer);
 
-            // --- CONTENEDOR DERECHO (VALOR) ---
             const detailsContainer = document.createElement('div');
             detailsContainer.className = 'text-right flex-shrink-0 ml-2';
             if (giveaway.price) {
                 detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
             }
 
-            // --- CONTENEDOR DE ACCIONES (MOVER, PAPELERA, EXTRANJERO) ---
+            itemContainer.appendChild(leftSideContainer);
+            itemContainer.appendChild(detailsContainer);
+
             const actionsContainer = document.createElement('div');
             actionsContainer.className = 'flex flex-col items-center ml-2 space-y-1';
 
             const moveBtn = document.createElement('button');
             moveBtn.className = 'move-giveaway-btn p-1 rounded-full text-sm';
-            moveBtn.innerHTML = `<i class="fa-solid fa-calendar-days"></i>`;
+            moveBtn.innerHTML = `<i class="fa-solid fa-calendar-alt"></i>`;
             moveBtn.dataset.giveawayId = giveaway.id;
             moveBtn.dataset.giveawayDate = dateStr;
             actionsContainer.appendChild(moveBtn);
+
+            const postCompleteActions = document.createElement('div');
+            postCompleteActions.className = 'flex flex-col items-center space-y-1';
+            postCompleteActions.style.display = completedGiveaways[giveaway.id] ? 'flex' : 'none';
+
+            const visBtn = document.createElement('button');
+            visBtn.className = 'vis-giveaway-btn p-1 rounded-full text-lg';
+            visBtn.innerHTML = `💫`;
+            visBtn.dataset.giveawayId = giveaway.id;
+            visBtn.dataset.giveawayDate = dateStr;
+            postCompleteActions.appendChild(visBtn);
             
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full text-sm';
             deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
             deleteBtn.dataset.giveawayId = giveaway.id;
             deleteBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(deleteBtn);
+            postCompleteActions.appendChild(deleteBtn);
 
-            const foreignBtn = document.createElement('button');
-            foreignBtn.className = 'delete-giveaway-foreign-btn p-1 rounded-full text-sm';
-            foreignBtn.innerHTML = `<i class="fa-solid fa-globe"></i>`;
-            foreignBtn.dataset.giveawayId = giveaway.id;
-            foreignBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(foreignBtn);
-
-            // --- ENSAMBLAJE FINAL DEL ITEM ---
-            itemContainer.appendChild(leftSideContainer);
-            itemContainer.appendChild(detailsContainer);
+            actionsContainer.appendChild(postCompleteActions);
             itemContainer.appendChild(actionsContainer);
-
-            modalBody.appendChild(itemContainer);
 
             if (giveaway.prize.includes('🥎')) hasPadel = true;
             if (giveaway.prize.includes('🛩️')) hasTravel = true;
@@ -2056,7 +2000,6 @@
         else modalContent.classList.add('modal-default-bg');
         modal.dataset.date = dateStr;
     };
-
 
     const openModal = (dateStr) => { 
         if (navMenu.classList.contains('is-open')) {
@@ -2270,45 +2213,77 @@
         reader.onload = async (event) => {
             const base64Data = event.target.result;
             analysisImagePreview.src = base64Data;
+
+            const hoy = new Date();
+            const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+            
+            const dynamicPrompt = `
+<ROL_Y_OBJETIVO>
+Actuarás como un Asistente de Extracción de Datos hiper-meticuloso, especializado en analizar imágenes de sorteos en redes sociales. Tu único objetivo es analizar la imagen proporcionada y devolver un objeto JSON válido con la información extraída, sin ningún texto o explicación adicional.
+</ROL_Y_OBJETIVO>
+
+<CONTEXTO_CRITICO>
+La fecha de hoy es ${fechaFormateada}. Utiliza esta fecha como referencia indispensable para determinar si un sorteo ha expirado.
+</CONTEXTO_CRITICO>
+
+<INSTRUCCION_PRINCIPAL>
+Analiza la imagen y extrae la información solicitada siguiendo estrictamente la estructura y las reglas definidas a continuación. Tu respuesta DEBE SER ÚNICAMENTE el objeto JSON. Si la imagen NO es un sorteo, devuelve exclusivamente: {"status": "not_a_giveaway"}.
+</INSTRUCCION_PRINCIPAL>
+
+<ESTRUCTURA_JSON_REQUERIDA>
+{
+  "prize": "string | null",
+  "accounts": ["string"],
+  "date": "string | null",
+  "ends_at_time": "string | null",
+  "status": "string",
+  "is_spanish": boolean,
+  "prize_category": "string"
+}
+</ESTRUCTURA_JSON_REQUERIDA>
+
+<REGLAS_DE_FECHA_OBLIGATORIAS>
+Esta es la parte más importante. La 'date' en el JSON es el último día para participar. Aplica estas reglas en orden de prioridad:
+
+1.  **Anuncio de Ganadores**: Si el texto dice "anuncio de ganadores el día X", la fecha final de participación ('date') es SIEMPRE el día ANTERIOR (X-1).
+2.  **Finalización sin Hora Específica**: Si solo se menciona un día de finalización ("termina el día X", "hasta el día X") y no se especifica una hora, la fecha final de participación ('date') es el día ANTERIOR (X-1).
+3.  **Finalización a Medianoche (Fin del día)**: Si dice que termina el "día X a las 23:59h", la fecha final de participación ('date') es ese mismo día X.
+4.  **Finalización a Medianoche (Inicio del día)**: Si dice que termina el "día X a las 00:00h", la fecha final de participación ('date') es el día ANTERIOR (X-1).
+5.  **Finalización a una Hora Concreta**: Si termina el "día X a una hora específica", la fecha final de participación ('date') es ese mismo día X y DEBES rellenar el campo 'ends_at_time' con esa hora.
+</REGLAS_DE_FECHA_OBLIGATORIAS>
+
+<REGLAS_ADICIONALES>
+- **Cuentas**: Extrae TODOS los nombres de usuario sin el símbolo '@'.
+- **Premio**: Sé descriptivo.
+- **Sin Fecha**: Si no encuentras ninguna fecha, devuelve 'null' en 'date' y "no_date" en 'status'.
+</REGLAS_ADICIONALES>
+`;
             
             let resultData;
-
             try {
-                // --- PASO 1: EXTRAER DATOS BÁSICOS DE LA IMAGEN ---
-                const aiData = await callGeminiAPI(base64Data);
-
+                const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
+                
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
-                } else if (aiData.status === 'no_date' || !aiData.date) {
+                } else if (aiData.status === 'discard_no_date' || !aiData.date) {
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
                 } else {
-                    // --- PASO 2: BUSCAR EL PRECIO DEL PREMIO EXTRAÍDO ---
-                    let priceInfo = { value: '0', url: null, prize: aiData.prize };
-                    try {
-                        priceInfo = await searchPrizeValue(aiData);
-                    } catch (searchError) {
-                        console.error("Fallo en la función searchPrizeValue:", searchError);
-                        priceInfo.value = 'Error Búsqueda';
-                    }
-
-                    // --- PASO 3: COMBINAR Y CLASIFICAR EL RESULTADO FINAL ---
                     const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
                     const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
                     
-                    let finalPrize = priceInfo.prize || aiData.prize;
-                    let finalPrice = `${priceInfo.value}€`;
+                    const priceInfo = await searchPrizeValue(aiData);
 
                     if (isForeign) {
-                        resultData = { ...aiData, price: finalPrice, url: priceInfo.url, prize: finalPrize, accounts, status: 'foreign', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
                     } else if (existingGiveaway) {
-                        resultData = { ...aiData, price: finalPrice, url: priceInfo.url, prize: finalPrize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
-                        resultData = { ...aiData, price: finalPrice, url: priceInfo.url, prize: finalPrize, accounts, status: 'expired', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
                     } else {
-                        resultData = { ...aiData, price: finalPrice, url: priceInfo.url, prize: finalPrize, accounts, status: 'valid', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'valid', originalFile: file };
                     }
                 }
             } catch (error) {
@@ -2319,7 +2294,6 @@
                 }
             }
             
-            // --- PASO 4: MOSTRAR LA TARJETA INTERACTIVA CON TODOS LOS DATOS ---
             renderInteractiveCard(resultData);
         };
         reader.readAsDataURL(file);
@@ -2376,8 +2350,7 @@
         
         switch(resultData.status) {
             case 'valid':
-                const confidenceEmoji = getConfidenceEmoji(resultData.confidence_score);
-                title = `✅ Sorteo Válido ${confidenceEmoji}`;
+                title = '✅ Sorteo Válido Detectado';
                 cardStatusClass = 'card-status-valid';
                 buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-save" class="btn-save">Guardar</button>`;
                 cardHTML = `
@@ -2412,8 +2385,7 @@
                 `;
                 break;
             case 'expired':
-                const confidenceEmojiExpired = getConfidenceEmoji(resultData.confidence_score);
-                title = `⏳ Sorteo Caducado ${confidenceEmojiExpired}`;
+                title = '⏳ Sorteo Caducado';
                 cardStatusClass = 'card-status-expired';
                 buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar Fecha</button><button id="btn-trash" class="btn-trash">A la Papelera</button>`;
                 cardHTML = `
@@ -2427,8 +2399,7 @@
             `;
                 break;
             case 'foreign':
-                const confidenceEmojiForeign = getConfidenceEmoji(resultData.confidence_score);
-                title = `👽 Sorteo Extranjero ${confidenceEmojiForeign}`;
+                title = '👽 Sorteo Extranjero';
                 cardStatusClass = 'card-status-foreign';
                 buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-mark-foreign" class="btn-foreign">Marcar como Extranjero</button>`;
                 cardHTML = `
@@ -2665,9 +2636,9 @@
         });
     };
 
-    async function callGeminiAPI(base64Data) {
+    async function callGeminiAPI(base64Data, dynamicPrompt) {
         const functionUrl = '/.netlify/functions/gemini';
-        const payload = { base64Data };
+        const payload = { base64Data, dynamicPrompt };
         try {
             const response = await fetch(functionUrl, {
                 method: 'POST',
@@ -2701,7 +2672,7 @@
     async function searchPrizeValue(aiData) {
         const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
         const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
-        if (!cleanedPrize) return { prize: aiData.prize, value: "0", url: null };
+        if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
         const functionUrl = '/.netlify/functions/search';
         try {
             const response = await fetch(functionUrl, {
@@ -2712,36 +2683,33 @@
             if (!response.ok) {
                 throw new Error('La respuesta de la función de búsqueda no fue OK');
             }
-            const parsedResult = await response.json();
-            
-            let prizeWithEmoji = aiData.prize;
-            let numericValue = null;
-
-            if (parsedResult.value && parsedResult.value !== "0") {
-                numericValue = parseFloat(String(parsedResult.value).replace(/[^0-9,.]/g, '').replace(',', '.'));
+            const result = await response.json();
+            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                const text = result.candidates[0].content.parts[0].text;
+                const parsedResult = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+                let prizeWithEmoji = aiData.prize;
+                let numericValue = null;
+                if (parsedResult.value && parsedResult.value !== "No encontrado") {
+                    numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
+                }
+                if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
+                if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
+                if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
+                if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
+                if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
+                if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
+                if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
+                if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+                return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
+            } else {
+                throw new Error("Respuesta incompleta de la API de texto.");
             }
-            
-            const categoryEmojis = {
-                padel: '🥎', viajes: '🛩️', frikis: '🃏', moda: '👠',
-                belleza: '💄', hogar: '🏠', tecnologia: '💻'
-            };
-
-            const emoji = categoryEmojis[aiData.prize_category];
-            if (emoji && !prizeWithEmoji.includes(emoji)) {
-                prizeWithEmoji += ` ${emoji}`;
-            }
-
-            if (!isNaN(numericValue) && numericValue > 500 && !prizeWithEmoji.includes('💲')) {
-                prizeWithEmoji += ' 💲';
-            }
-            
-            return { prize: prizeWithEmoji, value: parsedResult.value || "0", url: parsedResult.url };
-            
         } catch (error) {
             console.error("Error en la búsqueda del valor:", error);
-            return { prize: aiData.prize, value: "0", url: null };
+            return { prize: aiData.prize, value: "No encontrado", url: null };
         }
     }
+    
     const deleteGiveawayFromCalendar = (dateStr, giveawayId) => { if (giveaways[dateStr]) { const giveawayToTrash = giveaways[dateStr].find(g => g.id === giveawayId); if (giveawayToTrash) { trashGiveaways.push({...giveawayToTrash, originalDate: dateStr}); saveTrashGiveaways(); giveaways[dateStr] = giveaways[dateStr].filter(g => g.id !== giveawayId); if (giveaways[dateStr].length === 0) delete giveaways[dateStr]; saveGiveaways(); renderCalendar(); closeModal(); } } };
     
     const deleteForeignGiveaway = (dateStr, giveawayId) => {
@@ -3485,6 +3453,7 @@
         exports.handler = async function (event, context) {
             const fetch = (await import('node-fetch')).default;
             const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+            const body = JSON.parse(event.body);
             const { base64Data, dynamicPrompt } = body;
             if (!base64Data || !dynamicPrompt) {
                 return {
@@ -3535,80 +3504,58 @@
             const fetch = (await import('node-fetch')).default;
             const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
             const { query, accounts } = JSON.parse(event.body);
-
             if (!query) {
                 return {
                     statusCode: 400,
-                    body: JSON.stringify({ value: '0', url: null, error: 'Falta la consulta (query).' })
+                    body: JSON.stringify({ error: 'Falta la consulta (query).' })
                 };
             }
-
             const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
+    
+            1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
+                * Producto: "\${query}"
+                * Cuentas de Instagram: \${accounts.join(', ')}
 
-            const prompt = \\\`
-                Actúa como un Tasador Experto de Productos y Experiencias. Tu única misión es determinar un valor de mercado fiable para el premio de un sorteo.
+            2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
 
-                **Directiva Principal (Regla de Oro):** Tu objetivo es devolver SIEMPRE un valor numérico estimado. El valor "0" está prohibido, a menos que el premio sea literalmente "nada". Para todos los demás casos, DEBES proporcionar una estimación monetaria siguiendo el protocolo.
-
-                **Premio a Valorar:** "\${query}"
-                **Cuentas/Marcas Asociadas:** \${accounts.join(', ')}
-
-                **PROTOCOLO DE VALORACIÓN (OBLIGATORIO Y SECUENCIAL):**
-
-                1.  **BÚSQUEDA EXACTA:**
-                    a. Intenta encontrar el precio del producto exacto en las **webs oficiales** de las marcas asociadas.
-                    b. Si no lo encuentras, búscalo en **Amazon**.
-                    c. Si sigue sin aparecer, realiza una búsqueda exhaustiva en **Google**. Un producto casi siempre tiene un precio en algún sitio.
-
-                2.  **PROTOCOLO DE ESTIMACIÓN (SI LA BÚSQUEDA EXACTA FALLA):**
-                    a. Si no encuentras el producto exacto, tu tarea es encontrar entre 3 y 5 productos de **características, marca y calidad MUY SIMILARES**.
-                    b. **Calcula el precio medio** de esos productos similares que has encontrado. Este será tu valor estimado.
-                    c. Para **experiencias** (entradas, viajes, cenas), busca precios de servicios comparables en la misma ciudad/región y ofrece una estimación conservadora. (Ej: "Entrada doble Dino Expo" -> busca "precio entrada exposición dinosaurios españa").
-
-                **FORMATO DE SALIDA (REGLAS ESTRICTAS E INQUEBRANTABLES):**
-                Tu respuesta DEBE SER única y exclusivamente un objeto JSON válido.
+            3.  **Formato de Salida:** Devuelve tu respuesta única y exclusivamente como un objeto JSON con la siguiente estructura:
                 {
-                  "value": "string",
-                  "url": "string"
+                  "value": "string del precio encontrado, e.g., '150€', 'No encontrado'",
+                  "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
                 }
 
-                -   El campo \"value\" DEBE ser un **string que contenga ÚNICAMENTE el número total del valor** (ej: "179.99", "85.50", "1200"). NO incluyas el símbolo '€' ni ningún otro texto.
-                -   **Repito: NUNCA devuelvas "0"** a menos que sea imposible realizar una estimación, lo cual es extremadamente improbable.
-                -   El campo \"url\" debe ser el enlace más relevante de tu hallazgo (ya sea del producto exacto o de uno de los similares usados para la media) o \\null\\.
-            \\\`;
-
+            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`. \`;
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{ text: prompt }]
+                }]
+            };
             try {
                 const geminiResponse = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    body: JSON.stringify(payload)
                 });
-
                 if (!geminiResponse.ok) {
-                    throw new Error(\\\`La API de Gemini devolvió el estado: \${geminiResponse.status}\\\`);
+                    const errorBody = await geminiResponse.json();
+                    console.error("Error desde la API de Gemini (en search.js):", errorBody);
+                    return {
+                        statusCode: geminiResponse.status,
+                        body: JSON.stringify({ error: 'La API de Gemini devolvió un error en la búsqueda.', details: errorBody })
+                    };
                 }
-
                 const data = await geminiResponse.json();
-
-                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                    const text = data.candidates[0].content.parts[0].text;
-                    const jsonMatch = text.match(/\\{[\\s\\S]*\\}/);
-                    if (jsonMatch) {
-                        return {
-                            statusCode: 200,
-                            headers: { 'Content-Type': 'application/json' },
-                            body: jsonMatch[0] 
-                        };
-                    }
-                }
-                
-                throw new Error("La respuesta de la IA no contenía un JSON válido.");
-
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify(data)
+                };
             } catch (error) {
                 console.error("Error en la función search.js:", error);
                 return {
                     statusCode: 500,
-                    body: JSON.stringify({ value: '0', url: null, error: error.message })
+                    body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
                 };
             }
         };`;
@@ -3818,7 +3765,7 @@
     };
     
     setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {
-        calculateAndRenderStats();
+        renderStatsModal();
         setTimeout(renderCharts, 50); 
     });
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
@@ -3829,7 +3776,7 @@
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-    //setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
+    setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     setupModal(null, psSummaryModal, closePsSummaryModalBtn);
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
@@ -3938,11 +3885,25 @@
             saveCompletedGiveaways();
             checkAchievements('complete', { giveawayDate: dateStr });
             
-            const postCompleteActions = itemContainer.querySelector('.flex-col.items-center.space-y-1.mt-1');
+            if (e.target.checked) {
+                const giveawayPrice = parsePrice(giveaway.price);
+                if (giveawayPrice >= 500) {
+                    const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
+                    if (!isAlreadyInVIS) {
+                        visGiveaways.push(giveaway);
+                        saveVisGiveaways();
+                        showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se añadió a Revisión VIS por su alto valor.`);
+                    }
+                }
+            }
+            const postCompleteActions = itemContainer.querySelector('.flex-col.items-center.space-y-1');
+            const winBtn = itemContainer.querySelector('.win-giveaway-btn');
             if (e.target.checked) {
                 if (postCompleteActions) postCompleteActions.style.display = 'flex';
+                if (winBtn) winBtn.style.display = 'block';
             } else {
                 if (postCompleteActions) postCompleteActions.style.display = 'none';
+                if (winBtn) winBtn.style.display = 'none';
             }
         } else if (e.target.closest('.win-giveaway-btn')) {
             markAsWon(giveawayId, dateStr);

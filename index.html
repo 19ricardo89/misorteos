@@ -2277,13 +2277,13 @@
                 const hoy = new Date();
                 const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
                 
-                const dynamicPrompt = `
+                const dynamicPrompt = \`
 <ROL_Y_OBJETIVO>
 Actuarás como un Analista de Inteligencia de Redes Sociales de élite. Tu especialidad es analizar capturas de pantalla de sorteos de Instagram para extraer datos con precisión quirúrgica. Tu única misión es devolver un objeto JSON perfectamente estructurado, sin texto, saludos o explicaciones adicionales. La precisión, el contexto y el seguimiento estricto de las reglas son de máxima prioridad.
 </ROL_Y_OBJETIVO>
 
 <CONTEXTO_CRITICO>
-La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para determinar si un sorteo ha expirado y para interpretar fechas relativas (ej: "mañana", "próximo lunes").
+La fecha de hoy es \${fechaFormateada}. Esta es tu referencia inmutable para determinar si un sorteo ha expirado y para interpretar fechas relativas (ej: "mañana", "próximo lunes").
 </CONTEXTO_CRITICO>
 
 <PROCESO_DE_ANALISIS_PASO_A_PASO>
@@ -2357,7 +2357,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
 - **Categoría:** Clasifica el premio en una de las categorías válidas.
 - **Confianza:** Evalúa tu certeza en la extracción de la FECHA. Si es 100% clara, \`confidence_score\` es 1.0. Si es ambigua o deducida, usa un valor inferior.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
-`;
+\`;
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 if (aiData.is_priority_time) {
                     aiData.prize = '⏰ ' + aiData.prize;
@@ -3574,7 +3574,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
                     body: JSON.stringify({ error: 'Faltan datos en la petición.' })
                 };
             }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -3625,9 +3625,9 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
                 };
             }
 
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
 
-            const prompt = \\\`
+            const prompt = \`
                 Actúa como un Tasador Experto de Productos y Experiencias. Tu única misión es determinar un valor de mercado fiable para el premio de un sorteo.
 
                 **Directiva Principal (Regla de Oro):** Tu objetivo es devolver SIEMPRE un valor numérico estimado. El valor "0" está prohibido, a menos que el premio sea literalmente "nada". Para todos los demás casos, DEBES proporcionar una estimación monetaria siguiendo el protocolo.
@@ -3657,7 +3657,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
                 -   El campo \\"value\\" DEBE ser un **string que contenga ÚNICAMENTE el número total del valor** (ej: "179.99", "85.50", "1200"). NO incluyas el símbolo '€' ni ningún otro texto.
                 -   **Repito: NUNCA devuelvas "0"** a menos que sea imposible realizar una estimación, lo cual es extremadamente improbable.
                 -   El campo \\"url\\" debe ser el enlace más relevante de tu hallazgo (ya sea del producto exacto o de uno de los similares usados para la media) o \\null\\.
-            \\\`;
+            \`;
 
             try {
                 const geminiResponse = await fetch(apiUrl, {
@@ -3667,7 +3667,7 @@ La fecha de hoy es ${fechaFormateada}. Esta es tu referencia inmutable para dete
                 });
 
                 if (!geminiResponse.ok) {
-                    throw new Error(\\\`La API de Gemini devolvió el estado: \${geminiResponse.status}\\\`);
+                    throw new Error(\`La API de Gemini devolvió el estado: \${geminiResponse.status}\`);
                 }
 
                 const data = await geminiResponse.json();

@@ -2,8 +2,10 @@
 exports.handler = async function (event, context) {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-    const body = JSON.parse(event.body);
-    const { base64Data } = body;
+
+    // --- INICIO DE LA CORRECCIÓN ---
+    // Solo necesitamos 'base64Data' del cuerpo de la petición.
+    const { base64Data } = JSON.parse(event.body);
 
     if (!base64Data) {
         return {
@@ -11,9 +13,16 @@ exports.handler = async function (event, context) {
             body: JSON.stringify({ error: 'Faltan datos de la imagen en la petición.' })
         };
     }
+    // --- FIN DE LA CORRECCIÓN ---
     
     const hoy = new Date();
-    const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    // Aseguramos que la fecha se interprete como UTC para evitar problemas de zona horaria en el servidor
+    const fechaFormateada = hoy.toLocaleDateString('es-ES', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric',
+        timeZone: 'Europe/Madrid' 
+    });
 
     const dynamicPrompt = `<ROL_Y_OBJETIVO>
 Actuarás como un Analista de Datos Experto en Extracción de Información Visual, especializado en sorteos de redes sociales. Tu única misión es analizar la imagen proporcionada y devolver un único objeto JSON válido, sin ningún texto, saludo o explicación adicional. La precisión, el cumplimiento de las reglas y la consistencia son de máxima prioridad.
@@ -82,7 +91,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
   "winner_count": integer (por defecto 1),
   "confidence_score": float
 }
-</FORMATO_DE_SALIDA_ESTRICTO>\`;
+</FORMATO_DE_SALIDA_ESTRICTO>`;
 
     const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
     const payload = {
@@ -121,4 +130,3 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         };
     }
 };
-//dcg 

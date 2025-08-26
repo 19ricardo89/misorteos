@@ -8,21 +8,19 @@ exports.handler = async function (event, context) {
     if (!base64Data) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ error: 'Faltan datos en la petición.' })
+            body: JSON.stringify({ error: 'Faltan datos de la imagen en la petición.' })
         };
     }
     
-    // Generamos la fecha formateada aquí mismo en la función
     const hoy = new Date();
     const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    // INICIO DEL PROMPT V6 (FINAL)
-    const dynamicPrompt = \`<ROL_Y_OBJETIVO>
+    const dynamicPrompt = `<ROL_Y_OBJETIVO>
 Actuarás como un Analista de Datos Experto en Extracción de Información Visual, especializado en sorteos de redes sociales. Tu única misión es analizar la imagen proporcionada y devolver un único objeto JSON válido, sin ningún texto, saludo o explicación adicional. La precisión, el cumplimiento de las reglas y la consistencia son de máxima prioridad.
 </ROL_Y_OBJETIVO>
 
 <CONTEXTO_CRITICO>
-La fecha de hoy es \${fechaFormateada}. Usa esta fecha como referencia inmutable para evaluar si un sorteo ha expirado y para interpretar fechas relativas (ej: "mañana", "próximo lunes").
+La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable para evaluar si un sorteo ha expirado y para interpretar fechas relativas (ej: "mañana", "próximo lunes").
 </CONTEXTO_CRITICO>
 
 <PROCESO_MENTAL_GUIADO>
@@ -85,7 +83,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
   "confidence_score": float
 }
 </FORMATO_DE_SALIDA_ESTRICTO>\`;
-    // FIN DEL PROMPT
 
     const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
     const payload = {

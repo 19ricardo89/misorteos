@@ -5878,6 +5878,19 @@ window.giveaways = {
             "ends_at_time": "23:59h"
         },
         {
+            "id": "1756145132178",
+            "date": "2025-08-31",
+            "prize": "Una noche para dos personas en una cabaña Hobbit en Veratton (Villanueva de la Vera, Cáceres) 🛩️",
+            "accounts": [
+                "@deveratton",
+                "@elviajedeivan"
+            ],
+            "price": "200",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59"
+        },
+        {
             "id": "1756145142930",
             "date": "2025-08-31",
             "prize": "Pack de productos Fisiocrem 💄",

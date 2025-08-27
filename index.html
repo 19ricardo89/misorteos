@@ -1331,11 +1331,11 @@
             </button>
         </div>
     </section>
-<script src="giveaways_new.js"></script>
+
+    <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script src="foreignAccounts.js"></script> 
-    <script src="prompts.js"></script>
-    <script id="animations-script">
+    <script src="prompts.js"></script> <script id="animations-script">
         function animateStarryBackground() {
             const starsContainer = document.getElementById('magic-stars-container');
             if (!starsContainer) return;
@@ -1863,6 +1863,7 @@
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+                // --- INICIO DEL CÓDIGO CORREGIDO ---
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
 
@@ -1886,6 +1887,7 @@
                     (currentFilter === 'tecnologia' && prize.includes('💻'));
 
                 return matchesCategory;
+                // --- FIN DEL CÓDIGO CORREGIDO ---
             });
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
@@ -1915,6 +1917,7 @@
 
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+            // --- INICIO DEL CÓDIGO CORREGIDO ---
             const prize = g.prize ? g.prize.toLowerCase() : '';
             const searchText = searchQuery.toLowerCase();
 
@@ -1938,6 +1941,7 @@
                 (currentFilter === 'tecnologia' && prize.includes('💻'));
 
             return matchesCategory;
+            // --- FIN DEL CÓDIGO CORREGIDO ---
         });
     
         dayGiveaways.sort((a, b) => {
@@ -1958,6 +1962,7 @@
             const itemContainer = document.createElement('div');
             itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
+            // --- CONTENEDOR IZQUIERDO (CHECKBOX Y BOTONES DE COMPLETADO) ---
             const leftSideContainer = document.createElement('div');
             leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
 
@@ -1991,6 +1996,7 @@
 
             controlsContainer.appendChild(postCompleteActions);
 
+            // --- CONTENEDOR DEL PREMIO Y CUENTAS ---
             const prizeContainer = document.createElement('div');
             prizeContainer.className = 'overflow-hidden';
 
@@ -2001,12 +2007,14 @@
             leftSideContainer.appendChild(controlsContainer);
             leftSideContainer.appendChild(prizeContainer);
 
+            // --- CONTENEDOR DERECHO (VALOR) ---
             const detailsContainer = document.createElement('div');
             detailsContainer.className = 'text-right flex-shrink-0 ml-2';
             if (giveaway.price) {
                 detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
             }
 
+            // --- CONTENEDOR DE ACCIONES (MOVER, PAPELERA, EXTRANJERO) ---
             const actionsContainer = document.createElement('div');
             actionsContainer.className = 'flex flex-col items-center ml-2 space-y-1';
 
@@ -2031,6 +2039,7 @@
             foreignBtn.dataset.giveawayDate = dateStr;
             actionsContainer.appendChild(foreignBtn);
 
+            // --- ENSAMBLAJE FINAL DEL ITEM ---
             itemContainer.appendChild(leftSideContainer);
             itemContainer.appendChild(detailsContainer);
             itemContainer.appendChild(actionsContainer);
@@ -2264,47 +2273,30 @@
             
             let resultData;
             try {
+                // AQUÍ SE USA LA VARIABLE `dynamicPrompt` DEL ARCHIVO prompts.js
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
                 if (aiData.status === 'not_a_giveaway') {
-                    resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
+                     resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
                 } else if (aiData.status === 'discard_no_date' || !aiData.date) {
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
                 } else {
                     const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
-                    let priceInfo;
-
-                    if (aiData.price) {
-                        priceInfo = { prize: aiData.prize, value: aiData.price, url: null };
-                    } else {
-                        priceInfo = await searchPrizeValue(aiData);
-                    }
-
-                    let prizeWithEmoji = priceInfo.prize || aiData.prize;
-                    if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
-                    if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
-                    if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
-                    if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
-                    if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
-                    if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
-                    if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
-                    const numericValue = parseFloat((priceInfo.value || '0').replace(/[^0-9,.]/g, '').replace(',', '.'));
-                    if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
-                    priceInfo.prize = prizeWithEmoji;
-
                     const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
-                    const existingGiveaway = isDuplicateGiveaway({ ...aiData, prize: prizeWithEmoji, accounts });
+                    const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
+                    
+                    const priceInfo = await searchPrizeValue(aiData);
 
                     if (isForeign) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'foreign', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
                     } else if (existingGiveaway) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'expired', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
                     } else {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'valid', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'valid', originalFile: file };
                     }
                 }
             } catch (error) {
@@ -2314,6 +2306,7 @@
                     giveawaysWithErrors.push(file);
                 }
             }
+            
             renderInteractiveCard(resultData);
         };
         reader.readAsDataURL(file);
@@ -2696,7 +2689,6 @@
         const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
         const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
         if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
-
         const functionUrl = '/.netlify/functions/search';
         try {
             const response = await fetch(functionUrl, {
@@ -2704,20 +2696,30 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: cleanedPrize, accounts: accounts })
             });
-
             if (!response.ok) {
                 throw new Error('La respuesta de la función de búsqueda no fue OK');
             }
-
-            const parsedResult = await response.json();
-            
-            let formattedValue = "No encontrado";
-            if (parsedResult.value && parsedResult.value !== "No encontrado" && !isNaN(parseFloat(parsedResult.value))) {
-                formattedValue = parsedResult.value + '€';
+            const result = await response.json();
+            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                const text = result.candidates[0].content.parts[0].text;
+                const parsedResult = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+                let prizeWithEmoji = aiData.prize;
+                let numericValue = null;
+                if (parsedResult.value && parsedResult.value !== "No encontrado") {
+                    numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
+                }
+                if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
+                if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
+                if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
+                if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
+                if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
+                if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
+                if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
+                if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+                return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
+            } else {
+                throw new Error("Respuesta incompleta de la API de texto.");
             }
-
-            return { prize: aiData.prize, value: formattedValue, url: parsedResult.url };
-
         } catch (error) {
             console.error("Error en la búsqueda del valor:", error);
             return { prize: aiData.prize, value: "No encontrado", url: null };
@@ -4129,6 +4131,7 @@
     deleteAllTrashBtn.addEventListener('click', deleteAllTrash);
     deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
     
+
 </script>
 </body>
 </html>

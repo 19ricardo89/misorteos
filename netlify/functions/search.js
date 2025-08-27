@@ -49,7 +49,7 @@ exports.handler = async function (event, context) {
         });
 
         if (!geminiResponse.ok) {
-            throw new Error(`La API de Gemini devolvió el estado: ${geminiResponse.status}`);
+            throw new Error(\`La API de Gemini devolvió el estado: \${geminiResponse.status}\`);
         }
 
         const data = await geminiResponse.json();

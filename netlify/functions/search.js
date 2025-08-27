@@ -13,7 +13,6 @@ exports.handler = async function (event, context) {
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
-    // --- INICIO DEL PROMPT "TASADOR EXPERTO" v3 ---
     const prompt = `
         Actúa como un Tasador Experto de Productos y Experiencias. Tu única misión es determinar un valor de mercado fiable para el premio de un sorteo.
 
@@ -47,7 +46,6 @@ exports.handler = async function (event, context) {
         -   El campo \`"value"\` DEBE ser un **string que contenga ÚNICAMENTE el número** (ej: "179.99", "60").
         -   **REGLA FINAL INEXPUGNABLE:** Bajo NINGUNA circunstancia puedes devolver "No encontrado", null o un objeto JSON inválido. Tu misión es estimar un valor numérico.
     `;
-    // --- FIN DEL PROMPT ---
 
     try {
         const geminiResponse = await fetch(apiUrl, {
@@ -80,7 +78,7 @@ exports.handler = async function (event, context) {
         console.error("Error en la función search.js:", error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ value: '0', url: null, error: error.message })
+            body: JSON.stringify({ value: '1', url: null, error: error.message }) // Devuelve '1' como fallback para evitar "No encontrado"
         };
     }
 };

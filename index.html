@@ -1331,8 +1331,7 @@
             </button>
         </div>
     </section>
-
-    <script src="giveaways_new.js"></script>
+<script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script src="foreignAccounts.js"></script> 
     <script src="prompts.js"></script> <script id="animations-script">
@@ -2273,7 +2272,6 @@
             
             let resultData;
             try {
-                // AQUÍ SE USA LA VARIABLE `dynamicPrompt` DEL ARCHIVO prompts.js
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
                 if (aiData.status === 'not_a_giveaway') {
@@ -2282,21 +2280,39 @@
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
                 } else {
                     const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
+                    let priceInfo;
+
+                    if (aiData.price) {
+                        priceInfo = { prize: aiData.prize, value: aiData.price, url: null };
+                    } else {
+                        priceInfo = await searchPrizeValue(aiData);
+                    }
+
+                    let prizeWithEmoji = priceInfo.prize || aiData.prize;
+                    if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
+                    if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
+                    if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
+                    if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
+                    if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
+                    if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
+                    if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
+                    const numericValue = parseFloat((priceInfo.value || '0').replace(/[^0-9,.]/g, '').replace(',', '.'));
+                    if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+                    priceInfo.prize = prizeWithEmoji;
+
                     const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
-                    const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
-                    
-                    const priceInfo = await searchPrizeValue(aiData);
+                    const existingGiveaway = isDuplicateGiveaway({ ...aiData, prize: prizeWithEmoji, accounts });
 
                     if (isForeign) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'foreign', originalFile: file };
                     } else if (existingGiveaway) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'expired', originalFile: file };
                     } else {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'valid', originalFile: file };
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'valid', originalFile: file };
                     }
                 }
             } catch (error) {
@@ -2306,7 +2322,6 @@
                     giveawaysWithErrors.push(file);
                 }
             }
-            
             renderInteractiveCard(resultData);
         };
         reader.readAsDataURL(file);
@@ -2689,6 +2704,7 @@
         const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
         const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
         if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
+
         const functionUrl = '/.netlify/functions/search';
         try {
             const response = await fetch(functionUrl, {
@@ -2696,30 +2712,20 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: cleanedPrize, accounts: accounts })
             });
+
             if (!response.ok) {
                 throw new Error('La respuesta de la función de búsqueda no fue OK');
             }
-            const result = await response.json();
-            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
-                const text = result.candidates[0].content.parts[0].text;
-                const parsedResult = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
-                let prizeWithEmoji = aiData.prize;
-                let numericValue = null;
-                if (parsedResult.value && parsedResult.value !== "No encontrado") {
-                    numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
-                }
-                if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
-                if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
-                if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
-                if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
-                if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
-                if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
-                if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
-                if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
-                return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
-            } else {
-                throw new Error("Respuesta incompleta de la API de texto.");
+
+            const parsedResult = await response.json();
+            
+            let formattedValue = "No encontrado";
+            if (parsedResult.value && parsedResult.value !== "No encontrado" && !isNaN(parseFloat(parsedResult.value))) {
+                formattedValue = parsedResult.value + '€';
             }
+
+            return { prize: aiData.prize, value: formattedValue, url: parsedResult.url };
+
         } catch (error) {
             console.error("Error en la búsqueda del valor:", error);
             return { prize: aiData.prize, value: "No encontrado", url: null };
@@ -3345,9 +3351,9 @@
         achievementsModalBody.innerHTML = `
             <div class="achievement-tabs flex flex-wrap gap-x-4 border-b border-yellow-600/20 mb-4">
                 <button data-tab="logros" class="py-2 px-4 font-bold ${activeTab === 'logros' ? 'active' : ''}">Logros</button>
-                <button data-tab="titulos" class="py-2 px-4 font-bold ${activeTab === 'titulos' ? 'active' : ''}">Títulos de Prestigio</button>
-                <button data-tab="meritos" class="py-2 px-4 font-bold ${activeTab === 'meritos' ? 'active' : ''}">Méritos Únicos</button>
-                <button data-tab="ps_info" class="py-2 px-4 font-bold ${activeTab === 'ps_info' ? 'active' : ''}">Sistema de Puntos</button>
+                <button data-tab="titulos" class="py-2 px-4 font-bold ${activeTab === 'titulos' ? '' : 'hidden'}">Títulos de Prestigio</button>
+                <button data-tab="meritos" class="py-2 px-4 font-bold ${activeTab === 'meritos' ? '' : 'hidden'}">Méritos Únicos</button>
+                <button data-tab="ps_info" class="py-2 px-4 font-bold ${activeTab === 'ps_info' ? '' : 'hidden'}">Sistema de Puntos</button>
             </div>
             <div id="achievements-content" class="space-y-3">
                 <div class="tab-content ${activeTab === 'logros' ? '' : 'hidden'}" data-tab-content="logros">${achievementsHTML}</div>

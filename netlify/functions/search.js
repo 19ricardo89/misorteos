@@ -13,11 +13,11 @@ exports.handler = async function (event, context) {
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
-    // --- INICIO DEL PROMPT "TASADOR EXPERTO" v2 ---
+    // --- INICIO DEL PROMPT "TASADOR EXPERTO" v3 ---
     const prompt = `
         Actúa como un Tasador Experto de Productos y Experiencias. Tu única misión es determinar un valor de mercado fiable para el premio de un sorteo.
 
-        **Directiva Principal (Regla de Oro):** Tu objetivo es devolver SIEMPRE un valor numérico estimado. El valor "0" está prohibido, a menos que el premio sea literalmente "nada". Para todos los demás casos, DEBES proporcionar una estimación monetaria siguiendo el protocolo.
+        **Directiva Principal (Regla de Oro):** Tu objetivo es devolver SIEMPRE un valor numérico estimado. El valor "0" o cualquier texto como "No encontrado" están estrictamente prohibidos, a menos que el premio sea literalmente "nada". Debes proporcionar una estimación monetaria.
 
         **Premio a Valorar:** "${query}"
         **Cuentas/Marcas Asociadas:** ${accounts.join(', ')}
@@ -25,25 +25,27 @@ exports.handler = async function (event, context) {
         **PROTOCOLO DE VALORACIÓN (OBLIGATORIO Y SECUENCIAL):**
 
         1.  **BÚSQUEDA EXACTA:**
-            a. Intenta encontrar el precio del producto exacto en las **webs oficiales** de las marcas asociadas.
-            b. Si no lo encuentras, búscalo en **Amazon**.
-            c. Si sigue sin aparecer, realiza una búsqueda exhaustiva en **Google**. Un producto casi siempre tiene un precio en algún sitio.
+            a. Intenta encontrar el precio del producto exacto en las **webs oficiales** de las marcas asociadas, en **Amazon** o en **Google**. Un producto casi siempre tiene un precio en algún sitio.
 
         2.  **PROTOCOLO DE ESTIMACIÓN (SI LA BÚSQUEDA EXACTA FALLA):**
-            a. Si no encuentras el producto exacto, tu tarea es encontrar entre 3 y 5 productos de **características, marca y calidad MUY SIMILARES**.
-            b. **Calcula el precio medio** de esos productos similares que has encontrado. Este será tu valor estimado.
-            c. Para **experiencias** (entradas, viajes, cenas), busca precios de servicios comparables en la misma ciudad/región y ofrece una estimación conservadora. (Ej: "Entrada doble Dino Expo" -> busca "precio entrada exposición dinosaurios españa").
+            a. Encuentra entre 3 y 5 productos de **características, marca y calidad MUY SIMILARES**.
+            b. **Calcula el precio medio** de esos productos. Este será tu valor estimado.
+            c. Para **experiencias** (entradas, viajes), busca precios de servicios comparables y ofrece una estimación conservadora.
+
+        3.  **PROTOCOLO DE ÚLTIMO RECURSO (SI TODO LO ANTERIOR FALLA):**
+            a. Basándote EXCLUSIVAMENTE en el tipo de producto descrito en "${query}", establece un **RANGO DE PRECIOS CREÍBLE Y CONSERVADOR**.
+            b. Elige un **valor MEDIO** dentro de ese rango. Es preferible una estimación razonada a un fallo.
+            c. Ejemplo: Si el premio es "un lote de cosméticos de farmacia", puedes estimar un rango de 40€-80€ y devolver "60". Si es "una taza de marca", un rango de 10€-20€ y devolver "15".
 
         **FORMATO DE SALIDA (REGLAS ESTRICTAS E INQUEBRANTABLES):**
-        Tu respuesta DEBE SER única y exclusivamente un objeto JSON válido.
+        Tu respuesta DEBE SER única y exclusivamente un objeto JSON válido. NO incluyas explicaciones, saludos ni la palabra \`\`\`json.
         {
           "value": "string",
           "url": "string"
         }
 
-        -   El campo \`"value"\` DEBE ser un **string que contenga ÚNICAMENTE el número total del valor** (ej: "179.99", "85.50", "1200"). NO incluyas el símbolo '€' ni ningún otro texto.
-        -   **Repito: NUNCA devuelvas "0"** a menos que sea imposible realizar una estimación, lo cual es extremadamente improbable.
-        -   El campo \`"url"\` debe ser el enlace más relevante de tu hallazgo (ya sea del producto exacto o de uno de los similares usados para la media) o \`null\`.
+        -   El campo \`"value"\` DEBE ser un **string que contenga ÚNICAMENTE el número** (ej: "179.99", "60").
+        -   **REGLA FINAL INEXPUGNABLE:** Bajo NINGUNA circunstancia puedes devolver "No encontrado", null o un objeto JSON inválido. Tu misión es estimar un valor numérico.
     `;
     // --- FIN DEL PROMPT ---
 
@@ -55,7 +57,7 @@ exports.handler = async function (event, context) {
         });
 
         if (!geminiResponse.ok) {
-            throw new Error(`La API de Gemini devolvió el estado: ${geminiResponse.status}`);
+            throw new Error(\`La API de Gemini devolvió el estado: \${geminiResponse.status}\`);
         }
 
         const data = await geminiResponse.json();

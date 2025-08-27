@@ -2716,7 +2716,19 @@
                 if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
                 if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
                 if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
-                return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
+
+                // --- INICIO DE LA CORRECCIÓN ---
+                // Preparamos el valor para mostrarlo correctamente en la tarjeta.
+                let formattedValue = "No encontrado";
+                if (parsedResult.value && parsedResult.value !== "No encontrado" && !isNaN(parseFloat(parsedResult.value))) {
+                    // Si tenemos un número válido, le añadimos el símbolo '€'.
+                    formattedValue = parsedResult.value + '€';
+                }
+                
+                // Devolvemos el valor ya formateado.
+                return { prize: prizeWithEmoji, value: formattedValue, url: parsedResult.url };
+                // --- FIN DE LA CORRECCIÓN ---
+
             } else {
                 throw new Error("Respuesta incompleta de la API de texto.");
             }

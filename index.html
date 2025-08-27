@@ -2272,34 +2272,60 @@
             analysisImagePreview.src = base64Data;
             
             let resultData;
-            try {
-                // AQUÍ SE USA LA VARIABLE `dynamicPrompt` DEL ARCHIVO prompts.js
-                const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
-                
-                if (aiData.status === 'not_a_giveaway') {
-                     resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
-                } else if (aiData.status === 'discard_no_date' || !aiData.date) {
-                    resultData = { ...aiData, status: 'no_date', originalFile: file };
-                } else {
-                    const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
-                    const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
-                    const giveawayDate = new Date(aiData.date);
-                    const isExpired = giveawayDate < new Date(new Date().toDateString());
-                    const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
-                    
-                    const priceInfo = await searchPrizeValue(aiData);
+           
+try {
+    // AQUÍ SE USA LA VARIABLE `dynamicPrompt` DEL ARCHIVO prompts.js
+    const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
 
-                    if (isForeign) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
-                    } else if (existingGiveaway) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
-                    } else if (isExpired) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
-                    } else {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'valid', originalFile: file };
-                    }
-                }
-            } catch (error) {
+    if (aiData.status === 'not_a_giveaway') {
+        resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
+    } else if (aiData.status === 'discard_no_date' || !aiData.date) {
+        resultData = { ...aiData, status: 'no_date', originalFile: file };
+    } else {
+        const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
+        let priceInfo;
+
+        // --- LÓGICA CORREGIDA ---
+        // Si el análisis de imagen ya encontró un precio, lo usamos.
+        // Si no, llamamos al tasador.
+        if (aiData.price) {
+            priceInfo = { prize: aiData.prize, value: aiData.price, url: null };
+        } else {
+            priceInfo = await searchPrizeValue(aiData);
+        }
+
+        // Unificamos el añadir emojis aquí para que siempre se aplique
+        let prizeWithEmoji = priceInfo.prize || aiData.prize;
+        if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
+        if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
+        if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
+        if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
+        if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
+        if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
+        if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
+        const numericValue = parseFloat((priceInfo.value || '0').replace(/[^0-9,.]/g, '').replace(',', '.'));
+        if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+
+        priceInfo.prize = prizeWithEmoji;
+        // --- FIN DE LA LÓGICA CORREGIDA ---
+
+        const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
+        const giveawayDate = new Date(aiData.date);
+        const isExpired = giveawayDate < new Date(new Date().toDateString());
+        const existingGiveaway = isDuplicateGiveaway({ ...aiData, prize: prizeWithEmoji, accounts });
+
+        if (isForeign) {
+            resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'foreign', originalFile: file };
+        } else if (existingGiveaway) {
+            resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
+        } else if (isExpired) {
+            resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'expired', originalFile: file };
+        } else {
+            resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: prizeInfo.prize, accounts, status: 'valid', originalFile: file };
+        }
+    }
+} catch (error) {
+
                 console.error(`Error al analizar la imagen ${file.name}:`, error);
                 resultData = { prize: 'Error de análisis', status: 'api_error', error: error.message, originalFile: file };
                 if (file) {

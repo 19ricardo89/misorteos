@@ -121,6 +121,10 @@
             align-items: center;
             justify-content: center;
         }
+        #modal-search-input::placeholder {
+            color: #a16207; /* Un tono dorado oscuro para mejor visibilidad */
+            opacity: 0.8;
+        }
         .modal.is-visible {
             pointer-events: auto;
             opacity: 1;
@@ -980,7 +984,7 @@
                     <h2 id="modal-title" class="text-2xl sm:text-3xl">Sorteos del Día</h2>
                     <button id="close-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
                 </div>
-                <div id="modal-filters" class="flex flex-col sm:flex-row gap-2 mb-4">
+                <div id="modal-filters" class="flex flex-col sm:flex-row gap-2 mb-2">
                     <input type="text" id="modal-search-input" placeholder="Buscar por premio..." class="w-full p-2 rounded-lg bg-white border border-yellow-400 text-sm flex-grow">
                     <select id="modal-category-filter" class="w-full sm:w-auto p-2 rounded-lg bg-white border border-yellow-400 text-sm">
                         </select>
@@ -2018,8 +2022,44 @@
         return CATEGORY_INFO[categoryKey] || CATEGORY_INFO['otros'];
     };
 
+    const populateCategoryFilter = () => {
+        const filterEl = document.getElementById('modal-category-filter');
+        if (!filterEl) return;
+        
+        filterEl.innerHTML = ''; // Limpiar opciones previas
+        
+        // Añadir la opción por defecto "Todas"
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'Todas las categorías';
+        filterEl.appendChild(allOption);
+
+        // Añadir el resto de categorías desde el objeto CATEGORY_INFO
+        for (const key in CATEGORY_INFO) {
+            if (key !== 'all') {
+                const info = CATEGORY_INFO[key];
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = `${info.emoji} ${info.name}`;
+                filterEl.appendChild(option);
+            }
+        }
+    };
+
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []);
+        
+        const modalSearchInput = document.getElementById('modal-search-input');
+        const categoryFilter = document.getElementById('modal-category-filter');
+        const searchQuery = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
+        const selectedCategory = categoryFilter ? categoryFilter.value : 'all';
+
+        dayGiveaways = dayGiveaways.filter(g => {
+            const matchesSearch = !searchQuery || (g.prize && g.prize.toLowerCase().includes(searchQuery));
+            const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
+            return matchesSearch && matchesCategory;
+        });
+
 
         dayGiveaways.sort((a, b) => {
             // 1. Poner siempre los completados al final de la lista
@@ -2049,7 +2089,6 @@
             const itemContainer = document.createElement('div');
             itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
-            // --- CONTENEDOR IZQUIERDO (CHECKBOX Y BOTONES DE COMPLETADO) ---
             const leftSideContainer = document.createElement('div');
             leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
 
@@ -2083,12 +2122,12 @@
 
             controlsContainer.appendChild(postCompleteActions);
 
-            // --- CONTENEDOR DEL PREMIO Y CUENTAS ---
             const prizeContainer = document.createElement('div');
             prizeContainer.className = 'overflow-hidden';
 
             let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
-            const timeEmoji = giveaway.is_priority_time ? '🔥' : (giveaway.ends_at_time ? '⏰' : '');
+            
+            const timeEmoji = giveaway.is_priority_time ? '⏰' : (giveaway.ends_at_time ? '⏰' : '');
             const categoryInfo = getCategoryInfo(giveaway.prize_category);
             
             prizeContainer.innerHTML = `
@@ -2100,14 +2139,12 @@
             leftSideContainer.appendChild(controlsContainer);
             leftSideContainer.appendChild(prizeContainer);
 
-            // --- CONTENEDOR DERECHO (VALOR) ---
             const detailsContainer = document.createElement('div');
             detailsContainer.className = 'text-right flex-shrink-0 ml-2';
             if (giveaway.price) {
                 detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
             }
 
-            // --- CONTENEDOR DE ACCIONES (MOVER, PAPELERA, EXTRANJERO) ---
             const actionsContainer = document.createElement('div');
             actionsContainer.className = 'flex flex-col items-center ml-2 space-y-1';
 
@@ -2132,7 +2169,6 @@
             foreignBtn.dataset.giveawayDate = dateStr;
             actionsContainer.appendChild(foreignBtn);
 
-            // --- ENSAMBLAJE FINAL DEL ITEM ---
             itemContainer.appendChild(leftSideContainer);
             itemContainer.appendChild(detailsContainer);
             itemContainer.appendChild(actionsContainer);
@@ -2147,6 +2183,24 @@
         if (hasPadel) modalContent.classList.add('modal-padel-bg');
         else if (hasTravel) modalContent.classList.add('modal-travel-bg');
         else modalContent.classList.add('modal-default-bg');
+        
+        const searchInput = document.getElementById('modal-search-input');
+        const categorySelect = document.getElementById('modal-category-filter');
+
+        const applyFilters = () => buildModal(dateStr);
+
+        searchInput.onkeyup = null;
+        searchInput.onkeydown = null;
+        categorySelect.onchange = null;
+        
+        searchInput.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyFilters();
+            }
+        };
+        categorySelect.onchange = applyFilters;
+
         modal.dataset.date = dateStr;
     };
 
@@ -2155,6 +2209,12 @@
         if (navMenu.classList.contains('is-open')) {
             toggleNavMenu();
         }
+        
+        const modalSearchInput = document.getElementById('modal-search-input');
+        const categoryFilter = document.getElementById('modal-category-filter');
+        if(modalSearchInput) modalSearchInput.value = '';
+        if(categoryFilter) categoryFilter.value = 'all';
+        
         buildModal(dateStr); 
         modal.classList.add('is-visible'); 
     };
@@ -4509,7 +4569,9 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     deleteAllTrashBtn.addEventListener('click', deleteAllTrash);
     deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
     
-
+    document.addEventListener('DOMContentLoaded', () => {
+        populateCategoryFilter();
+    });
 </script>
 </body>
 </html>

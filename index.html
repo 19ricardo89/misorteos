@@ -1061,6 +1061,30 @@
                      <a href="#" onclick="setFilterAndRender('tecnologia'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
                         <span class="relative z-10">Tecnología 💻</span>
                     </a>
+                    <a href="#" onclick="setFilterAndRender('comida'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Comida 🍔</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('ocio'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Ocio 🎟️</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('deporte'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Deporte 💪</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('infantil'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Infantil 🧸</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('mascotas'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Mascotas 🐾</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('dinero'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Dinero 💰</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('libros'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Libros 📚</span>
+                    </a>
+                    <a href="#" onclick="setFilterAndRender('motor'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Motor 🚗</span>
+                    </a>
                 </div>
                 <div class="flex justify-center">
                     <a href="#" onclick="setFilterAndRender('all'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
@@ -1896,7 +1920,6 @@
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
-                // --- INICIO DEL CÓDIGO CORREGIDO ---
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
 
@@ -1917,10 +1940,17 @@
                     (currentFilter === 'moda' && prize.includes('👠')) ||
                     (currentFilter === 'belleza' && prize.includes('💄')) ||
                     (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                    (currentFilter === 'tecnologia' && prize.includes('💻'));
+                    (currentFilter === 'tecnologia' && prize.includes('💻')) ||
+                    (currentFilter === 'comida' && prize.includes('🍔')) ||
+                    (currentFilter === 'ocio' && prize.includes('🎟️')) ||
+                    (currentFilter === 'deporte' && prize.includes('💪')) ||
+                    (currentFilter === 'infantil' && prize.includes('🧸')) ||
+                    (currentFilter === 'mascotas' && prize.includes('🐾')) ||
+                    (currentFilter === 'dinero' && prize.includes('💰')) ||
+                    (currentFilter === 'libros' && prize.includes('📚')) ||
+                    (currentFilter === 'motor' && prize.includes('🚗'));
 
                 return matchesCategory;
-                // --- FIN DEL CÓDIGO CORREGIDO ---
             });
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
@@ -1948,9 +1978,36 @@
         if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
     };
 
+    const getCategoryEmojiAndName = (prizeText) => {
+        const prize = prizeText.toLowerCase();
+        const categories = [
+            { emoji: '🥎', name: 'Pádel', keyword: '🥎' },
+            { emoji: '🛩️', name: 'Viajes', keyword: '🛩️' },
+            { emoji: '🃏', name: 'Frikis', keyword: '🃏' },
+            { emoji: '👠', name: 'Moda', keyword: '👠' },
+            { emoji: '💄', name: 'Belleza', keyword: '💄' },
+            { emoji: '🏠', name: 'Hogar', keyword: '🏠' },
+            { emoji: '💻', name: 'Tecnología', keyword: '💻' },
+            { emoji: '🍔', name: 'Comida', keyword: '🍔' },
+            { emoji: '🎟️', name: 'Ocio', keyword: '🎟️' },
+            { emoji: '💪', name: 'Deporte', keyword: '💪' },
+            { emoji: '🧸', name: 'Infantil', keyword: '🧸' },
+            { emoji: '🐾', name: 'Mascotas', keyword: '🐾' },
+            { emoji: '💰', name: 'Dinero', keyword: '💰' },
+            { emoji: '📚', name: 'Libros', keyword: '📚' },
+            { emoji: '🚗', name: 'Motor', keyword: '🚗' }
+        ];
+
+        for (const category of categories) {
+            if (prize.includes(category.keyword)) {
+                return { emoji: category.emoji, name: category.name };
+            }
+        }
+        return { emoji: '⭐', name: 'Otros' }; // Emoji por defecto para 'Otros'
+    };
+
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
-            // --- INICIO DEL CÓDIGO CORREGIDO ---
             const prize = g.prize ? g.prize.toLowerCase() : '';
             const searchText = searchQuery.toLowerCase();
 
@@ -1971,21 +2028,38 @@
                 (currentFilter === 'moda' && prize.includes('👠')) ||
                 (currentFilter === 'belleza' && prize.includes('💄')) ||
                 (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                (currentFilter === 'tecnologia' && prize.includes('💻'));
+                (currentFilter === 'tecnologia' && prize.includes('💻')) ||
+                (currentFilter === 'comida' && prize.includes('🍔')) ||
+                (currentFilter === 'ocio' && prize.includes('🎟️')) ||
+                (currentFilter === 'deporte' && prize.includes('💪')) ||
+                (currentFilter === 'infantil' && prize.includes('🧸')) ||
+                (currentFilter === 'mascotas' && prize.includes('🐾')) ||
+                (currentFilter === 'dinero' && prize.includes('💰')) ||
+                (currentFilter === 'libros' && prize.includes('📚')) ||
+                (currentFilter === 'motor' && prize.includes('🚗'));
 
             return matchesCategory;
-            // --- FIN DEL CÓDIGO CORREGIDO ---
         });
     
         dayGiveaways.sort((a, b) => {
+            // 1. Poner siempre los completados al final de la lista
             const aCompleted = completedGiveaways[a.id];
             const bCompleted = completedGiveaways[b.id];
-            const aHasTime = a.ends_at_time != null;
-            const bHasTime = b.ends_at_time != null;
+            if (aCompleted !== bCompleted) {
+                return aCompleted ? 1 : -1;
+            }
 
-            if (aCompleted !== bCompleted) return aCompleted ? 1 : -1;
-            if (aHasTime !== bHasTime) return aHasTime ? -1 : 1;
-            return 0;
+            // 2. Priorizar los sorteos con hora prioritaria (is_priority_time === true)
+            const aIsPriority = a.is_priority_time === true;
+            const bIsPriority = b.is_priority_time === true;
+            if (aIsPriority !== bIsPriority) {
+                return aIsPriority ? -1 : 1; // Si 'a' es prioritario, va primero (-1)
+            }
+
+            // 3. Para sorteos con la misma prioridad, ordenar por valor (de mayor a menor)
+            const aPrice = parsePrice(a.price);
+            const bPrice = parsePrice(b.price);
+            return bPrice - aPrice; // Se resta b - a para orden descendente
         });
 
         document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
@@ -2035,7 +2109,13 @@
 
             let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
             const timeEmoji = giveaway.is_priority_time ? '🔥' : (giveaway.ends_at_time ? '⏰' : '');
-            prizeContainer.innerHTML = `<p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize} ${timeEmoji}</p><p class="text-sm truncate">${accountsHTML}</p>`;
+            const categoryInfo = getCategoryEmojiAndName(giveaway.prize);
+            
+            prizeContainer.innerHTML = `
+                <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize} ${timeEmoji}</p>
+                <p class="text-sm truncate">${accountsHTML}</p>
+                <span class="text-xl" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji}</span>
+            `;
 
             leftSideContainer.appendChild(controlsContainer);
             leftSideContainer.appendChild(prizeContainer);
@@ -2374,7 +2454,7 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
         -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* \`prize\` debe ser "Estancia de fin de semana en hotel de lujo para dos".
 
 - **Precio:** Si ves un valor monetario explícito en la imagen (ej: "valorado en 150€", "premio de 500€"), extráelo. Si no, déjalo como \`null\`.
-- **Categoría:** Clasifica el premio en una de estas categorías: 'padel', 'viajes', 'frikis', 'moda', 'belleza', 'hogar', 'tecnologia', 'otros'.
+- **Categoría:** Clasifica el premio en una de estas categorías: 'padel', 'viajes', 'frikis', 'moda', 'belleza', 'hogar', 'tecnologia', 'comida', 'ocio', 'deporte', 'infantil', 'mascotas', 'dinero', 'libros', 'motor', 'otros'.
 - **Confianza:** Evalúa tu certeza sobre la extracción de la FECHA (0.0 a 1.0). Si la fecha es explícita y clara, usa 1.0. Si es deducida o ambigua, usa un valor inferior.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 
@@ -2573,7 +2653,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             }
         }, speed);
     }
-
     function renderInteractiveCard(resultData) {
         liveResultsContainer.innerHTML = '';
         let cardHTML = '';
@@ -2950,26 +3029,30 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             throw new Error('La respuesta de la función de búsqueda no fue OK');
         }
         
-        // ¡CORRECCIÓN CLAVE! Ahora 'parsedResult' es directamente la respuesta.
-        const parsedResult = await response.json();
+        const data = await response.json();
         
         let prizeWithEmoji = aiData.prize;
         let numericValue = null;
-        if (parsedResult.value && parsedResult.value !== "No encontrado") {
-            numericValue = parseFloat(String(parsedResult.value).replace(/[^0-9,.]/g, '').replace(',', '.'));
+        if (data.value && data.value !== "No encontrado") {
+            numericValue = parseFloat(String(data.value).replace(/[^0-9,.]/g, '').replace(',', '.'));
         }
         
-        // Se mantiene la lógica de los emojis
-        if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
-        if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
-        if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
-        if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
-        if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
-        if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
-        if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
-        if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+        const categoryMap = {
+            'padel': '🥎', 'viajes': '🛩️', 'frikis': '🃏', 'moda': '👠', 
+            'belleza': '💄', 'hogar': '🏠', 'tecnologia': '💻', 'comida': '🍔',
+            'ocio': '🎟️', 'deporte': '💪', 'infantil': '🧸', 'mascotas': '🐾',
+            'dinero': '💰', 'libros': '📚', 'motor': '🚗'
+        };
+
+        if(categoryMap[aiData.prize_category]) {
+            prizeWithEmoji += ` ${categoryMap[aiData.prize_category]}`;
+        }
+
+        if (!isNaN(numericValue) && numericValue > 500) {
+            prizeWithEmoji += ' 💲';
+        }
         
-        return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
+        return { prize: prizeWithEmoji, value: data.value, url: data.url };
 
     } catch (error) {
         console.error("Error en la búsqueda del valor:", error);
@@ -3151,6 +3234,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             discardedModalBody.appendChild(itemContainer);
         }); 
     };
+
     const openDuplicateModal = (discardedGiveaway, originalGiveaway) => {
         const previewContainer = document.getElementById('duplicate-giveaway-info');
         
@@ -3348,7 +3432,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     let winsGrowthLineChart = null;
     let valueVsAnticipationScatterChart = null;
     let hunterStyleRadarChart = null;
-
     const renderCharts = () => {
         if (categoryPieChart) categoryPieChart.destroy();
         if (monthlyValueBarChart) monthlyValueBarChart.destroy();

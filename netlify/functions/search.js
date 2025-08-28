@@ -5,6 +5,7 @@ exports.handler = async function (event, context) {
     const { query, accounts } = JSON.parse(event.body);
 
     if (!query) {
+        // Devuelve una respuesta de error por defecto si no hay consulta
         return {
             statusCode: 400,
             body: JSON.stringify({ value: '1', url: null, error: 'Falta la consulta (query).' })
@@ -49,14 +50,15 @@ exports.handler = async function (event, context) {
         });
 
         if (!geminiResponse.ok) {
-            throw new Error(\`La API de Gemini devolvió el estado: \${geminiResponse.status}\`);
+            throw new Error(`La API de Gemini devolvió el estado: ${geminiResponse.status}`);
         }
 
         const data = await geminiResponse.json();
 
+        // Comprueba si la respuesta tiene la estructura esperada y extrae el JSON
         if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
             const text = data.candidates[0].content.parts[0].text;
-            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            const jsonMatch = text.match(/\{[\s\S]*\}/); // Extracción robusta del JSON
             if (jsonMatch) {
                 return {
                     statusCode: 200,
@@ -66,10 +68,12 @@ exports.handler = async function (event, context) {
             }
         }
         
+        // Si no se encuentra un JSON válido en la respuesta
         throw new Error("La respuesta de la IA no contenía un JSON válido.");
 
     } catch (error) {
         console.error("Error en la función search.js:", error);
+        // Devuelve un valor por defecto en caso de error para no romper el frontend
         return {
             statusCode: 500,
             body: JSON.stringify({ value: '1', url: null, error: error.message })

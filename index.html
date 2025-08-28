@@ -726,7 +726,7 @@
             margin-bottom: 0.25rem;
             font-size: 0.9rem;
         }
-        .interactive-card-form input, .interactive-card-form textarea {
+        .interactive-card-form input, .interactive-card-form textarea, .interactive-card-form select {
             width: 100%;
             padding: 0.5rem;
             border-radius: 8px;
@@ -734,7 +734,7 @@
             background-color: white;
             color: #4e342e;
         }
-        .interactive-card-form input:disabled, .interactive-card-form textarea:disabled {
+        .interactive-card-form input:disabled, .interactive-card-form textarea:disabled, .interactive-card-form select:disabled {
             background-color: #fef3c7;
         }
         
@@ -871,10 +871,6 @@
             <span class="text-xl sm:text-2xl">🌟</span>
             <span>Revisión VIS</span>
         </a>
-        <a href="#" id="search-menu-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
-            <span class="text-xl sm:text-2xl">🔭</span>
-            <span>Búsqueda</span>
-        </a>
         <a href="#" id="achievements-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
             <span class="text-xl sm:text-2xl">🏅</span>
             <span>Logros</span>
@@ -984,7 +980,12 @@
                     <h2 id="modal-title" class="text-2xl sm:text-3xl">Sorteos del Día</h2>
                     <button id="close-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
                 </div>
-            </div>
+                <div id="modal-filters" class="flex flex-col sm:flex-row gap-2 mb-4">
+                    <input type="text" id="modal-search-input" placeholder="Buscar por premio..." class="w-full p-2 rounded-lg bg-white border border-yellow-400 text-sm flex-grow">
+                    <select id="modal-category-filter" class="w-full sm:w-auto p-2 rounded-lg bg-white border border-yellow-400 text-sm">
+                        </select>
+                </div>
+                </div>
             <div class="p-4 sm:p-6 pt-0">
                 <div class="flex justify-between items-center mb-4 text-yellow-900">
                     <button id="select-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Seleccionar todo</button>
@@ -1442,6 +1443,42 @@
     let wonGiveaways = JSON.parse(localStorage.getItem('wonGiveaways')) || [];
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
     let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
+
+    const CATEGORY_INFO = {
+        'all': { name: 'Todas las Categorías', emoji: '✨' },
+        'padel': { name: 'Pádel', emoji: '🥎' },
+        'motor': { name: 'Motor', emoji: '🏎️' },
+        'mascotas': { name: 'Mascotas', emoji: '🐾' },
+        'bebes': { name: 'Bebés', emoji: '👶' },
+        'bodas': { name: 'Bodas', emoji: '💍' },
+        'dinero': { name: 'Dinero y Vales', emoji: '💰' },
+        'viajes': { name: 'Viajes', emoji: '✈️' },
+        'ocio': { name: 'Ocio', emoji: '🎟️' },
+        'aventura': { name: 'Aventura', emoji: '🧗' },
+        'suscripciones': { name: 'Suscripciones', emoji: '💻' },
+        'gaming': { name: 'Gaming', emoji: '🎮' },
+        'foto': { name: 'Fotografía', emoji: '📸' },
+        'musica': { name: 'Música', emoji: '🎵' },
+        'deporte': { name: 'Deporte', emoji: '💪' },
+        'libros': { name: 'Libros', emoji: '📚' },
+        'frikis': { name: 'Frikis', emoji: '🃏' },
+        'joyeria': { name: 'Joyería', emoji: '💎' },
+        'accesorios': { name: 'Accesorios', emoji: '👜' },
+        'moda': { name: 'Moda', emoji: '👠' },
+        'belleza': { name: 'Belleza', emoji: '💄' },
+        'salud': { name: 'Salud', emoji: '🌿' },
+        'electrodomesticos': { name: 'Electrodomésticos', emoji: '📺' },
+        'cocina': { name: 'Cocina', emoji: '🍳' },
+        'bricolaje': { name: 'Bricolaje', emoji: '🛠️' },
+        'jardineria': { name: 'Jardinería', emoji: '🌱' },
+        'papeleria': { name: 'Papelería', emoji: '✏️' },
+        'arte': { name: 'Arte', emoji: '🎨' },
+        'eco': { name: 'Sostenible', emoji: '♻️' },
+        'gourmet': { name: 'Gourmet', emoji: '🍷' },
+        'comida': { name: 'Comida', emoji: '🍔' },
+        'hogar': { name: 'Hogar', emoji: '🏠' },
+        'otros': { name: 'Otros', emoji: '⭐' }
+    };
     
     const achievementList = {
         bronze: [
@@ -1579,7 +1616,6 @@
 
     let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || (window.foreignAccounts || []);
     let visGiveaways = JSON.parse(localStorage.getItem('visGiveaways')) || [];
-
     // --- Referencias a elementos del DOM ---
     const monthYearEl = document.getElementById('month-year');
     const calendarDaysEl = document.getElementById('calendar-days');
@@ -1597,7 +1633,6 @@
     const giveawayAccountsInput = document.getElementById('giveaway-accounts');
     const giveawayPriceInput = document.getElementById('giveaway-price');
     const totalGiveawaysEl = document.getElementById('total-giveaways-count');
-    const searchMenuBtn = document.getElementById('search-menu-btn');
     const searchModal = document.getElementById('search-modal');
     const closeSearchModalBtn = document.getElementById('close-search-modal');
     const searchInputModal = document.getElementById('search-input-modal');
@@ -1978,69 +2013,14 @@
         if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
     };
 
-    const getCategoryEmojiAndName = (prizeText) => {
-        const prize = prizeText.toLowerCase();
-        const categories = [
-            { emoji: '🥎', name: 'Pádel', keyword: '🥎' },
-            { emoji: '🛩️', name: 'Viajes', keyword: '🛩️' },
-            { emoji: '🃏', name: 'Frikis', keyword: '🃏' },
-            { emoji: '👠', name: 'Moda', keyword: '👠' },
-            { emoji: '💄', name: 'Belleza', keyword: '💄' },
-            { emoji: '🏠', name: 'Hogar', keyword: '🏠' },
-            { emoji: '💻', name: 'Tecnología', keyword: '💻' },
-            { emoji: '🍔', name: 'Comida', keyword: '🍔' },
-            { emoji: '🎟️', name: 'Ocio', keyword: '🎟️' },
-            { emoji: '💪', name: 'Deporte', keyword: '💪' },
-            { emoji: '🧸', name: 'Infantil', keyword: '🧸' },
-            { emoji: '🐾', name: 'Mascotas', keyword: '🐾' },
-            { emoji: '💰', name: 'Dinero', keyword: '💰' },
-            { emoji: '📚', name: 'Libros', keyword: '📚' },
-            { emoji: '🚗', name: 'Motor', keyword: '🚗' }
-        ];
-
-        for (const category of categories) {
-            if (prize.includes(category.keyword)) {
-                return { emoji: category.emoji, name: category.name };
-            }
-        }
-        return { emoji: '⭐', name: 'Otros' }; // Emoji por defecto para 'Otros'
+    const getCategoryInfo = (categoryKey) => {
+        // Si la categoría no existe en nuestro mapa, devolvemos la de 'otros' por defecto.
+        return CATEGORY_INFO[categoryKey] || CATEGORY_INFO['otros'];
     };
 
     const buildModal = (dateStr) => {
-        let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
-            const prize = g.prize ? g.prize.toLowerCase() : '';
-            const searchText = searchQuery.toLowerCase();
+        let dayGiveaways = (giveaways[dateStr] || []);
 
-            let matchesSearch = !searchQuery || prize.includes(searchText);
-            if (!matchesSearch) {
-                return false;
-            }
-
-            if (currentFilter === 'all') {
-                return true;
-            }
-
-            const matchesCategory =
-                (currentFilter === 'padel' && prize.includes('🥎')) ||
-                (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                (currentFilter === 'price' && prize.includes('💲')) ||
-                (currentFilter === 'frikis' && prize.includes('🃏')) ||
-                (currentFilter === 'moda' && prize.includes('👠')) ||
-                (currentFilter === 'belleza' && prize.includes('💄')) ||
-                (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                (currentFilter === 'tecnologia' && prize.includes('💻')) ||
-                (currentFilter === 'comida' && prize.includes('🍔')) ||
-                (currentFilter === 'ocio' && prize.includes('🎟️')) ||
-                (currentFilter === 'deporte' && prize.includes('💪')) ||
-                (currentFilter === 'infantil' && prize.includes('🧸')) ||
-                (currentFilter === 'mascotas' && prize.includes('🐾')) ||
-                (currentFilter === 'dinero' && prize.includes('💰')) ||
-                (currentFilter === 'libros' && prize.includes('📚')) ||
-                (currentFilter === 'motor' && prize.includes('🚗'));
-
-            return matchesCategory;
-        });
-    
         dayGiveaways.sort((a, b) => {
             // 1. Poner siempre los completados al final de la lista
             const aCompleted = completedGiveaways[a.id];
@@ -2109,7 +2089,7 @@
 
             let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
             const timeEmoji = giveaway.is_priority_time ? '🔥' : (giveaway.ends_at_time ? '⏰' : '');
-            const categoryInfo = getCategoryEmojiAndName(giveaway.prize);
+            const categoryInfo = getCategoryInfo(giveaway.prize_category);
             
             prizeContainer.innerHTML = `
                 <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize} ${timeEmoji}</p>
@@ -2454,7 +2434,50 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
         -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* \`prize\` debe ser "Estancia de fin de semana en hotel de lujo para dos".
 
 - **Precio:** Si ves un valor monetario explícito en la imagen (ej: "valorado en 150€", "premio de 500€"), extráelo. Si no, déjalo como \`null\`.
-- **Categoría:** Clasifica el premio en una de estas categorías: 'padel', 'viajes', 'frikis', 'moda', 'belleza', 'hogar', 'tecnologia', 'comida', 'ocio', 'deporte', 'infantil', 'mascotas', 'dinero', 'libros', 'motor', 'otros'.
+- **Categoría (Reglas Jerárquicas V3):** Debes seguir estas reglas en orden estricto. La primera regla que se cumpla define la categoría y finaliza el proceso.
+
+    **--- NIVEL 1: NICHOS MUY ESPECÍFICOS ---**
+    1.  **Regla de Pádel:** Si el premio es específico de pádel (palas, paleteros, pelotas, ropa de pádel), clasifícalo como 'padel'.
+    2.  **Regla de Motor:** Si está relacionado con coches o motos (accesorios, merchandising F1/MotoGP, experiencias en circuito), clasifícalo como 'motor'.
+    3.  **Regla de Mascotas:** Si es para animales (comida, juguetes, accesorios), clasifícalo como 'mascotas'.
+    4.  **Regla de Bebés y Maternidad:** Si es para bebés (sillas de paseo, pañales, leche de fórmula, productos NUK), clasifícalo como 'bebes'.
+    5.  **Regla de Bodas:** Si es específico para bodas (vestidos, fotógrafo, invitaciones), clasifícalo como 'bodas'.
+
+    **--- NIVEL 2: NATURALEZA DEL PREMIO (NO FÍSICO) ---**
+    6.  **Regla de Dinero y Vales:** Si es dinero, una tarjeta regalo, cupón o vale de compra, clasifícalo como 'dinero'.
+    7.  **Regla de Viajes vs. Ocio (Desempate):**
+        * Si implica pernoctación o un vuelo/tren (estancia en hotel, fin de semana, crucero), es 'viajes'.
+        * Si es una experiencia local (entradas a conciertos, cine, teatro, parques temáticos, cena), es 'ocio'.
+    8.  **Regla de Aventura y Adrenalina:** Si es una experiencia de 'Ocio' que implica riesgo o adrenalina (salto paracaídas, puenting, conducción en circuito), clasifícalo como 'aventura'.
+    9.  **Regla de Suscripciones y Servicios:** Si es un servicio digital (Netflix, Spotify, software, cursos online), clasifícalo como 'suscripciones'.
+
+    **--- NIVEL 3: HOBBIES Y ARTÍCULOS PERSONALES ---**
+    10. **Regla de Gaming:** Si son consolas (PS5, Nintendo Switch), videojuegos o accesorios gaming (sillas, teclados), clasifícalo como 'gaming'.
+    11. **Regla de Fotografía y Vídeo:** Si son cámaras (Instax), drones, objetivos o trípodes, clasifícalo como 'foto'.
+    12. **Regla de Música y Sonido:** Si son auriculares, altavoces o instrumentos musicales, clasifícalo como 'musica'.
+    13. **Regla de Deporte (General):** Si es equipamiento o ropa para un deporte (que no sea pádel), clasifícalo como 'deporte'.
+    14. **Regla de Libros y Formación:** Si el premio principal es un libro o un curso (que no sea online), clasifícalo como 'libros'.
+    15. **Regla de Frikis:** Si son figuras coleccionables (Funko), juegos de mesa, cómics o merchandising de cultura pop, clasifícalo como 'frikis'.
+    16. **Regla de Joyería y Relojes:** Si son relojes, pulseras, collares o gafas de sol, clasifícalo como 'joyeria'.
+    17. **Regla de Bolsos y Accesorios:** Si son bolsos, mochilas, maletas o neceseres, clasifícalo como 'accesorios'.
+    18. **Regla de Moda:** Si es ropa o calzado de uso casual, clasifícalo como 'moda'.
+    19. **Regla de Belleza:** Si son productos de cosmética, maquillaje o perfumes, clasifícalo como 'belleza'.
+    20. **Regla de Salud y Cuidado Personal:** Si son productos de farmacia, cuidado dental, vitaminas o servicios de bienestar (spa, masaje), clasifícalo como 'salud'.
+
+    **--- NIVEL 4: ARTÍCULOS PARA EL HOGAR Y OTROS ---**
+    21. **Regla de Electrodomésticos:** Si es un electrodoméstico grande (TV, lavadora, frigorífico, robot aspirador), clasifícalo como 'electrodomesticos'.
+    22. **Regla de Cocina y Menaje:** Si es un pequeño electrodoméstico (freidora de aire, cafetera) o menaje, clasifícalo como 'cocina'.
+    23. **Regla de Bricolaje y Herramientas:** Si son herramientas o material de bricolaje, clasifícalo como 'bricolaje'.
+    24. **Regla de Jardinería y Plantas:** Si son plantas, macetas o herramientas de jardín, clasifícalo como 'jardineria'.
+    25. **Regla de Papelería y Oficina:** Si son agendas, cuadernos, bolígrafos o material de oficina, clasifícalo como 'papeleria'.
+    26. **Regla de Arte y Manualidades:** Si son materiales para hobbies creativos (pintura, arcilla, kits), clasifícalo como 'arte'.
+    27. **Regla de Sostenible y Eco:** Si el principal atractivo del producto es que es ecológico o sostenible, clasifícalo como 'eco'.
+    28. **Regla de Gourmet y Vinos:** Si son productos de alimentación de alta gama (jamón ibérico, vinos, aceites premium), clasifícalo como 'gourmet'.
+    29. **Regla de Comida:** Si son productos de alimentación general no gourmet, clasifícalo como 'comida'.
+    30. **Regla de Hogar:** Si son objetos de decoración o textiles para el hogar no incluidos antes, clasifícalo como 'hogar'.
+
+    **--- NIVEL 5: CATEGORÍA POR DEFECTO ---**
+    31. **Regla Final:** Si ninguna de las reglas anteriores aplica, clasifícalo como 'otros'.
 - **Confianza:** Evalúa tu certeza sobre la extracción de la FECHA (0.0 a 1.0). Si la fecha es explícita y clara, usa 1.0. Si es deducida o ambigua, usa un valor inferior.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 
@@ -2473,7 +2496,7 @@ A continuación se presentan ejemplos de análisis para calibrar tu lógica y as
   "is_priority_time": true,
   "status": "valid",
   "is_spanish": true,
-  "prize_category": "tecnologia",
+  "prize_category": "gaming",
   "winner_count": 1,
   "confidence_score": 1.0
 }
@@ -2590,7 +2613,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
   "is_priority_time": boolean,
   "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
   "is_spanish": boolean,
-  "prize_category": "string",
+  "prize_category": "string ('padel', 'motor', 'mascotas', 'bebes', 'bodas', 'dinero', 'viajes', 'ocio', 'aventura', 'suscripciones', 'gaming', 'foto', 'musica', 'deporte', 'libros', 'frikis', 'joyeria', 'accesorios', 'moda', 'belleza', 'salud', 'electrodomesticos', 'cocina', 'bricolaje', 'jardineria', 'papeleria', 'arte', 'eco', 'gourmet', 'comida', 'hogar', 'otros')",
   "winner_count": integer (por defecto 1),
   "confidence_score": float
 }
@@ -2653,6 +2676,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             }
         }, speed);
     }
+
     function renderInteractiveCard(resultData) {
         liveResultsContainer.innerHTML = '';
         let cardHTML = '';
@@ -2664,6 +2688,16 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const date = resultData.date || '';
         const accounts = (resultData.accounts || []).join(', ');
         const price = resultData.price || 'No encontrado';
+
+        const categoryOptionsHTML = Object.keys(CATEGORY_INFO)
+            .filter(key => key !== 'all') // Excluimos la opción "Todas"
+            .map(key => {
+                const category = CATEGORY_INFO[key];
+                // Marcamos como seleccionada la categoría que ha devuelto la IA
+                const isSelected = key === resultData.prize_category ? 'selected' : '';
+                return `<option value="${key}" ${isSelected}>${category.emoji} ${category.name}</option>`;
+            })
+            .join('');
 
         const formHTML = `
             <div class="interactive-card-form space-y-2">
@@ -2680,6 +2714,12 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                         <label for="interactive-price">Valor:</label>
                         <input type="text" id="interactive-price" value="${price}" disabled>
                     </div>
+                </div>
+                <div>
+                    <label for="interactive-category">Categoría:</label>
+                    <select id="interactive-category" class="w-full p-2 rounded-lg bg-white border border-yellow-400" disabled>
+                        ${categoryOptionsHTML}
+                    </select>
                 </div>
                 <div>
                     <label for="interactive-accounts">Cuentas:</label>
@@ -2786,7 +2826,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
                 if (button.id === 'btn-edit') {
                     const card = button.closest('.interactive-card');
-                    const inputs = card.querySelectorAll('input, textarea');
+                    const inputs = card.querySelectorAll('input, textarea, select');
                     inputs.forEach(input => input.disabled = false);
                     button.textContent = 'Guardar Cambios';
                     button.id = 'btn-save';
@@ -2819,6 +2859,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             editedData.date = document.getElementById('interactive-date').value;
             editedData.accounts = document.getElementById('interactive-accounts').value.split(',').map(acc => acc.trim()).filter(Boolean);
             editedData.price = document.getElementById('interactive-price').value;
+            editedData.prize_category = document.getElementById('interactive-category').value;
         }
         
         const statusMap = {
@@ -2848,7 +2889,8 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     url: editedData.url, 
                     addDate: new Date().toISOString().slice(0, 10),
                     ends_at_time: editedData.ends_at_time,
-                    is_priority_time: editedData.is_priority_time
+                    is_priority_time: editedData.is_priority_time,
+                    prize_category: editedData.prize_category
                 };
                 if (!newGiveaway.date || !newGiveaway.prize) {
                     showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
@@ -4120,7 +4162,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
     setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
     setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
-    setupModal(searchMenuBtn, searchModal, closeSearchModalBtn);
+    setupModal(null, searchModal, closeSearchModalBtn); // <-- MODIFICADO: ya no se abre desde el menú
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
@@ -4383,7 +4425,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             }
             if (original) {
                 if (!original.price && discarded.price) original.price = discarded.price;
-                if (!original.date && discarded.date) original.date = discarded.date;
+                if (discarded.prize.length > original.prize.length) original.prize = discarded.prize;
                 deleteDiscardedGiveaway(giveawayId);
                 saveGiveaways();
                 renderCalendar();

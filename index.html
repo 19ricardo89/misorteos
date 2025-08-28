@@ -2771,45 +2771,47 @@ Aplica estas reglas en estricto orden de prioridad. La primera regla que coincid
     }
 
     async function searchPrizeValue(aiData) {
-        const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
-        const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
-        if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
-        const functionUrl = '/.netlify/functions/search';
-        try {
-            const response = await fetch(functionUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: cleanedPrize, accounts: accounts })
-            });
-            if (!response.ok) {
-                throw new Error('La respuesta de la función de búsqueda no fue OK');
-            }
-            const result = await response.json();
-            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
-                const text = result.candidates[0].content.parts[0].text;
-                const parsedResult = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
-                let prizeWithEmoji = aiData.prize;
-                let numericValue = null;
-                if (parsedResult.value && parsedResult.value !== "No encontrado") {
-                    numericValue = parseFloat(parsedResult.value.replace(/[^0-9,.]/g, '').replace(',', '.'));
-                }
-                if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
-                if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
-                if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
-                if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
-                if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
-                if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
-                if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
-                if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
-                return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
-            } else {
-                throw new Error("Respuesta incompleta de la API de texto.");
-            }
-        } catch (error) {
-            console.error("Error en la búsqueda del valor:", error);
-            return { prize: aiData.prize, value: "No encontrado", url: null };
+    const cleanedPrize = aiData.prize ? aiData.prize.trim() : '';
+    const accounts = (aiData.accounts || []).map(acc => acc.replace('@',''));
+    if (!cleanedPrize) return { prize: aiData.prize, value: "No encontrado", url: null };
+    
+    const functionUrl = '/.netlify/functions/search';
+    try {
+        const response = await fetch(functionUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: cleanedPrize, accounts: accounts })
+        });
+        if (!response.ok) {
+            throw new Error('La respuesta de la función de búsqueda no fue OK');
         }
+        
+        // ¡CORRECCIÓN CLAVE! Ahora 'parsedResult' es directamente la respuesta.
+        const parsedResult = await response.json();
+        
+        let prizeWithEmoji = aiData.prize;
+        let numericValue = null;
+        if (parsedResult.value && parsedResult.value !== "No encontrado") {
+            numericValue = parseFloat(String(parsedResult.value).replace(/[^0-9,.]/g, '').replace(',', '.'));
+        }
+        
+        // Se mantiene la lógica de los emojis
+        if (aiData.prize_category === 'padel') prizeWithEmoji += ' 🥎';
+        if (aiData.prize_category === 'viajes') prizeWithEmoji += ' 🛩️';
+        if (aiData.prize_category === 'frikis') prizeWithEmoji += ' 🃏';
+        if (aiData.prize_category === 'moda') prizeWithEmoji += ' 👠';
+        if (aiData.prize_category === 'belleza') prizeWithEmoji += ' 💄';
+        if (aiData.prize_category === 'hogar') prizeWithEmoji += ' 🏠';
+        if (aiData.prize_category === 'tecnologia') prizeWithEmoji += ' 💻';
+        if (!isNaN(numericValue) && numericValue > 500) prizeWithEmoji += ' 💲';
+        
+        return { prize: prizeWithEmoji, value: parsedResult.value, url: parsedResult.url };
+
+    } catch (error) {
+        console.error("Error en la búsqueda del valor:", error);
+        return { prize: aiData.prize, value: "No encontrado", url: null };
     }
+}
     const deleteGiveawayFromCalendar = (dateStr, giveawayId) => { if (giveaways[dateStr]) { const giveawayToTrash = giveaways[dateStr].find(g => g.id === giveawayId); if (giveawayToTrash) { trashGiveaways.push({...giveawayToTrash, originalDate: dateStr}); saveTrashGiveaways(); giveaways[dateStr] = giveaways[dateStr].filter(g => g.id !== giveawayId); if (giveaways[dateStr].length === 0) delete giveaways[dateStr]; saveGiveaways(); renderCalendar(); closeModal(); } } };
     
     const deleteForeignGiveaway = (dateStr, giveawayId) => {

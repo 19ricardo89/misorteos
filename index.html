@@ -122,7 +122,7 @@
             justify-content: center;
         }
         #modal-search-input::placeholder {
-            color: #a16207; /* Un tono dorado oscuro para mejor visibilidad */
+            color: #a16207;
             opacity: 0.8;
         }
         .modal.is-visible {
@@ -162,22 +162,22 @@
             transition: background-color 0.2s;
         }
         .custom-dropdown-option:hover {
-            background-color: #fef3c7; /* Color amarillo claro al pasar el ratón */
+            background-color: #fef3c7;
         }
         .custom-dropdown-option .category-name {
             font-weight: bold;
-            color: #78350f; /* Color marrón oscuro para el nombre */
+            color: #78350f;
         }
         .custom-dropdown-option .category-desc {
             font-size: 0.75rem;
-            color: #92400e; /* Color ámbar más suave para la descripción */
+            color: #92400e;
             text-align: right;
             padding-left: 0.5rem;
         }
 
         /* --- CORRECCIÓN UI MODAL IA --- */
         #ai-image-queue {
-            max-height: 160px; /* 10rem */
+            max-height: 160px;
             overflow-y: auto;
         }
         #ai-summary-results-container {
@@ -1018,7 +1018,7 @@
                             <span id="category-filter-selected-text"></span>
                             <i class="fa-solid fa-chevron-down text-xs text-gray-500"></i>
                         </button>
-                        <ul id="category-filter-options" class="hidden absolute z-20 mt-1 w-full max-w-xs sm:w-80 bg-white border border-yellow-400 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        <ul id="category-filter-options" class="hidden absolute z-50 mt-1 w-full max-w-xs sm:w-80 bg-white border border-yellow-400 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                         </ul>
                     </div>
                 </div>
@@ -2215,7 +2215,8 @@
         const catButton = document.getElementById('category-filter-button');
         if(catButton) {
             catButton.dataset.value = 'all';
-            document.getElementById('category-filter-selected-text').textContent = 'Todas las categorías';
+            const info = CATEGORY_INFO['all'];
+            document.getElementById('category-filter-selected-text').textContent = `${info.emoji} ${info.name}`;
             catButton.classList.add('placeholder');
         }
         
@@ -2463,8 +2464,8 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
 <REGLAS_DE_FECHA_JERARQUICAS_V6_AI_Final>
 **Instrucción: Evalúa estas reglas en orden descendente. La PRIMERA regla que se cumpla determina el resultado y finaliza el análisis de fechas.**
 
-**PRIORIDAD 1,PRIORIDAD MÁXIMA E INELUDIBLE : Fecha con Hora Específica.**
--   **Condición Indispensable:** El texto DEBE contener AMBOS elementos: una fecha clara de finalización Y una hora específica (ej: "hasta el 26 a las 14:00h", "finaliza el 30 a las 22:00", "válido hasta el 15 a las 23:59h")Si esta regla se cumple, IGNORA TODAS LAS DEMÁS SIN EXCEPCIÓN es importante lo de ambos elementos, día y hora, tienen que estar los 2 para cumplirse la condición.
+**PRIORIDAD 1. PRIORIDAD MÁXIMA E INELUDIBLE: Fecha con Hora Específica.**
+-   **Condición Indispensable:** El texto DEBE contener AMBOS elementos: una fecha clara de finalización Y una hora específica. Si esta regla se cumple, IGNORA TODAS LAS DEMÁS SIN EXCEPCIÓN (ej: "hasta el 26 a las 14:00h", "finaliza el 30 a las 22:00", "válido hasta el 15 a las 23:59h").
 -   **Acción:**
     -   \`date\` = La fecha exacta mencionada (ej: "2025-08-26").
     -   \`ends_at_time\` = La hora exacta extraída (ej: "14:00h").
@@ -2740,20 +2741,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         reader.readAsDataURL(file);
     }
 
-    function typewriterEffect(element, text = '', speed = 25) {
-        let i = 0;
-        if (!element) return;
-        element.value = '';
-        const timer = setInterval(() => {
-            if (i < text.length) {
-                element.value += text.charAt(i);
-                i++;
-            } else {
-                clearInterval(timer);
-            }
-        }, speed);
-    }
-
     function renderInteractiveCard(resultData) {
         liveResultsContainer.innerHTML = '';
         let cardHTML = '';
@@ -2992,7 +2979,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             case 'merge':
                 const original = Object.values(giveaways).flat().find(g => g.id === data.originalGiveaway.id);
                 if (original) {
-                    if (!original.price && editedData.price) original.price = editedData.price;
+                    if (!original.price && discarded.price) original.price = discarded.price;
                     if (editedData.prize.length > original.prize.length) original.prize = editedData.prize;
                     saveGiveaways();
                     showNotification('Fusión completada', 'Se han actualizado los datos del sorteo original.');
@@ -4587,26 +4574,27 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
     
     document.addEventListener('DOMContentLoaded', () => {
-        populateCategoryFilter();
+        setupCustomCategoryFilter();
     });
 
     // --- LÓGICA PARA EL MENÚ DESPLEGABLE DE CATEGORÍAS ---
     const categoryFilterButton = document.getElementById('category-filter-button');
     const categoryFilterOptions = document.getElementById('category-filter-options');
 
-    // Muestra u oculta el menú al hacer clic en el botón
-    categoryFilterButton.addEventListener('click', (e) => {
-        e.stopPropagation(); // Evita que el clic se propague y cierre el menú inmediatamente
-        categoryFilterOptions.classList.toggle('hidden');
-    });
+    if (categoryFilterButton && categoryFilterOptions) {
+        // Muestra u oculta el menú al hacer clic en el botón
+        categoryFilterButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            categoryFilterOptions.classList.toggle('hidden');
+        });
 
-    // Cierra el menú si se hace clic en cualquier otro lugar de la página
-    document.addEventListener('click', (e) => {
-        // Solo lo cierra si el menú está visible y no se está haciendo clic dentro de él
-        if (!categoryFilterOptions.classList.contains('hidden') && !categoryFilterOptions.contains(e.target)) {
-            categoryFilterOptions.classList.add('hidden');
-        }
-    });
+        // Cierra el menú si se hace clic en cualquier otro lugar
+        document.addEventListener('click', () => {
+            if (!categoryFilterOptions.classList.contains('hidden')) {
+                categoryFilterOptions.classList.add('hidden');
+            }
+        });
+    }
     
 </script>
 </body>

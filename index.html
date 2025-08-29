@@ -10,10 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         /* --- KEYFRAMES --- */
         @keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
@@ -82,7 +82,7 @@
         .bg-web-gradient {
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
         }
-        
+
         /* --- FONDO ESTRELLADO --- */
         #magic-stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 5px white, 0 0 10px white; animation: twinkle 2s infinite ease-in-out; }
@@ -105,7 +105,7 @@
         .calendar-day.all-done { background-color: rgba(34, 197, 94, 0.3); border-color: #22c55e; }
         .calendar-day.all-done .giveaway-count { display: none; }
         .giveaway-count { font-size: 0.7rem; color: #78350f; background-color: #f7d468; border: 1px solid #b45309; padding: 1px 5px; margin-top: 4px; }
-        
+
         /* --- MODAL --- */
         .modal {
             z-index: 50;
@@ -251,7 +251,7 @@
         .nav-menu.is-open {
             transform: translateX(0);
         }
-        
+
         .nav-menu-btn {
              background-color: transparent;
              color: #f7d468;
@@ -299,7 +299,7 @@
             font-size: 1rem;
             padding: 0.5rem 1rem;
         }
-        
+
         /* Estilos del agujero negro */
         .vortex-btn {
             background-color: transparent;
@@ -324,11 +324,11 @@
         .calendar-nav-btn {
              height: 48px;
         }
-        
+
         .giveaway-item-discarded.duplicate-item {
              cursor: pointer;
         }
-        
+
         .giveaway-item-discarded.duplicate-item:hover {
              background-color: rgba(255, 0, 0, 0.2);
              box-shadow: 0 0 10px #f87171;
@@ -339,7 +339,7 @@
              justify-content: space-between;
              align-items: center;
         }
-        
+
         /* Estilos para el modal de duplicados */
         #duplicate-modal .modal-content {
              max-width: 90%;
@@ -351,7 +351,7 @@
             gap: 1rem;
             overflow-y: auto;
         }
-        
+
         /* --- AJUSTES RESPONSIVE PARA EL HEADER --- */
         #user-title {
             font-size: 1.1rem; /* Más pequeño en móvil */
@@ -394,11 +394,11 @@
         }
         /* Estilo para el texto principal del premio */
         .giveaway-item .text-yellow-900 {
-            color: #4e342e !important; 
+            color: #4e342e !important;
         }
         /* NUEVO: Color más oscuro para cuentas y precio */
         .giveaway-item a,
-        .giveaway-item .text-amber-600, 
+        .giveaway-item .text-amber-600,
         .giveaway-item .text-yellow-700 {
             color: #6a3805 !important; /* Marrón oscuro para máxima legibilidad */
             font-weight: bold; /* Añadimos negrita para que destaque más */
@@ -449,9 +449,9 @@
 
         /* Títulos de los modales */
         #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2 {
-            color: #8c5a15; 
+            color: #8c5a15;
         }
-        
+
         /* --- ESTILOS PARA EL NUEVO RESUMEN DETALLADO DE IA --- */
         #ai-summary-results h3, #ai-summary-results h4, #history-modal h3, #history-modal h4 {
             color: #8c5a15; /* Usar el mismo color dorado intenso para los títulos */
@@ -488,7 +488,7 @@
         #ai-summary-results .view-original-duplicate:hover {
             color: #8c5a15;
         }
-        
+
         /* --- ESTILOS VITRINA, ESTADÍSTICAS Y LOGROS --- */
         #trophy-modal-body {
             display: grid;
@@ -550,7 +550,7 @@
             font-size: 1rem;
             padding: 0.25rem 0;
          }
-        
+
         #charts-modal-body {
             display: flex;
             flex-direction: column;
@@ -609,7 +609,7 @@
             cursor: not-allowed;
             opacity: 0.5;
         }
-        
+
         /* --- ESTILOS PARA LAS NUEVAS TARJETAS DE SORTEO --- */
         .giveaway-card {
             border: 2px solid #d4af37;
@@ -653,7 +653,7 @@
         .status-foreign { background-color: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
         .status-no_date { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
         .status-not_a_giveaway, .status-api_error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-        
+
         /* --- NUEVOS ESTILOS PARA LA VISTA DE ANÁLISIS A PANTALLA COMPLETA --- */
         .ai-fullscreen-view {
             position: fixed;
@@ -772,7 +772,7 @@
         .interactive-card-form input:disabled, .interactive-card-form textarea:disabled, .interactive-card-form select:disabled {
             background-color: #fef3c7;
         }
-        
+
         /* Efectos de brillo para las tarjetas interactivas */
         .card-status-valid { box-shadow: 0 0 15px 5px rgba(34, 197, 94, 0.5); border-color: #22c55e; }
         .card-status-duplicate { box-shadow: 0 0 15px 5px rgba(107, 114, 128, 0.5); border-color: #6b7280; }
@@ -832,10 +832,10 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             cursor: zoom-out;
         }
-        
+
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.7; }
         }
 
         /* --- NUEVOS ESTILOS PARA PESTAÑAS Y GRÁFICOS --- */
@@ -881,6 +881,30 @@
             font-weight: bold;
             text-align: center;
         }
+
+        /* --- [NUEVO] ESTILOS PARA EL AVISO DE ACTUALIZACIÓN --- */
+        /* Animación de la estrella fugaz para el aviso */
+        @keyframes shootAcrossOverlay {
+            0% {
+                left: -200px;
+                top: 20%;
+                opacity: 0;
+                transform: rotate(-25deg) scale(0.8);
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                left: calc(100% + 200px);
+                top: 70%;
+                opacity: 0;
+                transform: rotate(-25deg) scale(1.2);
+            }
+        }
+        #shootingStarRefresh {
+            animation: shootAcrossOverlay 6s linear infinite;
+            animation-delay: 1s;
+            pointer-events: auto; /* Permite hacer clic */
+        }
         /* --- FIN DE NUEVOS ESTILOS --- */
     </style>
 </head>
@@ -891,7 +915,7 @@
     </div>
     <input type="file" id="zip-upload" class="hidden" accept=".zip">
     <div id="magic-stars-container"></div>
-    
+
     <div id="nav-menu" class="nav-menu flex flex-col items-start gap-4">
         <button id="close-nav-menu" class="text-yellow-600 hover:text-yellow-800 text-4xl self-end">&times;</button>
         <a href="#" id="add-manual-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
@@ -932,12 +956,12 @@
         </a>
     </div>
     <div id="menu-overlay" class="menu-overlay"></div>
-    
+
     <main class="w-full flex flex-col items-center">
         <div class="title-container">
             <h1 id="main-title" class="magic-title"></h1>
         </div>
-        
+
         <header class="flex items-center justify-between p-4 mb-2 flex-shrink-0 w-full max-w-4xl">
             <button id="open-nav-menu" class="nav-menu-btn rounded-full">
                 <i class="fa-solid fa-bars text-xl"></i>
@@ -960,7 +984,7 @@
             <div id="calendar-days" class="calendar-grid w-full"></div>
         </div>
     </main>
-    
+
     <footer class="w-full max-w-4xl mx-auto p-4 flex justify-between items-center">
         <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -975,7 +999,7 @@
             </svg>
         </button>
     </footer>
-    
+
     <div id="trash-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -986,7 +1010,7 @@
             <button id="delete-all-trash-btn" class="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">Vaciar papelera</button>
         </div>
     </div>
-    
+
     <div id="discarded-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1007,7 +1031,7 @@
             <button id="delete-all-discarded-btn" class="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">Eliminar todos los descartados</button>
         </div>
     </div>
-    
+
     <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div id="modal-content" class="w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg flex-col">
              <div class="flex-shrink-0 p-4 sm:p-6 pb-0">
@@ -1067,7 +1091,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="search-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1136,7 +1160,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="duplicate-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1152,7 +1176,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="duplicate-comparison-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1192,7 +1216,7 @@
             </form>
         </div>
     </div>
-    
+
     <div id="history-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1202,7 +1226,7 @@
             <div id="history-modal-body" class="max-h-[60vh] text-left"></div>
         </div>
     </div>
-    
+
     <div id="foreign-accounts-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1213,7 +1237,7 @@
             <div id="foreign-accounts-modal-body" class="space-y-2 max-h-[60vh]"></div>
         </div>
     </div>
-    
+
     <div id="trophy-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1223,7 +1247,7 @@
             <div id="trophy-modal-body" class="max-h-[60vh]"></div>
         </div>
     </div>
-    
+
     <div id="stats-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-4xl rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
@@ -1289,7 +1313,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="block-management-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1321,7 +1345,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="zoom-modal" class="modal fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[200]">
         <div id="zoom-modal-content" class="modal-content">
             <img id="zoomed-image" src="" alt="Vista ampliada">
@@ -1361,7 +1385,7 @@
 
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
         <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold absolute top-2 right-4 z-10">&times;</button>
-        
+
         <div id="ai-initial-view" class="w-full max-w-lg mx-auto flex flex-col items-center justify-center h-full">
             <p class="text-2xl font-semibold mb-6 text-center text-yellow-300">Selecciona hasta 100 imágenes del sorteo.</p>
             <input type="file" id="ai-image-upload" accept="image/*" multiple class="hidden">
@@ -1398,9 +1422,25 @@
             </button>
         </div>
     </section>
+
+    <div id="refreshOverlay" class="fixed inset-0 bg-black bg-opacity-70 flex-col items-center justify-center p-4 z-[999] hidden">
+        <div class="relative w-full h-full pointer-events-none">
+            <img id="shootingStarRefresh" src="https://i.ibb.co/6rWp6g7/estrella-fugaz.png" alt="Estrella Fugaz" class="absolute w-48 h-auto opacity-0" style="left: -200px; top: 20%;">
+        </div>
+        <div class="absolute text-center bg-black bg-opacity-60 p-6 rounded-lg shadow-2xl max-w-lg mx-auto">
+            <h2 class="text-white text-3xl font-bold mb-4 animate-pulse">¡Atención, Cazador/a de Sorteos! 💫</h2>
+            <p class="text-white text-lg mb-6 leading-relaxed">
+                El cosmos de los premios nos ha enviado una señal... ¡Hay nuevos sorteos recién llegados!
+                <br>
+                <strong>Pulsa la estrella fugaz para que aparezcan en tu calendario.</strong>
+            </p>
+        </div>
+    </div>
+
+
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
-    <script src="foreignAccounts.js"></script> 
+    <script src="foreignAccounts.js"></script>
     <script id="animations-script">
         function animateStarryBackground() {
             const starsContainer = document.getElementById('magic-stars-container');
@@ -1442,7 +1482,7 @@
                     }
                 }, index * 150);
             });
-            
+
             setTimeout(() => {
                 setInterval(() => {
                     if (document.hidden) return; // No animar si la pestaña no está visible
@@ -1461,7 +1501,7 @@
             const star = document.createElement('div');
             star.className = 'shooting-star';
             itemContainer.appendChild(star);
-            
+
             star.addEventListener('animationend', () => {
                 star.remove();
                 if (callback) callback();
@@ -1520,7 +1560,6 @@
         'hogar': { name: 'Hogar', emoji: '🏠', desc: 'Decoración y textiles para el hogar.' },
         'otros': { name: 'Otros', emoji: '⭐', desc: 'Sorteos que no encajan en otra categoría.' }
     };
-    
     const achievementList = {
         bronze: [
             { id: 'b_add_1', name: 'El Primer Paso', icon: '🌱', desc: 'Añade tu primer sorteo manualmente.', ps: 5, condition: (c) => c.totalManualAdds >= 1 },
@@ -4654,7 +4693,67 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             }
         });
     }
+
+    // [NUEVO] LÓGICA PARA EL AVISO DE ACTUALIZACIÓN
+    const refreshOverlay = document.getElementById('refreshOverlay');
+    const shootingStarRefresh = document.getElementById('shootingStarRefresh');
+
+    function showRefreshOverlay() {
+        if (refreshOverlay) {
+            refreshOverlay.classList.remove('hidden');
+            // Reiniciar animación para que sea visible cada vez que se llama
+            shootingStarRefresh.style.animation = 'none';
+            void shootingStarRefresh.offsetWidth; // Truco para forzar el reflow del DOM
+            shootingStarRefresh.style.animation = 'shootAcrossOverlay 6s linear infinite';
+        }
+    }
+
+    function hideOverlayAndRefresh() {
+        if (refreshOverlay) {
+            refreshOverlay.classList.add('hidden');
+        }
+        location.reload(); // Recarga la página
+    }
+
+    if (shootingStarRefresh) {
+        shootingStarRefresh.addEventListener('click', hideOverlayAndRefresh);
+    }
     
+    // Función para comprobar si hay una nueva versión de los sorteos
+    function checkForUpdates() {
+        // El "?v=" + new Date().getTime() es un truco para evitar que el navegador use una versión antigua del archivo cacheada
+        fetch('/version.json?v=' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo comprobar la versión.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const serverVersion = data.version;
+                const localVersion = parseInt(localStorage.getItem('appVersion')) || 0;
+
+                console.log(`Versión del servidor: ${serverVersion}, Versión local: ${localVersion}`);
+
+                if (serverVersion > localVersion) {
+                    console.log('¡Nueva versión detectada! Mostrando aviso de actualización.');
+                    showRefreshOverlay();
+                    localStorage.setItem('appVersion', serverVersion);
+                }
+            })
+            .catch(error => {
+                console.error('Error al comprobar actualizaciones:', error);
+            });
+    }
+
+    // --- CÓDIGO PARA ACTIVAR LA COMPROBACIÓN ---
+
+    // 1. Ejecuta la comprobación EN CUANTO la página carga.
+    checkForUpdates();
+
+    // 2. Además, establece un temporizador para que se repita cada HORA.
+    // (60 minutos * 60 segundos * 1000 milisegundos = 3600000)
+    setInterval(checkForUpdates, 3600000);
 </script>
 </body>
 </html>

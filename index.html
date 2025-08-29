@@ -148,6 +148,33 @@
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
         #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu { overflow-y: auto; }
 
+        /* --- ESTILOS PARA EL NUEVO FILTRO DE CATEGORÍAS --- */
+        #category-filter-button.placeholder #category-filter-selected-text {
+            color: #a16207;
+            opacity: 0.8;
+        }
+        .custom-dropdown-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .custom-dropdown-option:hover {
+            background-color: #fef3c7; /* Color amarillo claro al pasar el ratón */
+        }
+        .custom-dropdown-option .category-name {
+            font-weight: bold;
+            color: #78350f; /* Color marrón oscuro para el nombre */
+        }
+        .custom-dropdown-option .category-desc {
+            font-size: 0.75rem;
+            color: #92400e; /* Color ámbar más suave para la descripción */
+            text-align: right;
+            padding-left: 0.5rem;
+        }
+
         /* --- CORRECCIÓN UI MODAL IA --- */
         #ai-image-queue {
             max-height: 160px; /* 10rem */
@@ -986,8 +1013,14 @@
                 </div>
                 <div id="modal-filters" class="flex flex-col sm:flex-row gap-2 mb-2">
                     <input type="text" id="modal-search-input" placeholder="Buscar por premio..." class="w-full p-2 rounded-lg bg-white border border-yellow-400 text-sm flex-grow">
-                    <select id="modal-category-filter" class="w-full sm:w-auto p-2 rounded-lg bg-white border border-yellow-400 text-sm">
-                        </select>
+                    <div id="custom-category-filter" class="relative w-full sm:w-auto">
+                        <button id="category-filter-button" type="button" class="w-full p-2 rounded-lg bg-white border border-yellow-400 text-sm text-left flex justify-between items-center">
+                            <span id="category-filter-selected-text"></span>
+                            <i class="fa-solid fa-chevron-down text-xs text-gray-500"></i>
+                        </button>
+                        <ul id="category-filter-options" class="hidden absolute z-20 mt-1 w-full max-w-xs sm:w-80 bg-white border border-yellow-400 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        </ul>
+                    </div>
                 </div>
                 </div>
             <div class="p-4 sm:p-6 pt-0">
@@ -1449,39 +1482,39 @@
     let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
 
     const CATEGORY_INFO = {
-        'all': { name: 'Todas las Categorías', emoji: '✨' },
-        'padel': { name: 'Pádel', emoji: '🥎' },
-        'motor': { name: 'Motor', emoji: '🏎️' },
-        'mascotas': { name: 'Mascotas', emoji: '🐾' },
-        'bebes': { name: 'Bebés', emoji: '👶' },
-        'bodas': { name: 'Bodas', emoji: '💍' },
-        'dinero': { name: 'Dinero y Vales', emoji: '💰' },
-        'viajes': { name: 'Viajes', emoji: '✈️' },
-        'ocio': { name: 'Ocio', emoji: '🎟️' },
-        'aventura': { name: 'Aventura', emoji: '🧗' },
-        'suscripciones': { name: 'Suscripciones', emoji: '💻' },
-        'gaming': { name: 'Gaming', emoji: '🎮' },
-        'foto': { name: 'Fotografía', emoji: '📸' },
-        'musica': { name: 'Música', emoji: '🎵' },
-        'deporte': { name: 'Deporte', emoji: '💪' },
-        'libros': { name: 'Libros', emoji: '📚' },
-        'frikis': { name: 'Frikis', emoji: '🃏' },
-        'joyeria': { name: 'Joyería', emoji: '💎' },
-        'accesorios': { name: 'Accesorios', emoji: '👜' },
-        'moda': { name: 'Moda', emoji: '👠' },
-        'belleza': { name: 'Belleza', emoji: '💄' },
-        'salud': { name: 'Salud', emoji: '🌿' },
-        'electrodomesticos': { name: 'Electrodomésticos', emoji: '📺' },
-        'cocina': { name: 'Cocina', emoji: '🍳' },
-        'bricolaje': { name: 'Bricolaje', emoji: '🛠️' },
-        'jardineria': { name: 'Jardinería', emoji: '🌱' },
-        'papeleria': { name: 'Papelería', emoji: '✏️' },
-        'arte': { name: 'Arte', emoji: '🎨' },
-        'eco': { name: 'Sostenible', emoji: '♻️' },
-        'gourmet': { name: 'Gourmet', emoji: '🍷' },
-        'comida': { name: 'Comida', emoji: '🍔' },
-        'hogar': { name: 'Hogar', emoji: '🏠' },
-        'otros': { name: 'Otros', emoji: '⭐' }
+        'all': { name: 'Todas', emoji: '✨', desc: 'Muestra todos los sorteos.' },
+        'padel': { name: 'Pádel', emoji: '🥎', desc: 'Palas, ropa y accesorios de pádel.' },
+        'motor': { name: 'Motor', emoji: '🏎️', desc: 'Coches, motos, F1, MotoGP.' },
+        'mascotas': { name: 'Mascotas', emoji: '🐾', desc: 'Productos para animales.' },
+        'bebes': { name: 'Bebés', emoji: '👶', desc: 'Sillas, pañales, productos infantiles.' },
+        'bodas': { name: 'Bodas', emoji: '💍', desc: 'Relacionado con bodas y novios.' },
+        'dinero': { name: 'Dinero y Vales', emoji: '💰', desc: 'Tarjetas regalo, cupones, efectivo.' },
+        'viajes': { name: 'Viajes', emoji: '✈️', desc: 'Estancias, vuelos, hoteles, escapadas.' },
+        'ocio': { name: 'Ocio', emoji: '🎟️', desc: 'Entradas, cine, teatro, parques, cenas.' },
+        'aventura': { name: 'Aventura', emoji: '🧗', desc: 'Experiencias de adrenalina.' },
+        'suscripciones': { name: 'Suscripciones', emoji: '💻', desc: 'Servicios digitales, Netflix, cursos online.' },
+        'gaming': { name: 'Gaming', emoji: '🎮', desc: 'Consolas, videojuegos, accesorios.' },
+        'foto': { name: 'Fotografía', emoji: '📸', desc: 'Cámaras, drones, objetivos.' },
+        'musica': { name: 'Música', emoji: '🎵', desc: 'Auriculares, altavoces, instrumentos.' },
+        'deporte': { name: 'Deporte', emoji: '💪', desc: 'Equipamiento y ropa deportiva general.' },
+        'libros': { name: 'Libros', emoji: '📚', desc: 'Libros, cómics y material de lectura.' },
+        'frikis': { name: 'Frikis', emoji: '🃏', desc: 'Funkos, juegos de mesa, merchandising.' },
+        'joyeria': { name: 'Joyería', emoji: '💎', desc: 'Relojes, pulseras, collares, gafas de sol.' },
+        'accesorios': { name: 'Accesorios', emoji: '👜', desc: 'Bolsos, mochilas, maletas, neceseres.' },
+        'moda': { name: 'Moda', emoji: '👠', desc: 'Ropa y calzado de uso casual.' },
+        'belleza': { name: 'Belleza', emoji: '💄', desc: 'Cosmética, maquillaje, perfumes.' },
+        'salud': { name: 'Salud', emoji: '🌿', desc: 'Farmacia, cuidado personal, bienestar.' },
+        'electrodomesticos': { name: 'Electrodomésticos', emoji: '📺', desc: 'TV, robots, lavadoras, etc.' },
+        'cocina': { name: 'Cocina', emoji: '🍳', desc: 'Pequeños electrodomésticos y menaje.' },
+        'bricolaje': { name: 'Bricolaje', emoji: '🛠️', desc: 'Herramientas y material de bricolaje.' },
+        'jardineria': { name: 'Jardinería', emoji: '🌱', desc: 'Plantas, macetas y herramientas.' },
+        'papeleria': { name: 'Papelería', emoji: '✏️', desc: 'Agendas, cuadernos, material de oficina.' },
+        'arte': { name: 'Arte', emoji: '🎨', desc: 'Materiales para pintura, manualidades.' },
+        'eco': { name: 'Sostenible', emoji: '♻️', desc: 'Productos ecológicos o sostenibles.' },
+        'gourmet': { name: 'Gourmet', emoji: '🍷', desc: 'Jamón, vinos, aceites premium.' },
+        'comida': { name: 'Comida', emoji: '🍔', desc: 'Alimentación general no gourmet.' },
+        'hogar': { name: 'Hogar', emoji: '🏠', desc: 'Decoración y textiles para el hogar.' },
+        'otros': { name: 'Otros', emoji: '⭐', desc: 'Sorteos que no encajan en otra categoría.' }
     };
     
     const achievementList = {
@@ -2018,41 +2051,15 @@
     };
 
     const getCategoryInfo = (categoryKey) => {
-        // Si la categoría no existe en nuestro mapa, devolvemos la de 'otros' por defecto.
         return CATEGORY_INFO[categoryKey] || CATEGORY_INFO['otros'];
-    };
-
-    const populateCategoryFilter = () => {
-        const filterEl = document.getElementById('modal-category-filter');
-        if (!filterEl) return;
-        
-        filterEl.innerHTML = ''; // Limpiar opciones previas
-        
-        // Añadir la opción por defecto "Todas"
-        const allOption = document.createElement('option');
-        allOption.value = 'all';
-        allOption.textContent = 'Todas las categorías';
-        filterEl.appendChild(allOption);
-
-        // Añadir el resto de categorías desde el objeto CATEGORY_INFO
-        for (const key in CATEGORY_INFO) {
-            if (key !== 'all') {
-                const info = CATEGORY_INFO[key];
-                const option = document.createElement('option');
-                option.value = key;
-                option.textContent = `${info.emoji} ${info.name}`;
-                filterEl.appendChild(option);
-            }
-        }
     };
 
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []);
         
         const modalSearchInput = document.getElementById('modal-search-input');
-        const categoryFilter = document.getElementById('modal-category-filter');
         const searchQuery = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
-        const selectedCategory = categoryFilter ? categoryFilter.value : 'all';
+        const selectedCategory = document.getElementById('category-filter-button')?.dataset.value || 'all';
 
         dayGiveaways = dayGiveaways.filter(g => {
             const matchesSearch = !searchQuery || (g.prize && g.prize.toLowerCase().includes(searchQuery));
@@ -2062,24 +2069,19 @@
 
 
         dayGiveaways.sort((a, b) => {
-            // 1. Poner siempre los completados al final de la lista
             const aCompleted = completedGiveaways[a.id];
             const bCompleted = completedGiveaways[b.id];
             if (aCompleted !== bCompleted) {
                 return aCompleted ? 1 : -1;
             }
-
-            // 2. Priorizar los sorteos con hora prioritaria (is_priority_time === true)
             const aIsPriority = a.is_priority_time === true;
             const bIsPriority = b.is_priority_time === true;
             if (aIsPriority !== bIsPriority) {
-                return aIsPriority ? -1 : 1; // Si 'a' es prioritario, va primero (-1)
+                return aIsPriority ? -1 : 1;
             }
-
-            // 3. Para sorteos con la misma prioridad, ordenar por valor (de mayor a menor)
             const aPrice = parsePrice(a.price);
             const bPrice = parsePrice(b.price);
-            return bPrice - aPrice; // Se resta b - a para orden descendente
+            return bPrice - aPrice;
         });
 
         document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
@@ -2185,13 +2187,11 @@
         else modalContent.classList.add('modal-default-bg');
         
         const searchInput = document.getElementById('modal-search-input');
-        const categorySelect = document.getElementById('modal-category-filter');
 
         const applyFilters = () => buildModal(dateStr);
 
         searchInput.onkeyup = null;
         searchInput.onkeydown = null;
-        categorySelect.onchange = null;
         
         searchInput.onkeydown = (e) => {
             if (e.key === 'Enter') {
@@ -2199,7 +2199,6 @@
                 applyFilters();
             }
         };
-        categorySelect.onchange = applyFilters;
 
         modal.dataset.date = dateStr;
     };
@@ -2211,9 +2210,14 @@
         }
         
         const modalSearchInput = document.getElementById('modal-search-input');
-        const categoryFilter = document.getElementById('modal-category-filter');
         if(modalSearchInput) modalSearchInput.value = '';
-        if(categoryFilter) categoryFilter.value = 'all';
+
+        const catButton = document.getElementById('category-filter-button');
+        if(catButton) {
+            catButton.dataset.value = 'all';
+            document.getElementById('category-filter-selected-text').textContent = 'Todas las categorías';
+            catButton.classList.add('placeholder');
+        }
         
         buildModal(dateStr); 
         modal.classList.add('is-visible'); 
@@ -2418,6 +2422,19 @@
         }
     }
 
+    function typewriterEffect(element, text = '', speed = 25) {
+        let i = 0;
+        if (!element) return;
+        element.value = '';
+        const timer = setInterval(() => {
+            if (i < text.length) {
+                element.value += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(timer);
+            }
+        }, speed);
+    }
     async function processImage(file) {
         const reader = new FileReader();
         reader.onload = async (event) => {
@@ -2446,8 +2463,8 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
 <REGLAS_DE_FECHA_JERARQUICAS_V6_AI_Final>
 **Instrucción: Evalúa estas reglas en orden descendente. La PRIMERA regla que se cumpla determina el resultado y finaliza el análisis de fechas.**
 
-**PRIORIDAD 1: Fecha con Hora Específica.**
--   **Condición Indispensable:** El texto DEBE contener AMBOS elementos: una fecha clara de finalización Y una hora específica (ej: "hasta el 26 a las 14:00h", "finaliza el 30 a las 22:00", "válido hasta el 15 a las 23:59h").
+**PRIORIDAD 1,PRIORIDAD MÁXIMA E INELUDIBLE : Fecha con Hora Específica.**
+-   **Condición Indispensable:** El texto DEBE contener AMBOS elementos: una fecha clara de finalización Y una hora específica (ej: "hasta el 26 a las 14:00h", "finaliza el 30 a las 22:00", "válido hasta el 15 a las 23:59h")Si esta regla se cumple, IGNORA TODAS LAS DEMÁS SIN EXCEPCIÓN es importante lo de ambos elementos, día y hora, tienen que estar los 2 para cumplirse la condición.
 -   **Acción:**
     -   \`date\` = La fecha exacta mencionada (ej: "2025-08-26").
     -   \`ends_at_time\` = La hora exacta extraída (ej: "14:00h").
@@ -4572,6 +4589,21 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     document.addEventListener('DOMContentLoaded', () => {
         populateCategoryFilter();
     });
+
+    const categoryFilterButton = document.getElementById('category-filter-button');
+    const categoryFilterOptions = document.getElementById('category-filter-options');
+
+    categoryFilterButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        categoryFilterOptions.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!categoryFilterButton.contains(e.target)) {
+            categoryFilterOptions.classList.add('hidden');
+        }
+    });
+
 </script>
 </body>
 </html>

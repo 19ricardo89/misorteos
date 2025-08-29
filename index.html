@@ -906,49 +906,40 @@
             pointer-events: auto;
         }
         /* Animación de la estrella fugaz para el aviso */
-        @keyframes shoot-right-to-left {
-            0% {
-                opacity: 0;
-                transform: translate(0, 0) rotate(20deg);
-                left: 110%; 
-                top: 50%;
-            }
-            20% {
-                opacity: 1;
-            }
-            80% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-150vw, 50vh) rotate(20deg);
-                left: 110%; 
-                top: 50%;
-            }
-        }
-        #shootingStarRefresh {
-    position: fixed; /* O 'absolute' si está dentro de un contenedor específico */
-    bottom: 100%;    /* Reduce este valor para SUBIR la imagen. Por ejemplo, de 10% a 20% */
-    right: 5%;      /* Ajusta este valor si quieres moverla horizontalmente */
-    width: 300px;   /* Ajusta el tamaño si es necesario, 150px es un ejemplo */
-    height: auto;
-    cursor: pointer;
-    z-index: 1000;
-    transform: rotate(55deg); /* Aquí controlas la inclinación. */
-   /* 0deg: horizontal. */
-  /* 20deg: un poco inclinada hacia abajo y a la derecha (como en la imagen). */
-   /* 40deg: más inclinada. */
-   /* Prueba valores entre 10deg y 45deg para ver cuál te gusta más. */
-    transition: transform 0.3s ease; /* Mantiene la animación si ya la tienes */
+       @keyframes shoot-right-to-left {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(45deg); /* Aplicamos la rotación desde el inicio */
+        left: 110%; 
+        top: 25%;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-150vw, 50vh) rotate(45deg); /* Mantenemos la rotación */
+        left: 110%; 
+        top: 25%;
+    }
 }
-            opacity: 0; /* Empieza invisible */
-            animation-name: shoot-right-to-left;
-            animation-duration: 5s;
-            animation-timing-function: ease-in;
-            animation-iteration-count: infinite;
-            animation-delay: 1.5s; /* Empieza después de que el texto haya aparecido */
-            pointer-events: none; /* La estrella en sí no es clickeable */
-        }
+
+#shootingStarRefresh {
+    position: absolute;
+    width: 300px;
+    height: auto;
+    opacity: 0;
+    animation-name: shoot-right-to-left;
+    animation-duration: 5s;
+    animation-timing-function: ease-in;
+    animation-iteration-count: infinite;
+    animation-delay: 1.5s;
+    pointer-events: none;
+    transform: rotate(45deg); /* Inclinación base de la imagen */
+}
         @keyframes zoom-in-3d {
             from {
                 opacity: 0;

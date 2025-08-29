@@ -4590,20 +4590,24 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         populateCategoryFilter();
     });
 
+    // --- LÓGICA PARA EL MENÚ DESPLEGABLE DE CATEGORÍAS ---
     const categoryFilterButton = document.getElementById('category-filter-button');
     const categoryFilterOptions = document.getElementById('category-filter-options');
 
+    // Muestra u oculta el menú al hacer clic en el botón
     categoryFilterButton.addEventListener('click', (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // Evita que el clic se propague y cierre el menú inmediatamente
         categoryFilterOptions.classList.toggle('hidden');
     });
 
+    // Cierra el menú si se hace clic en cualquier otro lugar de la página
     document.addEventListener('click', (e) => {
-        if (!categoryFilterButton.contains(e.target)) {
+        // Solo lo cierra si el menú está visible y no se está haciendo clic dentro de él
+        if (!categoryFilterOptions.classList.contains('hidden') && !categoryFilterOptions.contains(e.target)) {
             categoryFilterOptions.classList.add('hidden');
         }
     });
-
+    
 </script>
 </body>
 </html>

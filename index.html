@@ -927,9 +927,20 @@
             }
         }
         #shootingStarRefresh {
-            position: absolute;
-            width: 250px; /* Tamaño más grande para que se vea bien */
-            height: auto;
+    position: fixed; /* O 'absolute' si está dentro de un contenedor específico */
+    bottom: 50%;    /* Reduce este valor para SUBIR la imagen. Por ejemplo, de 10% a 20% */
+    right: 5%;      /* Ajusta este valor si quieres moverla horizontalmente */
+    width: 300px;   /* Ajusta el tamaño si es necesario, 150px es un ejemplo */
+    height: auto;
+    cursor: pointer;
+    z-index: 1000;
+    transform: rotate(20deg); /* Aquí controlas la inclinación. */
+   /* 0deg: horizontal. */
+  /* 20deg: un poco inclinada hacia abajo y a la derecha (como en la imagen). */
+   /* 40deg: más inclinada. */
+   /* Prueba valores entre 10deg y 45deg para ver cuál te gusta más. */
+    transition: transform 0.3s ease; /* Mantiene la animación si ya la tienes */
+}
             opacity: 0; /* Empieza invisible */
             animation-name: shoot-right-to-left;
             animation-duration: 5s;

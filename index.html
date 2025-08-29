@@ -883,27 +883,77 @@
         }
 
         /* --- [NUEVO] ESTILOS PARA EL AVISO DE ACTUALIZACIÓN --- */
+        #refreshOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000; /* Fondo completamente negro */
+            z-index: 1000;
+            opacity: 0; /* Empieza transparente */
+            pointer-events: none; /* No se puede hacer clic cuando está oculto */
+            transition: opacity 1s ease-in-out; /* Transición de 1 segundo */
+            display: flex; /* Usamos flex para el layout */
+            flex-direction: column;
+            justify-content: space-between; /* Espacio entre los elementos */
+            align-items: center;
+            padding: 2rem;
+            cursor: pointer;
+        }
+        #refreshOverlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
         /* Animación de la estrella fugaz para el aviso */
-        @keyframes shootAcrossOverlay {
+        @keyframes shoot-right-to-left {
             0% {
-                left: -200px;
-                top: 20%;
                 opacity: 0;
-                transform: rotate(-25deg) scale(0.8);
+                transform: translate(0, 0) rotate(20deg);
+                left: 110%; 
+                top: 50%;
             }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
             100% {
-                left: calc(100% + 200px);
-                top: 70%;
                 opacity: 0;
-                transform: rotate(-25deg) scale(1.2);
+                transform: translate(-150vw, 50vh) rotate(20deg);
+                left: 110%; 
+                top: 50%;
             }
         }
         #shootingStarRefresh {
-            animation: shootAcrossOverlay 6s linear infinite;
-            animation-delay: 1s;
-            pointer-events: auto; /* Permite hacer clic */
+            position: absolute;
+            width: 250px; /* Tamaño más grande para que se vea bien */
+            height: auto;
+            opacity: 0; /* Empieza invisible */
+            animation-name: shoot-right-to-left;
+            animation-duration: 5s;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+            animation-delay: 1.5s; /* Empieza después de que el texto haya aparecido */
+            pointer-events: none; /* La estrella en sí no es clickeable */
+        }
+        @keyframes zoom-in-3d {
+            from {
+                opacity: 0;
+                transform: perspective(400px) scale3d(0.5, 0.5, 0.5) rotate3d(1, 0, 0, -90deg);
+            }
+            to {
+                opacity: 1;
+                transform: perspective(400px) scale3d(1, 1, 1) rotate3d(0, 0, 0, 0);
+            }
+        }
+        .dynamic-headline {
+            opacity: 0;
+            animation-fill-mode: forwards;
+            animation-duration: 0.8s;
+            animation-name: zoom-in-3d;
+            color: #E0E0E0; /* Letras plateadas */
         }
         /* --- FIN DE NUEVOS ESTILOS --- */
     </style>
@@ -2228,13 +2278,13 @@
 
             let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
             
-            const timeEmoji = giveaway.is_priority_time ? '⏰' : (giveaway.ends_at_time ? '⏰' : '');
+            const timeEmoji = giveaway.is_priority_time ? '⏰' : '';
             const categoryInfo = getCategoryInfo(giveaway.prize_category);
             
             prizeContainer.innerHTML = `
-                <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize} ${timeEmoji}</p>
+                <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
                 <p class="text-sm truncate">${accountsHTML}</p>
-                <span class="text-xl" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji}</span>
+                <span class="text-xl" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji} ${timeEmoji}</span>
             `;
 
             leftSideContainer.appendChild(controlsContainer);
@@ -4696,27 +4746,51 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
     // [NUEVO] LÓGICA PARA EL AVISO DE ACTUALIZACIÓN
     const refreshOverlay = document.getElementById('refreshOverlay');
-    const shootingStarRefresh = document.getElementById('shootingStarRefresh');
 
     function showRefreshOverlay() {
         if (refreshOverlay) {
-            refreshOverlay.classList.remove('hidden');
-            // Reiniciar animación para que sea visible cada vez que se llama
-            shootingStarRefresh.style.animation = 'none';
-            void shootingStarRefresh.offsetWidth; // Truco para forzar el reflow del DOM
-            shootingStarRefresh.style.animation = 'shootAcrossOverlay 6s linear infinite';
+            const headlines = document.querySelectorAll('.dynamic-headline');
+            
+            // 1. Reiniciamos las frases a su estado inicial para que la animación pueda repetirse
+            headlines.forEach(headline => {
+                headline.style.animation = 'none';
+                headline.style.opacity = '0';
+            });
+            
+            // 2. Forzamos al navegador a "ver" los cambios antes de volver a animar
+            void refreshOverlay.offsetWidth;
+
+            // 3. Aplicamos la animación a cada frase con un retraso escalonado
+            headlines.forEach((headline, index) => {
+                headline.style.animation = ''; // Limpiamos para que se aplique la regla de CSS
+                headline.style.animationDelay = `${index * 0.4}s`; // 0.4s de retraso entre cada frase
+            });
+
+            // Muestra el contenedor principal del aviso
+            refreshOverlay.classList.add('is-visible');
+            
+            // Reinicia la animación de la estrella fugaz
+            const shootingStarRefresh = document.getElementById('shootingStarRefresh');
+            if (shootingStarRefresh) {
+                shootingStarRefresh.style.animation = 'none';
+                void shootingStarRefresh.offsetWidth;
+                shootingStarRefresh.style.animation = 'shoot-right-to-left 5s ease-in infinite 1.5s';
+            }
         }
     }
 
     function hideOverlayAndRefresh() {
         if (refreshOverlay) {
-            refreshOverlay.classList.add('hidden');
+            refreshOverlay.classList.remove('is-visible');
         }
-        location.reload(); // Recarga la página
+        // Esperamos a que la transición de 1 segundo termine antes de recargar
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
     }
 
-    if (shootingStarRefresh) {
-        shootingStarRefresh.addEventListener('click', hideOverlayAndRefresh);
+    if (refreshOverlay) {
+        refreshOverlay.addEventListener('click', hideOverlayAndRefresh);
     }
     
     // Función para comprobar si hay una nueva versión de los sorteos

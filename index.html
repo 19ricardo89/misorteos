@@ -1776,6 +1776,62 @@
     let originalDateOfGiveaway = null;
     // --- FUNCIONES DE LA APLICACIÓN ---
 
+    function setupCustomCategoryFilter() {
+        const button = document.getElementById('category-filter-button');
+        const selectedText = document.getElementById('category-filter-selected-text');
+        const optionsContainer = document.getElementById('category-filter-options');
+        if (!button || !selectedText || !optionsContainer) return;
+
+        // Limpiar opciones existentes
+        optionsContainer.innerHTML = '';
+
+        // Llenar con las categorías
+        Object.keys(CATEGORY_INFO).forEach(key => {
+            const category = CATEGORY_INFO[key];
+            const li = document.createElement('li');
+            li.className = 'custom-dropdown-option';
+            li.dataset.value = key;
+            li.innerHTML = `
+                <span class="category-name">${category.emoji} ${category.name}</span>
+                <span class="category-desc">${category.desc}</span>
+            `;
+            optionsContainer.appendChild(li);
+        });
+
+        // Añadir el manejador de eventos al contenedor de opciones (más eficiente)
+        optionsContainer.addEventListener('click', (e) => {
+            const selectedOption = e.target.closest('.custom-dropdown-option');
+            if (!selectedOption) return;
+
+            const selectedValue = selectedOption.dataset.value;
+            const category = CATEGORY_INFO[selectedValue];
+            
+            button.dataset.value = selectedValue;
+            selectedText.textContent = `${category.emoji} ${category.name}`;
+            
+            if (selectedValue === 'all') {
+                button.classList.add('placeholder');
+            } else {
+                button.classList.remove('placeholder');
+            }
+
+            // Ocultar el menú desplegable
+            optionsContainer.classList.add('hidden');
+            
+            // Volver a renderizar el modal con el filtro aplicado
+            const dateStr = modal.dataset.date;
+            if (dateStr) {
+                buildModal(dateStr);
+            }
+        });
+
+        // Establecer el estado inicial del botón
+        const initialCategory = CATEGORY_INFO['all'];
+        selectedText.textContent = `${initialCategory.emoji} ${initialCategory.name}`;
+        button.dataset.value = 'all';
+        button.classList.add('placeholder');
+    }
+
     const resetAIView = () => {
         // Resetear variables de estado
         imageQueue = [];
@@ -2448,7 +2504,6 @@
 
             const hoy = new Date();
             const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-            
             const dynamicPrompt = `
 <ROL_Y_OBJETIVO>
 Actuarás como un Analista de Datos Experto en Extracción de Información Visual, especializado en sorteos de redes sociales. Tu única misión es analizar la imagen proporcionada y devolver un único objeto JSON válido, sin ningún texto, saludo o explicación adicional. La precisión, el cumplimiento de las reglas y la consistencia son de máxima prioridad.

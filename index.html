@@ -2233,42 +2233,56 @@
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const dayOffset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
         
-        // [NUEVA LÓGICA DE FILTRADO GLOBAL]
         let allGiveawaysInView = [];
         if (activeBatchFilter) {
-            // Si hay un filtro de lote, solo usamos los sorteos de ese lote
             allGiveawaysInView = Object.values(giveaways).flat().filter(g => g.batchId === activeBatchFilter);
         } else {
-            // Si no, usamos todos los sorteos
             allGiveawaysInView = Object.values(giveaways).flat();
         }
 
-        let totalGiveawaysCount = 0; // Se recalculará dentro del bucle
+        let totalGiveawaysCount = 0;
 
         for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             
-            // Usamos el array pre-filtrado 'allGiveawaysInView'
             const dayGiveawaysSource = allGiveawaysInView.filter(g => g.date === dateStr);
 
+            // --- BLOQUE DE CÓDIGO CORREGIDO Y MEJORADO ---
             const dayGiveaways = dayGiveawaysSource.filter(g => {
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
+
+                // 1. Filtro por texto de búsqueda
                 if (searchQuery && !prize.includes(searchText)) {
-                    return false;
+                    return false; // Si hay búsqueda y no coincide, se descarta.
                 }
+
+                // 2. Filtro por categoría
                 if (currentFilter !== 'all') {
-                    const categoryMap = {
-                        'padel': '🥎', 'travel': '🛩️', 'price': '💲', 'frikis': '🃏',
-                        'moda': '👠', 'belleza': '💄', 'hogar': '🏠', 'tecnologia': '💻',
-                        'comida': '🍔', 'ocio': '🎟️', 'deporte': '💪', 'infantil': '🧸',
-                        'mascotas': '🐾', 'dinero': '💰', 'libros': '📚', 'motor': '🚗'
-                    };
-                    return prize.includes(categoryMap[currentFilter]);
+                    // Lógica robusta que prioriza la categoría guardada y si no, busca el emoji.
+                    if (g.prize_category) {
+                        // Si el sorteo tiene categoría, la usamos (es más fiable)
+                        if (g.prize_category !== currentFilter) return false;
+                    } else {
+                        // Si no tiene, buscamos el emoji como antes
+                        const categoryMap = {
+                            'padel': '🥎', 'travel': '🛩️', 'price': '💲', 'frikis': '🃏',
+                            'moda': '👠', 'belleza': '💄', 'hogar': '🏠', 'tecnologia': '💻',
+                            'comida': '🍔', 'ocio': '🎟️', 'deporte': '💪', 'infantil': '🧸',
+                            'mascotas': '🐾', 'dinero': '💰', 'libros': '📚', 'motor': '🚗'
+                        };
+                        const emoji = categoryMap[currentFilter];
+                        if (!emoji || !prize.includes(emoji)) {
+                            return false; // Si no encontramos el emoji, se descarta.
+                        }
+                    }
                 }
+                
+                // Si ha pasado todos los filtros (o no había), se muestra.
                 return true;
             });
+            // --- FIN DEL BLOQUE CORREGIDO ---
 
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');

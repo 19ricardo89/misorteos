@@ -50,6 +50,10 @@
             from { transform: rotate(0deg) scale(1); }
             to { transform: rotate(360deg) scale(0); }
         }
+        @keyframes pulse-help {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(253, 224, 71, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 10px 5px rgba(253, 224, 71, 0); }
+        }
 
         /* --- ESTILOS NOTIFICACIÓN TOAST --- */
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -458,6 +462,28 @@
         }
         .vis-giveaway-btn:hover {
             background-color: #d1d5db !important;
+        }
+        
+        /* [NUEVO] Botón de Ayuda */
+        .help-btn {
+            background-color: #fde047;
+            color: #78350f;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            cursor: pointer;
+            border: 1px solid #facc15;
+            transition: all 0.2s ease-in-out;
+            animation: pulse-help 2.5s infinite;
+        }
+        .help-btn:hover {
+            transform: scale(1.1);
+            background-color: #facc15;
         }
 
 
@@ -1002,12 +1028,15 @@
     <div id="magic-stars-container"></div>
 
     <div id="nav-menu" class="nav-menu flex flex-col items-start gap-4">
-        <button id="close-nav-menu" class="text-yellow-600 hover:text-yellow-800 text-4xl self-end">&times;</button>
+        <div class="flex justify-between items-center w-full">
+            <h3 class="text-xl font-bold text-yellow-400">Menú</h3>
+            <button id="close-nav-menu" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+        </div>
         <div class="w-full px-1 py-2 border-b border-t border-yellow-600/20 my-4">
-    <input type="text" id="global-search-input" placeholder="Buscar en todo el calendario..." class="w-full p-2 rounded-lg text-sm mb-2">
-    <select id="global-category-filter" class="w-full p-2 rounded-lg text-sm">
-        </select>
-</div>
+            <input type="text" id="global-search-input" placeholder="Buscar en todo el calendario..." class="w-full p-2 rounded-lg text-sm mb-2">
+            <select id="global-category-filter" class="w-full p-2 rounded-lg text-sm">
+            </select>
+        </div>
         <a href="#" id="add-manual-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
             <span class="text-xl sm:text-2xl">📝</span>
             <span>Añadir</span>
@@ -1094,7 +1123,10 @@
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">Papelera de Sorteos</h2>
-                <button id="close-trash-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-trash-modal" class="help-btn" data-modal-id="trash-modal">?</button>
+                    <button id="close-trash-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="trash-modal-body" class="space-y-4 max-h-[60vh]"></div>
             <button id="delete-all-trash-btn" class="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">Vaciar papelera</button>
@@ -1105,7 +1137,10 @@
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="discarded-modal-title" class="text-2xl sm:text-3xl">Sorteos Descartados</h2>
-                <button id="close-discarded-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-discarded-modal" class="help-btn" data-modal-id="discarded-modal">?</button>
+                    <button id="close-discarded-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
              <div class="flex justify-between items-center flex-wrap gap-2 mb-4">
                 <div>
@@ -1127,7 +1162,10 @@
              <div class="flex-shrink-0 p-4 sm:p-6 pb-0">
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="modal-title" class="text-2xl sm:text-3xl">Sorteos del Día</h2>
-                    <button id="close-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                    <div class="flex items-center gap-2">
+                        <button id="help-daily-modal" class="help-btn" data-modal-id="modal">?</button>
+                        <button id="close-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                    </div>
                 </div>
                 <div id="modal-filters" class="flex flex-col sm:flex-row gap-2 mb-2">
                     <input type="text" id="modal-search-input" placeholder="Buscar por premio..." class="w-full p-2 rounded-lg bg-white border border-yellow-400 text-sm flex-grow">
@@ -1142,9 +1180,12 @@
                 </div>
                 </div>
             <div class="p-4 sm:p-6 pt-0">
-                <div class="flex justify-between items-center mb-4 text-yellow-900">
+                <div class="flex justify-between items-center mb-2 text-yellow-900">
                     <button id="select-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Seleccionar todo</button>
                     <button id="deselect-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Deseleccionar todo</button>
+                </div>
+                <div id="insta-hint" class="p-2 my-3 rounded-lg bg-blue-100/50 border border-blue-400 text-center text-sm text-blue-900 font-bold">
+                    👉 <strong>¡Atajo a la vista!</strong> Toca en las <code>@cuentas</code> y salta a su Instagram sin teclear.
                 </div>
                 <div id="modal-body" class="space-y-4 max-h-[60vh]"></div>
             </div>
@@ -1155,7 +1196,10 @@
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="add-giveaway-modal-title" class="text-2xl sm:text-3xl">Añadir Nuevo Sorteo</h2>
-                <button id="close-add-giveaway-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                 <div class="flex items-center gap-2">
+                    <button id="help-add-manual-modal" class="help-btn" data-modal-id="add-giveaway-modal">?</button>
+                    <button id="close-add-giveaway-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="add-giveaway-form-body">
                 <form id="add-giveaway-form" class="space-y-4">
@@ -1311,7 +1355,10 @@
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🕒 Historial de Análisis</h2>
-                <button id="close-history-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-history-modal" class="help-btn" data-modal-id="history-modal">?</button>
+                    <button id="close-history-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="history-modal-body" class="max-h-[60vh] text-left"></div>
         </div>
@@ -1332,7 +1379,10 @@
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🏆 Vitrina de Trofeos 🏆</h2>
-                <button id="close-trophy-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-trophy-modal" class="help-btn" data-modal-id="trophy-modal">?</button>
+                    <button id="close-trophy-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="trophy-modal-body" class="max-h-[60vh]"></div>
         </div>
@@ -1342,7 +1392,10 @@
         <div class="modal-content w-full max-w-4xl rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">📊 Estadísticas y Estrategia</h2>
-                <button id="close-stats-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-stats-modal" class="help-btn" data-modal-id="stats-modal">?</button>
+                    <button id="close-stats-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
 
             <div class="stats-tabs flex flex-wrap border-b border-yellow-600/20 mb-4">
@@ -1429,7 +1482,10 @@
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🏅 Logros y Metas</h2>
-                <button id="close-achievements-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-achievements-modal" class="help-btn" data-modal-id="achievements-modal">?</button>
+                    <button id="close-achievements-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="achievements-modal-body" class="max-h-[60vh] text-left">
             </div>
@@ -1466,7 +1522,10 @@
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">Very Important Sorteos 💫</h2>
-                <button id="close-vis-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-vis-modal" class="help-btn" data-modal-id="vis-modal">?</button>
+                    <button id="close-vis-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="vis-modal-body" class="space-y-4 max-h-[60vh]">
                 </div>
@@ -1474,7 +1533,12 @@
     </div>
 
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
-        <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold absolute top-2 right-4 z-10">&times;</button>
+        <div class="flex justify-between items-center w-full absolute top-2 right-4 z-10">
+            <div></div> <div class="flex items-center gap-2">
+                <button id="help-ai-modal" class="help-btn" data-modal-id="ai-fullscreen-view">?</button>
+                <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold">&times;</button>
+            </div>
+        </div>
 
         <div id="ai-initial-view" class="w-full max-w-lg mx-auto flex flex-col items-center justify-center h-full">
             <p class="text-2xl font-semibold mb-6 text-center text-yellow-300">Selecciona hasta 100 imágenes del sorteo.</p>
@@ -2281,7 +2345,7 @@
             itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
             const leftSideContainer = document.createElement('div');
-            leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
+            leftSideContainer.className = 'flex items-start flex-1 overflow-hidden'; // Changed to items-start for vertical alignment
 
             const controlsContainer = document.createElement('div');
             controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0';
@@ -2316,15 +2380,16 @@
             const prizeContainer = document.createElement('div');
             prizeContainer.className = 'overflow-hidden';
 
-            let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
+            // [MODIFICACIÓN] Cuentas en líneas separadas
+            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a></div>`).join('');
             
             const timeEmoji = giveaway.is_priority_time ? '⏰' : '';
             const categoryInfo = getCategoryInfo(giveaway.prize_category);
             
             prizeContainer.innerHTML = `
                 <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
-                <p class="text-sm truncate">${accountsHTML}</p>
-                <span class="text-xl" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji} ${timeEmoji}</span>
+                <div class="text-sm">${accountsHTML}</div>
+                <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji} ${timeEmoji}</span>
             `;
 
             leftSideContainer.appendChild(controlsContainer);
@@ -4926,6 +4991,61 @@ if (globalCategoryFilter) {
 
 // 4. Llamamos a la función para que el filtro se cree al cargar la página
 populateGlobalCategoryFilter();
+
+// [NUEVO] LÓGICA PARA LOS BOTONES DE AYUDA
+const HELP_CONTENT = {
+    'modal': {
+        title: '🌟 Guía del Cazador de Sorteos',
+        content: `¡Aquí es donde ocurre la magia! Gestiona los sorteos del día seleccionado.\n\n- Búsqueda y Filtros: Usa el campo de búsqueda para encontrar un premio por su nombre o el filtro de categorías para ver solo los que te interesan.\n- El Premio: El texto principal te dice qué se sortea. ¡Haz clic sobre el precio para buscarlo directamente en Google!\n- Cuentas Mágicas: Toca sobre cualquier cuenta @usuario para que te llevemos volando a su perfil de Instagram.\n- Checkbox de Realizado (✅): ¡Márcalo cuando hayas participado! El sorteo se moverá al final de la lista.\n- Botones de Acción (al completar):\n  - Trofeo (🏆): ¡Has ganado! Púlsalo para mover el sorteo a tu Vitrina de Trofeos.\n  - Estrella (🌟): ¿Es un sorteo muy importante (VIS)? Púlsalo para enviarlo a una lista especial de seguimiento.\n- Herramientas del Organizador:\n  - Calendario (🗓️): Mueve el sorteo a una nueva fecha.\n  - Papelera (🗑️): Envía el sorteo a la papelera (puedes restaurarlo).\n  - Globo (🌍): Descarta el sorteo como extranjero y añade las cuentas al cortafuegos.`
+    },
+    'add-giveaway-modal': {
+        title: '✍️ ¡Añade tu Tesoro!',
+        content: 'Registra un nuevo sorteo manualmente.\n\n- Fecha: El día que finaliza el sorteo.\n- Premio: Sé descriptivo y usa los emojis para categorizar (🥎, 🛩️, 🃏, 💲).\n- Cuentas: Escribe las cuentas de Instagram separadas por comas (ej: @cuenta1,@cuenta2).\n- Valor: El precio aproximado del premio.'
+    },
+    'ai-fullscreen-view': {
+        title: '🤖 El Asistente Mágico de IA',
+        content: '¡Deja que la IA trabaje por ti!\n\n1. Selecciona Imágenes: Pulsa el botón y sube hasta 100 capturas de pantalla de sorteos.\n2. Inicia el Análisis: La IA leerá cada imagen, extraerá toda la información y la clasificará por ti.\n3. Revisa y Confirma: Aparecerá una tarjeta interactiva por cada imagen. Podrás editar cualquier dato o simplemente guardar si todo es correcto.'
+    },
+    'trash-modal': {
+        title: '🗑️ La Papelera de Oportunidades',
+        content: 'Aquí descansan los sorteos que has eliminado.\n\n- Restaurar (↩️): Pulsa este botón para devolver el sorteo a tu calendario.\n- Vaciar Papelera: ¡Cuidado! Esta acción elimina permanentemente todos los sorteos de la papelera.'
+    },
+    'discarded-modal': {
+        title: '🗂️ El Archivo de los Descartados',
+        content: 'Aquí van los sorteos que la IA o tú habéis filtrado por no ser válidos (duplicados, caducados, extranjeros...).\n\n- Filtros: Usa los botones de arriba para navegar entre las distintas categorías de descarte.\n- Recuperar (+): Si un sorteo se descartó por error, pulsa para añadirlo manualmente.\n- Comparar (en Duplicados): Pulsa sobre un sorteo duplicado para ver una comparación y decidir qué hacer.'
+    },
+    'trophy-modal': {
+        title: '🏆 ¡Tu Salón de la Fama!',
+        content: '¡Aquí brillan todos los premios que has ganado! Es el resultado de tu esfuerzo. Si añadiste un premio por error, puedes pulsar el icono (❌) para eliminarlo.'
+    },
+    'stats-modal': {
+        title: '📊 Tu Centro de Estrategia',
+        content: '¡Los números no mienten! Analiza tu rendimiento para optimizar tu estrategia.\n\n- Pestañas: Navega por las diferentes secciones para ver un resumen, tu rendimiento, consejos y gráficos visuales.\n- Oráculos: ¿Necesitas inspiración? Consulta a los oráculos para ver qué te depara el futuro.\n- Compartir: ¡Presume de tus logros! Copia un resumen de tus estadísticas.'
+    },
+    'achievements-modal': {
+        title: '🏅 Logros, Títulos y Méritos',
+        content: '¡Demuestra tu maestría como cazador de sorteos!\n\n- Logros: Hitos que desbloqueas al usar la aplicación. ¡Dan Puntos de Sorteo (PS)!\n- Títulos de Prestigio: Recompensas especiales por hazañas legendarias. Puedes elegir cuál mostrar en la pantalla principal.\n- Méritos: Reconocimientos por ganar tipos específicos de sorteos.'
+    },
+    'history-modal': {
+        title: '🕒 Historial de Análisis de IA',
+        content: 'Aquí puedes revisar los resúmenes de tus últimas sesiones de análisis con la IA. Despliega cada entrada para ver un desglose de los sorteos que se añadieron y los que se descartaron.'
+    },
+    'vis-modal': {
+        title: '🌟 Revisión VIS (Very Important Sorteos)',
+        content: 'Esta es tu sala de seguimiento personal para los sorteos más importantes.\n\n- ¿Cómo funciona?: Cuando participas en un sorteo, si pulsas el botón de la estrella (🌟), se añade a esta lista.\n- Revisado: Cuando sepas que el sorteo ha finalizado y no has ganado, pulsa este botón para quitarlo de la lista.\n- Ganado: ¡Si has ganado, pulsa aquí para moverlo a tu vitrina de trofeos!'
+    }
+};
+
+document.addEventListener('click', function(e) {
+    const helpBtn = e.target.closest('.help-btn');
+    if (helpBtn) {
+        const modalId = helpBtn.dataset.modalId;
+        const helpData = HELP_CONTENT[modalId];
+        if (helpData) {
+            alert(`${helpData.title}\n\n${helpData.content}`);
+        }
+    }
+});
 </script>
 </body>
 </html>

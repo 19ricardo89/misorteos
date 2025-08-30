@@ -972,25 +972,6 @@
             color: #E0E0E0; /* Letras plateadas */
         }
         /* --- FIN DE NUEVOS ESTILOS --- */
-        /* --- [NUEVO] ESTILOS PARA FILTROS GLOBALES DEL MENÚ --- */
-#global-search-input, #global-category-filter {
-    background-color: rgba(0, 0, 0, 0.3);
-    border: 1px solid #d4af37;
-    color: #f0e6d2;
-    -webkit-appearance: none; /* Quita estilos por defecto en Safari/Chrome */
-    -moz-appearance: none;    /* Quita estilos por defecto en Firefox */
-    appearance: none;
-}
-
-#global-search-input::placeholder {
-    color: #b45309;
-    opacity: 0.8;
-}
-
-#global-category-filter option {
-    background-color: #302b63;
-    color: #f0e6d2;
-}
     </style>
 </head>
 <body class="p-4">
@@ -1003,11 +984,6 @@
 
     <div id="nav-menu" class="nav-menu flex flex-col items-start gap-4">
         <button id="close-nav-menu" class="text-yellow-600 hover:text-yellow-800 text-4xl self-end">&times;</button>
-        <div class="w-full px-1 py-2 border-b border-t border-yellow-600/20 my-4">
-    <input type="text" id="global-search-input" placeholder="Buscar en todo el calendario..." class="w-full p-2 rounded-lg text-sm mb-2">
-    <select id="global-category-filter" class="w-full p-2 rounded-lg text-sm">
-        </select>
-</div>
         <a href="#" id="add-manual-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
             <span class="text-xl sm:text-2xl">📝</span>
             <span>Añadir</span>
@@ -2648,6 +2624,13 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
 3.  **Lógica de Fechas:** Aplica las 'REGLAS_DE_FECHA_JERARQUICAS' en el orden estricto en que se presentan para determinar la fecha correcta.
 4.  **Construcción del JSON:** Usa la información recopilada para construir el objeto JSON final, siguiendo la estructura y reglas de formato requeridas. Si la imagen NO es un sorteo, devuelve exclusivamente: {"status": "not_a_giveaway"}.
 </PROCESO_MENTAL_GUIADO>
+<REGLAS_DE_VALIDEZ_GEOGRAFICA>
+Tu primera tarea es determinar si el sorteo es válido para un usuario en España y devolverlo en el campo `is_valid_for_spain`. Usa estas reglas en orden:
+
+1.  **REGLA DE EXCLUSIÓN (INVÁLIDO):** Si el texto menciona explícitamente que el sorteo es solo para un país de Latinoamérica (Argentina, Colombia, México, Paraguay, Uruguay, etc.) o para la región "LATAM", establece `is_valid_for_spain` en `false`.
+2.  **REGLA DE INCLUSIÓN (VÁLIDO):** Si el texto menciona explícitamente "España", "Península", "Baleares" O dice que es "Internacional" / "Worldwide", establece `is_valid_for_spain` en `true`.
+3.  **REGLA POR DEFECTO (VÁLIDO):** Si ninguna de las reglas anteriores se cumple (el sorteo no especifica ninguna región), asume que es válido y establece `is_valid_for_spain` en `true`.
+</REGLAS_DE_VALIDEZ_GEOGRAFICA>
 
 <REGLAS_DE_FECHA_JERARQUICAS_V6_AI_Final>
 **Instrucción: Evalúa estas reglas en orden descendente. La PRIMERA regla que se cumpla determina el resultado y finaliza el análisis de fechas.**
@@ -2877,8 +2860,8 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
   "price": "string | null",
   "ends_at_time": "string | null",
   "is_priority_time": boolean,
+  "is_valid_for_spain": boolean,
   "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
-  "is_spanish": boolean,
   "prize_category": "string ('padel', 'motor', 'mascotas', 'bebes', 'bodas', 'dinero', 'viajes', 'ocio', 'aventura', 'suscripciones', 'gaming', 'foto', 'musica', 'deporte', 'libros', 'frikis', 'joyeria', 'accesorios', 'moda', 'belleza', 'salud', 'electrodomesticos', 'cocina', 'bricolaje', 'jardineria', 'papeleria', 'arte', 'eco', 'gourmet', 'comida', 'hogar', 'otros')",
   "winner_count": integer (por defecto 1),
   "confidence_score": float
@@ -2890,25 +2873,35 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             try {
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
+                // --- [NUEVA LÓGICA DE DECISIÓN CON DOBLE FILTRO] ---
+                const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
+
+                // 1. Comprobamos tu cortafuegos manual primero
+                const manuallyBlocked = accounts.some(acc => foreignAccounts.includes(acc));
+
+                // 2. Tomamos la decisión final
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
-                } else if (aiData.status === 'discard_no_date' || !aiData.date) {
+                
+                } else if (aiData.is_valid_for_spain === false || manuallyBlocked) {
+                    // Si la IA dice que no es válido O si una cuenta está en tu lista negra, se descarta.
+                    resultData = { ...aiData, accounts, status: 'foreign', originalFile: file };
+                
+                } else if (!aiData.date) {
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
+                
                 } else {
-                    const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
-                    const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
+                    // Si pasa ambos filtros, el sorteo es VÁLIDO. Procedemos con las comprobaciones de siempre.
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
                     
                     let priceInfo = { prize: aiData.prize, value: aiData.price, url: null };
-                    if (!aiData.price) { // Solo busca el valor si la IA no lo encontró en la imagen
+                    if (!aiData.price) {
                         priceInfo = await searchPrizeValue(aiData);
                     }
 
-                    if (isForeign) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
-                    } else if (existingGiveaway) {
+                    if (existingGiveaway) {
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
@@ -4868,47 +4861,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     // 2. Además, establece un temporizador para que se repita cada HORA.
     // (60 minutos * 60 segundos * 1000 milisegundos = 3600000)
     setInterval(checkForUpdates, 3600000);
-    // --- [NUEVO] LÓGICA PARA LOS FILTROS GLOBALES ---
-
-const globalSearchInput = document.getElementById('global-search-input');
-const globalCategoryFilter = document.getElementById('global-category-filter');
-
-// 1. Función para rellenar el desplegable de categorías
-function populateGlobalCategoryFilter() {
-    if (!globalCategoryFilter) return;
-    
-    // Limpiamos por si acaso y añadimos la opción por defecto
-    globalCategoryFilter.innerHTML = '';
-
-    // Usamos el objeto CATEGORY_INFO que ya tienes
-    for (const key in CATEGORY_INFO) {
-        const option = document.createElement('option');
-        option.value = key;
-        option.textContent = `${CATEGORY_INFO[key].emoji} ${CATEGORY_INFO[key].name}`;
-        globalCategoryFilter.appendChild(option);
-    }
-}
-
-// 2. Evento para el buscador de texto
-if (globalSearchInput) {
-    globalSearchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value; // Actualizamos la variable global de búsqueda
-        renderCalendar(); // Redibujamos el calendario con el filtro aplicado
-    });
-}
-
-// 3. Evento para el filtro de categoría
-if (globalCategoryFilter) {
-    globalCategoryFilter.addEventListener('change', (e) => {
-        const selectedFilter = e.target.value;
-        // La variable 'currentFilter' ya la usas, así que la reutilizamos
-        setFilterAndRender(selectedFilter);
-        toggleNavMenu(); // Cerramos el menú para ver el resultado
-    });
-}
-
-// 4. Llamamos a la función para que el filtro se cree al cargar la página
-populateGlobalCategoryFilter();
 </script>
 </body>
 </html>

@@ -2317,7 +2317,7 @@
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []);
 
-        // [NUEVA LÓGICA DE FILTRADO POR LOTE]
+        // Filtro por Lote (si está activo)
         if (activeBatchFilter) {
             dayGiveaways = dayGiveaways.filter(g => g.batchId === activeBatchFilter);
         }
@@ -2327,7 +2327,9 @@
         const selectedCategory = document.getElementById('category-filter-button')?.dataset.value || 'all';
 
         dayGiveaways = dayGiveaways.filter(g => {
-            const matchesSearch = !searchQuery || (g.prize && g.prize.toLowerCase().includes(searchQuery));
+            // FIX: Hacemos el código robusto añadiendo (|| '') para evitar errores si 'prize' no existe
+            const prizeText = (g.prize || '').toLowerCase();
+            const matchesSearch = !searchQuery || prizeText.includes(searchQuery);
             const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
             return matchesSearch && matchesCategory;
         });
@@ -2352,7 +2354,6 @@
         document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
         modalBody.innerHTML = '';
         
-        // [NUEVO] Mensaje de ayuda para las cuentas de Instagram
         const helpMessage = document.createElement('div');
         helpMessage.className = 'p-2 mb-3 rounded-lg text-center';
         helpMessage.style.cssText = 'background-color: #fef3c7; color: #78350f; border: 1px solid #fde047;';
@@ -2401,16 +2402,18 @@
             const prizeContainer = document.createElement('div');
             prizeContainer.className = 'overflow-hidden';
 
-            // [NUEVO] Formato de cuentas en multi-línea
+            // FIX: Se quita el .join('<br>') para evitar el doble espaciado. El estilo CSS se encargará de separarlos.
             const accountsHTML = (giveaway.accounts || [])
-                .map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`)
-                .join('<br>');
+                .map(acc => `<a href="https://instagram.com/${(acc || '').replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`)
+                .join('');
             
+            // FIX: Comprobaciones para evitar errores
             const timeEmoji = giveaway.is_priority_time ? '⏰' : '';
             const categoryInfo = getCategoryInfo(giveaway.prize_category);
+            const prizeText = giveaway.prize || 'Premio no definido';
             
             prizeContainer.innerHTML = `
-                <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
+                <p class="text-base sm:text-lg text-yellow-900 truncate">${prizeText}</p>
                 <div class="text-sm giveaway-accounts-container">${accountsHTML}</div>
                 <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji} ${timeEmoji}</span>
             `;
@@ -2421,7 +2424,7 @@
             const detailsContainer = document.createElement('div');
             detailsContainer.className = 'text-right flex-shrink-0 ml-2';
             if (giveaway.price) {
-                detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
+                detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(prizeText)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
             }
 
             const actionsContainer = document.createElement('div');
@@ -2454,8 +2457,8 @@
 
             modalBody.appendChild(itemContainer);
 
-            if (giveaway.prize.includes('🥎')) hasPadel = true;
-            if (giveaway.prize.includes('🛩️')) hasTravel = true;
+            if ((giveaway.prize || '').includes('🥎')) hasPadel = true;
+            if ((giveaway.prize || '').includes('🛩️')) hasTravel = true;
         });
         const modalContent = document.getElementById('modal-content');
         modalContent.classList.remove('modal-default-bg', 'modal-padel-bg', 'modal-travel-bg');
@@ -2479,7 +2482,6 @@
 
         modal.dataset.date = dateStr;
     };
-
 
     const openModal = (dateStr) => { 
         if (navMenu.classList.contains('is-open')) {

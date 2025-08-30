@@ -2624,13 +2624,6 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
 3.  **Lógica de Fechas:** Aplica las 'REGLAS_DE_FECHA_JERARQUICAS' en el orden estricto en que se presentan para determinar la fecha correcta.
 4.  **Construcción del JSON:** Usa la información recopilada para construir el objeto JSON final, siguiendo la estructura y reglas de formato requeridas. Si la imagen NO es un sorteo, devuelve exclusivamente: {"status": "not_a_giveaway"}.
 </PROCESO_MENTAL_GUIADO>
-<REGLAS_DE_VALIDEZ_GEOGRAFICA>
-Tu primera tarea es determinar si el sorteo es válido para un usuario en España y devolverlo en el campo `is_valid_for_spain`. Usa estas reglas en orden:
-
-1.  **REGLA DE EXCLUSIÓN (INVÁLIDO):** Si el texto menciona explícitamente que el sorteo es solo para un país de Latinoamérica (Argentina, Colombia, México, Paraguay, Uruguay, etc.) o para la región "LATAM", establece `is_valid_for_spain` en `false`.
-2.  **REGLA DE INCLUSIÓN (VÁLIDO):** Si el texto menciona explícitamente "España", "Península", "Baleares" O dice que es "Internacional" / "Worldwide", establece `is_valid_for_spain` en `true`.
-3.  **REGLA POR DEFECTO (VÁLIDO):** Si ninguna de las reglas anteriores se cumple (el sorteo no especifica ninguna región), asume que es válido y establece `is_valid_for_spain` en `true`.
-</REGLAS_DE_VALIDEZ_GEOGRAFICA>
 
 <REGLAS_DE_FECHA_JERARQUICAS_V6_AI_Final>
 **Instrucción: Evalúa estas reglas en orden descendente. La PRIMERA regla que se cumpla determina el resultado y finaliza el análisis de fechas.**
@@ -2860,8 +2853,8 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
   "price": "string | null",
   "ends_at_time": "string | null",
   "is_priority_time": boolean,
-  "is_valid_for_spain": boolean,
   "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
+  "is_spanish": boolean,
   "prize_category": "string ('padel', 'motor', 'mascotas', 'bebes', 'bodas', 'dinero', 'viajes', 'ocio', 'aventura', 'suscripciones', 'gaming', 'foto', 'musica', 'deporte', 'libros', 'frikis', 'joyeria', 'accesorios', 'moda', 'belleza', 'salud', 'electrodomesticos', 'cocina', 'bricolaje', 'jardineria', 'papeleria', 'arte', 'eco', 'gourmet', 'comida', 'hogar', 'otros')",
   "winner_count": integer (por defecto 1),
   "confidence_score": float
@@ -2873,35 +2866,25 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             try {
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
-                // --- [NUEVA LÓGICA DE DECISIÓN CON DOBLE FILTRO] ---
-                const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
-
-                // 1. Comprobamos tu cortafuegos manual primero
-                const manuallyBlocked = accounts.some(acc => foreignAccounts.includes(acc));
-
-                // 2. Tomamos la decisión final
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
-                
-                } else if (aiData.is_valid_for_spain === false || manuallyBlocked) {
-                    // Si la IA dice que no es válido O si una cuenta está en tu lista negra, se descarta.
-                    resultData = { ...aiData, accounts, status: 'foreign', originalFile: file };
-                
-                } else if (!aiData.date) {
+                } else if (aiData.status === 'discard_no_date' || !aiData.date) {
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
-                
                 } else {
-                    // Si pasa ambos filtros, el sorteo es VÁLIDO. Procedemos con las comprobaciones de siempre.
+                    const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
+                    const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
                     
                     let priceInfo = { prize: aiData.prize, value: aiData.price, url: null };
-                    if (!aiData.price) {
+                    if (!aiData.price) { // Solo busca el valor si la IA no lo encontró en la imagen
                         priceInfo = await searchPrizeValue(aiData);
                     }
 
-                    if (existingGiveaway) {
+                    if (isForeign) {
+                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
+                    } else if (existingGiveaway) {
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };

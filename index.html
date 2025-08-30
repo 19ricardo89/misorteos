@@ -160,7 +160,7 @@
         .modal-default-bg { background-color: #fffbef; }
         .modal-travel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=1170&auto=format&fit=crop'); }
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
-        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu, #new-giveaways-modal-body, #batch-management-modal-body { overflow-y: auto; }
+        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu { overflow-y: auto; }
 
         /* --- ESTILOS PARA EL NUEVO FILTRO DE CATEGORÍAS --- */
         #category-filter-button.placeholder #category-filter-selected-text {
@@ -411,12 +411,11 @@
             color: #4e342e !important;
         }
         /* NUEVO: Color más oscuro para cuentas y precio */
-        .giveaway-item .giveaway-accounts-container a,
+        .giveaway-item a,
         .giveaway-item .text-amber-600,
         .giveaway-item .text-yellow-700 {
             color: #6a3805 !important; /* Marrón oscuro para máxima legibilidad */
             font-weight: bold; /* Añadimos negrita para que destaque más */
-            display: block; /* Hacemos que cada enlace ocupe su propia línea */
         }
         .giveaway-item a:hover {
             color: #8c5a15 !important; /* Un tono más claro al pasar el ratón */
@@ -1033,10 +1032,6 @@
             <span class="text-xl sm:text-2xl">🕒</span>
             <span>Historial</span>
         </a>
-        <a href="#" id="manage-batches-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2 action-btn">
-            <span class="text-xl sm:text-2xl">⚙️</span>
-            <span>Gestionar Lotes</span>
-        </a>
         <a href="#" id="trophy-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
              <span class="text-xl sm:text-2xl">🏆</span>
              <span>Vitrina</span>
@@ -1081,28 +1076,18 @@
     </main>
 
     <footer class="w-full max-w-4xl mx-auto p-4 flex justify-between items-center">
-        <div class="flex items-center gap-4">
-            <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="2" y1="12" x2="22" y2="12" stroke="#f7d468" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-        </div>
-
+        <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <div id="total-giveaways-container">
             <span id="total-giveaways-count">0</span>
         </div>
-
-        <div class="flex items-center">
-            <button id="new-giveaways-btn" class="nav-btn px-4 py-3 flex items-center gap-2 shadow-lg transition-transform duration-300 transform hover:scale-110">
-                <span class="text-xl sm:text-2xl">✨</span>
-                <span class="hidden sm:inline-block font-bold">Nuevos</span>
-            </button>
-        </div>
+        <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="2" y1="12" x2="22" y2="12" stroke="#f7d468" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
     </footer>
 
     <div id="trash-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
@@ -1488,40 +1473,6 @@
         </div>
     </div>
 
-    <div id="new-giveaways-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl flex items-center gap-2">Novedades ✨ <button id="new-giveaways-help-btn" class="text-yellow-600 hover:text-yellow-800 text-xl font-bold rounded-full border-2 border-yellow-600 w-7 h-7 flex items-center justify-center">?</button></h2>
-                <button id="close-new-giveaways-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <div id="new-giveaways-help-text" class="hidden p-3 mb-4 bg-yellow-100/50 rounded-lg border border-yellow-600/20 text-sm text-left">
-                <p><strong>💡 ¿Te pierdes entre tantos sorteos?</strong></p>
-                <p>¡Se acabó el buscar! Aquí tienes los <strong>últimos lotes de sorteos añadidos</strong> a la web.</p>
-                <p>Pulsa en una fecha de actualización para <strong>filtrar el calendario</strong> y ver solo las novedades. ¡Siempre a la última!</p>
-            </div>
-            <div id="new-giveaways-modal-body" class="space-y-3 max-h-[60vh]">
-                </div>
-            <button id="remove-batch-filter-btn" class="hidden mt-4 bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">Quitar Filtro y Ver Todos</button>
-        </div>
-    </div>
-
-    <div id="batch-management-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
-        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl">⚙️ Gestionar Lotes de Capturas</h2>
-                <button id="close-batch-management-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
-            </div>
-            <div class="text-left text-sm mb-4 p-3 bg-yellow-100/50 rounded-lg border border-yellow-600/20">
-                Aquí puedes ver el historial público actual y las nuevas capturas que has realizado. Para que todos vean las novedades, debes descargar el archivo actualizado y subirlo a tu proyecto.
-            </div>
-            <div id="batch-management-modal-body" class="space-y-3 max-h-[60vh] text-left">
-                </div>
-            <button id="download-history-btn" class="mt-6 bg-green-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-green-600 transition-colors shadow-lg">
-                <i class="fa-solid fa-download mr-2"></i>Descargar history_batches.json actualizado
-            </button>
-        </div>
-    </div>
-
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
         <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold absolute top-2 right-4 z-10">&times;</button>
 
@@ -1835,13 +1786,6 @@
 
     let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || (window.foreignAccounts || []);
     let visGiveaways = JSON.parse(localStorage.getItem('visGiveaways')) || [];
-
-    // [NUEVO] Variables para la funcionalidad de "Nuevos"
-    let batchHistory = [];
-    let activeBatchFilter = null;
-    let currentBatchId = null;
-    let newBatches = [];
-
     // --- Referencias a elementos del DOM ---
     const monthYearEl = document.getElementById('month-year');
     const calendarDaysEl = document.getElementById('calendar-days');
@@ -2232,58 +2176,43 @@
         const firstDayOfMonth = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const dayOffset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
-        
-        let allGiveawaysInView = [];
-        if (activeBatchFilter) {
-            allGiveawaysInView = Object.values(giveaways).flat().filter(g => g.batchId === activeBatchFilter);
-        } else {
-            allGiveawaysInView = Object.values(giveaways).flat();
-        }
-
         let totalGiveawaysCount = 0;
-
         for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            
-            const dayGiveawaysSource = allGiveawaysInView.filter(g => g.date === dateStr);
-
-            // --- BLOQUE DE CÓDIGO CORREGIDO Y MEJORADO ---
-            const dayGiveaways = dayGiveawaysSource.filter(g => {
+            const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
 
-                // 1. Filtro por texto de búsqueda
-                if (searchQuery && !prize.includes(searchText)) {
-                    return false; // Si hay búsqueda y no coincide, se descarta.
+                let matchesSearch = !searchQuery || prize.includes(searchText);
+                if (!matchesSearch) {
+                    return false;
                 }
 
-                // 2. Filtro por categoría
-                if (currentFilter !== 'all') {
-                    // Lógica robusta que prioriza la categoría guardada y si no, busca el emoji.
-                    if (g.prize_category) {
-                        // Si el sorteo tiene categoría, la usamos (es más fiable)
-                        if (g.prize_category !== currentFilter) return false;
-                    } else {
-                        // Si no tiene, buscamos el emoji como antes
-                        const categoryMap = {
-                            'padel': '🥎', 'travel': '🛩️', 'price': '💲', 'frikis': '🃏',
-                            'moda': '👠', 'belleza': '💄', 'hogar': '🏠', 'tecnologia': '💻',
-                            'comida': '🍔', 'ocio': '🎟️', 'deporte': '💪', 'infantil': '🧸',
-                            'mascotas': '🐾', 'dinero': '💰', 'libros': '📚', 'motor': '🚗'
-                        };
-                        const emoji = categoryMap[currentFilter];
-                        if (!emoji || !prize.includes(emoji)) {
-                            return false; // Si no encontramos el emoji, se descarta.
-                        }
-                    }
+                if (currentFilter === 'all') {
+                    return true;
                 }
-                
-                // Si ha pasado todos los filtros (o no había), se muestra.
-                return true;
+
+                const matchesCategory =
+                    (currentFilter === 'padel' && prize.includes('🥎')) ||
+                    (currentFilter === 'travel' && prize.includes('🛩️')) ||
+                    (currentFilter === 'price' && prize.includes('💲')) ||
+                    (currentFilter === 'frikis' && prize.includes('🃏')) ||
+                    (currentFilter === 'moda' && prize.includes('👠')) ||
+                    (currentFilter === 'belleza' && prize.includes('💄')) ||
+                    (currentFilter === 'hogar' && prize.includes('🏠')) ||
+                    (currentFilter === 'tecnologia' && prize.includes('💻')) ||
+                    (currentFilter === 'comida' && prize.includes('🍔')) ||
+                    (currentFilter === 'ocio' && prize.includes('🎟️')) ||
+                    (currentFilter === 'deporte' && prize.includes('💪')) ||
+                    (currentFilter === 'infantil' && prize.includes('🧸')) ||
+                    (currentFilter === 'mascotas' && prize.includes('🐾')) ||
+                    (currentFilter === 'dinero' && prize.includes('💰')) ||
+                    (currentFilter === 'libros' && prize.includes('📚')) ||
+                    (currentFilter === 'motor' && prize.includes('🚗'));
+
+                return matchesCategory;
             });
-            // --- FIN DEL BLOQUE CORREGIDO ---
-
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
             dayEl.className = 'calendar-day';
@@ -2316,20 +2245,13 @@
 
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []);
-
-        // Filtro por Lote (si está activo)
-        if (activeBatchFilter) {
-            dayGiveaways = dayGiveaways.filter(g => g.batchId === activeBatchFilter);
-        }
         
         const modalSearchInput = document.getElementById('modal-search-input');
         const searchQuery = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
         const selectedCategory = document.getElementById('category-filter-button')?.dataset.value || 'all';
 
         dayGiveaways = dayGiveaways.filter(g => {
-            // FIX: Hacemos el código robusto añadiendo (|| '') para evitar errores si 'prize' no existe
-            const prizeText = (g.prize || '').toLowerCase();
-            const matchesSearch = !searchQuery || prizeText.includes(searchQuery);
+            const matchesSearch = !searchQuery || (g.prize && g.prize.toLowerCase().includes(searchQuery));
             const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
             return matchesSearch && matchesCategory;
         });
@@ -2353,14 +2275,6 @@
 
         document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
         modalBody.innerHTML = '';
-        
-        const helpMessage = document.createElement('div');
-        helpMessage.className = 'p-2 mb-3 rounded-lg text-center';
-        helpMessage.style.cssText = 'background-color: #fef3c7; color: #78350f; border: 1px solid #fde047;';
-        helpMessage.innerHTML = `<strong>¡Atajo a la suerte! ✨</strong> Toca sobre las cuentas (@usuario) para ir directamente a Instagram.`;
-        modalBody.appendChild(helpMessage);
-
-
         let hasPadel = false, hasTravel = false;
         dayGiveaways.forEach(giveaway => {
             const itemContainer = document.createElement('div');
@@ -2402,20 +2316,15 @@
             const prizeContainer = document.createElement('div');
             prizeContainer.className = 'overflow-hidden';
 
-            // FIX: Se quita el .join('<br>') para evitar el doble espaciado. El estilo CSS se encargará de separarlos.
-            const accountsHTML = (giveaway.accounts || [])
-                .map(acc => `<a href="https://instagram.com/${(acc || '').replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`)
-                .join('');
+            let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
             
-            // FIX: Comprobaciones para evitar errores
             const timeEmoji = giveaway.is_priority_time ? '⏰' : '';
             const categoryInfo = getCategoryInfo(giveaway.prize_category);
-            const prizeText = giveaway.prize || 'Premio no definido';
             
             prizeContainer.innerHTML = `
-                <p class="text-base sm:text-lg text-yellow-900 truncate">${prizeText}</p>
-                <div class="text-sm giveaway-accounts-container">${accountsHTML}</div>
-                <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji} ${timeEmoji}</span>
+                <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
+                <p class="text-sm truncate">${accountsHTML}</p>
+                <span class="text-xl" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji} ${timeEmoji}</span>
             `;
 
             leftSideContainer.appendChild(controlsContainer);
@@ -2424,7 +2333,7 @@
             const detailsContainer = document.createElement('div');
             detailsContainer.className = 'text-right flex-shrink-0 ml-2';
             if (giveaway.price) {
-                detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(prizeText)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
+                detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
             }
 
             const actionsContainer = document.createElement('div');
@@ -2457,8 +2366,8 @@
 
             modalBody.appendChild(itemContainer);
 
-            if ((giveaway.prize || '').includes('🥎')) hasPadel = true;
-            if ((giveaway.prize || '').includes('🛩️')) hasTravel = true;
+            if (giveaway.prize.includes('🥎')) hasPadel = true;
+            if (giveaway.prize.includes('🛩️')) hasTravel = true;
         });
         const modalContent = document.getElementById('modal-content');
         modalContent.classList.remove('modal-default-bg', 'modal-padel-bg', 'modal-travel-bg');
@@ -2482,6 +2391,7 @@
 
         modal.dataset.date = dateStr;
     };
+
 
     const openModal = (dateStr) => { 
         if (navMenu.classList.contains('is-open')) {
@@ -2538,18 +2448,12 @@
             return;
         }
         if (!giveaways[dateStr]) giveaways[dateStr] = [];
-        if(!newGiveaway.addDate) { // Solo añadir si no viene ya de una importación
-            newGiveaway.addDate = new Date().toISOString().slice(0, 10);
-        }
+        newGiveaway.addDate = new Date().toISOString().slice(0, 10);
         giveaways[dateStr].push(newGiveaway);
         saveGiveaways();
         renderCalendar();
-        
-        // No sumar puntos si la ID indica que es un sorteo inicial
-        if (!newGiveaway.id.startsWith('sorteo-')) {
-            addPoints(1, `Sorteo añadido: ${newGiveaway.prize.substring(0, 20)}...`);
-            checkAchievements('add-manual');
-        }
+        addPoints(1, `Sorteo añadido: ${newGiveaway.prize.substring(0, 20)}...`);
+        checkAchievements('add-manual');
     };
     
     const moveGiveaway = (giveawayId, oldDate, newDate) => {
@@ -2686,10 +2590,6 @@
         currentIndex = 0;
         totalCaptures = filesToProcess.length;
         imageQueue = filesToProcess; 
-        
-        // [NUEVO] Se genera un ID único para esta sesión y se reinician los lotes temporales
-        currentBatchId = Date.now().toString();
-        newBatches = [];
         
         analysisResults = { added: [], duplicate: [], expired: [], foreign: [], no_date: [], not_a_giveaway: [], api_error: [] };
         giveawaysWithErrors = [];
@@ -3259,8 +3159,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     addDate: new Date().toISOString().slice(0, 10),
                     ends_at_time: editedData.ends_at_time,
                     is_priority_time: editedData.is_priority_time,
-                    prize_category: editedData.prize_category,
-                    batchId: currentBatchId // [IMPORTANTE] Añadimos el ID del lote
+                    prize_category: editedData.prize_category
                 };
                 if (!newGiveaway.date || !newGiveaway.prize) {
                     showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
@@ -3307,20 +3206,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     function showAISummary() {
         interactiveAnalysisContainer.style.display = 'none';
         aiSummaryView.style.display = 'flex';
-
-        // [NUEVO] Crear y guardar el lote de la sesión actual
-        if (analysisResults.added.length > 0) {
-            const batchData = {
-                id: currentBatchId,
-                timestamp: new Date().toISOString(),
-                count: analysisResults.added.length,
-                giveawayIds: analysisResults.added.map(g => g.id) // Guardamos los IDs de los sorteos del lote
-            };
-            newBatches.push(batchData);
-            showNotification('Lote Registrado', 
-                `${batchData.count} sorteos nuevos están listos para ser publicados. Ve a Menú > Gestionar Lotes para actualizar el historial público.`
-            );
-        }
 
         const totalAdded = analysisResults.added.length;
         const totalDuplicates = analysisResults.duplicate.length;
@@ -5038,180 +4923,6 @@ if (globalCategoryFilter) {
         toggleNavMenu(); // Cerramos el menú para ver el resultado
     });
 }
-
-// --- [NUEVO] LÓGICA PARA LA FUNCIONALIDAD DE "NUEVOS" ---
-
-    const newGiveawaysModal = document.getElementById('new-giveaways-modal');
-    const closeNewGiveawaysModalBtn = document.getElementById('close-new-giveaways-modal');
-    const newGiveawaysModalBody = document.getElementById('new-giveaways-modal-body');
-    const removeBatchFilterBtn = document.getElementById('remove-batch-filter-btn');
-    const newGiveawaysHelpBtn = document.getElementById('new-giveaways-help-btn');
-    const newGiveawaysHelpText = document.getElementById('new-giveaways-help-text');
-
-    // Función para cargar el historial de lotes desde el archivo público
-    async function fetchBatchHistory() {
-        try {
-            const response = await fetch('history_batches.json?v=' + new Date().getTime()); // El ?v=... evita la caché
-            if (!response.ok) {
-                console.error('No se pudo cargar el historial de lotes. El archivo puede no existir.');
-                batchHistory = [];
-                return;
-            }
-            batchHistory = await response.json();
-        } catch (error) {
-            console.error('Error al parsear el historial de lotes:', error);
-            batchHistory = [];
-        }
-    }
-
-    // Función para renderizar el contenido del modal de "Nuevos"
-    function renderNewGiveawaysModal() {
-        newGiveawaysModalBody.innerHTML = ''; // Limpiamos el contenido
-        
-        // Comprobar si el filtro está activo para mostrar el botón de quitarlo
-        if (activeBatchFilter) {
-            removeBatchFilterBtn.classList.remove('hidden');
-        } else {
-            removeBatchFilterBtn.classList.add('hidden');
-        }
-
-        if (batchHistory.length === 0) {
-            newGiveawaysModalBody.innerHTML = '<p class="text-yellow-800">Aún no se ha registrado ningún lote de sorteos nuevos.</p>';
-            return;
-        }
-
-        // Ordenamos los lotes del más nuevo al más viejo y tomamos los últimos 10
-        const recentBatches = [...batchHistory].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 10);
-
-        recentBatches.forEach(batch => {
-            const batchDate = new Date(batch.timestamp);
-            const formattedDate = batchDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-
-            const batchElement = document.createElement('button');
-            batchElement.className = 'w-full p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 text-left hover:bg-yellow-200/50 transition-colors';
-            batchElement.dataset.batchId = batch.id;
-            
-            batchElement.innerHTML = `
-                <p class="font-bold text-yellow-900">Captura del ${formattedDate}</p>
-                <p class="text-sm text-yellow-800">${batch.count} sorteos nuevos añadidos.</p>
-            `;
-
-            batchElement.addEventListener('click', () => {
-                activeBatchFilter = batch.id;
-                showNotification('Filtro Activado', `Mostrando solo los sorteos de la captura del ${formattedDate}.`);
-                renderCalendar();
-                newGiveawaysModal.classList.remove('is-visible');
-            });
-
-            newGiveawaysModalBody.appendChild(batchElement);
-        });
-    }
-    
-    // Abrir el modal de "Nuevos"
-    document.getElementById('new-giveaways-btn').addEventListener('click', () => {
-        renderNewGiveawaysModal();
-        newGiveawaysModal.classList.add('is-visible');
-    });
-
-    // Cerrar el modal
-    closeNewGiveawaysModalBtn.addEventListener('click', () => newGiveawaysModal.classList.remove('is-visible'));
-    newGiveawaysModal.addEventListener('click', (e) => {
-        if (e.target === newGiveawaysModal) newGiveawaysModal.classList.remove('is-visible');
-    });
-
-    // Botón de ayuda dentro del modal
-    newGiveawaysHelpBtn.addEventListener('click', () => {
-        newGiveawaysHelpText.classList.toggle('hidden');
-    });
-
-    // Botón para quitar el filtro de lote
-    removeBatchFilterBtn.addEventListener('click', () => {
-        activeBatchFilter = null;
-        showNotification('Filtro Desactivado', 'Mostrando todos los sorteos.');
-        renderCalendar();
-        newGiveawaysModal.classList.remove('is-visible');
-    });
-
-    // Cargar el historial cuando la página se inicie
-    fetchBatchHistory();
-    
-    // --- [NUEVO] LÓGICA PARA GESTIONAR Y DESCARGAR LOTES ---
-
-    const batchManagementModal = document.getElementById('batch-management-modal');
-    const closeBatchManagementModalBtn = document.getElementById('close-batch-management-modal');
-    const batchManagementModalBody = document.getElementById('batch-management-modal-body');
-    const downloadHistoryBtn = document.getElementById('download-history-btn');
-
-    function renderBatchManagementModal() {
-        batchManagementModalBody.innerHTML = '';
-        
-        let contentHTML = '<h3 class="text-lg font-bold text-yellow-800 mb-2">Nuevas Capturas (Sin Guardar)</h3>';
-        if (newBatches.length > 0) {
-            newBatches.forEach(batch => {
-                const batchDate = new Date(batch.timestamp);
-                contentHTML += `<div class="p-2 bg-green-100/50 rounded-lg border border-green-400"><strong>${batchDate.toLocaleDateString('es-ES')}</strong>: ${batch.count} sorteos añadidos.</div>`;
-            });
-        } else {
-            contentHTML += '<p class="text-sm text-gray-600">No hay capturas nuevas pendientes de guardar.</p>';
-        }
-
-        contentHTML += '<h3 class="text-lg font-bold text-yellow-800 mt-4 mb-2">Historial Público Actual</h3>';
-        if (batchHistory.length > 0) {
-             [...batchHistory].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(batch => {
-                const batchDate = new Date(batch.timestamp);
-                contentHTML += `<div class="p-2 bg-yellow-100/50 rounded-lg"><strong>${batchDate.toLocaleDateString('es-ES')}</strong>: ${batch.count} sorteos.</div>`;
-            });
-        } else {
-            contentHTML += '<p class="text-sm text-gray-600">El historial público está vacío.</p>';
-        }
-
-        batchManagementModalBody.innerHTML = contentHTML;
-    }
-
-    function downloadBatchHistory() {
-        // Combinamos el historial antiguo con los nuevos lotes
-        const combinedHistory = [...batchHistory, ...newBatches];
-        
-        // Ordenamos por fecha (el más nuevo primero) y nos quedamos con los 10 más recientes
-        const updatedHistory = combinedHistory
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-            .slice(0, 10);
-
-        // Creamos el contenido del archivo
-        const fileContent = JSON.stringify(updatedHistory, null, 4);
-        const blob = new Blob([fileContent], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        
-        // Creamos un enlace y simulamos un clic para descargar
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'history_batches.json';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        
-        showNotification('Archivo Generado', '`history_batches.json` descargado. Reemplázalo en tu proyecto y súbelo a GitHub.');
-
-        // Actualizamos el estado local y limpiamos los lotes nuevos
-        fetchBatchHistory(); // Volvemos a leer el archivo (aunque no se verá hasta que se suba y recargue)
-        newBatches = [];
-        renderBatchManagementModal();
-    }
-
-    document.getElementById('manage-batches-btn').addEventListener('click', (e) => {
-        e.preventDefault();
-        renderBatchManagementModal();
-        batchManagementModal.classList.add('is-visible');
-        toggleNavMenu();
-    });
-
-    closeBatchManagementModalBtn.addEventListener('click', () => batchManagementModal.classList.remove('is-visible'));
-    batchManagementModal.addEventListener('click', (e) => {
-        if (e.target === batchManagementModal) batchManagementModal.classList.remove('is-visible');
-    });
-
-    downloadHistoryBtn.addEventListener('click', downloadBatchHistory);
 
 // 4. Llamamos a la función para que el filtro se cree al cargar la página
 populateGlobalCategoryFilter();

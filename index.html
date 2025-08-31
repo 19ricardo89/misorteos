@@ -3806,17 +3806,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     
     const renderNewAdditionsModal = () => {
         const batchList = document.getElementById('batch-history-list');
-        const clearFilterBtn = document.getElementById('clear-batch-filter-btn');
         batchList.innerHTML = ''; // Limpiamos la lista
 
-        // Ahora simplemente usamos la variable global que ya está cargada y actualizada
-        if (captureBatches.length === 0) { // <-- CORREGIDO
+        if (captureBatches.length === 0) {
             batchList.innerHTML = '<p class="text-center text-yellow-700">Aún no has añadido sorteos con la IA.</p>';
             return;
         }
 
         // Mostramos los lotes del más reciente al más antiguo
-        [...captureBatches].reverse().forEach(batch => { // <-- CORREGIDO
+        [...captureBatches].reverse().forEach(batch => {
             const isActive = batch.id === activeBatchFilterId;
             const item = document.createElement('div');
             item.className = `p-3 rounded-lg shadow-inner border cursor-pointer transition-all ${isActive ? 'bg-yellow-200 border-yellow-400' : 'bg-yellow-100/50 border-yellow-600/20 hover:bg-yellow-200/70'}`;
@@ -3827,9 +3825,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             `;
             batchList.appendChild(item);
         });
-
-        // Mostramos u ocultamos el botón de limpiar filtro
-        clearFilterBtn.style.display = activeBatchFilterId ? 'inline-block' : 'none';
     };
 
     const openDuplicateModal = (discardedGiveaway, originalGiveaway) => {

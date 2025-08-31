@@ -164,7 +164,7 @@
         .modal-default-bg { background-color: #fffbef; }
         .modal-travel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=1170&auto=format&fit=crop'); }
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
-        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu { overflow-y: auto; }
+        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu, #new-additions-modal-body { overflow-y: auto; }
 
         /* --- ESTILOS PARA EL NUEVO FILTRO DE CATEGORÍAS --- */
         #category-filter-button.placeholder #category-filter-selected-text {
@@ -488,7 +488,7 @@
 
 
         /* Títulos de los modales */
-        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2 {
+        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2, #new-additions-modal h2 {
             color: #8c5a15;
         }
 
@@ -1092,6 +1092,11 @@
                <span id="total-ps-count">0</span> PS ✨
            </div>
         </header>
+        
+        <div id="filter-banner" class="w-full max-w-4xl mx-auto p-2 my-2 text-center text-yellow-800 bg-yellow-200 rounded-lg shadow-md" style="display: none;">
+            <span id="filter-banner-text"></span>
+            <button id="filter-banner-clear-btn" class="ml-2 font-bold underline hover:text-yellow-600">[Quitar filtro]</button>
+        </div>
 
         <div class="w-full max-w-4xl mx-auto flex items-center justify-between mb-2 flex-shrink-0 px-4">
             <button id="prev-month" class="px-3 py-1 sm:px-4 sm:py-2 nav-btn calendar-nav-btn">&lt;</button>
@@ -1105,18 +1110,28 @@
     </main>
 
     <footer class="w-full max-w-4xl mx-auto p-4 flex justify-between items-center">
-        <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <div class="flex items-center gap-4">
+            <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="2" y1="12" x2="22" y2="12" stroke="#f7d468" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        
         <div id="total-giveaways-container">
             <span id="total-giveaways-count">0</span>
         </div>
-        <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="2" y1="12" x2="22" y2="12" stroke="#f7d468" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </button>
+        
+        <div class="flex items-center">
+             <button id="new-additions-btn" class="nav-btn px-4 py-3 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
+                <span class="text-lg sm:text-xl mr-2">✨</span>
+                <span class="font-bold text-sm sm:text-base">Nuevos</span>
+            </button>
+        </div>
     </footer>
 
     <div id="trash-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
@@ -1532,6 +1547,25 @@
         </div>
     </div>
 
+    <div id="new-additions-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">✨ Historial de Capturas</h2>
+                <button id="close-new-additions-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            <div id="new-additions-modal-body" class="space-y-4 max-h-[60vh] text-left">
+                <p class="text-sm text-yellow-800 bg-yellow-100/50 p-3 rounded-lg border border-yellow-300">
+                    Aquí se guardan los lotes de sorteos que has añadido con la IA. <strong>Pulsa sobre un lote para filtrar el calendario</strong> y ver únicamente los sorteos de esa captura.
+                </p>
+                <div class="text-center my-4">
+                    <button id="clear-batch-filter-btn" class="nav-btn px-4 py-2 text-sm" style="display: none;">Quitar Filtro y Ver Todos</button>
+                </div>
+                <div id="batch-history-list" class="space-y-2">
+                    </div>
+            </div>
+        </div>
+    </div>
+
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
         <div class="flex justify-between items-center w-full absolute top-2 right-4 z-10">
             <div></div> <div class="flex items-center gap-2">
@@ -1595,6 +1629,7 @@
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
     <script src="foreignAccounts.js"></script>
+    <script src="capture_batches.js"></script>
     <script id="animations-script">
         function animateStarryBackground() {
             const starsContainer = document.getElementById('magic-stars-container');
@@ -1821,6 +1856,7 @@
     let searchQuery = '';
     const MAX_IMAGES = 100;
     let discardedFilter = 'all';
+    let activeBatchFilterId = null; // null significa que no hay filtro activo
     
     // Variables para el estado del análisis de IA
     let imageQueue = [];
@@ -1850,6 +1886,7 @@
 
     let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || (window.foreignAccounts || []);
     let visGiveaways = JSON.parse(localStorage.getItem('visGiveaways')) || [];
+    let captureBatches = JSON.parse(localStorage.getItem('captureBatches')) || [];
     // --- Referencias a elementos del DOM ---
     const monthYearEl = document.getElementById('month-year');
     const calendarDaysEl = document.getElementById('calendar-days');
@@ -1964,10 +2001,67 @@
     const visReviewBtn = document.getElementById('vis-review-btn');
     const visModal = document.getElementById('vis-modal');
     const closeVisModalBtn = document.getElementById('close-vis-modal');
+    const newAdditionsBtn = document.getElementById('new-additions-btn');
+    const newAdditionsModal = document.getElementById('new-additions-modal');
+    const closeNewAdditionsModalBtn = document.getElementById('close-new-additions-modal');
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
     // --- FUNCIONES DE LA APLICACIÓN ---
+    
+    const clearAllFilters = () => {
+        activeBatchFilterId = null;
+        searchQuery = '';
+        currentFilter = 'all';
+
+        // Reseteamos los controles del menú
+        if (document.getElementById('global-search-input')) {
+            document.getElementById('global-search-input').value = '';
+        }
+        if (document.getElementById('global-category-filter')) {
+            document.getElementById('global-category-filter').value = 'all';
+        }
+
+        renderCalendar();
+        updateFilterBanner(); // Ocultará el banner
+        showNotification('Filtros Limpiados', 'Mostrando todos los sorteos.');
+    };
+
+    const updateFilterBanner = () => {
+        const banner = document.getElementById('filter-banner');
+        const bannerText = document.getElementById('filter-banner-text');
+        if (!banner || !bannerText) return;
+
+        let filterIsActive = false;
+        let bannerMessage = '';
+
+        // Prioridad 1: Filtro de Lote de Capturas
+        if (activeBatchFilterId) {
+            const activeBatch = (window.captureBatches || []).find(b => b.id === activeBatchFilterId);
+            if (activeBatch) {
+                bannerMessage = `Mostrando solo el lote: <strong>${activeBatch.name}</strong> (${activeBatch.giveawayIds.length} sorteos).`;
+                filterIsActive = true;
+            }
+        } 
+        // Prioridad 2: Filtro de Categoría Global
+        else if (currentFilter && currentFilter !== 'all') {
+            const category = CATEGORY_INFO[currentFilter] || { name: currentFilter, emoji: '' };
+            bannerMessage = `Mostrando categoría: <strong>${category.emoji} ${category.name}</strong>.`;
+            filterIsActive = true;
+        }
+        // Prioridad 3: Búsqueda por Texto Global
+        else if (searchQuery && searchQuery.trim() !== '') {
+            bannerMessage = `Buscando: "<strong>${searchQuery}</strong>".`;
+            filterIsActive = true;
+        }
+
+        if (filterIsActive) {
+            bannerText.innerHTML = bannerMessage;
+            banner.style.display = 'block';
+        } else {
+            banner.style.display = 'none';
+        }
+    };
 
     function setupCustomCategoryFilter() {
         const button = document.getElementById('category-filter-button');
@@ -2085,6 +2179,7 @@
     const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
     const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
     const saveVisGiveaways = () => localStorage.setItem('visGiveaways', JSON.stringify(visGiveaways));
+    const saveCaptureBatches = () => localStorage.setItem('captureBatches', JSON.stringify(captureBatches));
 
     const getConfidenceEmoji = (score) => {
         if (score === null || score === undefined) return '❔';
@@ -2244,7 +2339,23 @@
         for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+
+            // --- INICIO DE LA MODIFICACIÓN PARA FILTRADO DE LOTE ---
+            let giveawaysForDay = giveaways[dateStr] || [];
+
+            if (activeBatchFilterId) {
+                const activeBatch = (window.captureBatches || []).find(b => b.id === activeBatchFilterId);
+                if (activeBatch) {
+                    const batchGiveawayIds = new Set(activeBatch.giveawayIds);
+                    giveawaysForDay = giveawaysForDay.filter(g => batchGiveawayIds.has(g.id));
+                } else {
+                    // Si el lote no se encuentra por alguna razón, no mostramos nada.
+                    giveawaysForDay = []; 
+                }
+            }
+            // --- FIN DE LA MODIFICACIÓN ---
+
+            const dayGiveaways = giveawaysForDay.filter(g => { // <-- MODIFICADO para usar la variable filtrada
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
 
@@ -2256,26 +2367,17 @@
                 if (currentFilter === 'all') {
                     return true;
                 }
-
-                const matchesCategory =
-                    (currentFilter === 'padel' && prize.includes('🥎')) ||
-                    (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                    (currentFilter === 'price' && prize.includes('💲')) ||
-                    (currentFilter === 'frikis' && prize.includes('🃏')) ||
-                    (currentFilter === 'moda' && prize.includes('👠')) ||
-                    (currentFilter === 'belleza' && prize.includes('💄')) ||
-                    (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                    (currentFilter === 'tecnologia' && prize.includes('💻')) ||
-                    (currentFilter === 'comida' && prize.includes('🍔')) ||
-                    (currentFilter === 'ocio' && prize.includes('🎟️')) ||
-                    (currentFilter === 'deporte' && prize.includes('💪')) ||
-                    (currentFilter === 'infantil' && prize.includes('🧸')) ||
-                    (currentFilter === 'mascotas' && prize.includes('🐾')) ||
-                    (currentFilter === 'dinero' && prize.includes('💰')) ||
-                    (currentFilter === 'libros' && prize.includes('📚')) ||
-                    (currentFilter === 'motor' && prize.includes('🚗'));
-
-                return matchesCategory;
+                
+                // Lógica de categoría
+                let prizeCategory = 'otros';
+                for (const [key, value] of Object.entries(CATEGORY_INFO)) {
+                    if (prize.includes(value.emoji)) {
+                        prizeCategory = key;
+                        break;
+                    }
+                }
+                
+                return currentFilter === prizeCategory;
             });
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
@@ -2310,6 +2412,18 @@
     const buildModal = (dateStr) => {
         let dayGiveaways = (giveaways[dateStr] || []);
         
+        // --- INICIO DE LA MODIFICACIÓN PARA FILTRADO DE LOTE ---
+        if (activeBatchFilterId) {
+            const activeBatch = (window.captureBatches || []).find(b => b.id === activeBatchFilterId);
+            if (activeBatch) {
+                const batchGiveawayIds = new Set(activeBatch.giveawayIds);
+                dayGiveaways = dayGiveaways.filter(g => batchGiveawayIds.has(g.id));
+            } else {
+                dayGiveaways = [];
+            }
+        }
+        // --- FIN DE LA MODIFICACIÓN ---
+
         const modalSearchInput = document.getElementById('modal-search-input');
         const searchQuery = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
         const selectedCategory = document.getElementById('category-filter-button')?.dataset.value || 'all';
@@ -2319,8 +2433,6 @@
             const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
             return matchesSearch && matchesCategory;
         });
-
-
         dayGiveaways.sort((a, b) => {
             const aCompleted = completedGiveaways[a.id];
             const bCompleted = completedGiveaways[b.id];
@@ -3286,12 +3398,32 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             expiredGiveawaysCount: totalExpired,
             foreignGiveawaysCount: totalForeign,
             noDateGiveawaysCount: analysisResults.no_date.length,
-            addedGiveawaysDetails: analysisResults.added,
+            addedGiveawaysDetails: analysisResults.added.map(g => ({ prize: g.prize, id: g.id })),
             failedFilesDetails: analysisResults.api_error.map(e => ({ filename: e.originalFile.name, error: e.error }))
         };
         analysisHistory.push(historyEntry);
         analysisHistory = analysisHistory.slice(-20);
         saveAnalysisHistory();
+        
+        if (analysisResults.added.length > 0) {
+            const now = new Date();
+            const newBatch = {
+                id: now.getTime(),
+                name: `Análisis del ${now.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`,
+                giveawayIds: analysisResults.added.map(g => g.id)
+            };
+
+            if (!window.captureBatches) {
+                window.captureBatches = [];
+            }
+            window.captureBatches.push(newBatch);
+            
+            if (window.captureBatches.length > 30) {
+                window.captureBatches = window.captureBatches.slice(-30);
+            }
+            
+            saveCaptureBatches();
+        }
 
         let summaryHTML = `
             <div class="space-y-4 text-yellow-300 w-full">
@@ -3609,6 +3741,37 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             itemContainer.innerHTML = cardHTML;
             discardedModalBody.appendChild(itemContainer);
         }); 
+    };
+    
+    const renderNewAdditionsModal = () => {
+        const batchList = document.getElementById('batch-history-list');
+        const clearFilterBtn = document.getElementById('clear-batch-filter-btn');
+        batchList.innerHTML = ''; // Limpiamos la lista
+
+        // Cargamos los lotes desde localStorage para asegurar que está actualizado
+        const savedBatches = JSON.parse(localStorage.getItem('captureBatches')) || [];
+        window.captureBatches = savedBatches;
+
+        if (savedBatches.length === 0) {
+            batchList.innerHTML = '<p class="text-center text-yellow-700">Aún no has añadido sorteos con la IA.</p>';
+            return;
+        }
+
+        // Mostramos los lotes del más reciente al más antiguo
+        [...savedBatches].reverse().forEach(batch => {
+            const isActive = batch.id === activeBatchFilterId;
+            const item = document.createElement('div');
+            item.className = `p-3 rounded-lg shadow-inner border cursor-pointer transition-all ${isActive ? 'bg-yellow-200 border-yellow-400' : 'bg-yellow-100/50 border-yellow-600/20 hover:bg-yellow-200/70'}`;
+            item.dataset.batchId = batch.id;
+            item.innerHTML = `
+                <p class="font-bold text-yellow-900">${batch.name}</p>
+                <p class="text-sm text-yellow-800">${batch.giveawayIds.length} sorteo(s) añadido(s)</p>
+            `;
+            batchList.appendChild(item);
+        });
+
+        // Mostramos u ocultamos el botón de limpiar filtro
+        clearFilterBtn.style.display = activeBatchFilterId ? 'inline-block' : 'none';
     };
 
     const openDuplicateModal = (discardedGiveaway, originalGiveaway) => {
@@ -4157,6 +4320,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const discardedGiveawaysContent = `const initialDiscardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};\n\nif (localStorage.getItem('discardedGiveaways') === null) {\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\n}\n\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];`;
         
         const foreignAccountsContent = `window.foreignAccounts = ${JSON.stringify(foreignAccounts, null, 4)};`;
+        const captureBatchesContent = `window.captureBatches = ${JSON.stringify(captureBatches, null, 4)};`;
         
         const indexHtmlContent = document.documentElement.outerHTML;
 
@@ -4185,7 +4349,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Faltan datos en la petición.' })
                 };
             }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -4234,7 +4398,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Falta la consulta (query).' })
                 };
             }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
             const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
     
             1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
@@ -4249,7 +4413,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                   "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
                 }
 
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \\\`\\\`\\\`. \`;
+            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`.\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -4288,6 +4452,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         zip.file("giveaways_new.js", giveawaysContent);
         zip.file("discardedGiveaways_new.js", discardedGiveawaysContent);
         zip.file("foreignAccounts.js", foreignAccountsContent);
+        zip.file("capture_batches.js", captureBatchesContent);
         zip.file("netlify.toml", netlifyTomlContent);
         zip.file("package.json", packageJsonContent);
 
@@ -4306,7 +4471,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         });
     };
     
-    const restoreFromBackup = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { JSZip.loadAsync(e.target.result).then(zip => { const giveawaysFile = zip.file("giveaways_new.js"); const discardedFile = zip.file("discardedGiveaways_new.js"); const foreignFile = zip.file("foreignAccounts.js"); if (!giveawaysFile || !discardedFile || !foreignFile) { showNotification('Error', 'El archivo .zip no parece una copia de seguridad válida.'); return; } Promise.all([giveawaysFile.async("string"), discardedFile.async("string"), foreignFile.async("string")]) .then(contents => { try { const giveawaysContent = contents[0].replace('window.giveaways = ', '').slice(0, -1); const discardedContent = contents[1].replace('window.discardedGiveaways = ', '').slice(0, -1); const foreignContent = contents[2].replace('window.foreignAccounts = ', '').slice(0, -1); const parsedGiveaways = JSON.parse(giveawaysContent); const parsedDiscarded = JSON.parse(discardedContent); const parsedForeign = JSON.parse(foreignContent); if (confirm("¿Seguro que quieres restaurar esta copia? Se borrarán todos los datos actuales y se reemplazarán por los del archivo.")) { giveaways = parsedGiveaways; discardedGiveaways = parsedDiscarded; foreignAccounts = parsedForeign; saveGiveaways(); saveDiscardedGiveaways(); saveForeignAccounts(); renderCalendar(); showNotification('¡Éxito!', 'La copia de seguridad se ha restaurado correctamente.'); } } catch (error) { showNotification('Error de formato', 'No se pudo leer el contenido del archivo .zip.'); console.error("Error al parsear la copia de seguridad:", error); } }); }); }; reader.readAsArrayBuffer(file); };
+    const restoreFromBackup = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { JSZip.loadAsync(e.target.result).then(zip => { const giveawaysFile = zip.file("giveaways_new.js"); const discardedFile = zip.file("discardedGiveaways_new.js"); const foreignFile = zip.file("foreignAccounts.js"); const batchesFile = zip.file("capture_batches.js"); if (!giveawaysFile || !discardedFile || !foreignFile || !batchesFile) { showNotification('Error', 'El archivo .zip no parece una copia de seguridad válida.'); return; } Promise.all([giveawaysFile.async("string"), discardedFile.async("string"), foreignFile.async("string"), batchesFile.async("string")]) .then(contents => { try { const giveawaysContent = contents[0].replace('window.giveaways = ', '').slice(0, -1); const discardedContent = contents[1].replace('window.discardedGiveaways = ', '').slice(0, -1); const foreignContent = contents[2].replace('window.foreignAccounts = ', '').slice(0, -1); const batchesContent = contents[3].replace('window.captureBatches = ', '').slice(0, -1); const parsedGiveaways = JSON.parse(giveawaysContent); const parsedDiscarded = JSON.parse(discardedContent); const parsedForeign = JSON.parse(foreignContent); const parsedBatches = JSON.parse(batchesContent); if (confirm("¿Seguro que quieres restaurar esta copia? Se borrarán todos los datos actuales y se reemplazarán por los del archivo.")) { giveaways = parsedGiveaways; discardedGiveaways = parsedDiscarded; foreignAccounts = parsedForeign; captureBatches = parsedBatches; saveGiveaways(); saveDiscardedGiveaways(); saveForeignAccounts(); saveCaptureBatches(); renderCalendar(); showNotification('¡Éxito!', 'La copia de seguridad se ha restaurado correctamente.'); } } catch (error) { showNotification('Error de formato', 'No se pudo leer el contenido del archivo .zip.'); console.error("Error al parsear la copia de seguridad:", error); } }); }); }; reader.readAsArrayBuffer(file); };
 
     const toggleNavMenu = () => {
         navMenu.classList.toggle('is-open');
@@ -4496,31 +4661,31 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
     setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
     setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
-    setupModal(null, searchModal, closeSearchModalBtn); // <-- MODIFICADO: ya no se abre desde el menú
+    setupModal(null, searchModal, closeSearchModalBtn);
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-    //setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     setupModal(null, psSummaryModal, closePsSummaryModalBtn);
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
+    setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
     
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (navMenu.classList.contains('is-open')) {
             toggleNavMenu();
         }
-        resetAIView(); // <--- MODIFICACIÓN
+        resetAIView();
         aiFullscreenView.classList.add('is-visible');
     });
     closeAiViewBtn.addEventListener('click', () => {
         aiFullscreenView.classList.remove('is-visible');
-        resetAIView(); // <--- MODIFICACIÓN
+        resetAIView();
     });
     aiSummaryCloseBtn.addEventListener('click', () => {
         aiFullscreenView.classList.remove('is-visible');
-        resetAIView(); // <--- MODIFICACIÓN
+        resetAIView();
     });
 
     const closeZoomModal = () => { if(zoomModal) zoomModal.classList.remove('is-visible'); };
@@ -4842,6 +5007,24 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     document.getElementById('share-stats-btn').addEventListener('click', shareStats);
     deleteAllTrashBtn.addEventListener('click', deleteAllTrash);
     deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
+    document.getElementById('batch-history-list').addEventListener('click', (e) => {
+        const batchItem = e.target.closest('[data-batch-id]');
+        if (batchItem) {
+            // Limpiamos otros filtros para dar prioridad al de lote
+            searchQuery = '';
+            currentFilter = 'all';
+            if (document.getElementById('global-search-input')) document.getElementById('global-search-input').value = '';
+            if (document.getElementById('global-category-filter')) document.getElementById('global-category-filter').value = 'all';
+
+            activeBatchFilterId = Number(batchItem.dataset.batchId);
+            renderCalendar();
+            updateFilterBanner();
+            document.getElementById('close-new-additions-modal').click();
+        }
+    });
+
+    document.getElementById('clear-batch-filter-btn').addEventListener('click', clearAllFilters);
+    document.getElementById('filter-banner-clear-btn').addEventListener('click', clearAllFilters);
     
     document.addEventListener('DOMContentLoaded', () => {
         setupCustomCategoryFilter();
@@ -4976,15 +5159,15 @@ if (globalSearchInput) {
     globalSearchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value; // Actualizamos la variable global de búsqueda
         renderCalendar(); // Redibujamos el calendario con el filtro aplicado
+        updateFilterBanner();
     });
 }
 
 // 3. Evento para el filtro de categoría
 if (globalCategoryFilter) {
     globalCategoryFilter.addEventListener('change', (e) => {
-        const selectedFilter = e.target.value;
-        // La variable 'currentFilter' ya la usas, así que la reutilizamos
-        setFilterAndRender(selectedFilter);
+        setFilterAndRender(e.target.value);
+        updateFilterBanner();
         toggleNavMenu(); // Cerramos el menú para ver el resultado
     });
 }

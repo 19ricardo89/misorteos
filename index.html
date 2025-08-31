@@ -2512,6 +2512,33 @@
 
         // Filtrado de listas (simplificado para claridad, tu lógica de filtros se mantiene)
         let dayGiveaways = (giveaways[dateStr] || []);
+        // --- INICIO DEL CÓDIGO DE ORDENACIÓN ---
+dayGiveaways.sort((a, b) => {
+    const isACompleted = !!completedGiveaways[a.id];
+    const isBCompleted = !!completedGiveaways[b.id];
+
+    // 1. Prioridad MÁXIMA: Sorteos completados siempre van al final.
+    if (isACompleted && !isBCompleted) return 1; // 'a' (completado) va después de 'b'
+    if (!isACompleted && isBCompleted) return -1; // 'b' (completado) va después de 'a'
+
+    // Si ambos están completados o ambos no lo están, se aplican las siguientes reglas.
+
+    // 2. Prioridad: Sorteos con hora específica que no sea medianoche.
+    const aHasPriorityTime = a.is_priority_time === true;
+    const bHasPriorityTime = b.is_priority_time === true;
+
+    if (aHasPriorityTime && !bHasPriorityTime) return -1; // 'a' (prioritario) va antes que 'b'
+    if (!aHasPriorityTime && bHasPriorityTime) return 1; // 'b' (prioritario) va antes que 'a'
+
+    // Si ambos tienen (o no tienen) hora prioritaria, se ordenan por valor.
+
+    // 3. Prioridad: Valor del premio (de mayor a menor).
+    const priceA = parsePrice(a.price);
+    const priceB = parsePrice(b.price);
+
+    return priceB - priceA; // Orden descendente
+});
+// --- FIN DEL CÓDIGO DE ORDENACIÓN ---
         const dayNotInterested = notInterestedGiveaways[dateStr] || [];
 
         // Renderizar Sorteos Principales

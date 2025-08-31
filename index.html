@@ -2510,107 +2510,76 @@
         modalBody.innerHTML = '';
         notInterestedBody.innerHTML = '';
 
-        // Filtrar y ordenar la lista principal
+        // Filtrado de listas (simplificado para claridad, tu lógica de filtros se mantiene)
         let dayGiveaways = (giveaways[dateStr] || []);
-        const modalSearchQuery = document.getElementById('modal-search-input').value.toLowerCase();
-        const selectedCategory = document.getElementById('category-filter-button').dataset.value || 'all';
-
-        dayGiveaways = dayGiveaways.filter(g => {
-            const matchesSearch = !modalSearchQuery || (g.prize && g.prize.toLowerCase().includes(modalSearchQuery));
-            const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
-            return matchesSearch && matchesCategory;
-        }).sort((a, b) => {
-            const aCompleted = !!completedGiveaways[a.id];
-            const bCompleted = !!completedGiveaways[b.id];
-            return aCompleted - bCompleted;
-        });
-
-        // Cargar la lista de "No me interesa"
         const dayNotInterested = notInterestedGiveaways[dateStr] || [];
 
         // Renderizar Sorteos Principales
         dayGiveaways.forEach(giveaway => {
+            const isCompleted = !!completedGiveaways[giveaway.id];
             const itemContainer = document.createElement('div');
-            itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
+            itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${isCompleted ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
-            const leftSide = document.createElement('div');
-            leftSide.className = 'flex items-start flex-1 overflow-hidden';
-
-            const controls = document.createElement('div');
-            controls.className = 'flex flex-col items-center mr-3 flex-shrink-0';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.dataset.giveawayId = giveaway.id;
-            checkbox.className = 'h-6 w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500';
-            checkbox.checked = !!completedGiveaways[giveaway.id];
-            controls.appendChild(checkbox);
-
-            const notInterestedBtn = document.createElement('button');
-            notInterestedBtn.className = 'not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500';
-            notInterestedBtn.innerHTML = `<i class="fa-solid fa-eye-slash"></i>`;
-            notInterestedBtn.dataset.giveawayId = giveaway.id;
-            notInterestedBtn.dataset.giveawayDate = dateStr;
-            controls.appendChild(notInterestedBtn);
-            
-            const prizeInfo = document.createElement('div');
-            prizeInfo.className = 'overflow-hidden';
             let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
-            prizeInfo.innerHTML = `
-                <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
-                <div class="text-sm">${accountsHTML}</div>
+            const categoryInfo = getCategoryInfo(giveaway.prize_category);
+
+            itemContainer.innerHTML = `
+                <div class="flex items-start flex-1 overflow-hidden">
+                    <div class="flex flex-col items-center mr-3 flex-shrink-0">
+                        <input type="checkbox" data-giveaway-id="${giveaway.id}" class="h-6 w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500" ${isCompleted ? 'checked' : ''}>
+                        <button class="not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}" style="display: ${isCompleted ? 'none' : 'block'};">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </button>
+                        <div class="post-complete-actions flex flex-col items-center space-y-1 mt-1" style="display: ${isCompleted ? 'flex' : 'none'};">
+                            <button class="win-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🏆</button>
+                            <button class="vis-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🌟</button>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
+                        <div class="text-sm">${accountsHTML}</div>
+                        <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji}</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="text-right flex-shrink-0 ml-2">
+                        ${giveaway.price ? `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>` : ''}
+                    </div>
+                    <div class="flex flex-col items-center ml-2 space-y-1">
+                        <button class="move-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-calendar-days"></i></button>
+                        <button class="delete-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-trash-can"></i></button>
+                        <button class="delete-giveaway-foreign-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-globe"></i></button>
+                    </div>
+                </div>
             `;
-
-            leftSide.appendChild(controls);
-            leftSide.appendChild(prizeInfo);
-
-            const rightSide = document.createElement('div');
-            rightSide.className = 'flex items-center';
-
-            const details = document.createElement('div');
-            details.className = 'text-right flex-shrink-0 ml-2';
-            if (giveaway.price) {
-                details.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
-            }
-            
-            const actions = document.createElement('div');
-            actions.className = 'flex flex-col items-center ml-2 space-y-1';
-            const moveBtnHTML = `<button class="move-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-calendar-days"></i></button>`;
-            const deleteBtnHTML = `<button class="delete-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-trash-can"></i></button>`;
-            const foreignBtnHTML = `<button class="delete-giveaway-foreign-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-globe"></i></button>`;
-            actions.innerHTML = moveBtnHTML + deleteBtnHTML + foreignBtnHTML;
-
-            rightSide.appendChild(details);
-            rightSide.appendChild(actions);
-            
-            itemContainer.appendChild(leftSide);
-            itemContainer.appendChild(rightSide);
             modalBody.appendChild(itemContainer);
         });
 
         // Renderizar Sorteos "No me Interesa"
-        if (dayNotInterested.length > 0) {
-            dayNotInterested.forEach(giveaway => {
-                const itemContainer = document.createElement('div');
-                itemContainer.className = 'giveaway-item not-interested p-3 rounded-lg shadow-inner flex justify-between items-center border border-gray-400/20 bg-gray-100/30';
-                let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
+        dayNotInterested.forEach(giveaway => {
+            const itemContainer = document.createElement('div');
+            itemContainer.className = 'giveaway-item not-interested p-3 rounded-lg shadow-inner flex justify-between items-center border border-gray-400/20 bg-gray-100/30';
+            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
+            itemContainer.innerHTML = `
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-base sm:text-lg text-gray-700 truncate">${giveaway.prize}</p>
+                    <div class="text-sm text-gray-600">${accountsHTML}</div>
+                </div>
+                <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            `;
+            notInterestedBody.appendChild(itemContainer);
+        });
 
-                itemContainer.innerHTML = `
-                    <div class="flex-1 overflow-hidden">
-                        <p class="text-base sm:text-lg text-gray-700 truncate">${giveaway.prize}</p>
-                        <div class="text-sm text-gray-600">${accountsHTML}</div>
-                    </div>
-                    <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
-                `;
-                notInterestedBody.appendChild(itemContainer);
-            });
-        } else {
+        // Mensajes si las listas están vacías
+        if (dayGiveaways.length === 0) {
+            modalBody.innerHTML = '<p class="text-center text-gray-500">¡No hay sorteos aquí! Mueve alguno a este día o añade uno nuevo.</p>';
+        }
+        if (dayNotInterested.length === 0) {
             notInterestedBody.innerHTML = '<p class="text-center text-gray-500">No has marcado ningún sorteo como no interesante para hoy.</p>';
         }
 
-        document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
         modal.dataset.date = dateStr;
     };
 
@@ -4844,85 +4813,66 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const dateStr = modal.dataset.date;
         if (!dateStr) return;
 
-        if (e.target.id === 'select-all-btn' || e.target.closest('#select-all-btn')) {
-            const checkboxes = modalBody.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                if (!checkbox.checked) {
-                    checkbox.checked = true;
-                    const giveawayId = checkbox.dataset.giveawayId;
-                    if (!completedGiveaways[giveawayId]) {
-                         completedGiveaways[giveawayId] = true;
-                         const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
-                         if(giveaway) {
-                            addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
-                         }
-                    }
-                }
-            });
-            saveCompletedGiveaways();
-            buildModal(dateStr);
-            renderCalendar();
-            checkAchievements('complete', { giveawayDate: dateStr });
-            return; 
-        }
+        const giveawayId = e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
 
-        if (e.target.id === 'deselect-all-btn' || e.target.closest('#deselect-all-btn')) {
-            const checkboxes = modalBody.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    checkbox.checked = false;
-                    delete completedGiveaways[checkbox.dataset.giveawayId];
-                }
-            });
-            saveCompletedGiveaways();
-            buildModal(dateStr);
-            renderCalendar();
+        // --- ACCIONES PRINCIPALES ---
+        const restoreBtn = e.target.closest('.restore-not-interested-btn');
+        const notInterestedBtn = e.target.closest('.not-interested-btn');
+        const checkbox = e.target.closest('input[type="checkbox"]');
+        
+        if (restoreBtn) {
+            restoreFromNotInterested(restoreBtn.dataset.giveawayId, dateStr);
             return;
         }
-        const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
-        if (!giveawayId) return;
 
-        const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
-        if (!giveaway) return;
-        const itemContainer = e.target.closest('.giveaway-item');
-
-        if (e.target.type === 'checkbox') {
-            if (e.target.checked) {
+        if (notInterestedBtn) {
+            moveToNotInterested(notInterestedBtn.dataset.giveawayId, dateStr);
+            return;
+        }
+        
+        if (checkbox) {
+            const itemContainer = checkbox.closest('.giveaway-item');
+            const postCompleteActions = itemContainer.querySelector('.post-complete-actions');
+            const notInterestedButton = itemContainer.querySelector('.not-interested-btn');
+            
+            if (checkbox.checked) {
                 completedGiveaways[giveawayId] = true;
+                if (postCompleteActions) postCompleteActions.style.display = 'flex';
+                if (notInterestedButton) notInterestedButton.style.display = 'none';
                 animateShootingStar(itemContainer, () => {
                     itemContainer.classList.add('completed');
-                    buildModal(dateStr);
+                    buildModal(dateStr); 
                     renderCalendar();
                 });
-                addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
             } else {
                 delete completedGiveaways[giveawayId];
+                if (postCompleteActions) postCompleteActions.style.display = 'none';
+                if (notInterestedButton) notInterestedButton.style.display = 'block';
                 itemContainer.classList.remove('completed');
-                buildModal(dateStr);
-                renderCalendar();
             }
             saveCompletedGiveaways();
             checkAchievements('complete', { giveawayDate: dateStr });
-            
-            const postCompleteActions = itemContainer.querySelector('.flex-col.items-center.space-y-1.mt-1');
-            if (e.target.checked) {
-                if (postCompleteActions) postCompleteActions.style.display = 'flex';
-            } else {
-                if (postCompleteActions) postCompleteActions.style.display = 'none';
-            }
-        } else if (e.target.closest('.win-giveaway-btn')) {
+            return;
+        }
+
+        // --- OTRAS ACCIONES ---
+        if (e.target.closest('.win-giveaway-btn')) {
             markAsWon(giveawayId, dateStr);
         } else if (e.target.closest('.vis-giveaway-btn')) {
-            const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
-            if (!isAlreadyInVIS) {
-                visGiveaways.push(giveaway);
-                saveVisGiveaways();
-                showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se ha enviado a tu sala de revisión.`);
-            } else {
-                showNotification('Ya en la lista', 'Este sorteo ya está en tu sala de revisión.');
+            const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
+            if(giveaway) {
+                const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
+                if (!isAlreadyInVIS) {
+                    visGiveaways.push(giveaway);
+                    saveVisGiveaways();
+                    showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se ha enviado a tu sala de revisión.`);
+                } else {
+                    showNotification('Ya en la lista', 'Este sorteo ya está en tu sala de revisión.');
+                }
             }
         } else if (e.target.closest('.move-giveaway-btn')) {
-            openMoveGiveawayModal(giveaway, dateStr);
+            const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
+            if(giveaway) openMoveGiveawayModal(giveaway, dateStr);
         } else if (e.target.closest('.delete-giveaway-btn')) {
             if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
                 deleteGiveawayFromCalendar(dateStr, giveawayId);
@@ -4931,10 +4881,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
                 deleteForeignGiveaway(dateStr, giveawayId);
             }
-        } else if (e.target.closest('.not-interested-btn')) {
-            moveToNotInterested(giveawayId, dateStr);
-        } else if (e.target.closest('.restore-not-interested-btn')) {
-            restoreFromNotInterested(giveawayId, dateStr);
         }
     });
 

@@ -1065,13 +1065,9 @@
              <span class="text-xl sm:text-2xl">🏆</span>
              <span>Vitrina</span>
         </a>
-        <a href="#" id="upload-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
-            <span class="text-xl sm:text-2xl">📤</span>
-            <span>Cargar Copia</span>
-        </a>
-        <a href="#" id="download-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
-            <span class="text-xl sm:text-2xl">💾</span>
-            <span>Descargar</span>
+        <a href="#" id="admin-panel-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2 mt-auto border-t border-yellow-600/20 pt-4">
+            <span class="text-xl sm:text-2xl">🔑</span>
+            <span>Admin</span>
         </a>
     </div>
     <div id="menu-overlay" class="menu-overlay"></div>
@@ -1564,6 +1560,43 @@
                 </p>
                 <div id="batch-history-list" class="space-y-2 mt-4">
                     </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-sm rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">🔑 Panel de Admin</h2>
+                <button id="close-admin-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+
+            <div id="admin-login-view">
+                <form id="admin-login-form" class="space-y-4">
+                    <div>
+                        <label for="admin-username" class="block font-bold text-left">Usuario:</label>
+                        <input type="text" id="admin-username" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
+                    </div>
+                    <div>
+                        <label for="admin-password" class="block font-bold text-left">Contraseña:</label>
+                        <input type="password" id="admin-password" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
+                    </div>
+                    <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg">Entrar</button>
+                </form>
+            </div>
+
+            <div id="admin-actions-view" class="hidden space-y-4">
+                 <p class="text-sm text-yellow-800 bg-yellow-100/50 p-3 rounded-lg border border-yellow-300">
+                    Acceso concedido. Aquí tienes tus herramientas de Hechicero Mayor.
+                </p>
+                <button id="admin-upload-btn" class="w-full px-3 py-2 nav-btn flex items-center justify-center gap-2">
+                    <span class="text-xl">📤</span>
+                    <span>Cargar Copia</span>
+                </button>
+                <button id="admin-download-btn" class="w-full px-3 py-2 nav-btn flex items-center justify-center gap-2">
+                    <span class="text-xl">💾</span>
+                    <span>Descargar Copia</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2345,7 +2378,7 @@
         }
         return null;
     };
-    const renderCalendar = () => {
+   const renderCalendar = () => {
         if (!calendarDaysEl || !monthYearEl) return;
         calendarDaysEl.innerHTML = '';
         const month = currentDate.getMonth();
@@ -2899,7 +2932,7 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
 
 <REGLAS_ADICIONALES_DE_EXTRACCION>
 - **Cuentas (Extracción Inteligente y Completa):**
-    1.  **Prioridad 1 PIROIDAD MAXIMA E INELUDIBLE SIEMPRE HAY UNA CUENTA PRINCIPAL(Cuenta Principal):** Identifica y extrae **siempre** el nombre de usuario de la cuenta que ha realizado la publicación del sorteo. Generalmente se encuentra en la parte superior de la imagen, al principio del texto, generalmente suele estar destacada en negrita.
+    1.  **Prioridad 1 (Cuenta Principal):** Identifica y extrae **siempre** el nombre de usuario de la cuenta que ha realizado la publicación del sorteo. Generalmente se encuentra en la parte superior de la imagen, junto a la foto de perfil.
     2.  **Prioridad 2 (Cuentas Adicionales):** Además de la principal, extrae cualquier otra cuenta mencionada en el texto como requisito para participar (ej: "sigue a...", "en colaboración con...").
     3.  **Reglas de Exclusión (MUY IMPORTANTE):** Ignora activamente cualquier nombre de usuario que provenga de la sección de comentarios o de la sección de "Me gusta".
 
@@ -3339,17 +3372,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             editedData.accounts = document.getElementById('interactive-accounts').value.split(',').map(acc => acc.trim()).filter(Boolean);
             editedData.price = document.getElementById('interactive-price').value;
             editedData.prize_category = document.getElementById('interactive-category').value;
-        }
-        
-        const statusMap = {
-            'save': 'added', 'add-new': 'added', 'merge': 'duplicate',
-            'trash': 'expired', 'mark-foreign': 'foreign', 'discard': data.status,
-        };
-        const statusKey = statusMap[action] || data.status;
-
-        // Limpiamos la entrada de la lista de errores antes de clasificarla de nuevo
-        if (analysisResults.api_error) {
-            analysisResults.api_error = analysisResults.api_error.filter(item => item.originalFile.name !== editedData.originalFile.name);
         }
         
         switch(action){
@@ -5042,13 +5064,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         renderRecentAddsModal();
         recentAddsModal.classList.add('is-visible');
     });
-
-    const downloadBtn = document.getElementById('download-btn');
-    const uploadBtn = document.getElementById('upload-btn');
-    const zipUploadInput = document.getElementById('zip-upload');
-    if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
-    if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
-    if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
     
     const statsTabsContainer = document.querySelector('.stats-tabs');
     if (statsTabsContainer) {
@@ -5296,6 +5311,59 @@ document.addEventListener('click', function(e) {
             alert(`${helpData.title}\n\n${helpData.content}`);
         }
     }
+});
+
+// --- LÓGICA DEL PANEL DE ADMINISTRADOR ---
+
+// 1. Credenciales (cambia la contraseña aquí si lo necesitas en el futuro)
+const ADMIN_USERNAME = "Misorteos";
+const ADMIN_PASSWORD = "Saul31322";
+
+// 2. Referencias a los nuevos elementos del modal de Admin
+const adminPanelBtn = document.getElementById('admin-panel-btn');
+const adminModal = document.getElementById('admin-modal');
+const closeAdminModalBtn = document.getElementById('close-admin-modal');
+const adminLoginForm = document.getElementById('admin-login-form');
+const adminLoginView = document.getElementById('admin-login-view');
+const adminActionsView = document.getElementById('admin-actions-view');
+const adminUploadBtn = document.getElementById('admin-upload-btn');
+const adminDownloadBtn = document.getElementById('admin-download-btn');
+
+// 3. Configuración del modal
+setupModal(adminPanelBtn, adminModal, closeAdminModalBtn, () => {
+    // Cada vez que se abre el modal, reseteamos a la vista de login
+    adminLoginView.style.display = 'block';
+    adminActionsView.style.display = 'none';
+    adminLoginForm.reset();
+});
+
+// 4. Lógica de validación de la contraseña
+adminLoginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const usernameInput = document.getElementById('admin-username').value;
+    const passwordInput = document.getElementById('admin-password').value;
+
+    if (usernameInput === ADMIN_USERNAME && passwordInput === ADMIN_PASSWORD) {
+        // Contraseña correcta: mostramos las acciones
+        adminLoginView.style.display = 'none';
+        adminActionsView.style.display = 'block';
+        showNotification('Acceso Concedido', 'Bienvenido, Hechicero Mayor.');
+    } else {
+        // Contraseña incorrecta
+        showNotification('Acceso Denegado', 'Las credenciales no son correctas.');
+        adminLoginForm.reset();
+    }
+});
+
+// 5. Conectar los botones de admin a las funciones existentes
+adminUploadBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    zipUploadInput.click(); // Reutilizamos el input de archivo que ya existe
+});
+
+adminDownloadBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    downloadSourceCode(); // Reutilizamos la función de descarga
 });
 </script>
 </body>

@@ -2575,17 +2575,30 @@
             toggleNavMenu();
         }
         
+        // 1. Pre-llenamos los filtros del modal con los filtros globales activos
         const modalSearchInput = document.getElementById('modal-search-input');
-        if(modalSearchInput) modalSearchInput.value = '';
+        if (modalSearchInput) {
+            modalSearchInput.value = searchQuery; // Aplicamos el texto de búsqueda global
+        }
 
         const catButton = document.getElementById('category-filter-button');
-        if(catButton) {
-            catButton.dataset.value = 'all';
-            const info = CATEGORY_INFO['all'];
-            document.getElementById('category-filter-selected-text').textContent = `${info.emoji} ${info.name}`;
-            catButton.classList.add('placeholder');
+        const catText = document.getElementById('category-filter-selected-text');
+        if (catButton && catText) {
+            // Si hay un filtro de categoría global activo, lo aplicamos
+            if (currentFilter && currentFilter !== 'all') {
+                catButton.dataset.value = currentFilter;
+                const info = CATEGORY_INFO[currentFilter];
+                catText.textContent = `${info.emoji} ${info.name}`;
+                catButton.classList.remove('placeholder');
+            } else { // Si no, lo reseteamos a "Todas"
+                catButton.dataset.value = 'all';
+                const info = CATEGORY_INFO['all'];
+                catText.textContent = `${info.emoji} ${info.name}`;
+                catButton.classList.add('placeholder');
+            }
         }
         
+        // 2. Ahora que los filtros del modal tienen los valores correctos, llamamos a buildModal
         buildModal(dateStr); 
         modal.classList.add('is-visible'); 
     };

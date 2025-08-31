@@ -3491,7 +3491,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         if (totalAdded > 0) {
             // Retrasamos ligeramente el mensaje para que el usuario vea primero el resumen.
             setTimeout(() => {
-                const confirmationMessage = `¡Análisis completado!\n\nHas añadido ${totalAdded} sorteo(s) nuevo(s) a tu calendario. Recuerda que son privados para ti.\n\n¿Quieres enviar este lote al administrador por email para que pueda hacerlo público para todos los usuarios?`;
+                const confirmationMessage = `🔮 ¡El Oráculo ha Hablado! 🔮\n\n¡Análisis completado! Has añadido con éxito ${totalAdded} nuevo(s) tesoro(s) a tu mapa privado.\n\nTienes en tus manos un valioso botín. ¿Quieres compartirlo con la comunidad de cazadores?\n\nSi pulsas 'Aceptar', se abrirá tu correo para enviar este lote al Hechicero Mayor (admin) y que pueda hacerlo público para todos. Si no, seguirá siendo tu secreto.\n\n¿Enviamos el informe al torreón del Hechicero?`;
                 
                 if (confirm(confirmationMessage)) {
                     const subject = 'Sugerencia de Nuevo Lote de Sorteos';
@@ -4717,7 +4717,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
     setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
     setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
-    setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
     setupModal(null, searchModal, closeSearchModalBtn);
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
@@ -4730,8 +4729,9 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     
     addManualBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const confirmation = confirm("Aviso de Privacidad\n\nLos sorteos que añadas se guardarán de forma privada y segura únicamente en tu navegador. Nadie más podrá verlos.\n\nSolo el administrador de la web puede hacer públicos los sorteos para todos los usuarios. Si quieres contribuir, puedes enviarlos a: admin@misorteos.es\n\n¿Quieres continuar?");
-        if (confirmation) {
+        const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\n\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\n\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\n\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\n- Enviarlos uno a uno a: admin@misorteos.es\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\n\n¿Añadimos este tesoro a tu colección privada?";
+        
+        if (confirm(confirmationMessage)) {
             if (navMenu.classList.contains('is-open')) {
                 toggleNavMenu();
             }
@@ -4741,8 +4741,9 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const confirmation = confirm("Aviso de Privacidad\n\nLos sorteos que añadas se guardarán de forma privada y segura únicamente en tu navegador. Nadie más podrá verlos.\n\nSolo el administrador de la web puede hacer públicos los sorteos para todos los usuarios. Si quieres contribuir, puedes enviarlos a: admin@misorteos.es\n\n¿Quieres continuar?");
-        if (confirmation) {
+        const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\n\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\n\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\n\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\n- Enviarlos uno a uno a: admin@misorteos.es\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\n\n¿Añadimos este tesoro a tu colección privada?";
+
+        if (confirm(confirmationMessage)) {
             if (navMenu.classList.contains('is-open')) {
                 toggleNavMenu();
             }

@@ -4857,30 +4857,30 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             return;
         }
         
-        if (checkbox) {
-            const itemContainer = checkbox.closest('.giveaway-item');
-            const postCompleteActions = itemContainer.querySelector('.post-complete-actions');
-            const notInterestedButton = itemContainer.querySelector('.not-interested-btn');
-            
-            if (checkbox.checked) {
-                completedGiveaways[giveawayId] = true;
-                if (postCompleteActions) postCompleteActions.style.display = 'flex';
-                if (notInterestedButton) notInterestedButton.style.display = 'none';
-                animateShootingStar(itemContainer, () => {
-                    itemContainer.classList.add('completed');
-                    buildModal(dateStr); 
-                    renderCalendar();
-                });
-            } else {
-                delete completedGiveaways[giveawayId];
-                if (postCompleteActions) postCompleteActions.style.display = 'none';
-                if (notInterestedButton) notInterestedButton.style.display = 'block';
-                itemContainer.classList.remove('completed');
-            }
-            saveCompletedGiveaways();
-            checkAchievements('complete', { giveawayDate: dateStr });
-            return;
-        }
+        // --- INICIO DEL CÓDIGO CORREGIDO ---
+if (checkbox) {
+    const itemContainer = checkbox.closest('.giveaway-item');
+    const giveawayId = checkbox.dataset.giveawayId; // Asegúrate de tener el ID aquí
+
+    if (checkbox.checked) {
+        completedGiveaways[giveawayId] = true;
+        animateShootingStar(itemContainer, () => {
+            // Reconstruimos el modal DESPUÉS de la animación para que se vea el orden correcto
+            buildModal(dateStr); 
+            renderCalendar();
+        });
+    } else {
+        delete completedGiveaways[giveawayId];
+        // Forzamos la reconstrucción del modal INMEDIATAMENTE al desmarcar
+        buildModal(dateStr);
+        renderCalendar();
+    }
+    
+    saveCompletedGiveaways();
+    checkAchievements('complete', { giveawayDate: dateStr });
+    return;
+}
+// --- FIN DEL CÓDIGO CORREGIDO ---
 
         // --- OTRAS ACCIONES ---
         if (e.target.closest('.win-giveaway-btn')) {

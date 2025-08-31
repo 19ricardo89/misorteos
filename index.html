@@ -5466,31 +5466,45 @@ const shareNativeBtn = document.getElementById('share-native-btn');
 const previewContainer = document.getElementById('share-preview-container');
 
 // Función para abrir el modal y popular las opciones
+// CÓDIGO CORREGIDO Y MEJORADO
 const openShareModal = () => {
-    const datepickerContainer = document.getElementById('datepicker-container');
-    if (datepicker) {
-        datepicker.destroy();
-    }
-    datepicker = new Datepicker(datepickerContainer, {
-        format: 'dd/mm/yyyy',
-        language: 'es',
-        todayHighlight: true,
-        weekStart: 1,
-        pickerPosition: 'bottom-left',
-        rangePicker: true // Habilita la selección de rango
-    });
-    
-    datepickerContainer.addEventListener('changeDate', (e) => {
-        const checkedRadio = document.querySelector('#share-timeframe-radios input:checked');
-        if(checkedRadio) {
-            checkedRadio.checked = false;
-        }
-        handleTimeframeChange();
-    });
-
-    document.getElementById('time-month').checked = true;
-    handleTimeframeChange();
+    // 1. Hacemos visible el modal INMEDIATAMENTE.
     shareOptionsModal.classList.add('is-visible');
+
+    // 2. Envolvemos la lógica de contenido en un try...catch para que no bloquee la app.
+    try {
+        const datepickerContainer = document.getElementById('datepicker-container');
+        if (datepicker) {
+            datepicker.destroy();
+        }
+        datepicker = new Datepicker(datepickerContainer, {
+            format: 'dd/mm/yyyy',
+            language: 'es',
+            todayHighlight: true,
+            weekStart: 1,
+            pickerPosition: 'bottom-left',
+            rangePicker: true
+        });
+        
+        datepickerContainer.addEventListener('changeDate', (e) => {
+            const checkedRadio = document.querySelector('#share-timeframe-radios input:checked');
+            if(checkedRadio) {
+                checkedRadio.checked = false;
+            }
+            handleTimeframeChange();
+        });
+
+        // 3. Populamos el contenido ahora que el modal ya es visible.
+        document.getElementById('time-month').checked = true;
+        handleTimeframeChange();
+    } catch (error) {
+        console.error("Error al preparar el modal de compartir:", error);
+        // Opcional: Mostrar un mensaje de error dentro del modal
+        const previewContainer = document.getElementById('share-preview-container');
+        if(previewContainer) {
+            previewContainer.innerHTML = '<span class="text-red-600">Error al cargar los datos.</span>';
+        }
+    }
 };
 
 // Función para poblar la lista de premios

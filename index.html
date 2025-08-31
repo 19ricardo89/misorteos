@@ -5712,6 +5712,36 @@ if (shareNativeBtn) {
     });
 }
 // --- FIN DE LÓGICA PARA COMPARTIR ---
+// --- INICIO: PUENTE PARA EL BOTÓN DE COMPARTIR ---
+// Este bloque conecta el botón de la vitrina con la nueva ventana de personalización.
+
+const openShareOptionsBtn = document.getElementById('open-share-options-btn');
+const shareOptionsModal = document.getElementById('share-options-modal');
+const closeShareOptionsModalBtn = document.getElementById('close-share-options-modal');
+const radioContainerShare = document.getElementById('share-timeframe-radios');
+const prizeListContainerShare = document.getElementById('share-prize-list-container');
+
+
+if (openShareOptionsBtn) {
+    openShareOptionsBtn.addEventListener('click', openShareModal);
+}
+
+if (closeShareOptionsModalBtn) {
+    closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
+}
+
+if(radioContainerShare) {
+    radioContainerShare.addEventListener('change', () => {
+        if(datepicker) datepicker.clear();
+        handleTimeframeChange();
+    });
+}
+
+if (prizeListContainerShare) {
+    prizeListContainerShare.addEventListener('change', updateSharePreview);
+}
+
+// --- FIN: PUENTE PARA EL BOTÓN DE COMPARTIR ---
 </script>
 </body>
 </html>

@@ -1277,7 +1277,7 @@
                         <select id="giveaway-category" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
                             </select>
                     </div>
-                    <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg">Guardar Sorteo</button>
+                    <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg"> 📜 Guardar en mi Calendario </button> <button type="button" id="send-to-admin-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors shadow-lg"> 🧙‍♂️ Enviar al Hechicero </button>
                 </form>
             </div>
         </div>
@@ -4777,18 +4777,28 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
     setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
     
-    addManualBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\n\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\n\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\n\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\n- Enviarlos uno a uno a: admin@misorteos.es\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\n\n¿Añadimos este tesoro a tu colección privada?";
-        
-        if (confirm(confirmationMessage)) {
-            if (navMenu.classList.contains('is-open')) {
-                toggleNavMenu();
-            }
-            openAddGiveawayModal();
-        }
-    });
+    // Localiza este bloque en tu código
+addManualBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // REEMPLAZA el texto de esta constante
+    const confirmationMessage = `✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨
 
+¿Cómo quieres guardar este sorteo?
+
+- 📜 **Guardar en mi Calendario (Privado):** El sorteo se añadirá a TU mapa personal. ¡Será tu secreto y nadie más lo verá!
+
+- 🧙‍♂️ **Enviar al Hechicero (Público):** ¿Has encontrado un gran tesoro y quieres compartirlo con la comunidad? ¡Envíamelo! Lo revisaré y en unas horas aparecerá en el mapa de todos.
+
+Elige la opción que prefieras dentro del formulario.`;
+    
+    if (confirm(confirmationMessage)) {
+        if (navMenu.classList.contains('is-open')) {
+            toggleNavMenu();
+        }
+        openAddGiveawayModal();
+    }
+});
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
         const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\n\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\n\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\n\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\n- Enviarlos uno a uno a: admin@misorteos.es\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\n\n¿Añadimos este tesoro a tu colección privada?";
@@ -5389,6 +5399,60 @@ adminDownloadBtn.addEventListener('click', (e) => {
     e.preventDefault();
     downloadSourceCode(); // Reutilizamos la función de descarga
 });
+// --- INICIO: LÓGICA PARA ENVIAR SORTEO AL ADMIN ---
+const addGiveawayModalEl = document.getElementById('add-giveaway-modal');
+
+if (addGiveawayModalEl) {
+    addGiveawayModalEl.addEventListener('click', (e) => {
+        if (e.target.id === 'send-to-admin-btn') {
+            e.preventDefault();
+
+            // 1. Recoger los datos del formulario
+            const date = document.getElementById('giveaway-date').value;
+            const prize = document.getElementById('giveaway-prize').value;
+            const accounts = document.getElementById('giveaway-accounts').value;
+            const price = document.getElementById('giveaway-price').value;
+            const categorySelect = document.getElementById('giveaway-category');
+            const category = categorySelect.options[categorySelect.selectedIndex].text;
+
+            // 2. Validación simple
+            if (!date || !prize) {
+                showNotification('Faltan Datos', 'Por favor, completa al menos la fecha y el premio.');
+                return;
+            }
+
+            // 3. Construir el email
+            const emailAdmin = 'admin@misorteos.es';
+            const subject = `Nuevo Sorteo Sugerido: ${prize.substring(0, 30)}...`;
+            const body = `
+¡Hola, Hechicero Mayor! 🧙‍♂️
+
+Un cazador de sorteos ha compartido un nuevo tesoro para el calendario público. Aquí están los detalles:
+
+- Fecha Finalización: ${date}
+- Premio: ${prize}
+- Cuentas: ${accounts || 'No especificadas'}
+- Valor Aprox.: ${price || 'No especificado'}
+- Categoría: ${category || 'No especificada'}
+
+¡Gracias por tu magia!
+            `;
+
+            // 4. Crear y abrir el enlace mailto
+            const mailtoLink = `mailto:${emailAdmin}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+
+            showNotification('¡Enviado!', 'Se ha abierto tu app de correo para enviar el sorteo. ¡Gracias por compartir!');
+            
+            // Opcional: Limpiar y cerrar el modal tras el envío
+            setTimeout(() => {
+                document.getElementById('add-giveaway-form').reset();
+                closeAddGiveawayModal();
+            }, 500);
+        }
+    });
+}
+// --- FIN: LÓGICA PARA ENVIAR SORTEO AL ADMIN ---
 </script>
 </body>
 </html>

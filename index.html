@@ -488,7 +488,7 @@
 
 
         /* Títulos de los modales */
-        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2, #new-additions-modal h2 {
+        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2, #new-additions-modal h2, #admin-modal h2 {
             color: #8c5a15;
         }
 
@@ -1017,6 +1017,33 @@
     background-color: #302b63;
     color: #f0e6d2;
 }
+        /* --- ESTILOS PARA PESTAÑAS DEL MODAL DIARIO --- */
+        .modal-tabs {
+            display: flex;
+            border-bottom: 2px solid #fde68a;
+        }
+        .modal-tab-btn {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: #b45309;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .modal-tab-btn.active {
+            color: #78350f;
+            border-bottom-color: #f59e0b;
+        }
+        .modal-tab-content {
+            display: none;
+        }
+        .modal-tab-content.active {
+            display: block;
+        }
+        .giveaway-item.not-interested {
+            opacity: 0.6;
+            filter: grayscale(80%);
+        }
     </style>
 </head>
 <body class="p-4">
@@ -1190,15 +1217,29 @@
                     </div>
                 </div>
                 </div>
-            <div class="p-4 sm:p-6 pt-0">
-                <div class="flex justify-between items-center mb-2 text-yellow-900">
-                    <button id="select-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Seleccionar todo</button>
-                    <button id="deselect-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Deseleccionar todo</button>
+            <div class="p-4 sm:p-6 pt-0 flex flex-col flex-grow overflow-hidden">
+                <div class="modal-tabs flex-shrink-0">
+                    <button class="modal-tab-btn active" data-tab="sorteos">Sorteos</button>
+                    <button class="modal-tab-btn" data-tab="no-interesa">No me Interesa</button>
                 </div>
-                <div id="insta-hint" class="p-2 my-3 rounded-lg bg-blue-100/50 border border-blue-400 text-center text-sm text-blue-900 font-bold">
-                    👉 <strong>¡Atajo a la vista!</strong> Toca en las <code>@cuentas</code> y salta a su Instagram sin teclear.
+
+                <div class="mt-4 flex-grow overflow-y-auto">
+                    <div id="tab-content-sorteos" class="modal-tab-content active">
+                        <div class="flex justify-between items-center mb-2 text-yellow-900">
+                            <button id="select-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Seleccionar todo</button>
+                            <button id="deselect-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Deseleccionar todo</button>
+                        </div>
+                        <div id="insta-hint" class="p-2 my-3 rounded-lg bg-blue-100/50 border border-blue-400 text-center text-sm text-blue-900 font-bold">
+                            👉 <strong>¡Atajo a la vista!</strong> Toca en las <code>@cuentas</code> y salta a su Instagram sin teclear.
+                        </div>
+                        <div id="modal-body" class="space-y-4 max-h-[50vh]"></div>
+                    </div>
+
+                    <div id="tab-content-no-interesa" class="modal-tab-content">
+                        <div id="not-interested-body" class="space-y-4 max-h-[60vh]">
+                            </div>
+                    </div>
                 </div>
-                <div id="modal-body" class="space-y-4 max-h-[60vh]"></div>
             </div>
         </div>
     </div>
@@ -1745,6 +1786,7 @@
     }
 
     let completedGiveaways = JSON.parse(localStorage.getItem(`completedGiveaways`)) || {};
+    let notInterestedGiveaways = JSON.parse(localStorage.getItem('notInterestedGiveaways')) || {};
     let wonGiveaways = JSON.parse(localStorage.getItem('wonGiveaways')) || [];
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
     let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
@@ -2223,6 +2265,7 @@
 
     const saveGiveaways = () => localStorage.setItem('giveaways', JSON.stringify(giveaways));
     const saveCompletedGiveaways = () => localStorage.setItem(`completedGiveaways`, JSON.stringify(completedGiveaways));
+    const saveNotInterestedGiveaways = () => localStorage.setItem('notInterestedGiveaways', JSON.stringify(notInterestedGiveaways));
     const saveTrashGiveaways = () => localStorage.setItem('trashGiveaways', JSON.stringify(trashGiveaways));
     const saveDiscardedGiveaways = () => localStorage.setItem('discardedGiveaways', JSON.stringify(discardedGiveaways));
     const saveForeignAccounts = () => localStorage.setItem('foreignAccounts', JSON.stringify(foreignAccounts));
@@ -2378,7 +2421,7 @@
         }
         return null;
     };
-   const renderCalendar = () => {
+    const renderCalendar = () => {
         if (!calendarDaysEl || !monthYearEl) return;
         calendarDaysEl.innerHTML = '';
         const month = currentDate.getMonth();
@@ -2462,166 +2505,114 @@
     };
 
     const buildModal = (dateStr) => {
-        let dayGiveaways = (giveaways[dateStr] || []);
-        
-        // --- INICIO DE LA MODIFICACIÓN PARA FILTRADO DE LOTE ---
-        if (activeBatchFilterId) {
-            const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
-            if (activeBatch) {
-                const batchGiveawayIds = new Set(activeBatch.giveawayIds);
-                dayGiveaways = dayGiveaways.filter(g => batchGiveawayIds.has(g.id));
-            } else {
-                dayGiveaways = [];
-            }
-        }
-        // --- FIN DE LA MODIFICACIÓN ---
+        const modalBody = document.getElementById('modal-body');
+        const notInterestedBody = document.getElementById('not-interested-body');
+        modalBody.innerHTML = '';
+        notInterestedBody.innerHTML = '';
 
-        const modalSearchInput = document.getElementById('modal-search-input');
-        const searchQueryModal = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
-        const selectedCategory = document.getElementById('category-filter-button')?.dataset.value || 'all';
+        // Filtrar y ordenar la lista principal
+        let dayGiveaways = (giveaways[dateStr] || []);
+        const modalSearchQuery = document.getElementById('modal-search-input').value.toLowerCase();
+        const selectedCategory = document.getElementById('category-filter-button').dataset.value || 'all';
 
         dayGiveaways = dayGiveaways.filter(g => {
-            const matchesSearch = !searchQueryModal || (g.prize && g.prize.toLowerCase().includes(searchQueryModal));
+            const matchesSearch = !modalSearchQuery || (g.prize && g.prize.toLowerCase().includes(modalSearchQuery));
             const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
             return matchesSearch && matchesCategory;
+        }).sort((a, b) => {
+            const aCompleted = !!completedGiveaways[a.id];
+            const bCompleted = !!completedGiveaways[b.id];
+            return aCompleted - bCompleted;
         });
 
-        dayGiveaways.sort((a, b) => {
-            const aCompleted = completedGiveaways[a.id];
-            const bCompleted = completedGiveaways[b.id];
-            if (aCompleted !== bCompleted) {
-                return aCompleted ? 1 : -1;
-            }
-            const aIsPriority = a.is_priority_time === true;
-            const bIsPriority = b.is_priority_time === true;
-            if (aIsPriority !== bIsPriority) {
-                return aIsPriority ? -1 : 1;
-            }
-            const aPrice = parsePrice(a.price);
-            const bPrice = parsePrice(b.price);
-            return bPrice - aPrice;
-        });
+        // Cargar la lista de "No me interesa"
+        const dayNotInterested = notInterestedGiveaways[dateStr] || [];
 
-        document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
-        modalBody.innerHTML = '';
-        let hasPadel = false, hasTravel = false;
+        // Renderizar Sorteos Principales
         dayGiveaways.forEach(giveaway => {
             const itemContainer = document.createElement('div');
             itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
-            const leftSideContainer = document.createElement('div');
-            leftSideContainer.className = 'flex items-start flex-1 overflow-hidden'; // Changed to items-start for vertical alignment
+            const leftSide = document.createElement('div');
+            leftSide.className = 'flex items-start flex-1 overflow-hidden';
 
-            const controlsContainer = document.createElement('div');
-            controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0';
+            const controls = document.createElement('div');
+            controls.className = 'flex flex-col items-center mr-3 flex-shrink-0';
             
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.dataset.giveawayId = giveaway.id;
-            checkbox.className = 'h-5 w-5 sm:h-6 sm:w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500';
-            checkbox.checked = completedGiveaways[giveaway.id];
-            controlsContainer.appendChild(checkbox);
+            checkbox.className = 'h-6 w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500';
+            checkbox.checked = !!completedGiveaways[giveaway.id];
+            controls.appendChild(checkbox);
+
+            const notInterestedBtn = document.createElement('button');
+            notInterestedBtn.className = 'not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500';
+            notInterestedBtn.innerHTML = `<i class="fa-solid fa-eye-slash"></i>`;
+            notInterestedBtn.dataset.giveawayId = giveaway.id;
+            notInterestedBtn.dataset.giveawayDate = dateStr;
+            controls.appendChild(notInterestedBtn);
             
-            const postCompleteActions = document.createElement('div');
-            postCompleteActions.className = 'flex flex-col items-center space-y-1 mt-1';
-            postCompleteActions.style.display = completedGiveaways[giveaway.id] ? 'flex' : 'none';
-
-            const winBtn = document.createElement('button');
-            winBtn.className = 'win-giveaway-btn p-1 rounded-full text-lg';
-            winBtn.innerHTML = `🏆`;
-            winBtn.dataset.giveawayId = giveaway.id;
-            winBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(winBtn);
-
-            const visBtn = document.createElement('button');
-            visBtn.className = 'vis-giveaway-btn p-1 rounded-full text-lg';
-            visBtn.innerHTML = `🌟`;
-            visBtn.dataset.giveawayId = giveaway.id;
-            visBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(visBtn);
-
-            controlsContainer.appendChild(postCompleteActions);
-
-            const prizeContainer = document.createElement('div');
-            prizeContainer.className = 'overflow-hidden';
-
-            // [MODIFICACIÓN] Cuentas en líneas separadas
-            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a></div>`).join('');
-            
-            const timeEmoji = giveaway.is_priority_time ? '⏰' : '';
-            const categoryInfo = getCategoryInfo(giveaway.prize_category);
-            
-            prizeContainer.innerHTML = `
+            const prizeInfo = document.createElement('div');
+            prizeInfo.className = 'overflow-hidden';
+            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
+            prizeInfo.innerHTML = `
                 <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
                 <div class="text-sm">${accountsHTML}</div>
-                <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji} ${timeEmoji}</span>
             `;
 
-            leftSideContainer.appendChild(controlsContainer);
-            leftSideContainer.appendChild(prizeContainer);
+            leftSide.appendChild(controls);
+            leftSide.appendChild(prizeInfo);
 
-            const detailsContainer = document.createElement('div');
-            detailsContainer.className = 'text-right flex-shrink-0 ml-2';
+            const rightSide = document.createElement('div');
+            rightSide.className = 'flex items-center';
+
+            const details = document.createElement('div');
+            details.className = 'text-right flex-shrink-0 ml-2';
             if (giveaway.price) {
-                detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
+                details.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
             }
-
-            const actionsContainer = document.createElement('div');
-            actionsContainer.className = 'flex flex-col items-center ml-2 space-y-1';
-
-            const moveBtn = document.createElement('button');
-            moveBtn.className = 'move-giveaway-btn p-1 rounded-full text-sm';
-            moveBtn.innerHTML = `<i class="fa-solid fa-calendar-days"></i>`;
-            moveBtn.dataset.giveawayId = giveaway.id;
-            moveBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(moveBtn);
             
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full text-sm';
-            deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-            deleteBtn.dataset.giveawayId = giveaway.id;
-            deleteBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(deleteBtn);
+            const actions = document.createElement('div');
+            actions.className = 'flex flex-col items-center ml-2 space-y-1';
+            const moveBtnHTML = `<button class="move-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-calendar-days"></i></button>`;
+            const deleteBtnHTML = `<button class="delete-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-trash-can"></i></button>`;
+            const foreignBtnHTML = `<button class="delete-giveaway-foreign-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-globe"></i></button>`;
+            actions.innerHTML = moveBtnHTML + deleteBtnHTML + foreignBtnHTML;
 
-            const foreignBtn = document.createElement('button');
-            foreignBtn.className = 'delete-giveaway-foreign-btn p-1 rounded-full text-sm';
-            foreignBtn.innerHTML = `<i class="fa-solid fa-globe"></i>`;
-            foreignBtn.dataset.giveawayId = giveaway.id;
-            foreignBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(foreignBtn);
-
-            itemContainer.appendChild(leftSideContainer);
-            itemContainer.appendChild(detailsContainer);
-            itemContainer.appendChild(actionsContainer);
-
+            rightSide.appendChild(details);
+            rightSide.appendChild(actions);
+            
+            itemContainer.appendChild(leftSide);
+            itemContainer.appendChild(rightSide);
             modalBody.appendChild(itemContainer);
-
-            if (giveaway.prize.includes('🥎')) hasPadel = true;
-            if (giveaway.prize.includes('🛩️')) hasTravel = true;
         });
-        const modalContent = document.getElementById('modal-content');
-        modalContent.classList.remove('modal-default-bg', 'modal-padel-bg', 'modal-travel-bg');
-        if (hasPadel) modalContent.classList.add('modal-padel-bg');
-        else if (hasTravel) modalContent.classList.add('modal-travel-bg');
-        else modalContent.classList.add('modal-default-bg');
-        
-        const searchInput = document.getElementById('modal-search-input');
 
-        const applyFilters = () => buildModal(dateStr);
+        // Renderizar Sorteos "No me Interesa"
+        if (dayNotInterested.length > 0) {
+            dayNotInterested.forEach(giveaway => {
+                const itemContainer = document.createElement('div');
+                itemContainer.className = 'giveaway-item not-interested p-3 rounded-lg shadow-inner flex justify-between items-center border border-gray-400/20 bg-gray-100/30';
+                let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
 
-        searchInput.onkeyup = null;
-        searchInput.onkeydown = null;
-        
-        searchInput.onkeydown = (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                applyFilters();
-            }
-        };
+                itemContainer.innerHTML = `
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-base sm:text-lg text-gray-700 truncate">${giveaway.prize}</p>
+                        <div class="text-sm text-gray-600">${accountsHTML}</div>
+                    </div>
+                    <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                `;
+                notInterestedBody.appendChild(itemContainer);
+            });
+        } else {
+            notInterestedBody.innerHTML = '<p class="text-center text-gray-500">No has marcado ningún sorteo como no interesante para hoy.</p>';
+        }
 
+        document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
         modal.dataset.date = dateStr;
     };
-
 
     const openModal = (dateStr) => { 
         if (navMenu.classList.contains('is-open')) {
@@ -4697,6 +4688,50 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         renderVisModal();
     };
 
+    const moveToNotInterested = (giveawayId, dateStr) => {
+        if (!giveaways[dateStr]) return;
+
+        const giveawayIndex = giveaways[dateStr].findIndex(g => g.id === giveawayId);
+        if (giveawayIndex > -1) {
+            const [giveawayToMove] = giveaways[dateStr].splice(giveawayIndex, 1);
+            if (giveaways[dateStr].length === 0) {
+                delete giveaways[dateStr];
+            }
+
+            if (!notInterestedGiveaways[dateStr]) {
+                notInterestedGiveaways[dateStr] = [];
+            }
+            notInterestedGiveaways[dateStr].push(giveawayToMove);
+
+            saveGiveaways();
+            saveNotInterestedGiveaways();
+            buildModal(dateStr); // Re-render the modal to reflect the change
+            renderCalendar(); // Update the main calendar view
+        }
+    };
+
+    const restoreFromNotInterested = (giveawayId, dateStr) => {
+        if (!notInterestedGiveaways[dateStr]) return;
+
+        const giveawayIndex = notInterestedGiveaways[dateStr].findIndex(g => g.id === giveawayId);
+        if (giveawayIndex > -1) {
+            const [giveawayToRestore] = notInterestedGiveaways[dateStr].splice(giveawayIndex, 1);
+            if (notInterestedGiveaways[dateStr].length === 0) {
+                delete notInterestedGiveaways[dateStr];
+            }
+
+            if (!giveaways[dateStr]) {
+                giveaways[dateStr] = [];
+            }
+            giveaways[dateStr].push(giveawayToRestore);
+
+            saveGiveaways();
+            saveNotInterestedGiveaways();
+            buildModal(dateStr);
+            renderCalendar();
+        }
+    };
+
     // --- CÓDIGO DE INICIALIZACIÓN ---
     
     animateStarryBackground();
@@ -4896,6 +4931,10 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             if (confirm('¿Marcar como sorteo extranjero? Las cuentas se añadirán al cortafuegos.')) {
                 deleteForeignGiveaway(dateStr, giveawayId);
             }
+        } else if (e.target.closest('.not-interested-btn')) {
+            moveToNotInterested(giveawayId, dateStr);
+        } else if (e.target.closest('.restore-not-interested-btn')) {
+            restoreFromNotInterested(giveawayId, dateStr);
         }
     });
 
@@ -5086,6 +5125,18 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             }
         });
     }
+
+    document.querySelector('.modal-tabs').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-tab-btn')) {
+            const tabId = e.target.dataset.tab;
+
+            document.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active'));
+
+            e.target.classList.add('active');
+            document.getElementById(`tab-content-${tabId}`).classList.add('active');
+        }
+    });
 
     document.getElementById('oracle-proximity-btn').addEventListener('click', () => consultarOraculo('proximidad'));
     document.getElementById('oracle-prize-btn').addEventListener('click', () => consultarOraculo('premio'));

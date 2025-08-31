@@ -5,5 +5,10 @@ window.foreignAccounts = [
     "@crosshairgamingbsas",
     "@tiendapadelpy",
     "@sheshu.home",
-    "@cafetalito"
+    "@cafetalito",
+    "@premia2.cl",
+    "@celumaniacos_rafaela",
+    "@grandiosas.rafaela",
+    "@ferropartes_",
+    "@madereraceballos"
 ];

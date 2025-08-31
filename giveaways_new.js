@@ -192,11 +192,11 @@ window.giveaways = {
     ],
     "2025-08-09": [
         {
-            "id": "sorteo-9-candyfresh",
-            "prize": "Nintendo switch 2 lote 🃏",
-            "price": "500€",
+            "id": "sorteo-9-arrecifeazul",
+            "prize": "viaje Maldivas 💲🛩️",
+            "price": ">2000€",
             "accounts": [
-                "@candyfresh.es"
+                "@arrecifeazul_"
             ]
         },
         {
@@ -208,11 +208,11 @@ window.giveaways = {
             ]
         },
         {
-            "id": "sorteo-9-arrecifeazul",
-            "prize": "viaje Maldivas 💲🛩️",
-            "price": ">2000€",
+            "id": "sorteo-9-candyfresh",
+            "prize": "Nintendo switch 2 lote 🃏",
+            "price": "500€",
             "accounts": [
-                "@arrecifeazul_"
+                "@candyfresh.es"
             ]
         },
         {
@@ -225,68 +225,11 @@ window.giveaways = {
             ]
         },
         {
-            "id": "sorteo4",
-            "prize": "Lote literario",
-            "price": "60€",
-            "accounts": [
-                "@vidaentrellibres",
-                "@somniadora"
-            ]
-        },
-        {
-            "id": "sorteo-9-reyleonmusical",
-            "prize": "5 peluches",
-            "price": "100€",
-            "accounts": [
-                "@reyleonmusical"
-            ]
-        },
-        {
-            "id": "sorteo-9-pasionculee10",
-            "prize": "camiseta Barça",
-            "price": "90€",
-            "accounts": [
-                "@pasion_culee10"
-            ]
-        },
-        {
-            "id": "sorteo-9-valendicembre",
-            "prize": "lote productos",
-            "price": "40€",
-            "accounts": [
-                "@valendicembre"
-            ]
-        },
-        {
             "id": "sorteo-9-todorutas",
             "prize": "estancia Águilas (compartir) 🛩️",
             "price": "200€",
             "accounts": [
                 "@todorutas.es"
-            ]
-        },
-        {
-            "id": "sorteo-9-druniperfumerias-dera",
-            "prize": "3 lotes (dera)",
-            "price": "90€",
-            "accounts": [
-                "@druni_perfumerias"
-            ]
-        },
-        {
-            "id": "sorteo-9-canpons",
-            "prize": "lote comida",
-            "price": "100€",
-            "accounts": [
-                "@canpons"
-            ]
-        },
-        {
-            "id": "sorteo-9-druniperfumerias-grado",
-            "prize": "3 lotes grado",
-            "price": "90€",
-            "accounts": [
-                "@druni_perfumerias"
             ]
         },
         {
@@ -298,19 +241,51 @@ window.giveaways = {
             ]
         },
         {
+            "id": "sorteo-9-reyleonmusical",
+            "prize": "5 peluches",
+            "price": "100€",
+            "accounts": [
+                "@reyleonmusical"
+            ]
+        },
+        {
+            "id": "sorteo-9-canpons",
+            "prize": "lote comida",
+            "price": "100€",
+            "accounts": [
+                "@canpons"
+            ]
+        },
+        {
+            "id": "sorteo-9-pasionculee10",
+            "prize": "camiseta Barça",
+            "price": "90€",
+            "accounts": [
+                "@pasion_culee10"
+            ]
+        },
+        {
+            "id": "sorteo-9-druniperfumerias-dera",
+            "prize": "3 lotes (dera)",
+            "price": "90€",
+            "accounts": [
+                "@druni_perfumerias"
+            ]
+        },
+        {
+            "id": "sorteo-9-druniperfumerias-grado",
+            "prize": "3 lotes grado",
+            "price": "90€",
+            "accounts": [
+                "@druni_perfumerias"
+            ]
+        },
+        {
             "id": "sorteo-9-limagrider",
             "prize": "camara bici",
             "price": "80€",
             "accounts": [
                 "@limagrider"
-            ]
-        },
-        {
-            "id": "sorteo-9-ferchisanvicente",
-            "prize": "2 mochilas",
-            "price": "60€",
-            "accounts": [
-                "@ferchi_sanvicente"
             ]
         },
         {
@@ -331,12 +306,28 @@ window.giveaways = {
             ]
         },
         {
+            "id": "sorteo-9-valendicembre",
+            "prize": "lote productos",
+            "price": "40€",
+            "accounts": [
+                "@valendicembre"
+            ]
+        },
+        {
             "id": "sorteo-9-peperubioef",
             "prize": "Juego de mesa Alien 51 🃏",
             "price": "20€",
             "accounts": [
                 "@pepe_rubio_ef",
                 "@javi.orimonk"
+            ]
+        },
+        {
+            "id": "sorteo-9-ferchisanvicente",
+            "prize": "2 mochilas",
+            "price": "60€",
+            "accounts": [
+                "@ferchi_sanvicente"
             ]
         }
     ],
@@ -5471,6 +5462,21 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "deporte"
+        },
+        {
+            "id": "1756590582367",
+            "date": "2025-08-24",
+            "prize": "3 vales de 100€ de Soyde + 3 e-tarjetas regalo de 100€ de Vertbaudet 💰 💲",
+            "accounts": [
+                "@vertbaudet_es",
+                "@etiquetas_soyde"
+            ],
+            "price": "600",
+            "url": "null",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "dinero"
         }
     ],
     "2025-08-25": [
@@ -6175,19 +6181,6 @@ window.giveaways = {
             ]
         },
         {
-            "id": "1755976619133",
-            "date": "2025-08-26",
-            "prize": "3 vales de 100€ de Soyde + 3 tarjetas regalo de 100€ de Vertbaudet 💲",
-            "accounts": [
-                "@vertbaudet_es",
-                "@etiquetas_soyde"
-            ],
-            "price": "600€",
-            "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": "2025-08-25"
-        },
-        {
             "id": "1755977019100",
             "date": "2025-08-26",
             "prize": "Merach NovaWalk W50 WalkPad con 12% de inclinación automática",
@@ -6268,20 +6261,6 @@ window.giveaways = {
             "ends_at_time": "23:59",
             "is_priority_time": false,
             "prize_category": "ocio"
-        },
-        {
-            "id": "1756492071450",
-            "date": "2025-08-26",
-            "prize": "9 Neveras Polarbox + pack de salsaliñadas 💲",
-            "accounts": [
-                "@aceitunasjolca"
-            ],
-            "price": "600",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "otros"
         },
         {
             "id": "1756492229983",
@@ -7204,237 +7183,46 @@ window.giveaways = {
     ],
     "2025-08-30": [
         {
-            "id": "sorteo-30-moneymanes",
-            "prize": "Nintendo Switch",
-            "price": "330€",
-            "accounts": [
-                "@moneyman.es"
-            ]
-        },
-        {
-            "id": "sorteo-30-kanyou-dogs",
-            "prize": "Lote de productos para perros",
-            "price": "60€",
-            "accounts": [
-                "@kanyou.dogs"
-            ]
-        },
-        {
-            "id": "1755976101853",
+            "id": "1756627119079",
             "date": "2025-08-30",
-            "prize": "una almohada para un descanso confortable",
+            "prize": "3 vales de viaje de 1.000€ 🛩️ 💲",
             "accounts": [
-                "@Boncolchón"
+                "@oxfordgeneration_es"
             ],
-            "price": "75€ (estimado)",
+            "price": "3000",
             "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": null
+            "addDate": "2025-08-31",
+            "ends_at_time": "23:55h",
+            "is_priority_time": false,
+            "prize_category": "viajes"
         },
         {
-            "id": "1755976610160",
+            "id": "1756627127036",
             "date": "2025-08-30",
-            "prize": "Juego educativo \"Aprender a escribir\", Pizarra Clásica Magnética de doble cara, Mapa de Europa magnética",
+            "prize": "Dormitorio completo 🏠 💲",
             "accounts": [
-                "@janod_espana"
+                "@muebles_lospacos"
             ],
-            "price": "49.99€ (estimado)",
-            "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": "23:59"
+            "price": "1200",
+            "url": "https://www.muebleslospacos.com/",
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "hogar"
         },
         {
-            "id": "1756144974846",
+            "id": "1756555632595",
             "date": "2025-08-30",
-            "prize": "Pack de productos de cosmética natural intea + una bolsa de playa 💄",
+            "prize": "iPhone 16 💲",
             "accounts": [
-                "@intea_spain"
+                "@laboratoriosbabe"
             ],
-            "price": "50",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": null
-        },
-        {
-            "id": "1756145309021",
-            "date": "2025-08-30",
-            "prize": "5 packs de merchandising oficial en 3D del Grand Prix del Verano (incluye llavero vaquilla, spinner oficial Grand Prix, Tiny, adorno 3D y soporte para móvil)",
-            "accounts": [
-                "@mpf3d",
-                "@grupoizen",
-                "@grandprix_tve"
-            ],
-            "price": "75",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": null
-        },
-        {
-            "id": "1756145381398",
-            "date": "2025-08-30",
-            "prize": "Lote Vinamiel de @lavina_gourmet",
-            "accounts": [
-                "@sandrinaferre29",
-                "@lavina_gourmet"
-            ],
-            "price": "60",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756302075744",
-            "date": "2025-08-30",
-            "prize": "Secador AM1 6.0 de LIM HAIR, con motor de nueva generación y hasta 2400W de potencia. Ligero, resistente, diseñado para uso profesional y con 3 filtros personalizables",
-            "accounts": [
-                "@limhair"
-            ],
-            "price": "No encontrado",
-            "url": null,
-            "addDate": "2025-08-27",
-            "ends_at_time": "23:59"
-        },
-        {
-            "id": "1756487982349",
-            "date": "2025-08-30",
-            "prize": "Mochila y estuche Ocean's Wave",
-            "accounts": [
-                "@milbby_es",
-                "@milbby"
-            ],
-            "price": "35",
-            "url": "https://www.google.com/search?q=mochila+y+estuche+infantil",
-            "addDate": "2025-08-29",
+            "price": "999",
+            "url": "https://www.apple.com/iphone",
+            "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "otros"
-        },
-        {
-            "id": "1756488323115",
-            "date": "2025-08-30",
-            "prize": "Bol y mantel oficial de la película Heidi: El rescate del lince",
-            "accounts": [
-                "@cinesa.es"
-            ],
-            "price": "25",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756488374616",
-            "date": "2025-08-30",
-            "prize": "10 desayunos dobles (torreznos o puntilla, copas de licor TRUC) 🍔",
-            "accounts": [
-                "@bar_reyton"
-            ],
-            "price": "100",
-            "url": null,
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "comida"
-        },
-        {
-            "id": "1756489723222",
-            "date": "2025-08-30",
-            "prize": "Smartwatch ZTE Watch Live3",
-            "accounts": [
-                "@zte_es"
-            ],
-            "price": "60",
-            "url": "https://www.amazon.es/s?k=ZTE+Watch+Live3",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756489772918",
-            "date": "2025-08-30",
-            "prize": "Seagate Gaming Game Drive External HDD de 2TB",
-            "accounts": [
-                "@seagategaming"
-            ],
-            "price": "75",
-            "url": "https://www.amazon.com/Seagate-Gaming-External-Portable-Hard-Drive/dp/B07T31K45X",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "gaming"
-        },
-        {
-            "id": "1756490550107",
-            "date": "2025-08-30",
-            "prize": "Reloj Garmin Fénix 3",
-            "accounts": [
-                "@almendruki"
-            ],
-            "price": "150",
-            "url": "https://www.ebay.com/sch/i.html?_nkw=Garmin+F%C3%A9nix+3",
-            "addDate": "2025-08-29",
-            "ends_at_time": "21:00h",
-            "is_priority_time": true,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756490614100",
-            "date": "2025-08-30",
-            "prize": "Tablet 7\" con funda y accesorios",
-            "accounts": [
-                "@bigbangfreeshop_new"
-            ],
-            "price": "75",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756490621204",
-            "date": "2025-08-30",
-            "prize": "3 cenas para dos personas en el restaurante Paradise Burger 🎟️",
-            "accounts": [
-                "@theparadiseburgers"
-            ],
-            "price": "120",
-            "url": "https://www.theparadiseburgers.com/",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "ocio"
-        },
-        {
-            "id": "1756490701104",
-            "date": "2025-08-30",
-            "prize": "OM System TG-7",
-            "accounts": [
-                "@omsystem.es",
-                "@inpirineos"
-            ],
-            "price": "400",
-            "url": "https://www.amazon.es/Olympus-TG-7-Tough-Cámara-Resistente/dp/B08755B477",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "foto"
-        },
-        {
-            "id": "1756491247603",
-            "date": "2025-08-30",
-            "prize": "Experiencia 'Bat Night' en Bioparc Valencia",
-            "accounts": [
-                "@bioparcvalencia"
-            ],
-            "price": "9€",
-            "url": null,
-            "addDate": "2025-08-29",
-            "ends_at_time": "21:30h",
-            "is_priority_time": false,
-            "prize_category": "ocio"
         },
         {
             "id": "1756491990786",
@@ -7451,48 +7239,18 @@ window.giveaways = {
             "prize_category": "comida"
         },
         {
-            "id": "1756492112034",
+            "id": "1756558359114",
             "date": "2025-08-30",
-            "prize": "3 juegos de mesa",
+            "prize": "Paquete valued at 349,95€",
             "accounts": [
-                "@magicboxgames_es",
-                "@alba.mato.escritora"
+                "@bienpegado"
             ],
-            "price": "60",
-            "url": "https://www.amazon.es/s?k=juegos+de+mesa&i=toys&hvadid=617037739800&hvdev=c&hvlocphy=1004606&hvnetw=g&hvqmt=e&hvrand=13474878287572385170&hvtargid=kwd-2970358863&hydadcr=27205_13852867&tag=googhydr-21&ref=pd_sl_6w7w2a6s1_e",
-            "addDate": "2025-08-29",
-            "ends_at_time": "13:00h",
-            "is_priority_time": true,
+            "price": "349,95",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
             "prize_category": "otros"
-        },
-        {
-            "id": "1756492950269",
-            "date": "2025-08-30",
-            "prize": "10 conjuntos deportivos Vairo 💪",
-            "accounts": [
-                "@vairop padel",
-                "@ofertasdepadel"
-            ],
-            "price": "500",
-            "url": "https://www.google.com/search?q=precio+conjunto+deportivo+vairo",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "deporte"
-        },
-        {
-            "id": "1756493497695",
-            "date": "2025-08-30",
-            "prize": "Noche en cabañas 🛩️",
-            "accounts": [
-                "@cabanasdecanduas"
-            ],
-            "price": "150",
-            "url": "https://www.cabanasdecanduas.com/",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "viajes"
         },
         {
             "id": "1756493656755",
@@ -7510,18 +7268,47 @@ window.giveaways = {
             "prize_category": "viajes"
         },
         {
-            "id": "1756493775607",
+            "id": "1756627106063",
             "date": "2025-08-30",
-            "prize": "Camiseta oficial de un equipo de LALIGA 💪",
+            "prize": "4 entradas para conciertos en Teatro Eslava (sep-dic 2025) + Cámara instantánea Polaroid, tocadiscos Bluetooth Prix",
             "accounts": [
-                "@takasports"
+                "@teatroeslava"
             ],
-            "price": "25",
-            "url": "https://www.google.com/search?q=camiseta+laliga",
+            "price": "300",
+            "url": "https://www.teatroeslava.com/",
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "ocio"
+        },
+        {
+            "id": "1756558594154",
+            "date": "2025-08-30",
+            "prize": "10 entradas dobles para la exposición Dino Expo XXL en Parc Vallès 🎟️",
+            "accounts": [
+                "@parcvalles",
+                "@dinoexpoxxl_world_tour"
+            ],
+            "price": "200",
+            "url": "https://www.parcvalles.com/",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "ocio"
+        },
+        {
+            "id": "1756493497695",
+            "date": "2025-08-30",
+            "prize": "Noche en cabañas 🛩️",
+            "accounts": [
+                "@cabanasdecanduas"
+            ],
+            "price": "150",
+            "url": "https://www.cabanasdecanduas.com/",
             "addDate": "2025-08-29",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "deporte"
+            "prize_category": "viajes"
         },
         {
             "id": "1756145036879",
@@ -7539,104 +7326,104 @@ window.giveaways = {
             "moved": true
         },
         {
-            "id": "1756555127079",
+            "id": "1756557914951",
             "date": "2025-08-30",
-            "prize": "camiseta a elegir 👠",
+            "prize": "Taller DIY, regalos y mucho mimo en Barcelona 🎟️",
             "accounts": [
-                "@dascuenca"
+                "@cheerzesp",
+                "@eurostarshotels"
             ],
-            "price": "15",
-            "url": "https://www.dascuenca.com/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "moda"
-        },
-        {
-            "id": "1756555310304",
-            "date": "2025-08-30",
-            "prize": "camiseta a elegir 👠",
-            "accounts": [
-                "@dascuenca",
-                "@maxikits_es"
-            ],
-            "price": "15",
-            "url": "https://www.dascuenca.com/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "moda"
-        },
-        {
-            "id": "1756555345037",
-            "date": "2025-08-30",
-            "prize": "Lote",
-            "accounts": [
-                "@marta.e.g",
-                "@mama_de_sebastian_y_camila"
-            ],
-            "price": "No encontrado",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": "24:00",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756555458278",
-            "date": "2025-08-30",
-            "prize": "vales 💰",
-            "accounts": [
-                "@PepcoEspaña"
-            ],
-            "price": "5",
-            "url": "https://www.pepco.es/es_ES/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "dinero"
-        },
-        {
-            "id": "1756555632595",
-            "date": "2025-08-30",
-            "prize": "iPhone 16 💲",
-            "accounts": [
-                "@laboratoriosbabe"
-            ],
-            "price": "999",
-            "url": "https://www.apple.com/iphone",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756555806940",
-            "date": "2025-08-30",
-            "prize": "No lo se",
-            "accounts": [
-                "@familybricks33"
-            ],
-            "price": "No encontrado",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756555905306",
-            "date": "2025-08-30",
-            "prize": "Gintonic RC-3 Gaming Setup 💲",
-            "accounts": [
-                "@chaimyilee"
-            ],
-            "price": "800",
+            "price": "150",
             "url": "null",
             "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "gaming"
+            "prize_category": "ocio"
+        },
+        {
+            "id": "1756627084742",
+            "date": "2025-08-30",
+            "prize": "Aspirador Bosch",
+            "accounts": [
+                "@bosch_espana"
+            ],
+            "price": "150",
+            "url": "https://www.amazon.es/s?k=Aspirador+Bosch",
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "electrodomesticos"
+        },
+        {
+            "id": "1756490621204",
+            "date": "2025-08-30",
+            "prize": "3 cenas para dos personas en el restaurante Paradise Burger 🎟️",
+            "accounts": [
+                "@theparadiseburgers"
+            ],
+            "price": "120",
+            "url": "https://www.theparadiseburgers.com/",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "ocio"
+        },
+        {
+            "id": "1756627029790",
+            "date": "2025-08-30",
+            "prize": "Arrancador portátil NOCO Boost Plus GB40 con función powerbank",
+            "accounts": [
+                "@eligecalidad"
+            ],
+            "price": "120",
+            "url": "https://www.amazon.com/NOCO-GB40-UltraSafe-Portable-Jump-Starter/dp/B07F2S1F11",
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756145309021",
+            "date": "2025-08-30",
+            "prize": "5 packs de merchandising oficial en 3D del Grand Prix del Verano (incluye llavero vaquilla, spinner oficial Grand Prix, Tiny, adorno 3D y soporte para móvil)",
+            "accounts": [
+                "@mpf3d",
+                "@grupoizen",
+                "@grandprix_tve"
+            ],
+            "price": "75",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756490614100",
+            "date": "2025-08-30",
+            "prize": "Tablet 7\" con funda y accesorios",
+            "accounts": [
+                "@bigbangfreeshop_new"
+            ],
+            "price": "75",
+            "url": "null",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756627055056",
+            "date": "2025-08-30",
+            "prize": "Lote de juguetes educativos",
+            "accounts": [
+                "@janod_espana",
+                "@lilliputiens_spain"
+            ],
+            "price": "75",
+            "url": "https://www.google.com/search?q=juguetes+educativos+janod+liliputiens",
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
         },
         {
             "id": "1756556371073",
@@ -7654,48 +7441,133 @@ window.giveaways = {
             "prize_category": "otros"
         },
         {
-            "id": "1756556386303",
+            "id": "1756556835240",
             "date": "2025-08-30",
-            "prize": "Lote Vinamiel",
+            "prize": "3 lotes de artículos de Stitch + tarjeta Disney+ (3 meses)",
             "accounts": [
-                "@sandrinaferre29",
-                "@lavina_gourmet"
+                "@Carrefour"
             ],
-            "price": "25",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "gourmet"
-        },
-        {
-            "id": "1756556473326",
-            "date": "2025-08-30",
-            "prize": "Set de vajilla de silicona para bebés",
-            "accounts": [
-                "@beplus"
-            ],
-            "price": "25",
-            "url": "https://www.amazon.com/s?k=silicone+baby+dinnerware+set",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "bebes"
-        },
-        {
-            "id": "1756556542230",
-            "date": "2025-08-30",
-            "prize": "Monitor Lenovo L24i",
-            "accounts": [
-                "@mielectro.es",
-                "@lenovoes"
-            ],
-            "price": "150",
-            "url": "https://www.lenovo.com/es/es/monitores/lenovo/lenovo-l-series/Lenovo-L24i-23-8-FHD-IPS-Monitor/p/61AWMAR1EU",
+            "price": "60",
+            "url": "https://www.google.com/search?q=precio+articulos+stitch+carrefour",
             "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "otros"
+        },
+        {
+            "id": "1756627094896",
+            "date": "2025-08-30",
+            "prize": "Paleta curada, cuchillo jamonero y soporte",
+            "accounts": [
+                "@nicojamones"
+            ],
+            "price": "45 €",
+            "url": null,
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gourmet"
+        },
+        {
+            "id": "1756488323115",
+            "date": "2025-08-30",
+            "prize": "Bol y mantel oficial de la película Heidi: El rescate del lince",
+            "accounts": [
+                "@cinesa.es"
+            ],
+            "price": "25",
+            "url": "null",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756493775607",
+            "date": "2025-08-30",
+            "prize": "Camiseta oficial de un equipo de LALIGA 💪",
+            "accounts": [
+                "@takasports"
+            ],
+            "price": "25",
+            "url": "https://www.google.com/search?q=camiseta+laliga",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deporte"
+        },
+        {
+            "id": "1756627146813",
+            "date": "2025-08-30",
+            "prize": "Lote Papes Duso 🍔",
+            "accounts": [
+                "@sandrinaferre29",
+                "@papesduso"
+            ],
+            "price": "15",
+            "url": null,
+            "addDate": "2025-08-31",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "comida"
+        },
+        {
+            "id": "1756555806940",
+            "date": "2025-08-30",
+            "prize": "No lo se",
+            "accounts": [
+                "@familybricks33"
+            ],
+            "price": "No encontrado",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756490550107",
+            "date": "2025-08-30",
+            "prize": "Reloj Garmin Fénix 3",
+            "accounts": [
+                "@almendruki"
+            ],
+            "price": "150",
+            "url": "https://www.ebay.com/sch/i.html?_nkw=Garmin+F%C3%A9nix+3",
+            "addDate": "2025-08-29",
+            "ends_at_time": "21:00h",
+            "is_priority_time": true,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756492112034",
+            "date": "2025-08-30",
+            "prize": "3 juegos de mesa",
+            "accounts": [
+                "@magicboxgames_es",
+                "@alba.mato.escritora"
+            ],
+            "price": "60",
+            "url": "https://www.amazon.es/s?k=juegos+de+mesa&i=toys&hvadid=617037739800&hvdev=c&hvlocphy=1004606&hvnetw=g&hvqmt=e&hvrand=13474878287572385170&hvtargid=kwd-2970358863&hydadcr=27205_13852867&tag=googhydr-21&ref=pd_sl_6w7w2a6s1_e",
+            "addDate": "2025-08-29",
+            "ends_at_time": "13:00h",
+            "is_priority_time": true,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756557153982",
+            "date": "2025-08-30",
+            "prize": "Dos cajas de paraguayos 🍔",
+            "accounts": [
+                "@ta_cosinilla_de_cris",
+                "@uenashasteelhueso"
+            ],
+            "price": "12",
+            "url": "https://www.google.com/search?q=precio+paraguayos",
+            "addDate": "2025-08-30",
+            "ends_at_time": "22:00h",
+            "is_priority_time": true,
+            "prize_category": "comida"
         },
         {
             "id": "1756556571651",
@@ -7710,6 +7582,65 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "otros"
+        },
+        {
+            "id": "1756559075124",
+            "date": "2025-08-30",
+            "prize": "10 conjuntos Vairo 💪 💲",
+            "accounts": [
+                "@vairopadel",
+                "@ofertasdepadel"
+            ],
+            "price": "1000",
+            "url": "https://www.vairopadel.com/",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deporte"
+        },
+        {
+            "id": "1756555905306",
+            "date": "2025-08-30",
+            "prize": "Gintonic RC-3 Gaming Setup 💲",
+            "accounts": [
+                "@chaimyilee"
+            ],
+            "price": "800",
+            "url": "null",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gaming"
+        },
+        {
+            "id": "1756492950269",
+            "date": "2025-08-30",
+            "prize": "10 conjuntos deportivos Vairo 💪",
+            "accounts": [
+                "@vairop padel",
+                "@ofertasdepadel"
+            ],
+            "price": "500",
+            "url": "https://www.google.com/search?q=precio+conjunto+deportivo+vairo",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deporte"
+        },
+        {
+            "id": "1756490701104",
+            "date": "2025-08-30",
+            "prize": "OM System TG-7",
+            "accounts": [
+                "@omsystem.es",
+                "@inpirineos"
+            ],
+            "price": "400",
+            "url": "https://www.amazon.es/Olympus-TG-7-Tough-Cámara-Resistente/dp/B08755B477",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "foto"
         },
         {
             "id": "1756556589635",
@@ -7744,6 +7675,65 @@ window.giveaways = {
             "prize_category": "padel"
         },
         {
+            "id": "1756556962142",
+            "date": "2025-08-30",
+            "prize": "Cámara OM System TG-7",
+            "accounts": [
+                "@omsystem.es",
+                "@inpirineos"
+            ],
+            "price": "350",
+            "url": "https://www.amazon.es/Olympus-TG-7-Tough-Cámara-Resistente/dp/B07T3Q594G",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756556542230",
+            "date": "2025-08-30",
+            "prize": "Monitor Lenovo L24i",
+            "accounts": [
+                "@mielectro.es",
+                "@lenovoes"
+            ],
+            "price": "150",
+            "url": "https://www.lenovo.com/es/es/monitores/lenovo/lenovo-l-series/Lenovo-L24i-23-8-FHD-IPS-Monitor/p/61AWMAR1EU",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756558670156",
+            "date": "2025-08-30",
+            "prize": "Lote de referencias Fost Print: Classic, Plus, Sport, Zero y Junior, y auriculares inalámbricos",
+            "accounts": [
+                "@soria_natural",
+                "@fostprint_sorianatural"
+            ],
+            "price": "150",
+            "url": "null",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756488374616",
+            "date": "2025-08-30",
+            "prize": "10 desayunos dobles (torreznos o puntilla, copas de licor TRUC) 🍔",
+            "accounts": [
+                "@bar_reyton"
+            ],
+            "price": "100",
+            "url": null,
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "comida"
+        },
+        {
             "id": "1756556812530",
             "date": "2025-08-30",
             "prize": "Lote de ropa (2 vestidos, 2 blusas, 2 pantalones) 👠",
@@ -7759,15 +7749,129 @@ window.giveaways = {
             "prize_category": "moda"
         },
         {
-            "id": "1756556835240",
+            "id": "1755976101853",
             "date": "2025-08-30",
-            "prize": "3 lotes de artículos de Stitch + tarjeta Disney+ (3 meses)",
+            "prize": "una almohada para un descanso confortable",
             "accounts": [
-                "@Carrefour"
+                "@Boncolchón"
+            ],
+            "price": "75€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756489772918",
+            "date": "2025-08-30",
+            "prize": "Seagate Gaming Game Drive External HDD de 2TB",
+            "accounts": [
+                "@seagategaming"
+            ],
+            "price": "75",
+            "url": "https://www.amazon.com/Seagate-Gaming-External-Portable-Hard-Drive/dp/B07T31K45X",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gaming"
+        },
+        {
+            "id": "sorteo-30-kanyou-dogs",
+            "prize": "Lote de productos para perros",
+            "price": "60€",
+            "accounts": [
+                "@kanyou.dogs"
+            ]
+        },
+        {
+            "id": "1756145381398",
+            "date": "2025-08-30",
+            "prize": "Lote Vinamiel de @lavina_gourmet",
+            "accounts": [
+                "@sandrinaferre29",
+                "@lavina_gourmet"
             ],
             "price": "60",
-            "url": "https://www.google.com/search?q=precio+articulos+stitch+carrefour",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756489723222",
+            "date": "2025-08-30",
+            "prize": "Smartwatch ZTE Watch Live3",
+            "accounts": [
+                "@zte_es"
+            ],
+            "price": "60",
+            "url": "https://www.amazon.es/s?k=ZTE+Watch+Live3",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756556935069",
+            "date": "2025-08-30",
+            "prize": "3 packs bandolera Splash + 3 collares de porteo y lactancia Momawo",
+            "accounts": [
+                "@kanguraportabebes"
+            ],
+            "price": "60",
+            "url": "https://www.kanguraportabebes.com/",
             "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "bebes"
+        },
+        {
+            "id": "1756558809772",
+            "date": "2025-08-30",
+            "prize": "Kit de Soldadura Completo",
+            "accounts": [
+                "@Habitium"
+            ],
+            "price": "60",
+            "url": "https://www.amazon.com/s?k=soldering+kit",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756144974846",
+            "date": "2025-08-30",
+            "prize": "Pack de productos de cosmética natural intea + una bolsa de playa 💄",
+            "accounts": [
+                "@intea_spain"
+            ],
+            "price": "50",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        {
+            "id": "1755976610160",
+            "date": "2025-08-30",
+            "prize": "Juego educativo \"Aprender a escribir\", Pizarra Clásica Magnética de doble cara, Mapa de Europa magnética",
+            "accounts": [
+                "@janod_espana"
+            ],
+            "price": "49.99€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1756487982349",
+            "date": "2025-08-30",
+            "prize": "Mochila y estuche Ocean's Wave",
+            "accounts": [
+                "@milbby_es",
+                "@milbby"
+            ],
+            "price": "35",
+            "url": "https://www.google.com/search?q=mochila+y+estuche+infantil",
+            "addDate": "2025-08-29",
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "otros"
@@ -7788,122 +7892,18 @@ window.giveaways = {
             "prize_category": "otros"
         },
         {
-            "id": "1756556935069",
+            "id": "1756556473326",
             "date": "2025-08-30",
-            "prize": "3 packs bandolera Splash + 3 collares de porteo y lactancia Momawo",
+            "prize": "Set de vajilla de silicona para bebés",
             "accounts": [
-                "@kanguraportabebes"
+                "@beplus"
             ],
-            "price": "60",
-            "url": "https://www.kanguraportabebes.com/",
+            "price": "25",
+            "url": "https://www.amazon.com/s?k=silicone+baby+dinnerware+set",
             "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "bebes"
-        },
-        {
-            "id": "1756556962142",
-            "date": "2025-08-30",
-            "prize": "Cámara OM System TG-7",
-            "accounts": [
-                "@omsystem.es",
-                "@inpirineos"
-            ],
-            "price": "350",
-            "url": "https://www.amazon.es/Olympus-TG-7-Tough-Cámara-Resistente/dp/B07T3Q594G",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756556975164",
-            "date": "2025-08-30",
-            "prize": "Degustación de jamón, queso y vino + cena en Food truck",
-            "accounts": [
-                "@thegastroweek",
-                "@valenciaplan_",
-                "@e.f_tiffany"
-            ],
-            "price": "60",
-            "url": "https://www.google.com/search?q=degustaci%C3%B3n+jam%C3%B3n+queso+vino+cena+precio",
-            "addDate": "2025-08-30",
-            "ends_at_time": "00:00h",
-            "is_priority_time": false,
-            "prize_category": "gourmet"
-        },
-        {
-            "id": "1756557050548",
-            "date": "2025-08-30",
-            "prize": "Pack de 58 etiquetas personalizadas junto con una Affiambres y bombon",
-            "accounts": [
-                "@bienpegado",
-                "@losmundosdekartia"
-            ],
-            "price": "25",
-            "url": "https://www.etsy.com/market/custom_labels",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756557153982",
-            "date": "2025-08-30",
-            "prize": "Dos cajas de paraguayos 🍔",
-            "accounts": [
-                "@ta_cosinilla_de_cris",
-                "@uenashasteelhueso"
-            ],
-            "price": "12",
-            "url": "https://www.google.com/search?q=precio+paraguayos",
-            "addDate": "2025-08-30",
-            "ends_at_time": "22:00h",
-            "is_priority_time": true,
-            "prize_category": "comida"
-        },
-        {
-            "id": "1756557914951",
-            "date": "2025-08-30",
-            "prize": "Taller DIY, regalos y mucho mimo en Barcelona 🎟️",
-            "accounts": [
-                "@cheerzesp",
-                "@eurostarshotels"
-            ],
-            "price": "150",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "ocio"
-        },
-        {
-            "id": "1756558359114",
-            "date": "2025-08-30",
-            "prize": "Paquete valued at 349,95€",
-            "accounts": [
-                "@bienpegado"
-            ],
-            "price": "349,95",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558369071",
-            "date": "2025-08-30",
-            "prize": "Almohada V2A 🏠",
-            "accounts": [
-                "@boncolchon"
-            ],
-            "price": "60",
-            "url": "https://www.boncolchon.com.ar/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "hogar"
         },
         {
             "id": "1756558388277",
@@ -7920,143 +7920,64 @@ window.giveaways = {
             "prize_category": "moda"
         },
         {
-            "id": "1756558594154",
+            "id": "1756555310304",
             "date": "2025-08-30",
-            "prize": "10 entradas dobles para la exposición Dino Expo XXL en Parc Vallès 🎟️",
+            "prize": "camiseta a elegir 👠",
             "accounts": [
-                "@parcvalles",
-                "@dinoexpoxxl_world_tour"
+                "@dascuenca",
+                "@maxikits_es"
             ],
-            "price": "200",
-            "url": "https://www.parcvalles.com/",
+            "price": "15",
+            "url": "https://www.dascuenca.com/",
             "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "ocio"
+            "prize_category": "moda"
         },
         {
-            "id": "1756558670156",
+            "id": "1756555458278",
             "date": "2025-08-30",
-            "prize": "Lote de referencias Fost Print: Classic, Plus, Sport, Zero y Junior, y auriculares inalámbricos",
+            "prize": "vales 💰",
             "accounts": [
-                "@soria_natural",
-                "@fostprint_sorianatural"
+                "@PepcoEspaña"
             ],
-            "price": "150",
-            "url": "null",
+            "price": "5",
+            "url": "https://www.pepco.es/es_ES/",
             "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "otros"
+            "prize_category": "dinero"
         },
         {
-            "id": "1756558722769",
+            "id": "1756555345037",
             "date": "2025-08-30",
-            "prize": "Almohada 🏠",
+            "prize": "Lote",
             "accounts": [
-                "@bon_colchon"
+                "@marta.e.g",
+                "@mama_de_sebastian_y_camila"
             ],
-            "price": "35",
-            "url": "https://www.google.com/search?q=almohada+bon+colchon",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756558770128",
-            "date": "2025-08-30",
-            "prize": "Arrancador portátil NOCO Boost Plus GB40 con función de powerbank",
-            "accounts": [],
-            "price": "150",
-            "url": "https://www.amazon.com/NOCO-GB40-Boost-UltraSafe-Jump-Starter/dp/B07H2RX521",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558809772",
-            "date": "2025-08-30",
-            "prize": "Kit de Soldadura Completo",
-            "accounts": [
-                "@Habitium"
-            ],
-            "price": "60",
-            "url": "https://www.amazon.com/s?k=soldering+kit",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756559075124",
-            "date": "2025-08-30",
-            "prize": "10 conjuntos Vairo 💪 💲",
-            "accounts": [
-                "@vairopadel",
-                "@ofertasdepadel"
-            ],
-            "price": "1000",
-            "url": "https://www.vairopadel.com/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "deporte"
-        },
-        {
-            "id": "1756559236826",
-            "date": "2025-08-30",
-            "prize": "No lo se",
-            "accounts": [],
             "price": "No encontrado",
             "url": null,
             "addDate": "2025-08-30",
-            "ends_at_time": null,
+            "ends_at_time": "24:00",
             "is_priority_time": false,
             "prize_category": "otros"
         }
     ],
     "2025-08-31": [
         {
-            "id": "sorteo-31-rebootsrecoveryes",
-            "prize": "5 bañeras de hielo 💲",
-            "price": "550€",
+            "id": "1756489327538",
+            "date": "2025-08-31",
+            "prize": "Lote de 5 libros 📚",
             "accounts": [
-                "@rebootsrecovery_es"
-            ]
-        },
-        {
-            "id": "sorteo-31-dinahosting",
-            "prize": "Nintendo Switch 2 y pack de regalos 🃏",
-            "price": "450€",
-            "accounts": [
-                "@dinahosting"
-            ]
-        },
-        {
-            "id": "sorteo-31-moevegow",
-            "prize": "iPhone 16 Pro 💲",
-            "price": "1219€",
-            "accounts": [
-                "@moeve_gow"
-            ]
-        },
-        {
-            "id": "sorteo-31-jamonesdeencinacorba",
-            "prize": "Premio sorpresa",
-            "price": "50€",
-            "accounts": [
-                "@jamonesdeencinacorba"
-            ]
-        },
-        {
-            "id": "sorteo-31-einhellesp",
-            "prize": "Ventilador a batería Einhell + Starter Kit",
-            "price": "100€",
-            "accounts": [
-                "@einhellesp"
-            ]
+                "@eloymorenoescritor"
+            ],
+            "price": "25",
+            "url": "https://www.amazon.com/s?k=used+books",
+            "addDate": "2025-08-29",
+            "ends_at_time": "22:00",
+            "is_priority_time": true,
+            "prize_category": "libros"
         },
         {
             "id": "sorteo-31-thegreatcollector",
@@ -8067,498 +7988,49 @@ window.giveaways = {
             ]
         },
         {
-            "id": "sorteo-31-grillecards",
-            "prize": "ETB White Flare y ETB Black Bolt 🃏",
-            "price": "140€",
-            "accounts": [
-                "@grillecards"
-            ]
-        },
-        {
-            "id": "sorteo-31-cervezasalhambra",
-            "prize": "Cubitera de Alhambra Especial con 10 cervezas",
-            "price": "50€",
-            "accounts": [
-                "@cervezasalhambra",
-                "@mariahesse",
-                "@little_exhibition",
-                "@zesarbahamonte"
-            ]
-        },
-        {
-            "id": "sorteo-31-mpf3d",
-            "prize": "5 Packs de merchandising oficial del Grand Prix",
-            "price": "100€",
-            "accounts": [
-                "@mpf3d",
-                "@grupoizen",
-                "@grandprix_tve"
-            ]
-        },
-        {
-            "id": "sorteo-31-madereraceballos",
-            "prize": "biblioteca tipo Montessori",
-            "price": "80€",
-            "accounts": [
-                "@madereraceballos"
-            ]
-        },
-        {
-            "id": "sorteo-31-balmihome",
-            "prize": "CONJUNTO BALMI ONE ⚠️",
-            "price": "120€",
-            "accounts": [
-                "@balmihome_"
-            ]
-        },
-        {
-            "id": "sorteo-31-weber",
-            "prize": "barbacoa viajera weber",
-            "price": "399€",
-            "accounts": [
-                "@viatgeviajtours",
-                "@weber_store_barcelona"
-            ]
-        },
-        {
-            "id": "sorteo-31-laguerosupermercado",
-            "prize": "jamón Milena de 7 kilos",
-            "price": "150€",
-            "accounts": [
-                "@laguerosupermercado"
-            ]
-        },
-        {
-            "id": "sorteo-31-unachicaqueviaja",
-            "prize": "UNA SEMANA en CANTABRIA 🛩️",
-            "price": "500€",
-            "accounts": [
-                "@unachicaqueviaja",
-                "@garaizar_"
-            ]
-        },
-        {
-            "id": "sorteo-31-taka",
-            "prize": "camiseta de tu equipo favorito de LALIGA",
-            "price": "50€",
-            "accounts": [
-                "@taka.sports"
-            ]
-        },
-        {
-            "id": "sorteo-31-biocycle",
-            "prize": "Pure Lux, la bici best seller",
-            "price": "150€",
-            "accounts": [
-                "@biocycle_es"
-            ]
-        },
-        {
-            "id": "sorteo-31-smartgyro",
-            "prize": "COMPACTO KIT de HERRAMIENTAS",
-            "price": "80€",
-            "accounts": [
-                "@smartgyro"
-            ]
-        },
-        {
-            "id": "sorteo-31-pascual",
-            "prize": "nevera de Pascual",
-            "price": "40€",
-            "accounts": [
-                "@pascual"
-            ]
-        },
-        {
-            "id": "sorteo-31-ofix",
-            "prize": "plumo es edición especial en Ofix",
-            "price": "30€",
-            "accounts": [
-                "@ofix.mx"
-            ]
-        },
-        {
-            "id": "sorteo-31-sephora",
-            "prize": "neceser con las novedades de Clinique ⚠️",
-            "price": "50€",
-            "accounts": [
-                "@sephora_spain",
-                "@clinique_es"
-            ]
-        },
-        {
-            "id": "sorteo-31-davanni",
-            "prize": "exprimidor SMEG",
-            "price": "150€",
-            "accounts": [
-                "@davanni_cocinas",
-                "@smegspain"
-            ]
-        },
-        {
-            "id": "sorteo-31-bosch",
-            "prize": "Aspirador Bosch",
-            "price": "150€",
-            "accounts": [
-                "@lacasadelelectrodomestico"
-            ]
-        },
-        {
-            "id": "sorteo-31-dialprix",
-            "prize": "1 AÑO DE CERVEZA GRATIS",
-            "price": "300€",
-            "accounts": [
-                "@dialprix_supermercados"
-            ]
-        },
-        {
-            "id": "sorteo-31-marvimundo",
-            "prize": "lote de productos Nivea",
-            "price": "40€",
-            "accounts": [
-                "@marvimundo",
-                "@nivea_es"
-            ]
-        },
-        {
-            "id": "sorteo-31-cacito-mio",
-            "prize": "un kit especial Cachito Mío",
-            "price": "50€",
-            "accounts": [
-                "@cachito.mio"
-            ]
-        },
-        {
-            "id": "1755976184857",
+            "id": "1756556890556",
             "date": "2025-08-31",
-            "prize": "super lote con más de 3kg de chuches",
+            "prize": "Noche en apartamento de lujo en el centro de Salamanca 🛩️",
             "accounts": [
-                "@vidalgolosinas",
-                "@make_baby_up"
+                "@prisma_suites",
+                "@salamancavivela"
             ],
-            "price": "30€ (estimado)",
-            "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": "23:59"
-        },
-        {
-            "id": "1755976271043",
-            "date": "2025-08-31",
-            "prize": "Giotto Cera Est. 12 Uds., Lápiz De Grafito Giotto Matita Hb Con Goma., Giotto Happy Gomma, Giotto Sacapuntas Fluo., Giotto Decor Materials Est. 12 Uds., Giotto Turbo Maxi Est. 12 Uds., GIOTTO Stick blíster 2 x 20 g, Giotto Acuarelas 30 Mm. Est. 12 Uds. + Pincel, Plastilina Giotto Caja 6 Colores Fluo, Plastilina Giotto Caja 6 Colores Glitter, Plastilina Giotto Caja 6 Colores Pastel, Plastilina Giotto Caja 12 Colores Clásicos, Giotto Turbo Maxi Skin Tones Estuche 6 uds, Giotto Colors 3.0 Est. 12 Uds., Giotto Stilnovo Skin Tones Est. 12 Uds., Giotto Turbo Color Est. 12 Uds., Giotto Témpera Surtido 25 MI. Est. 6 Uds + Pincel, Alb Esp 23x32,5 10H Guarro Acuarela Basik 370g, Alb Esp Micr 23x32,5 20H Guarro Dibujo Basik Liso 130g, Cartulinas Canson Iris 185 g/m2 24x32 c, A4 10H, Giotto Stilnovo Est. 50 Uds., Giotto Turbo Color Skin Tones Estuche 12 uds",
-            "accounts": [
-                "@arenalperfumerias"
-            ],
-            "price": "75€ (estimado)",
-            "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": "23:59"
-        },
-        {
-            "id": "1755976814894",
-            "date": "2025-08-31",
-            "prize": "mochila de pingüino de la marca Affenzahn valorada en más de 43 € junto con 2 paquetes de toallitas Dodot etapas",
-            "accounts": [
-                "@nappy.es"
-            ],
-            "price": "55€ (estimado)",
-            "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": null
-        },
-        {
-            "id": "1755976823251",
-            "date": "2025-08-31",
-            "prize": "Un par de zapatos colegiales y un par de deportivos Pablosky, un pack de Alpino la mar de alucinante: 1 Pack de 18 lápices, 1 Pack de 12 rotul",
-            "accounts": [
-                "@pabloskyshoes",
-                "@alpinocolores"
-            ],
-            "price": "85€ (estimado)",
-            "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": "23:59"
-        },
-        {
-            "id": "1755977187813",
-            "date": "2025-08-31",
-            "prize": "1 Mini blender Serie 5000",
-            "accounts": [
-                "@PhilipsHogar"
-            ],
-            "price": "79.99€",
-            "url": null,
-            "addDate": "2025-08-23",
-            "ends_at_time": null
-        },
-        {
-            "id": "sorteo-24-salvelox",
-            "prize": "mascarilla LED facial",
-            "price": "60€",
-            "accounts": [
-                "@salvelox_es"
-            ],
-            "date": "2025-08-31",
-            "moved": true
-        },
-        {
-            "id": "1756121571254",
-            "date": "2025-08-31",
-            "prize": "Pala de pádel Technical Viper firmada por Juan Lebrón 🥎",
-            "accounts": [
-                "@babolat.arg"
-            ],
-            "price": "No encontrado",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": null
-        },
-        {
-            "id": "1756124234114",
-            "date": "2025-08-31",
-            "prize": "Entrada doble para la exposición Dino Expo XXL en Terrassa 🎟️",
-            "accounts": [
-                "@dinoexpoxxl_world_tour",
-                "@cositasdemidiaadia"
-            ],
-            "price": "0",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": null
-        },
-        {
-            "id": "1756126360650",
-            "date": "2025-08-31",
-            "prize": "1 pala lonic Power 23, 5 palas Discover Control/Power y 3 paleteros Bullpadel 🥎 💲",
-            "accounts": [
-                "@superligabcn",
-                "@bullpadelsport"
-            ],
-            "price": "800",
-            "url": "https://www.bullpadel.com/es-es/palas-de-padel",
-            "addDate": "2025-08-25",
-            "ends_at_time": null
-        },
-        {
-            "id": "1756144923650",
-            "date": "2025-08-31",
-            "prize": "Fiambrera y botella personalizada + pack de 58 etiquetas personalizadas",
-            "accounts": [
-                "@losmundosdekatia_",
-                "@bienpegado"
-            ],
-            "price": "35",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145004267",
-            "date": "2025-08-31",
-            "prize": "Súper lote de material escolar Giotto para la vuelta al cole",
-            "accounts": [
-                "@giotto_spain",
-                "@mami_novata",
-                "@mamadeelena",
-                "@carmenestefano"
-            ],
-            "price": "60",
-            "url": "null",
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145014978",
-            "date": "2025-08-31",
-            "prize": "Lote compuesto por mochila, tupper y botella de acero inoxidable, lápices de colores, rotuladores, tijeras, ceras, pinturas y pegamento con glitter.",
-            "accounts": [
-                "@janod_espana",
-                "@lilliputiens_spain"
-            ],
-            "price": "50",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": null
-        },
-        {
-            "id": "1756145026764",
-            "date": "2025-08-31",
-            "prize": "Lote de material escolar para empezar el cole",
-            "accounts": [
-                "@aprendemosjuntos_daisy",
-                "@giotto_spain"
-            ],
-            "price": "75",
-            "url": "null",
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59"
-        },
-        {
-            "id": "1756145073309",
-            "date": "2025-08-31",
-            "prize": "Súper lote perfecto para la vuelta al cole de Giotto",
-            "accounts": [
-                "@mami_novata",
-                "@giotto_spain",
-                "@mamadeelena",
-                "@carmenestefano"
-            ],
-            "price": "60",
-            "url": "null",
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145101162",
-            "date": "2025-08-31",
-            "prize": "8 pares de calzados respetuosos para toda la familia de la tienda @minivillenacalzados",
-            "accounts": [
-                "@el_diario_d_valeria",
-                "@minivillenacalzados",
-                "@sweetcarolblog"
-            ],
-            "price": "400",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145132178",
-            "date": "2025-08-31",
-            "prize": "Una noche para dos personas en una cabaña Hobbit en Veratton (Villanueva de la Vera, Cáceres) 🛩️",
-            "accounts": [
-                "@deveratton",
-                "@elviajedeivan"
-            ],
-            "price": "200",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59"
-        },
-        {
-            "id": "1756145142930",
-            "date": "2025-08-31",
-            "prize": "Pack de productos Fisiocrem 💄",
-            "accounts": [
-                "@fisiocrem_es"
-            ],
-            "price": "25",
-            "url": "https://www.fisiocrem.es/productos/",
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145149390",
-            "date": "2025-08-31",
-            "prize": "3 fiambreras Yumbox Lunch",
-            "accounts": [
-                "@walanata_",
-                "@btbox_bebes",
-                "@yumboxlunch"
-            ],
-            "price": "119.97",
-            "url": "https://www.amazon.com/Yumbox-Original-Pack-Lunch-Containers/dp/B07F22426K",
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145178475",
-            "date": "2025-08-31",
-            "prize": "Set de marcadores acrílicos Nicety. El ganador podrá escoger entre dos modelos diferentes.",
-            "accounts": [
-                "@nicetypen",
-                "@marymarcasta"
-            ],
-            "price": "30",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145228825",
-            "date": "2025-08-31",
-            "prize": "Lote de productos sin gluten: Galletas María, Hookies Sharkies, Gall",
-            "accounts": [
-                "@gullongalletas",
-                "@cocinacercadelmar"
-            ],
-            "price": "25",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145254361",
-            "date": "2025-08-31",
-            "prize": "Set de maquillaje Charlotte Tilbury valorado en más de 300€. 💄",
-            "accounts": [
-                "@sephora_spain",
-                "@charlottetilbury"
-            ],
-            "price": "350",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145262301",
-            "date": "2025-08-31",
-            "prize": "Lote compuesto por: 1,5 kg mejillones, caja Dulcipica, 1,5 kg cakes y caja huevos cocidos + más de 3kg de chuches de @vidalgolosinas",
-            "accounts": [
-                "@_estela.cortes_",
-                "@vidalgolosinas"
-            ],
-            "price": "35",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": "23:59h"
-        },
-        {
-            "id": "1756145342435",
-            "date": "2025-08-31",
-            "prize": "3 kits de planificación completos con envío a casa gratis",
-            "accounts": [
-                "@innovaopositando"
-            ],
-            "price": "150",
-            "url": null,
-            "addDate": "2025-08-25",
-            "ends_at_time": null
-        },
-        {
-            "id": "sorteo-26-escapada",
-            "prize": "Una semana en Cantabria 🛩️",
-            "price": "500€",
-            "accounts": [
-                "@unachicaqueviaja",
-                "@garaizar_"
-            ],
-            "date": "2025-08-31",
-            "moved": true
-        },
-        {
-            "id": "1756252175275",
-            "date": "2025-08-31",
-            "prize": "Mini báscula MHW-3Bomber 2.0",
-            "accounts": [
-                "@nomadadelcafe"
-            ],
-            "price": "No encontrado",
-            "url": null,
-            "addDate": "2025-08-26",
-            "ends_at_time": null
-        },
-        {
-            "id": "1756390690571",
-            "date": "2025-08-31",
-            "prize": "Mystery Box exclusiva con premios sorpresa",
-            "accounts": [
-                "@tbaratocom"
-            ],
-            "price": "15",
-            "url": "null",
-            "addDate": "2025-08-28",
+            "price": "300",
+            "url": "https://www.prisma-suites.com/es/salamanca",
+            "addDate": "2025-08-30",
             "ends_at_time": null,
-            "is_priority_time": false
+            "is_priority_time": false,
+            "prize_category": "viajes"
+        },
+        {
+            "id": "1756558267026",
+            "date": "2025-08-31",
+            "prize": "Estancia en diferentes alojamientos de Cantabria (Suances, Arnuero, Liébana) 🛩️",
+            "accounts": [
+                "@castillodeloslocos",
+                "@vibeluxurycabins",
+                "@el_olivo_alojamiento"
+            ],
+            "price": "300",
+            "url": "https://www.google.com/search?q=precio+alquiler+casas+rurales+Cantabria",
+            "addDate": "2025-08-30",
+            "ends_at_time": "00:00h",
+            "is_priority_time": false,
+            "prize_category": "viajes"
+        },
+        {
+            "id": "1756492375530",
+            "date": "2025-08-31",
+            "prize": "Estancia de fin de semana en Mobile Home Red del Càmping Àmfora",
+            "accounts": [
+                "@campingamfora"
+            ],
+            "price": "270 €",
+            "url": null,
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59 h",
+            "is_priority_time": false,
+            "prize_category": "viajes"
         },
         {
             "id": "1756487603739",
@@ -8575,295 +8047,17 @@ window.giveaways = {
             "prize_category": "ocio"
         },
         {
-            "id": "1756487903429",
+            "id": "1756556633977",
             "date": "2025-08-31",
-            "prize": "Storage Bin Set 🏠",
+            "prize": "Estancia de 2 días y 1 noche en Villa Pallú 🛩️",
             "accounts": [
-                "@haushof_essentials"
+                "@zairaruizmo",
+                "@pallu_charming_house"
             ],
-            "price": "35",
-            "url": "https://www.amazon.com/s?k=storage+bin+set&i=home-garden&hvadid=619682077875&hvdev=c&hvlocphy=9003740&hvnetw=g&hvqmt=e&hvrand=13479806749839301247&hvtargid=kwd-3011450765&hydadcr=19825_13779362&tag=googhydr-20&ref=pd_sl_4q5w6t291b_e",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756488693626",
-            "date": "2025-08-31",
-            "prize": "Lote de material escolar",
-            "accounts": [
-                "@llibreriariudoms"
-            ],
-            "price": "50",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59H",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756489018293",
-            "date": "2025-08-31",
-            "prize": "Mochila y gorra Osiris",
-            "accounts": [
-                "@tiendas1530",
-                "@osiriscl"
-            ],
-            "price": "50",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756489035190",
-            "date": "2025-08-31",
-            "prize": "Secador AM1 6.0 de LIM HAIR",
-            "accounts": [
-                "@limhair"
-            ],
-            "price": "70",
-            "url": "https://www.google.com/search?q=Secador+AM1+6.0+de+LIM+HAIR",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59 h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756489074596",
-            "date": "2025-08-31",
-            "prize": "8 pares de calzado respetuoso para toda la familia",
-            "accounts": [
-                "@el_diario_d_valeria",
-                "@sweetcarolblog",
-                "@minivillenacalzados"
-            ],
-            "price": "240",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756489096071",
-            "date": "2025-08-31",
-            "prize": "Heladera y yogurtera compacta Severin EZ 7407",
-            "accounts": [
-                "@severin_es"
-            ],
-            "price": "100",
-            "url": "https://www.amazon.es/s?k=Heladera+y+yogurtera+compacta+Severin+EZ+7407",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "cocina"
-        },
-        {
-            "id": "1756489121799",
-            "date": "2025-08-31",
-            "prize": "Kit escolar con dos pares de zapatos Pablosky y un pack de material Alpino",
-            "accounts": [
-                "@pabloskyshoes",
-                "@alpinocolores"
-            ],
-            "price": "120",
-            "url": "https://www.pabloskyshoes.com/es/ (Ejemplo -  necesitaría acceder a webs externas para obtener información precisa de precios)",
-            "addDate": "2025-08-29",
+            "price": "200",
+            "url": "https://www.google.com/search?q=precio+estancia+villa+pallu",
+            "addDate": "2025-08-30",
             "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756489170387",
-            "date": "2025-08-31",
-            "prize": "Súper lote de material escolar Giotto",
-            "accounts": [
-                "@giotto_spain",
-                "@mami_novata",
-                "@mamadeelena",
-                "@carmenestefano"
-            ],
-            "price": "35",
-            "url": "https://www.amazon.es/s?k=material+escolar+giotto&i=aps&hvadid=618015277818&hvdev=c&hvlocphy=9003262&hvnetw=g&hvqmt=e&hvrand=13398479374864750325&hvtargid=kwd-3137742358&hydadcr=24633_12054247&tag=googhydr-21&ref=pd_sl_7wzk8w5z1_e",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756489327538",
-            "date": "2025-08-31",
-            "prize": "Lote de 5 libros 📚",
-            "accounts": [
-                "@eloymorenoescritor"
-            ],
-            "price": "25",
-            "url": "https://www.amazon.com/s?k=used+books",
-            "addDate": "2025-08-29",
-            "ends_at_time": "22:00",
-            "is_priority_time": true,
-            "prize_category": "libros"
-        },
-        {
-            "id": "1756489836607",
-            "date": "2025-08-31",
-            "prize": "Set de marcadores acrílicos Nicety",
-            "accounts": [
-                "@nicetypen",
-                "@marymarcasta"
-            ],
-            "price": "25",
-            "url": "https://www.amazon.com/s?k=acrylic+markers+set",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "arte"
-        },
-        {
-            "id": "1756490570359",
-            "date": "2025-08-31",
-            "prize": "Un par de zapatillas adidas 👠",
-            "accounts": [
-                "@footonmars",
-                "@atleetstores"
-            ],
-            "price": "100",
-            "url": "https://www.amazon.com/s?k=adidas+shoes",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "moda"
-        },
-        {
-            "id": "1756490672619",
-            "date": "2025-08-31",
-            "prize": "Bolso Amira personalizado con bandolera étnica",
-            "accounts": [
-                "@soloregalosmagicos"
-            ],
-            "price": "65",
-            "url": "https://www.soloregalosmagicos.com/",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "accesorios"
-        },
-        {
-            "id": "1756490786899",
-            "date": "2025-08-31",
-            "prize": "Carrito Traveler para bebé (Midnight Blue o Everest Grey)",
-            "accounts": [
-                "@viajandoconchloe",
-                "@smartrikesp"
-            ],
-            "price": "180",
-            "url": "https://www.google.com/search?q=smartrike+traveler+baby+stroller",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756491079333",
-            "date": "2025-08-31",
-            "prize": "Vajilla personalizada para cuatro personas 🏠",
-            "accounts": [
-                "@appetit_ceramics"
-            ],
-            "price": "120",
-            "url": "https://www.google.com/search?q=vajilla+personalizada+para+cuatro+personas",
-            "addDate": "2025-08-29",
-            "ends_at_time": "00:00h",
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756491092496",
-            "date": "2025-08-31",
-            "prize": "Kit de Soldadura Completo Cofan",
-            "accounts": [
-                "@habitium.store",
-                "@cofansa"
-            ],
-            "price": "40",
-            "url": "https://www.amazon.es/s?k=Kit+de+Soldadura+Cofan",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756491217213",
-            "date": "2025-08-31",
-            "prize": "MacBook Air 💲",
-            "accounts": [
-                "@premia2.cl"
-            ],
-            "price": "1200",
-            "url": "https://www.google.com/search?q=MacBook+Air+precio",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756492149957",
-            "date": "2025-08-31",
-            "prize": "Celular Redmi Note 14 8/256GB, auriculares inalámbricos Sony C500 y auriculares inalámbricos Redmi Buds 6 Active",
-            "accounts": [
-                "@celumaniacos_rafaela",
-                "@grandiosas.rafaela"
-            ],
-            "price": "350",
-            "url": "https://www.google.com/search?q=Redmi+Note+14+8%2F256GB+precio",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756492283905",
-            "date": "2025-08-31",
-            "prize": "Pack de productos de limpieza Agerul (Spray Citronela y Friegasuelos) 🏠",
-            "accounts": [
-                "@agerul_oficial"
-            ],
-            "price": "12",
-            "url": "https://www.google.com/search?q=Pack+de+productos+de+limpieza+Agerul",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756492314565",
-            "date": "2025-08-31",
-            "prize": "Complete Welding Starter Set by Cofan",
-            "accounts": [
-                "@habitium.store",
-                "@cofanusa"
-            ],
-            "price": "150",
-            "url": "https://www.amazon.com/s?k=Complete+Welding+Starter+Set+by+Cofan",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "bricolaje"
-        },
-        {
-            "id": "1756492375530",
-            "date": "2025-08-31",
-            "prize": "Estancia de fin de semana en Mobile Home Red del Càmping Àmfora",
-            "accounts": [
-                "@campingamfora"
-            ],
-            "price": "270 €",
-            "url": null,
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59 h",
             "is_priority_time": false,
             "prize_category": "viajes"
         },
@@ -8883,308 +8077,24 @@ window.giveaways = {
             "prize_category": "otros"
         },
         {
-            "id": "1756492425787",
-            "date": "2025-08-31",
-            "prize": "3 mochilas térmicas exclusivas de Saladitos con un lote de productos Saladitos",
+            "id": "sorteo-31-laguerosupermercado",
+            "prize": "jamón Milena de 7 kilos",
+            "price": "150€",
             "accounts": [
-                "@a.saladitos"
+                "@laguerosupermercado"
+            ]
+        },
+        {
+            "id": "1756145342435",
+            "date": "2025-08-31",
+            "prize": "3 kits de planificación completos con envío a casa gratis",
+            "accounts": [
+                "@innovaopositando"
             ],
             "price": "150",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756492475696",
-            "date": "2025-08-31",
-            "prize": "Barra de sonido 2 en 1 y atornillador inalámbrico Black+Decker",
-            "accounts": [
-                "@ferropartes_"
-            ],
-            "price": "100",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756492938890",
-            "date": "2025-08-31",
-            "prize": "Freidora de aire Taurus Air Fry Digital 6S",
-            "accounts": [
-                "@waydoshermanasoficial",
-                "@electrocash.es"
-            ],
-            "price": "99",
-            "url": "https://www.amazon.es/Taurus-Air-Fry-Digital-6S/dp/B0B416F6F8",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "cocina"
-        },
-        {
-            "id": "1756493062492",
-            "date": "2025-08-31",
-            "prize": "Libro de hasta 25€ a elegir por el ganador 📚",
-            "accounts": [
-                "@yugebooks"
-            ],
-            "price": "12.50",
-            "url": "https://www.yugebooks.com/",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "libros"
-        },
-        {
-            "id": "1756493261879",
-            "date": "2025-08-31",
-            "prize": "Tabla Paddle Surf, leash de seguridad, bomba manual, remo Paddle Surf, pala de Kayak, mochila, correa para transporte, 3 quillas, asiento kayak, soporte para los pies, kit de reparación, bolsa estanca de 5L, funda impermeable móvil, soporte para el teléfono y manual. 💪",
-            "accounts": [
-                "@huiike_",
-                "@turismo_sanjavier"
-            ],
-            "price": "450",
-            "url": "https://www.amazon.com/s?k=paddle+surf+board+with+accessories",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "deporte"
-        },
-        {
-            "id": "1756493307407",
-            "date": "2025-08-31",
-            "prize": "Cama Box Roma 🏠",
-            "accounts": [
-                "@marimarsrl"
-            ],
-            "price": "300",
-            "url": "https://www.google.com/search?q=cama+box+roma+marimarsrl",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756493390426",
-            "date": "2025-08-31",
-            "prize": "iPhone 16 💲",
-            "accounts": [
-                "@aromas_es"
-            ],
-            "price": "999",
-            "url": "https://www.apple.com/iphone",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756493528116",
-            "date": "2025-08-31",
-            "prize": "Potenciómetro Assioma Duo 💪",
-            "accounts": [
-                "@entrenosruano"
-            ],
-            "price": "500",
-            "url": "https://www.google.com/search?q=Potenci%C3%B3metro+Assioma+Duo",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "deporte"
-        },
-        {
-            "id": "1756494001820",
-            "date": "2025-08-31",
-            "prize": "Lote de material escolar",
-            "accounts": [
-                "@una_mami_del_monton",
-                "@airvalinternational"
-            ],
-            "price": "75",
-            "url": "https://www.amazon.com/s?k=school+supplies+bulk&i=school-supplies&hvadid=618247478089&hvdev=c&hvlocphy=9003707&hvnetw=g&hvqmt=e&hvrand=13692777106645106317&hvtargid=kwd-3004290615&hydadcr=24688_12970583&tag=googhydr-20&ref=pd_sl_7w2w2g958_e",
-            "addDate": "2025-08-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756494295509",
-            "date": "2025-08-31",
-            "prize": "Lote de productos de belleza 💄",
-            "accounts": [
-                "@cosmeflash",
-                "@mamidemellis86"
-            ],
-            "price": "75",
-            "url": "null",
-            "addDate": "2025-08-29",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "belleza"
-        },
-        {
-            "id": "1756555065494",
-            "date": "2025-08-31",
-            "prize": "Dos merceditas de terciopelo de La Cadena 👠",
-            "accounts": [
-                "@okaaspain"
-            ],
-            "price": "60",
-            "url": "https://www.okaaspain.com/",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "moda"
-        },
-        {
-            "id": "1756555410509",
-            "date": "2025-08-31",
-            "prize": "Caja de 24 lápices de colores Norix + 3 lápices de grafito Norix + set escolar Norix",
-            "accounts": [
-                "@desiree_jurado",
-                "@staedtler_spain"
-            ],
-            "price": "25",
-            "url": "https://www.amazon.es/s?k=l%C3%A1pices+de+colores+norix",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756555480727",
-            "date": "2025-08-31",
-            "prize": "Lote de artículos de papelería Campus",
-            "accounts": [
-                "@MullerEspana"
-            ],
-            "price": "25",
-            "url": "https://www.amazon.es/s?k=material+escolar+campus",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59 h",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756555532833",
-            "date": "2025-08-31",
-            "prize": "Estancia de 2 días y 1 noche en hotel 🛩️",
-            "accounts": [
-                "@marta.e.g",
-                "@zairaruizmo"
-            ],
-            "price": "150",
-            "url": "https://www.google.com/search?q=precio+estancia+hotel+2+dias+1+noche",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "viajes"
-        },
-        {
-            "id": "1756555690365",
-            "date": "2025-08-31",
-            "prize": "1 pala Ionic Power 223, 5 palas Discov Control/Rowen y 3 paleteros para que no te falte material nuevo temporada 🥎",
-            "accounts": [
-                "@superligabcn"
-            ],
-            "price": "250",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "padel"
-        },
-        {
-            "id": "1756555716441",
-            "date": "2025-08-31",
-            "prize": "Vestido o conjunto de dos piezas (hasta 250€)",
-            "accounts": [
-                "@hossintropiaofficial"
-            ],
-            "price": "250",
             "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "moda"
-        },
-        {
-            "id": "1756555768297",
-            "date": "2025-08-31",
-            "prize": "3 modelos de la nueva colección Mausito Kids a elegir 👠",
-            "accounts": [
-                "@mausitokids",
-                "@lovelycarla"
-            ],
-            "price": "75",
-            "url": "https://www.instagram.com/mausitokids/",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "moda"
-        },
-        {
-            "id": "1756555866768",
-            "date": "2025-08-31",
-            "prize": "2 packs de etiquetas personalizadas para la escuela",
-            "accounts": [
-                "@paloma_roca",
-                "@etiquetas_soyde"
-            ],
-            "price": "15",
-            "url": "https://www.amazon.com/s?k=personalized+school+labels",
-            "addDate": "2025-08-30",
-            "ends_at_time": "00:00",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756555883957",
-            "date": "2025-08-31",
-            "prize": "Jamón ibérico 50% Raza Ibérica 8kg, soporte jamonero basculante 360º, juego de cuchillos jamonero, cuchillo puntilla, chaira y funda portacuchillos de la marca Arccos",
-            "accounts": [
-                "@adrian_laynez_jamon",
-                "@cuchilleriagalicia"
-            ],
-            "price": "300",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": "19:00",
-            "is_priority_time": true,
-            "prize_category": "gourmet"
-        },
-        {
-            "id": "1756555931328",
-            "date": "2025-08-31",
-            "prize": "Set complet de motxilla i material escolar Kidzroom",
-            "accounts": [
-                "@abacus_botigues",
-                "@kidzroomofficial"
-            ],
-            "price": "75",
-            "url": "https://www.abacus.cat/ca/botiga/motxilla-kidzroom-negra-50x35x20cm-2023",
-            "addDate": "2025-08-30",
-            "ends_at_time": "24:00h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756555958168",
-            "date": "2025-08-31",
-            "prize": "5 palas Enebe (2 Combat 7.1 2025, 2 Aerox 7.1 V2 2025, 1 RSX 7.1 Carbon V2 2025) 🥎 💲",
-            "accounts": [
-                "@pelotapadel"
-            ],
-            "price": "600",
-            "url": "https://www.google.com/search?q=precio+pala+padel+enebe",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "padel"
+            "addDate": "2025-08-25",
+            "ends_at_time": null
         },
         {
             "id": "1756556186212",
@@ -9203,6 +8113,102 @@ window.giveaways = {
             "prize_category": "ocio"
         },
         {
+            "id": "1756556360221",
+            "date": "2025-08-31",
+            "prize": "Día de cama balinesa para 4 personas y vale de 150€ para gastar en comida y bebida",
+            "accounts": [
+                "@convictionbeachclub",
+                "@alicantestreetstyle"
+            ],
+            "price": "150€",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "ocio"
+        },
+        {
+            "id": "sorteo-31-mpf3d",
+            "prize": "5 Packs de merchandising oficial del Grand Prix",
+            "price": "100€",
+            "accounts": [
+                "@mpf3d",
+                "@grupoizen",
+                "@grandprix_tve"
+            ]
+        },
+        {
+            "id": "1756489035190",
+            "date": "2025-08-31",
+            "prize": "Secador AM1 6.0 de LIM HAIR",
+            "accounts": [
+                "@limhair"
+            ],
+            "price": "70",
+            "url": "https://www.google.com/search?q=Secador+AM1+6.0+de+LIM+HAIR",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59 h",
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756555065494",
+            "date": "2025-08-31",
+            "prize": "Dos merceditas de terciopelo de La Cadena 👠",
+            "accounts": [
+                "@okaaspain"
+            ],
+            "price": "60",
+            "url": "https://www.okaaspain.com/",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "moda"
+        },
+        {
+            "id": "sorteo-31-sephora",
+            "prize": "neceser con las novedades de Clinique ⚠️",
+            "price": "50€",
+            "accounts": [
+                "@sephora_spain",
+                "@clinique_es"
+            ]
+        },
+        {
+            "id": "sorteo-31-cacito-mio",
+            "prize": "un kit especial Cachito Mío",
+            "price": "50€",
+            "accounts": [
+                "@cachito.mio"
+            ]
+        },
+        {
+            "id": "1756489018293",
+            "date": "2025-08-31",
+            "prize": "Mochila y gorra Osiris",
+            "accounts": [
+                "@tiendas1530",
+                "@osiriscl"
+            ],
+            "price": "50",
+            "url": "null",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "sorteo-31-cervezasalhambra",
+            "prize": "Cubitera de Alhambra Especial con 10 cervezas",
+            "price": "50€",
+            "accounts": [
+                "@cervezasalhambra",
+                "@mariahesse",
+                "@little_exhibition",
+                "@zesarbahamonte"
+            ]
+        },
+        {
             "id": "1756556232849",
             "date": "2025-08-31",
             "prize": "Mochila Ocean's Wave + estuche a juego",
@@ -9218,75 +8224,78 @@ window.giveaways = {
             "prize_category": "otros"
         },
         {
-            "id": "1756556247141",
+            "id": "1756556719636",
             "date": "2025-08-31",
-            "prize": "Lote de material escolar",
+            "prize": "Lote de 7 harinas integrales, shaker y camiseta 🍔",
             "accounts": [
-                "@libreriaiudoms"
+                "@american.suplement",
+                "@mamiide2princesas",
+                "@recetasdeunamadre"
             ],
-            "price": "75",
-            "url": "https://www.google.com/search?q=material+escolar+precio",
+            "price": "45",
+            "url": "https://www.amazon.com/s?k=organic+whole+wheat+flour&i=grocery&hvadid=618158756817&hvdev=c&hvlocphy=9003726&hvnetw=g&hvqmt=e&hvrand=13598370407673292571&hvtargid=kwd-3355076356&hydadcr=24543_13701093&tag=googhydr-20&ref=pd_sl_7w72k8z81f_e",
             "addDate": "2025-08-30",
             "ends_at_time": "23:59h",
             "is_priority_time": false,
-            "prize_category": "papeleria"
+            "prize_category": "comida"
         },
         {
-            "id": "1756556302242",
+            "id": "1756558505114",
             "date": "2025-08-31",
-            "prize": "Mochila Saladitos",
+            "prize": "Mochila Affenzahn y 2 paquetes de toallitas Dodot",
             "accounts": [
-                "@a.saladitos"
+                "@nappy.es"
             ],
-            "price": "25",
+            "price": "43",
             "url": null,
             "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "otros"
+            "prize_category": "bebes"
         },
         {
-            "id": "1756556318987",
-            "date": "2025-08-31",
-            "prize": "Auriculares Soundpeats Air5 Pro",
+            "id": "sorteo-31-marvimundo",
+            "prize": "lote de productos Nivea",
+            "price": "40€",
             "accounts": [
-                "@soundpeats_spain"
-            ],
-            "price": "69",
-            "url": "https://www.amazon.es/SoundPEATS-Auriculares-Bluetooth-Cancelaci%C3%B3n-Llamadas/dp/B0BN276K4G",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "musica"
+                "@marvimundo",
+                "@nivea_es"
+            ]
         },
         {
-            "id": "1756556335171",
-            "date": "2025-08-31",
-            "prize": "Cinco palas Enebe (Combat 7.1, Aerox 7.1 V2 y RSX 7.1 Carbon V2) 💪",
+            "id": "sorteo-31-pascual",
+            "prize": "nevera de Pascual",
+            "price": "40€",
             "accounts": [
-                "@pelotapadel"
-            ],
-            "price": "450",
-            "url": "https://www.google.com/search?q=precio+pala+padel+Enebe+Combat+7.1+Aerox+7.1+V2+RSX+7.1+Carbon+V2",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "deporte"
+                "@pascual"
+            ]
         },
         {
-            "id": "1756556360221",
+            "id": "1756144923650",
             "date": "2025-08-31",
-            "prize": "Día de cama balinesa para 4 personas y vale de 150€ para gastar en comida y bebida",
+            "prize": "Fiambrera y botella personalizada + pack de 58 etiquetas personalizadas",
             "accounts": [
-                "@convictionbeachclub",
-                "@alicantestreetstyle"
+                "@losmundosdekatia_",
+                "@bienpegado"
             ],
-            "price": "150€",
+            "price": "35",
             "url": null,
-            "addDate": "2025-08-30",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756487903429",
+            "date": "2025-08-31",
+            "prize": "Storage Bin Set 🏠",
+            "accounts": [
+                "@haushof_essentials"
+            ],
+            "price": "35",
+            "url": "https://www.amazon.com/s?k=storage+bin+set&i=home-garden&hvadid=619682077875&hvdev=c&hvlocphy=9003740&hvnetw=g&hvqmt=e&hvrand=13479806749839301247&hvtargid=kwd-3011450765&hydadcr=19825_13779362&tag=googhydr-20&ref=pd_sl_4q5w6t291b_e",
+            "addDate": "2025-08-29",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "ocio"
+            "prize_category": "hogar"
         },
         {
             "id": "1756556418521",
@@ -9318,19 +8327,377 @@ window.giveaways = {
             "prize_category": "papeleria"
         },
         {
-            "id": "1756556457310",
+            "id": "1756557164065",
             "date": "2025-08-31",
-            "prize": "3 modelos de gafas de la colección",
+            "prize": "Juego educativo, pizarra clásica magnética de doble cara y mapa de Europa magnética",
             "accounts": [
-                "@mausitokids",
-                "@lovelycarla"
+                "@janmol_espana"
             ],
-            "price": "150",
-            "url": "null",
+            "price": "35",
+            "url": "https://www.amazon.es/s?k=pizarra+magn%C3%A9tica+doble+cara+infantil",
             "addDate": "2025-08-30",
             "ends_at_time": "23:59",
             "is_priority_time": false,
             "prize_category": "otros"
+        },
+        {
+            "id": "1756557172424",
+            "date": "2025-08-31",
+            "prize": "Mochila Bolso Coral, Neceser Pequeño Coral, Bolsa Cremallera Monte y Monedero Redondo Monte",
+            "accounts": [
+                "@delamurline"
+            ],
+            "price": "35",
+            "url": "https://www.google.com/search?q=delamurline+mochila+bolso",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "accesorios"
+        },
+        {
+            "id": "1756558284768",
+            "date": "2025-08-31",
+            "prize": "Lote de chuches compuesto por: Mejillones 1,5kg, Caja Dulcipica, Cakes 1,5kg, Caja Huevos cocidos 🍔",
+            "accounts": [
+                "@_estela.cortes_",
+                "@vidalgolosinas"
+            ],
+            "price": "35",
+            "url": "null",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "comida"
+        },
+        {
+            "id": "1756558652152",
+            "date": "2025-08-31",
+            "prize": "1 MIMOM Piña y 1 kit de higiene bucal",
+            "accounts": [
+                "@mimom.baby",
+                "@layra_odontopediatra"
+            ],
+            "price": "35",
+            "url": "https://www.mimom.baby/",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756558753293",
+            "date": "2025-08-31",
+            "prize": "Mochila nevera y hamaca de camping",
+            "accounts": [
+                "@lidlespana"
+            ],
+            "price": "35",
+            "url": "https://www.lidl-es.com/es/ofertas-de-la-semana/c10021",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756558928312",
+            "date": "2025-08-31",
+            "prize": "Caja sorpresa con productos de maquillaje y cosmética 💄",
+            "accounts": [
+                "@montsete71",
+                "@yolandamaquieira"
+            ],
+            "price": "35",
+            "url": "null",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "belleza"
+        },
+        {
+            "id": "1756559124015",
+            "date": "2025-08-31",
+            "prize": "Lote de productos de limpieza El Milagrito 🏠",
+            "accounts": [
+                "@ElMilagrito"
+            ],
+            "price": "35",
+            "url": "https://www.google.com/search?q=productos+de+limpieza+precio+medio",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "hogar"
+        },
+        {
+            "id": "sorteo-31-ofix",
+            "prize": "plumo es edición especial en Ofix",
+            "price": "30€",
+            "accounts": [
+                "@ofix.mx"
+            ]
+        },
+        {
+            "id": "1755976184857",
+            "date": "2025-08-31",
+            "prize": "super lote con más de 3kg de chuches",
+            "accounts": [
+                "@vidalgolosinas",
+                "@make_baby_up"
+            ],
+            "price": "30€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1756145178475",
+            "date": "2025-08-31",
+            "prize": "Set de marcadores acrílicos Nicety. El ganador podrá escoger entre dos modelos diferentes.",
+            "accounts": [
+                "@nicetypen",
+                "@marymarcasta"
+            ],
+            "price": "30",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756556615901",
+            "date": "2025-08-31",
+            "prize": "Bolso para cochecito Chicco",
+            "accounts": [
+                "@danubio.bebe",
+                "@chicco_spain"
+            ],
+            "price": "30",
+            "url": "https://www.amazon.es/s?k=bolso+cochecito+chicco",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "bebes"
+        },
+        {
+            "id": "1756556665907",
+            "date": "2025-08-31",
+            "prize": "2 brumas faciales 💄",
+            "accounts": [
+                "@mimessisensations"
+            ],
+            "price": "30",
+            "url": "https://www.mimessisensations.com/",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "belleza"
+        },
+        {
+            "id": "1756556926990",
+            "date": "2025-08-31",
+            "prize": "Mochila Antero Tiroya",
+            "accounts": [
+                "@artero.petcare"
+            ],
+            "price": "30",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756145142930",
+            "date": "2025-08-31",
+            "prize": "Pack de productos Fisiocrem 💄",
+            "accounts": [
+                "@fisiocrem_es"
+            ],
+            "price": "25",
+            "url": "https://www.fisiocrem.es/productos/",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756145228825",
+            "date": "2025-08-31",
+            "prize": "Lote de productos sin gluten: Galletas María, Hookies Sharkies, Gall",
+            "accounts": [
+                "@gullongalletas",
+                "@cocinacercadelmar"
+            ],
+            "price": "25",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756489836607",
+            "date": "2025-08-31",
+            "prize": "Set de marcadores acrílicos Nicety",
+            "accounts": [
+                "@nicetypen",
+                "@marymarcasta"
+            ],
+            "price": "25",
+            "url": "https://www.amazon.com/s?k=acrylic+markers+set",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "arte"
+        },
+        {
+            "id": "1756555410509",
+            "date": "2025-08-31",
+            "prize": "Caja de 24 lápices de colores Norix + 3 lápices de grafito Norix + set escolar Norix",
+            "accounts": [
+                "@desiree_jurado",
+                "@staedtler_spain"
+            ],
+            "price": "25",
+            "url": "https://www.amazon.es/s?k=l%C3%A1pices+de+colores+norix",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "papeleria"
+        },
+        {
+            "id": "1756555480727",
+            "date": "2025-08-31",
+            "prize": "Lote de artículos de papelería Campus",
+            "accounts": [
+                "@MullerEspana"
+            ],
+            "price": "25",
+            "url": "https://www.amazon.es/s?k=material+escolar+campus",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59 h",
+            "is_priority_time": false,
+            "prize_category": "papeleria"
+        },
+        {
+            "id": "1756556302242",
+            "date": "2025-08-31",
+            "prize": "Mochila Saladitos",
+            "accounts": [
+                "@a.saladitos"
+            ],
+            "price": "25",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756556769870",
+            "date": "2025-08-31",
+            "prize": "Caja de productos ElPozo Bienstar 🍔",
+            "accounts": [
+                "@elpozobienstar"
+            ],
+            "price": "25",
+            "url": "https://www.elpozobienestar.com/",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "comida"
+        },
+        {
+            "id": "1756556794771",
+            "date": "2025-08-31",
+            "prize": "Agenda Finocam",
+            "accounts": [
+                "@finocam"
+            ],
+            "price": "25",
+            "url": "https://www.amazon.com/Finocam-Planner-Diary-Notebook-Organizer/s?k=Finocam+Planner+Diary+Notebook+Organizer",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "papeleria"
+        },
+        {
+            "id": "1756558324557",
+            "date": "2025-08-31",
+            "prize": "Lote de comida (mejillones, caja dulce, cakes y huevos) 🍔",
+            "accounts": [
+                "@lestetacortes_"
+            ],
+            "price": "25",
+            "url": "null",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "comida"
+        },
+        {
+            "id": "1756558948720",
+            "date": "2025-08-31",
+            "prize": "Limpiador de tapicerías 🏠",
+            "accounts": [
+                "@homeandcookoficial"
+            ],
+            "price": "25",
+            "url": "https://www.amazon.com/s?k=cleaner+upholstery",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "hogar"
+        },
+        {
+            "id": "1756557227038",
+            "date": "2025-08-31",
+            "prize": "3 juegos: Mosquito, Chispas y Rey Mono",
+            "accounts": [
+                "@pandagames.es"
+            ],
+            "price": "20",
+            "url": "https://pandagames.es/",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gaming"
+        },
+        {
+            "id": "1756558898890",
+            "date": "2025-08-31",
+            "prize": "Pack de productos de Agerul: Spray Citronella y friegasuelos insecticida 🏠",
+            "accounts": [
+                "@agerul_oficial"
+            ],
+            "price": "20",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "hogar"
+        },
+        {
+            "id": "1756390690571",
+            "date": "2025-08-31",
+            "prize": "Mystery Box exclusiva con premios sorpresa",
+            "accounts": [
+                "@tbaratocom"
+            ],
+            "price": "15",
+            "url": "null",
+            "addDate": "2025-08-28",
+            "ends_at_time": null,
+            "is_priority_time": false
+        },
+        {
+            "id": "1756555866768",
+            "date": "2025-08-31",
+            "prize": "2 packs de etiquetas personalizadas para la escuela",
+            "accounts": [
+                "@paloma_roca",
+                "@etiquetas_soyde"
+            ],
+            "price": "15",
+            "url": "https://www.amazon.com/s?k=personalized+school+labels",
+            "addDate": "2025-08-30",
+            "ends_at_time": "00:00",
+            "is_priority_time": false,
+            "prize_category": "papeleria"
         },
         {
             "id": "1756556490227",
@@ -9348,6 +8715,101 @@ window.giveaways = {
             "prize_category": "papeleria"
         },
         {
+            "id": "1756557103348",
+            "date": "2025-08-31",
+            "prize": "camiseta 👠",
+            "accounts": [
+                "@sergiioitojpsey",
+                "@maxikits_es"
+            ],
+            "price": "15",
+            "url": "https://www.google.com/search?q=camisetas+sergiioitojpsey+maxikits_es",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "moda"
+        },
+        {
+            "id": "1756558228107",
+            "date": "2025-08-31",
+            "prize": "Lote de galletas sin gluten (varias variedades) 🍔",
+            "accounts": [
+                "@gullongalletas",
+                "@cocinacercadelmar"
+            ],
+            "price": "15",
+            "url": "https://www.google.com/search?q=galletas+sin+gluten",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "comida"
+        },
+        {
+            "id": "1756493062492",
+            "date": "2025-08-31",
+            "prize": "Libro de hasta 25€ a elegir por el ganador 📚",
+            "accounts": [
+                "@yugebooks"
+            ],
+            "price": "12.50",
+            "url": "https://www.yugebooks.com/",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "libros"
+        },
+        {
+            "id": "1756492283905",
+            "date": "2025-08-31",
+            "prize": "Pack de productos de limpieza Agerul (Spray Citronela y Friegasuelos) 🏠",
+            "accounts": [
+                "@agerul_oficial"
+            ],
+            "price": "12",
+            "url": "https://www.google.com/search?q=Pack+de+productos+de+limpieza+Agerul",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "hogar"
+        },
+        {
+            "id": "1756121571254",
+            "date": "2025-08-31",
+            "prize": "Pala de pádel Technical Viper firmada por Juan Lebrón 🥎",
+            "accounts": [
+                "@babolat.arg"
+            ],
+            "price": "No encontrado",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756124234114",
+            "date": "2025-08-31",
+            "prize": "Entrada doble para la exposición Dino Expo XXL en Terrassa 🎟️",
+            "accounts": [
+                "@dinoexpoxxl_world_tour",
+                "@cositasdemidiaadia"
+            ],
+            "price": "0",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        {
+            "id": "1756252175275",
+            "date": "2025-08-31",
+            "prize": "Mini báscula MHW-3Bomber 2.0",
+            "accounts": [
+                "@nomadadelcafe"
+            ],
+            "price": "No encontrado",
+            "url": null,
+            "addDate": "2025-08-26",
+            "ends_at_time": null
+        },
+        {
             "id": "1756556512984",
             "date": "2025-08-31",
             "prize": "Accesorio Varoma para Thermomix",
@@ -9361,18 +8823,27 @@ window.giveaways = {
             "prize_category": "cocina"
         },
         {
-            "id": "1756556527237",
+            "id": "1756555883957",
             "date": "2025-08-31",
-            "prize": "Cap de setmana en una Mobile Home Red del Càmping Àmfora amb late check out",
+            "prize": "Jamón ibérico 50% Raza Ibérica 8kg, soporte jamonero basculante 360º, juego de cuchillos jamonero, cuchillo puntilla, chaira y funda portacuchillos de la marca Arccos",
             "accounts": [
-                "@campingamfora"
+                "@adrian_laynez_jamon",
+                "@cuchilleriagalicia"
             ],
-            "price": "270 €",
-            "url": null,
+            "price": "300",
+            "url": "null",
             "addDate": "2025-08-30",
-            "ends_at_time": "23:59 h",
-            "is_priority_time": false,
-            "prize_category": "viajes"
+            "ends_at_time": "19:00",
+            "is_priority_time": true,
+            "prize_category": "gourmet"
+        },
+        {
+            "id": "sorteo-31-moevegow",
+            "prize": "iPhone 16 Pro 💲",
+            "price": "1219€",
+            "accounts": [
+                "@moeve_gow"
+            ]
         },
         {
             "id": "1756556559267",
@@ -9392,63 +8863,250 @@ window.giveaways = {
             "prize_category": "viajes"
         },
         {
-            "id": "1756556615901",
+            "id": "1756126360650",
             "date": "2025-08-31",
-            "prize": "Bolso para cochecito Chicco",
+            "prize": "1 pala lonic Power 23, 5 palas Discover Control/Power y 3 paleteros Bullpadel 🥎 💲",
             "accounts": [
-                "@danubio.bebe",
-                "@chicco_spain"
+                "@superligabcn",
+                "@bullpadelsport"
             ],
-            "price": "30",
-            "url": "https://www.amazon.es/s?k=bolso+cochecito+chicco",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "bebes"
+            "price": "800",
+            "url": "https://www.bullpadel.com/es-es/palas-de-padel",
+            "addDate": "2025-08-25",
+            "ends_at_time": null
         },
         {
-            "id": "1756556633977",
+            "id": "1756555958168",
             "date": "2025-08-31",
-            "prize": "Estancia de 2 días y 1 noche en Villa Pallú 🛩️",
+            "prize": "5 palas Enebe (2 Combat 7.1 2025, 2 Aerox 7.1 V2 2025, 1 RSX 7.1 Carbon V2 2025) 🥎 💲",
             "accounts": [
-                "@zairaruizmo",
-                "@pallu_charming_house"
+                "@pelotapadel"
             ],
-            "price": "200",
-            "url": "https://www.google.com/search?q=precio+estancia+villa+pallu",
+            "price": "600",
+            "url": "https://www.google.com/search?q=precio+pala+padel+enebe",
             "addDate": "2025-08-30",
             "ends_at_time": "23:59",
             "is_priority_time": false,
-            "prize_category": "viajes"
+            "prize_category": "padel"
         },
         {
-            "id": "1756556644517",
+            "id": "1756559092813",
             "date": "2025-08-31",
-            "prize": "2 packs de etiquetas personalizadas para marcar todo el material escolar",
+            "prize": "Tabla de Paddle Surf de la colección Little Sea 💪 💲",
             "accounts": [
-                "@lau_mammi_de_enzzo",
-                "@etiquetas_soyle"
+                "@huiike_",
+                "@turismo_sanjavier"
             ],
-            "price": "15",
+            "price": "600",
+            "url": "https://www.google.com/search?q=tabla+paddle+surf+precio",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deporte"
+        },
+        {
+            "id": "sorteo-31-rebootsrecoveryes",
+            "prize": "5 bañeras de hielo 💲",
+            "price": "550€",
+            "accounts": [
+                "@rebootsrecovery_es"
+            ]
+        },
+        {
+            "id": "sorteo-31-unachicaqueviaja",
+            "prize": "UNA SEMANA en CANTABRIA 🛩️",
+            "price": "500€",
+            "accounts": [
+                "@unachicaqueviaja",
+                "@garaizar_"
+            ]
+        },
+        {
+            "id": "1756493528116",
+            "date": "2025-08-31",
+            "prize": "Potenciómetro Assioma Duo 💪",
+            "accounts": [
+                "@entrenosruano"
+            ],
+            "price": "500",
+            "url": "https://www.google.com/search?q=Potenci%C3%B3metro+Assioma+Duo",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "deporte"
+        },
+        {
+            "id": "sorteo-31-dinahosting",
+            "prize": "Nintendo Switch 2 y pack de regalos 🃏",
+            "price": "450€",
+            "accounts": [
+                "@dinahosting"
+            ]
+        },
+        {
+            "id": "1756145101162",
+            "date": "2025-08-31",
+            "prize": "8 pares de calzados respetuosos para toda la familia de la tienda @minivillenacalzados",
+            "accounts": [
+                "@el_diario_d_valeria",
+                "@minivillenacalzados",
+                "@sweetcarolblog"
+            ],
+            "price": "400",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "sorteo-31-weber",
+            "prize": "barbacoa viajera weber",
+            "price": "399€",
+            "accounts": [
+                "@viatgeviajtours",
+                "@weber_store_barcelona"
+            ]
+        },
+        {
+            "id": "1756145254361",
+            "date": "2025-08-31",
+            "prize": "Set de maquillaje Charlotte Tilbury valorado en más de 300€. 💄",
+            "accounts": [
+                "@sephora_spain",
+                "@charlottetilbury"
+            ],
+            "price": "350",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756556863031",
+            "date": "2025-08-31",
+            "prize": "Pack de viaje GHD (secador + plancha) y una noche en caravana vintage",
+            "accounts": [
+                "@leblondbyluciasoto",
+                "@lamisticaravan_axarquia"
+            ],
+            "price": "350",
+            "url": "https://www.ghdhair.com/es/es/products/ghd-air-professional-hairdryer",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "sorteo-31-dialprix",
+            "prize": "1 AÑO DE CERVEZA GRATIS",
+            "price": "300€",
+            "accounts": [
+                "@dialprix_supermercados"
+            ]
+        },
+        {
+            "id": "1756558623146",
+            "date": "2025-08-31",
+            "prize": "Traveler (Midnight Blue o Everest Grey)",
+            "accounts": [
+                "@viajandoconchloe",
+                "@smartrikesp"
+            ],
+            "price": "250",
             "url": "null",
             "addDate": "2025-08-30",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "papeleria"
+            "prize_category": "otros"
         },
         {
-            "id": "1756556665907",
+            "id": "1756555716441",
             "date": "2025-08-31",
-            "prize": "2 brumas faciales 💄",
+            "prize": "Vestido o conjunto de dos piezas (hasta 250€)",
             "accounts": [
-                "@mimessisensations"
+                "@hossintropiaofficial"
             ],
-            "price": "30",
-            "url": "https://www.mimessisensations.com/",
+            "price": "250",
+            "url": null,
             "addDate": "2025-08-30",
             "ends_at_time": "23:59h",
             "is_priority_time": false,
-            "prize_category": "belleza"
+            "prize_category": "moda"
+        },
+        {
+            "id": "1756556804295",
+            "date": "2025-08-31",
+            "prize": "Lote de 13 productos gourmet (Magret de Pato, Morcilla, Paleta Ibérica, Cecina, Chorizo, Cebolla caramelizada, Batid",
+            "accounts": [
+                "@tierradesabor",
+                "@foiemalvasia",
+                "@ibericoselcatedratico",
+                "@embutidosferju",
+                "@delonuestroartesano",
+                "@lechegaza",
+                "@teresamat"
+            ],
+            "price": "250",
+            "url": "https://www.google.com/search?q=precio+lote+productos+gourmet",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "gourmet"
+        },
+        {
+            "id": "1756558412276",
+            "date": "2025-08-31",
+            "prize": "Lote de material escolar Giotto",
+            "accounts": [
+                "@arenalperfumerias"
+            ],
+            "price": "250",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756145132178",
+            "date": "2025-08-31",
+            "prize": "Una noche para dos personas en una cabaña Hobbit en Veratton (Villanueva de la Vera, Cáceres) 🛩️",
+            "accounts": [
+                "@deveratton",
+                "@elviajedeivan"
+            ],
+            "price": "200",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1756558527331",
+            "date": "2025-08-31",
+            "prize": "Un par de zapatos colegiales, un par de deportivos Pablosky y un pack de material escolar (lápices, rotuladores, ceras, etc.)",
+            "accounts": [
+                "@pabloskyshoes",
+                "@alpinocolores"
+            ],
+            "price": "150",
+            "url": "https://www.google.com/search?q=precio+zapatos+colegiales+deportivos+pablosky+material+escolar",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756556457310",
+            "date": "2025-08-31",
+            "prize": "3 modelos de gafas de la colección",
+            "accounts": [
+                "@mausitokids",
+                "@lovelycarla"
+            ],
+            "price": "150",
+            "url": "null",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "otros"
         },
         {
             "id": "1756556679403",
@@ -9479,155 +9137,169 @@ window.giveaways = {
             "prize_category": "papeleria"
         },
         {
-            "id": "1756556719636",
+            "id": "1756557086655",
             "date": "2025-08-31",
-            "prize": "Lote de 7 harinas integrales, shaker y camiseta 🍔",
+            "prize": "Aspiradora escoba Samsung",
             "accounts": [
-                "@american.suplement",
-                "@mamiide2princesas",
-                "@recetasdeunamadre"
+                "@pascual_marti_tiendas",
+                "@samsungespana"
             ],
-            "price": "45",
-            "url": "https://www.amazon.com/s?k=organic+whole+wheat+flour&i=grocery&hvadid=618158756817&hvdev=c&hvlocphy=9003726&hvnetw=g&hvqmt=e&hvrand=13598370407673292571&hvtargid=kwd-3355076356&hydadcr=24543_13701093&tag=googhydr-20&ref=pd_sl_7w72k8z81f_e",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "comida"
-        },
-        {
-            "id": "1756556769870",
-            "date": "2025-08-31",
-            "prize": "Caja de productos ElPozo Bienstar 🍔",
-            "accounts": [
-                "@elpozobienstar"
-            ],
-            "price": "25",
-            "url": "https://www.elpozobienestar.com/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "comida"
-        },
-        {
-            "id": "1756556784676",
-            "date": "2025-08-31",
-            "prize": "Lote de material escolar",
-            "accounts": [
-                "@janod_espana",
-                "@ludilabelespana"
-            ],
-            "price": "50",
-            "url": "https://www.amazon.es/s?k=material+escolar+janod&i=toys&hvadid=617967766666&hvdev=c&hvlocphy=9029447&hvnetw=g&hvqmt=e&hvrand=13799749367571156571&hvtargid=kwd-3251913227&hydadcr=24592_14481687&tag=googhydr-21&ref=pd_sl_7wzkw2c96f_e",
+            "price": "150",
+            "url": "https://www.amazon.es/s?k=Aspiradora+escoba+Samsung",
             "addDate": "2025-08-30",
             "ends_at_time": "23:59",
             "is_priority_time": false,
-            "prize_category": "papeleria"
+            "prize_category": "electrodomesticos"
         },
         {
-            "id": "1756556794771",
+            "id": "1756492425787",
             "date": "2025-08-31",
-            "prize": "Agenda Finocam",
+            "prize": "3 mochilas térmicas exclusivas de Saladitos con un lote de productos Saladitos",
             "accounts": [
-                "@finocam"
+                "@a.saladitos"
             ],
-            "price": "25",
-            "url": "https://www.amazon.com/Finocam-Planner-Diary-Notebook-Organizer/s?k=Finocam+Planner+Diary+Notebook+Organizer",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756556804295",
-            "date": "2025-08-31",
-            "prize": "Lote de 13 productos gourmet (Magret de Pato, Morcilla, Paleta Ibérica, Cecina, Chorizo, Cebolla caramelizada, Batid",
-            "accounts": [
-                "@tierradesabor",
-                "@foiemalvasia",
-                "@ibericoselcatedratico",
-                "@embutidosferju",
-                "@delonuestroartesano",
-                "@lechegaza",
-                "@teresamat"
-            ],
-            "price": "250",
-            "url": "https://www.google.com/search?q=precio+lote+productos+gourmet",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "gourmet"
-        },
-        {
-            "id": "1756556826530",
-            "date": "2025-08-31",
-            "prize": "Shapes kit completo: 2 mancuernas de 2kg, una kettlebell de 3kg, 2 muñequeras de 0,5 kg, discos deslizantes; Kit de yoga y pilates con esterilla, rueda, pelota y correa de estiramientos",
-            "accounts": [
-                "@fitfiu_fitness"
-            ],
-            "price": "80€",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "deporte"
-        },
-        {
-            "id": "1756556863031",
-            "date": "2025-08-31",
-            "prize": "Pack de viaje GHD (secador + plancha) y una noche en caravana vintage",
-            "accounts": [
-                "@leblondbyluciasoto",
-                "@lamisticaravan_axarquia"
-            ],
-            "price": "350",
-            "url": "https://www.ghdhair.com/es/es/products/ghd-air-professional-hairdryer",
-            "addDate": "2025-08-30",
+            "price": "150",
+            "url": "null",
+            "addDate": "2025-08-29",
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "otros"
         },
         {
-            "id": "1756556890556",
+            "id": "1756492314565",
             "date": "2025-08-31",
-            "prize": "Noche en apartamento de lujo en el centro de Salamanca 🛩️",
+            "prize": "Complete Welding Starter Set by Cofan",
             "accounts": [
-                "@prisma_suites",
-                "@salamancavivela"
+                "@habitium.store",
+                "@cofanusa"
             ],
-            "price": "300",
-            "url": "https://www.prisma-suites.com/es/salamanca",
-            "addDate": "2025-08-30",
+            "price": "150",
+            "url": "https://www.amazon.com/s?k=Complete+Welding+Starter+Set+by+Cofan",
+            "addDate": "2025-08-29",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "viajes"
+            "prize_category": "bricolaje"
         },
         {
-            "id": "1756556908926",
-            "date": "2025-08-31",
-            "prize": "2 vales de 50€ 💰",
+            "id": "sorteo-31-bosch",
+            "prize": "Aspirador Bosch",
+            "price": "150€",
             "accounts": [
-                "@martatrens_jewelry"
+                "@lacasadelelectrodomestico"
+            ]
+        },
+        {
+            "id": "sorteo-31-davanni",
+            "prize": "exprimidor SMEG",
+            "price": "150€",
+            "accounts": [
+                "@davanni_cocinas",
+                "@smegspain"
+            ]
+        },
+        {
+            "id": "sorteo-31-biocycle",
+            "prize": "Pure Lux, la bici best seller",
+            "price": "150€",
+            "accounts": [
+                "@biocycle_es"
+            ]
+        },
+        {
+            "id": "sorteo-31-grillecards",
+            "prize": "ETB White Flare y ETB Black Bolt 🃏",
+            "price": "140€",
+            "accounts": [
+                "@grillecards"
+            ]
+        },
+        {
+            "id": "1756491079333",
+            "date": "2025-08-31",
+            "prize": "Vajilla personalizada para cuatro personas 🏠",
+            "accounts": [
+                "@appetit_ceramics"
+            ],
+            "price": "120",
+            "url": "https://www.google.com/search?q=vajilla+personalizada+para+cuatro+personas",
+            "addDate": "2025-08-29",
+            "ends_at_time": "00:00h",
+            "is_priority_time": false,
+            "prize_category": "hogar"
+        },
+        {
+            "id": "sorteo-31-balmihome",
+            "prize": "CONJUNTO BALMI ONE ⚠️",
+            "price": "120€",
+            "accounts": [
+                "@balmihome_"
+            ]
+        },
+        {
+            "id": "1756145149390",
+            "date": "2025-08-31",
+            "prize": "3 fiambreras Yumbox Lunch",
+            "accounts": [
+                "@walanata_",
+                "@btbox_bebes",
+                "@yumboxlunch"
+            ],
+            "price": "119.97",
+            "url": "https://www.amazon.com/Yumbox-Original-Pack-Lunch-Containers/dp/B07F22426K",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "1756490570359",
+            "date": "2025-08-31",
+            "prize": "Un par de zapatillas adidas 👠",
+            "accounts": [
+                "@footonmars",
+                "@atleetstores"
             ],
             "price": "100",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": "21:00h",
-            "is_priority_time": true,
-            "prize_category": "dinero"
+            "url": "https://www.amazon.com/s?k=adidas+shoes",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "moda"
         },
         {
-            "id": "1756556926990",
+            "id": "1756489096071",
             "date": "2025-08-31",
-            "prize": "Mochila Antero Tiroya",
+            "prize": "Heladera y yogurtera compacta Severin EZ 7407",
             "accounts": [
-                "@artero.petcare"
+                "@severin_es"
             ],
-            "price": "30",
-            "url": null,
-            "addDate": "2025-08-30",
+            "price": "100",
+            "url": "https://www.amazon.es/s?k=Heladera+y+yogurtera+compacta+Severin+EZ+7407",
+            "addDate": "2025-08-29",
             "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "otros"
+            "prize_category": "cocina"
+        },
+        {
+            "id": "sorteo-31-einhellesp",
+            "prize": "Ventilador a batería Einhell + Starter Kit",
+            "price": "100€",
+            "accounts": [
+                "@einhellesp"
+            ]
+        },
+        {
+            "id": "1756492938890",
+            "date": "2025-08-31",
+            "prize": "Freidora de aire Taurus Air Fry Digital 6S",
+            "accounts": [
+                "@waydoshermanasoficial",
+                "@electrocash.es"
+            ],
+            "price": "99",
+            "url": "https://www.amazon.es/Taurus-Air-Fry-Digital-6S/dp/B0B416F6F8",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cocina"
         },
         {
             "id": "1756556952426",
@@ -9644,445 +9316,38 @@ window.giveaways = {
             "prize_category": "belleza"
         },
         {
-            "id": "1756557031856",
+            "id": "1756556826530",
             "date": "2025-08-31",
-            "prize": "Super lote perfecto para la vuelta al cole",
+            "prize": "Shapes kit completo: 2 mancuernas de 2kg, una kettlebell de 3kg, 2 muñequeras de 0,5 kg, discos deslizantes; Kit de yoga y pilates con esterilla, rueda, pelota y correa de estiramientos",
             "accounts": [
-                "@giotto_spain",
-                "@mami_novataa",
-                "@carmennestefano"
+                "@fitfiu_fitness"
             ],
-            "price": "75",
-            "url": "https://www.google.com/search?q=material+escolar+vuelta+al+cole",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756557067415",
-            "date": "2025-08-31",
-            "prize": "Lote de material escolar",
-            "accounts": [
-                "@gjinto_spain",
-                "@aprendemosjuntos_daisy"
-            ],
-            "price": "75",
-            "url": "https://www.amazon.es/s?k=material+escolar",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756557086655",
-            "date": "2025-08-31",
-            "prize": "Aspiradora escoba Samsung",
-            "accounts": [
-                "@pascual_marti_tiendas",
-                "@samsungespana"
-            ],
-            "price": "150",
-            "url": "https://www.amazon.es/s?k=Aspiradora+escoba+Samsung",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "electrodomesticos"
-        },
-        {
-            "id": "1756557103348",
-            "date": "2025-08-31",
-            "prize": "camiseta 👠",
-            "accounts": [
-                "@sergiioitojpsey",
-                "@maxikits_es"
-            ],
-            "price": "15",
-            "url": "https://www.google.com/search?q=camisetas+sergiioitojpsey+maxikits_es",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "moda"
-        },
-        {
-            "id": "1756557164065",
-            "date": "2025-08-31",
-            "prize": "Juego educativo, pizarra clásica magnética de doble cara y mapa de Europa magnética",
-            "accounts": [
-                "@janmol_espana"
-            ],
-            "price": "35",
-            "url": "https://www.amazon.es/s?k=pizarra+magn%C3%A9tica+doble+cara+infantil",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756557172424",
-            "date": "2025-08-31",
-            "prize": "Mochila Bolso Coral, Neceser Pequeño Coral, Bolsa Cremallera Monte y Monedero Redondo Monte",
-            "accounts": [
-                "@delamurline"
-            ],
-            "price": "35",
-            "url": "https://www.google.com/search?q=delamurline+mochila+bolso",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "accesorios"
-        },
-        {
-            "id": "1756557195733",
-            "date": "2025-08-31",
-            "prize": "Lote de dibujos",
-            "accounts": [
-                "@una_mami_del_monton",
-                "@airvalinternational"
-            ],
-            "price": "50",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756557227038",
-            "date": "2025-08-31",
-            "prize": "3 juegos: Mosquito, Chispas y Rey Mono",
-            "accounts": [
-                "@pandagames.es"
-            ],
-            "price": "20",
-            "url": "https://pandagames.es/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "gaming"
-        },
-        {
-            "id": "1756557953566",
-            "date": "2025-08-31",
-            "prize": "Súper lote para la vuelta al cole",
-            "accounts": [
-                "@giotto_spain",
-                "@mami_novata",
-                "@mamadeelena",
-                "@carmenestefano"
-            ],
-            "price": "75",
-            "url": "https://www.amazon.es/s?k=material+escolar+infantil",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756557986834",
-            "date": "2025-08-31",
-            "prize": "Lote de material escolar",
-            "accounts": [
-                "@giotto_spain",
-                "@aprendemosjuntos_daisy"
-            ],
-            "price": "75",
-            "url": "https://www.amazon.es/s?k=material+escolar",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "papeleria"
-        },
-        {
-            "id": "1756558028428",
-            "date": "2025-08-31",
-            "prize": "8 pares de calzado respetuoso",
-            "accounts": [
-                "@minivillenacalzados",
-                "@el_diario_d_valeria",
-                "@sweetcarolblog"
-            ],
-            "price": "120",
-            "url": "https://www.google.com/search?q=calzado+respetuoso+precio",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558119708",
-            "date": "2025-08-31",
-            "prize": "3 fiambreras Yumbox",
-            "accounts": [
-                "@walanata_",
-                "@btbox_bebes"
-            ],
-            "price": "60",
-            "url": "https://www.amazon.com/Yumbox-Original-Premium-Leakproof-Compartments/dp/B00N7L8568",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558228107",
-            "date": "2025-08-31",
-            "prize": "Lote de galletas sin gluten (varias variedades) 🍔",
-            "accounts": [
-                "@gullongalletas",
-                "@cocinacercadelmar"
-            ],
-            "price": "15",
-            "url": "https://www.google.com/search?q=galletas+sin+gluten",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "comida"
-        },
-        {
-            "id": "1756558267026",
-            "date": "2025-08-31",
-            "prize": "Estancia en diferentes alojamientos de Cantabria (Suances, Arnuero, Liébana) 🛩️",
-            "accounts": [
-                "@castillodeloslocos",
-                "@vibeluxurycabins",
-                "@el_olivo_alojamiento"
-            ],
-            "price": "300",
-            "url": "https://www.google.com/search?q=precio+alquiler+casas+rurales+Cantabria",
-            "addDate": "2025-08-30",
-            "ends_at_time": "00:00h",
-            "is_priority_time": false,
-            "prize_category": "viajes"
-        },
-        {
-            "id": "1756558284768",
-            "date": "2025-08-31",
-            "prize": "Lote de chuches compuesto por: Mejillones 1,5kg, Caja Dulcipica, Cakes 1,5kg, Caja Huevos cocidos 🍔",
-            "accounts": [
-                "@_estela.cortes_",
-                "@vidalgolosinas"
-            ],
-            "price": "35",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "comida"
-        },
-        {
-            "id": "1756558306609",
-            "date": "2025-08-31",
-            "prize": "Set de maquillaje Charlotte Tilbury",
-            "accounts": [
-                "@sephora_spain",
-                "@charlottetilbury"
-            ],
-            "price": "300€",
+            "price": "80€",
             "url": null,
             "addDate": "2025-08-30",
             "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "belleza"
-        },
-        {
-            "id": "1756558324557",
-            "date": "2025-08-31",
-            "prize": "Lote de comida (mejillones, caja dulce, cakes y huevos) 🍔",
-            "accounts": [
-                "@lestetacortes_"
-            ],
-            "price": "25",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "comida"
-        },
-        {
-            "id": "1756558412276",
-            "date": "2025-08-31",
-            "prize": "Lote de material escolar Giotto",
-            "accounts": [
-                "@arenalperfumerias"
-            ],
-            "price": "250",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558505114",
-            "date": "2025-08-31",
-            "prize": "Mochila Affenzahn y 2 paquetes de toallitas Dodot",
-            "accounts": [
-                "@nappy.es"
-            ],
-            "price": "43",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "bebes"
-        },
-        {
-            "id": "1756558527331",
-            "date": "2025-08-31",
-            "prize": "Un par de zapatos colegiales, un par de deportivos Pablosky y un pack de material escolar (lápices, rotuladores, ceras, etc.)",
-            "accounts": [
-                "@pabloskyshoes",
-                "@alpinocolores"
-            ],
-            "price": "150",
-            "url": "https://www.google.com/search?q=precio+zapatos+colegiales+deportivos+pablosky+material+escolar",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558623146",
-            "date": "2025-08-31",
-            "prize": "Traveler (Midnight Blue o Everest Grey)",
-            "accounts": [
-                "@viajandoconchloe",
-                "@smartrikesp"
-            ],
-            "price": "250",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558652152",
-            "date": "2025-08-31",
-            "prize": "1 MIMOM Piña y 1 kit de higiene bucal",
-            "accounts": [
-                "@mimom.baby",
-                "@layra_odontopediatra"
-            ],
-            "price": "35",
-            "url": "https://www.mimom.baby/",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558734410",
-            "date": "2025-08-31",
-            "prize": "Bolso Amira personalizado",
-            "accounts": [
-                "@soloregalosmagicos"
-            ],
-            "price": "75",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "accesorios"
-        },
-        {
-            "id": "1756558753293",
-            "date": "2025-08-31",
-            "prize": "Mochila nevera y hamaca de camping",
-            "accounts": [
-                "@lidlespana"
-            ],
-            "price": "35",
-            "url": "https://www.lidl-es.com/es/ofertas-de-la-semana/c10021",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558838035",
-            "date": "2025-08-31",
-            "prize": "Complete Welding Starter Set by #Cofán",
-            "accounts": [],
-            "price": "150",
-            "url": "https://www.amazon.com/s?k=Complete+Welding+Starter+Set&i=industrial&hvadid=618263696583&hvdev=c&hvlocphy=9003719&hvnetw=g&hvqmt=e&hvrand=13786746572598563372&hvtargid=kwd-3163469845&hydadcr=26572_14197488&tag=googhydr-20&ref=pd_sl_7w7w66z27w_e",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        {
-            "id": "1756558898890",
-            "date": "2025-08-31",
-            "prize": "Pack de productos de Agerul: Spray Citronella y friegasuelos insecticida 🏠",
-            "accounts": [
-                "@agerul_oficial"
-            ],
-            "price": "20",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756558928312",
-            "date": "2025-08-31",
-            "prize": "Caja sorpresa con productos de maquillaje y cosmética 💄",
-            "accounts": [
-                "@montsete71",
-                "@yolandamaquieira"
-            ],
-            "price": "35",
-            "url": "null",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "belleza"
-        },
-        {
-            "id": "1756558948720",
-            "date": "2025-08-31",
-            "prize": "Limpiador de tapicerías 🏠",
-            "accounts": [
-                "@homeandcookoficial"
-            ],
-            "price": "25",
-            "url": "https://www.amazon.com/s?k=cleaner+upholstery",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756559092813",
-            "date": "2025-08-31",
-            "prize": "Tabla de Paddle Surf de la colección Little Sea 💪 💲",
-            "accounts": [
-                "@huiike_",
-                "@turismo_sanjavier"
-            ],
-            "price": "600",
-            "url": "https://www.google.com/search?q=tabla+paddle+surf+precio",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "deporte"
         },
         {
-            "id": "1756559124015",
-            "date": "2025-08-31",
-            "prize": "Lote de productos de limpieza El Milagrito 🏠",
+            "id": "sorteo-31-smartgyro",
+            "prize": "COMPACTO KIT de HERRAMIENTAS",
+            "price": "80€",
             "accounts": [
-                "@ElMilagrito"
+                "@smartgyro"
+            ]
+        },
+        {
+            "id": "1755977187813",
+            "date": "2025-08-31",
+            "prize": "1 Mini blender Serie 5000",
+            "accounts": [
+                "@PhilipsHogar"
             ],
-            "price": "35",
-            "url": "https://www.google.com/search?q=productos+de+limpieza+precio+medio",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "hogar"
+            "price": "79.99€",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
         },
         {
             "id": "1756559146978",
@@ -10099,32 +9364,146 @@ window.giveaways = {
             "prize_category": "gourmet"
         },
         {
-            "id": "1756559163261",
+            "id": "1756558734410",
             "date": "2025-08-31",
-            "prize": "Aspiradora escoba Samsung VS20C9542TN/WA",
+            "prize": "Bolso Amira personalizado",
             "accounts": [
-                "@pascual_marti_tiendas",
-                "@samsungespana"
+                "@soloregalosmagicos"
             ],
-            "price": "No encontrado",
-            "addDate": "2025-08-30",
-            "ends_at_time": "23:59",
-            "is_priority_time": false,
-            "prize_category": "hogar"
-        },
-        {
-            "id": "1756559186337",
-            "date": "2025-08-31",
-            "prize": "Mochila de senderismo, bastones de trekking 💪",
-            "accounts": [
-                "@esterysusescapadas"
-            ],
-            "price": "150",
+            "price": "75",
             "url": "null",
             "addDate": "2025-08-30",
-            "ends_at_time": "23:59 h",
+            "ends_at_time": null,
             "is_priority_time": false,
-            "prize_category": "deporte"
+            "prize_category": "accesorios"
+        },
+        {
+            "id": "1756494001820",
+            "date": "2025-08-31",
+            "prize": "Lote de material escolar",
+            "accounts": [
+                "@una_mami_del_monton",
+                "@airvalinternational"
+            ],
+            "price": "75",
+            "url": "https://www.amazon.com/s?k=school+supplies+bulk&i=school-supplies&hvadid=618247478089&hvdev=c&hvlocphy=9003707&hvnetw=g&hvqmt=e&hvrand=13692777106645106317&hvtargid=kwd-3004290615&hydadcr=24688_12970583&tag=googhydr-20&ref=pd_sl_7w2w2g958_e",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1756556247141",
+            "date": "2025-08-31",
+            "prize": "Lote de material escolar",
+            "accounts": [
+                "@libreriaiudoms"
+            ],
+            "price": "75",
+            "url": "https://www.google.com/search?q=material+escolar+precio",
+            "addDate": "2025-08-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "papeleria"
+        },
+        {
+            "id": "1756145026764",
+            "date": "2025-08-31",
+            "prize": "Lote de material escolar para empezar el cole",
+            "accounts": [
+                "@aprendemosjuntos_daisy",
+                "@giotto_spain"
+            ],
+            "price": "75",
+            "url": "null",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59"
+        },
+        {
+            "id": "1756556318987",
+            "date": "2025-08-31",
+            "prize": "Auriculares Soundpeats Air5 Pro",
+            "accounts": [
+                "@soundpeats_spain"
+            ],
+            "price": "69",
+            "url": "https://www.amazon.es/SoundPEATS-Auriculares-Bluetooth-Cancelaci%C3%B3n-Llamadas/dp/B0BN276K4G",
+            "addDate": "2025-08-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "musica"
+        },
+        {
+            "id": "1756145004267",
+            "date": "2025-08-31",
+            "prize": "Súper lote de material escolar Giotto para la vuelta al cole",
+            "accounts": [
+                "@giotto_spain",
+                "@mami_novata",
+                "@mamadeelena",
+                "@carmenestefano"
+            ],
+            "price": "60",
+            "url": "null",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        {
+            "id": "sorteo-24-salvelox",
+            "prize": "mascarilla LED facial",
+            "price": "60€",
+            "accounts": [
+                "@salvelox_es"
+            ],
+            "date": "2025-08-31",
+            "moved": true
+        },
+        {
+            "id": "1755976814894",
+            "date": "2025-08-31",
+            "prize": "mochila de pingüino de la marca Affenzahn valorada en más de 43 € junto con 2 paquetes de toallitas Dodot etapas",
+            "accounts": [
+                "@nappy.es"
+            ],
+            "price": "55€ (estimado)",
+            "url": null,
+            "addDate": "2025-08-23",
+            "ends_at_time": null
+        },
+        {
+            "id": "sorteo-31-taka",
+            "prize": "camiseta de tu equipo favorito de LALIGA",
+            "price": "50€",
+            "accounts": [
+                "@taka.sports"
+            ]
+        },
+        {
+            "id": "1756488693626",
+            "date": "2025-08-31",
+            "prize": "Lote de material escolar",
+            "accounts": [
+                "@llibreriariudoms"
+            ],
+            "price": "50",
+            "url": "null",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59H",
+            "is_priority_time": false,
+            "prize_category": "papeleria"
+        },
+        {
+            "id": "1756145014978",
+            "date": "2025-08-31",
+            "prize": "Lote compuesto por mochila, tupper y botella de acero inoxidable, lápices de colores, rotuladores, tijeras, ceras, pinturas y pegamento con glitter.",
+            "accounts": [
+                "@janod_espana",
+                "@lilliputiens_spain"
+            ],
+            "price": "50",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
         }
     ],
     "2025-09-01": [
@@ -10544,6 +9923,53 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "gourmet"
+        },
+        {
+            "id": "1756556908926",
+            "date": "2025-09-01",
+            "prize": "2 vales de 50€ 💰",
+            "accounts": [
+                "@martatrens_jewelry"
+            ],
+            "price": "100",
+            "url": null,
+            "addDate": "2025-08-30",
+            "ends_at_time": "21:00h",
+            "is_priority_time": true,
+            "prize_category": "dinero",
+            "moved": true
+        },
+        {
+            "id": "1756493307407",
+            "date": "2025-09-01",
+            "prize": "Cama Box Roma 🏠",
+            "accounts": [
+                "@marimarsrl"
+            ],
+            "price": "300",
+            "url": "https://www.google.com/search?q=cama+box+roma+marimarsrl",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "hogar",
+            "moved": true
+        },
+        {
+            "id": "1756489074596",
+            "date": "2025-09-01",
+            "prize": "8 pares de calzado respetuoso para toda la familia",
+            "accounts": [
+                "@el_diario_d_valeria",
+                "@sweetcarolblog",
+                "@minivillenacalzados"
+            ],
+            "price": "240",
+            "url": "null",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "otros",
+            "moved": true
         }
     ],
     "2025-09-02": [
@@ -10727,6 +10153,21 @@ window.giveaways = {
             "ends_at_time": "11:30h",
             "is_priority_time": true,
             "prize_category": "belleza"
+        },
+        {
+            "id": "1756656194162",
+            "date": "2025-09-02",
+            "prize": "1.000€ para gastar en @erikaboutiqueinfantil o @erikamunecas (bebés reborn, cunitas, carritos, ropita)",
+            "accounts": [
+                "@erikaboutiqueinfantil",
+                "@erikamunecas"
+            ],
+            "price": "1000€",
+            "url": null,
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "dinero"
         }
     ],
     "2025-09-03": [
@@ -11086,6 +10527,21 @@ window.giveaways = {
             "ends_at_time": "23:59",
             "is_priority_time": false,
             "prize_category": "bebes"
+        },
+        {
+            "id": "1756656260750",
+            "date": "2025-09-06",
+            "prize": "2 noches en glamping 🛩️",
+            "accounts": [
+                "@glampingorangeraie",
+                "@happy.ohana"
+            ],
+            "price": "200",
+            "url": "https://www.glampingorangeraie.com/",
+            "addDate": "2025-08-31",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "viajes"
         }
     ],
     "2025-09-07": [
@@ -11223,6 +10679,20 @@ window.giveaways = {
             "ends_at_time": "23:59h",
             "is_priority_time": false,
             "prize_category": "deporte"
+        },
+        {
+            "id": "1756632250409",
+            "date": "2025-09-07",
+            "prize": "Lote de productos de Garnier, Essie, Mixa, L'Oréal, Maybelline y NyxCosmetic 💄",
+            "accounts": [
+                "@yolandamaquieira"
+            ],
+            "price": "50",
+            "url": "https://www.google.com/search?q=Garnier+Essie+Mixa+L%27Or%C3%A9al+Maybelline+NyxCosmetic+prices",
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "belleza"
         }
     ],
     "2025-09-08": [
@@ -11480,6 +10950,22 @@ window.giveaways = {
             "accounts": [
                 "@pprimor"
             ]
+        },
+        {
+            "id": "1756656241838",
+            "date": "2025-09-15",
+            "prize": "Golden ticket de 1000€ en Zapato Feroz",
+            "accounts": [
+                "@zapatoferoz",
+                "@oh.mamiblue",
+                "@ruxandaghemis"
+            ],
+            "price": "1000€",
+            "url": null,
+            "addDate": "2025-08-31",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "dinero"
         }
     ],
     "2025-09-22": [
@@ -11928,6 +11414,20 @@ window.giveaways = {
             "ends_at_time": "19:00",
             "is_priority_time": true,
             "prize_category": "padel"
+        },
+        {
+            "id": "1756629515120",
+            "date": "2025-09-24",
+            "prize": "2 lotes de productos Catrice 💄",
+            "accounts": [
+                "@druni_perfumerias"
+            ],
+            "price": "25",
+            "url": "https://www.druni.es/marcas/catrice",
+            "addDate": "2025-08-31",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "belleza"
         }
     ],
     "2025-09-26": [
@@ -12098,36 +11598,6 @@ window.giveaways = {
             "ends_at_time": "23:59",
             "is_priority_time": false,
             "prize_category": "belleza"
-        }
-    ],
-    "2025-07-30": [
-        {
-            "id": "1756557114660",
-            "date": "2025-07-30",
-            "prize": "Camiseta oficial del equipo favorito 💪",
-            "accounts": [
-                "@takasports"
-            ],
-            "price": "25",
-            "url": "https://www.google.com/search?q=camisetas+de+futbol+takasports",
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "deporte"
-        }
-    ],
-    "2025-07-03": [
-        {
-            "id": "1756557216342",
-            "date": "2025-07-03",
-            "prize": "No lo se",
-            "accounts": [],
-            "price": "No encontrado",
-            "url": null,
-            "addDate": "2025-08-30",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
         }
     ]
 };

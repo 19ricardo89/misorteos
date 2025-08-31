@@ -28,6 +28,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+
+
     <style>
         /* --- KEYFRAMES --- */
         @keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
@@ -1277,7 +1281,14 @@
                         <select id="giveaway-category" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
                             </select>
                     </div>
-                    <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg"> 📜 Guardar en mi Calendario </button> <button type="button" id="send-to-admin-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors shadow-lg"> 🧙‍♂️ Enviar al Hechicero </button>
+                    <div class="flex flex-col sm:flex-row gap-3 mt-4">
+                        <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg">
+                            📜 Guardar en mi Calendario
+                        </button>
+                        <button type="button" id="send-to-admin-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors shadow-lg">
+                            🧙‍♂️ Enviar al Hechicero
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -1437,6 +1448,9 @@
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🏆 Vitrina de Trofeos 🏆</h2>
                 <div class="flex items-center gap-2">
+                    <button id="open-share-options-btn" class="bg-blue-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-blue-400 transition-colors text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-share-alt"></i> Compartir
+                    </button>
                     <button id="help-trophy-modal" class="help-btn" data-modal-id="trophy-modal">?</button>
                     <button id="close-trophy-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
                 </div>
@@ -1641,6 +1655,47 @@
             </div>
         </div>
     </div>
+
+    <div id="share-options-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-2xl rounded-2xl shadow-2xl modal-default-bg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">Compartir Vitrina Personalizada</h2>
+                <button id="close-share-options-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="w-full md:w-1/3 text-left">
+                    <label class="block font-bold mb-2">Paso 1: Elige el Periodo</label>
+                    
+                    <div id="share-timeframe-radios" class="space-y-2 mb-4">
+                        <div class="flex items-center"><input type="radio" id="time-all" name="timeframe_selection" value="all" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-all" class="ml-3 block text-sm font-bold">Todos los Tiempos</label></div>
+                        <div class="flex items-center"><input type="radio" id="time-month" name="timeframe_selection" value="last_month" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500" checked><label for="time-month" class="ml-3 block text-sm font-bold">Último Mes</label></div>
+                        <div class="flex items-center"><input type="radio" id="time-week" name="timeframe_selection" value="last_week" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-week" class="ml-3 block text-sm font-bold">Última Semana</label></div>
+                    </div>
+
+                    <div id="datepicker-container"></div>
+                </div>
+
+                <div class="w-full md:w-2/3 text-left">
+                     <label class="block font-bold mb-2">Paso 2: Elige los Trofeos</label>
+                    <div id="share-prize-list-container" class="space-y-2 border border-yellow-400 p-3 rounded-lg max-h-48 overflow-y-auto">
+                        </div>
+                     <div id="share-preview-container" class="mt-4 bg-gray-200/50 p-2 rounded-lg border border-yellow-400 h-64 flex items-center justify-center">
+                        </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                <button id="generate-and-download-btn" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-green-600 transition-colors">
+                    <i class="fa-solid fa-download"></i> Descargar Imagen
+                </button>
+                <button id="share-native-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">
+                    <i class="fa-solid fa-paper-plane"></i> Compartir
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
         <div class="flex justify-between items-center w-full absolute top-2 right-4 z-10">
@@ -2084,6 +2139,7 @@
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
+    let datepicker = null;
     // --- FUNCIONES DE LA APLICACIÓN ---
     
     const populateCategoryDropdown = (selectElementId) => {
@@ -2510,38 +2566,38 @@
         modalBody.innerHTML = '';
         notInterestedBody.innerHTML = '';
 
-        // Filtrado de listas (simplificado para claridad, tu lógica de filtros se mantiene)
         let dayGiveaways = (giveaways[dateStr] || []);
+        
         // --- INICIO DEL CÓDIGO DE ORDENACIÓN ---
-dayGiveaways.sort((a, b) => {
-    const isACompleted = !!completedGiveaways[a.id];
-    const isBCompleted = !!completedGiveaways[b.id];
+        dayGiveaways.sort((a, b) => {
+            const isACompleted = !!completedGiveaways[a.id];
+            const isBCompleted = !!completedGiveaways[b.id];
 
-    // 1. Prioridad MÁXIMA: Sorteos completados siempre van al final.
-    if (isACompleted && !isBCompleted) return 1; // 'a' (completado) va después de 'b'
-    if (!isACompleted && isBCompleted) return -1; // 'b' (completado) va después de 'a'
+            // 1. Prioridad MÁXIMA: Sorteos completados siempre van al final.
+            if (isACompleted && !isBCompleted) return 1; // 'a' (completado) va después de 'b'
+            if (!isACompleted && isBCompleted) return -1; // 'b' (completado) va después de 'a'
 
-    // Si ambos están completados o ambos no lo están, se aplican las siguientes reglas.
+            // Si ambos están completados o ambos no lo están, se aplican las siguientes reglas.
 
-    // 2. Prioridad: Sorteos con hora específica que no sea medianoche.
-    const aHasPriorityTime = a.is_priority_time === true;
-    const bHasPriorityTime = b.is_priority_time === true;
+            // 2. Prioridad: Sorteos con hora específica que no sea medianoche.
+            const aHasPriorityTime = a.is_priority_time === true;
+            const bHasPriorityTime = b.is_priority_time === true;
 
-    if (aHasPriorityTime && !bHasPriorityTime) return -1; // 'a' (prioritario) va antes que 'b'
-    if (!aHasPriorityTime && bHasPriorityTime) return 1; // 'b' (prioritario) va antes que 'a'
+            if (aHasPriorityTime && !bHasPriorityTime) return -1; // 'a' (prioritario) va antes que 'b'
+            if (!aHasPriorityTime && bHasPriorityTime) return 1; // 'b' (prioritario) va antes que 'a'
 
-    // Si ambos tienen (o no tienen) hora prioritaria, se ordenan por valor.
+            // Si ambos tienen (o no tienen) hora prioritaria, se ordenan por valor.
 
-    // 3. Prioridad: Valor del premio (de mayor a menor).
-    const priceA = parsePrice(a.price);
-    const priceB = parsePrice(b.price);
+            // 3. Prioridad: Valor del premio (de mayor a menor).
+            const priceA = parsePrice(a.price);
+            const priceB = parsePrice(b.price);
 
-    return priceB - priceA; // Orden descendente
-});
-// --- FIN DEL CÓDIGO DE ORDENACIÓN ---
+            return priceB - priceA; // Orden descendente
+        });
+        // --- FIN DEL CÓDIGO DE ORDENACIÓN ---
+
         const dayNotInterested = notInterestedGiveaways[dateStr] || [];
 
-        // Renderizar Sorteos Principales
         dayGiveaways.forEach(giveaway => {
             const isCompleted = !!completedGiveaways[giveaway.id];
             const itemContainer = document.createElement('div');
@@ -2582,7 +2638,6 @@ dayGiveaways.sort((a, b) => {
             modalBody.appendChild(itemContainer);
         });
 
-        // Renderizar Sorteos "No me Interesa"
         dayNotInterested.forEach(giveaway => {
             const itemContainer = document.createElement('div');
             itemContainer.className = 'giveaway-item not-interested p-3 rounded-lg shadow-inner flex justify-between items-center border border-gray-400/20 bg-gray-100/30';
@@ -2599,7 +2654,6 @@ dayGiveaways.sort((a, b) => {
             notInterestedBody.appendChild(itemContainer);
         });
 
-        // Mensajes si las listas están vacías
         if (dayGiveaways.length === 0) {
             modalBody.innerHTML = '<p class="text-center text-gray-500">¡No hay sorteos aquí! Mueve alguno a este día o añade uno nuevo.</p>';
         }
@@ -2615,22 +2669,20 @@ dayGiveaways.sort((a, b) => {
             toggleNavMenu();
         }
         
-        // 1. Pre-llenamos los filtros del modal con los filtros globales activos
         const modalSearchInput = document.getElementById('modal-search-input');
         if (modalSearchInput) {
-            modalSearchInput.value = searchQuery; // Aplicamos el texto de búsqueda global
+            modalSearchInput.value = searchQuery;
         }
 
         const catButton = document.getElementById('category-filter-button');
         const catText = document.getElementById('category-filter-selected-text');
         if (catButton && catText) {
-            // Si hay un filtro de categoría global activo, lo aplicamos
             if (currentFilter && currentFilter !== 'all') {
                 catButton.dataset.value = currentFilter;
                 const info = CATEGORY_INFO[currentFilter];
                 catText.textContent = `${info.emoji} ${info.name}`;
                 catButton.classList.remove('placeholder');
-            } else { // Si no, lo reseteamos a "Todas"
+            } else {
                 catButton.dataset.value = 'all';
                 const info = CATEGORY_INFO['all'];
                 catText.textContent = `${info.emoji} ${info.name}`;
@@ -2638,7 +2690,6 @@ dayGiveaways.sort((a, b) => {
             }
         }
         
-        // 2. Ahora que los filtros del modal tienen los valores correctos, llamamos a buildModal
         buildModal(dateStr); 
         modal.classList.add('is-visible'); 
     };
@@ -2860,7 +2911,6 @@ dayGiveaways.sort((a, b) => {
         reader.onload = async (event) => {
             const base64Data = event.target.result;
             analysisImagePreview.src = base64Data;
-
             const hoy = new Date();
             const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
             const dynamicPrompt = `
@@ -4777,12 +4827,9 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
     setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
     
-    // Localiza este bloque en tu código
-addManualBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    // REEMPLAZA el texto de esta constante
-    const confirmationMessage = `✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨
+    addManualBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const confirmationMessage = `✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨
 
 ¿Cómo quieres guardar este sorteo?
 
@@ -4791,14 +4838,14 @@ addManualBtn.addEventListener('click', (e) => {
 - 🧙‍♂️ **Enviar al Hechicero (Público):** ¿Has encontrado un gran tesoro y quieres compartirlo con la comunidad? ¡Envíamelo! Lo revisaré y en unas horas aparecerá en el mapa de todos.
 
 Elige la opción que prefieras dentro del formulario.`;
-    
-    if (confirm(confirmationMessage)) {
-        if (navMenu.classList.contains('is-open')) {
-            toggleNavMenu();
+        if (confirm(confirmationMessage)) {
+            if (navMenu.classList.contains('is-open')) {
+                toggleNavMenu();
+            }
+            openAddGiveawayModal();
         }
-        openAddGiveawayModal();
-    }
-});
+    });
+
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
         const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\n\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\n\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\n\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\n- Enviarlos uno a uno a: admin@misorteos.es\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\n\n¿Añadimos este tesoro a tu colección privada?";
@@ -4851,48 +4898,38 @@ Elige la opción que prefieras dentro del formulario.`;
         if (!dateStr) return;
 
         const giveawayId = e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
-
-        // --- ACCIONES PRINCIPALES ---
-        const restoreBtn = e.target.closest('.restore-not-interested-btn');
-        const notInterestedBtn = e.target.closest('.not-interested-btn');
         const checkbox = e.target.closest('input[type="checkbox"]');
-        
+
+        if (checkbox) {
+            const itemContainer = checkbox.closest('.giveaway-item');
+            if (checkbox.checked) {
+                completedGiveaways[giveawayId] = true;
+                animateShootingStar(itemContainer, () => {
+                    buildModal(dateStr);
+                    renderCalendar();
+                });
+            } else {
+                delete completedGiveaways[giveawayId];
+                buildModal(dateStr);
+                renderCalendar();
+            }
+            saveCompletedGiveaways();
+            checkAchievements('complete', { giveawayDate: dateStr });
+            return;
+        }
+
+        const restoreBtn = e.target.closest('.restore-not-interested-btn');
         if (restoreBtn) {
             restoreFromNotInterested(restoreBtn.dataset.giveawayId, dateStr);
             return;
         }
 
+        const notInterestedBtn = e.target.closest('.not-interested-btn');
         if (notInterestedBtn) {
             moveToNotInterested(notInterestedBtn.dataset.giveawayId, dateStr);
             return;
         }
         
-        // --- INICIO DEL CÓDIGO CORREGIDO ---
-if (checkbox) {
-    const itemContainer = checkbox.closest('.giveaway-item');
-    const giveawayId = checkbox.dataset.giveawayId; // Asegúrate de tener el ID aquí
-
-    if (checkbox.checked) {
-        completedGiveaways[giveawayId] = true;
-        animateShootingStar(itemContainer, () => {
-            // Reconstruimos el modal DESPUÉS de la animación para que se vea el orden correcto
-            buildModal(dateStr); 
-            renderCalendar();
-        });
-    } else {
-        delete completedGiveaways[giveawayId];
-        // Forzamos la reconstrucción del modal INMEDIATAMENTE al desmarcar
-        buildModal(dateStr);
-        renderCalendar();
-    }
-    
-    saveCompletedGiveaways();
-    checkAchievements('complete', { giveawayDate: dateStr });
-    return;
-}
-// --- FIN DEL CÓDIGO CORREGIDO ---
-
-        // --- OTRAS ACCIONES ---
         if (e.target.closest('.win-giveaway-btn')) {
             markAsWon(giveawayId, dateStr);
         } else if (e.target.closest('.vis-giveaway-btn')) {
@@ -5348,12 +5385,9 @@ document.addEventListener('click', function(e) {
 });
 
 // --- LÓGICA DEL PANEL DE ADMINISTRADOR ---
-
-// 1. Credenciales (cambia la contraseña aquí si lo necesitas en el futuro)
 const ADMIN_USERNAME = "Misorteos";
 const ADMIN_PASSWORD = "Saul31322";
 
-// 2. Referencias a los nuevos elementos del modal de Admin
 const adminPanelBtn = document.getElementById('admin-panel-btn');
 const adminModal = document.getElementById('admin-modal');
 const closeAdminModalBtn = document.getElementById('close-admin-modal');
@@ -5362,52 +5396,38 @@ const adminLoginView = document.getElementById('admin-login-view');
 const adminActionsView = document.getElementById('admin-actions-view');
 const adminUploadBtn = document.getElementById('admin-upload-btn');
 const adminDownloadBtn = document.getElementById('admin-download-btn');
+const zipUploadInput = document.getElementById('zip-upload');
 
-// 3. Configuración del modal
 setupModal(adminPanelBtn, adminModal, closeAdminModalBtn, () => {
-    // Cada vez que se abre el modal, reseteamos a la vista de login
     adminLoginView.style.display = 'block';
     adminActionsView.style.display = 'none';
     adminLoginForm.reset();
 });
 
-// 4. Lógica de validación de la contraseña
 adminLoginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const usernameInput = document.getElementById('admin-username').value;
     const passwordInput = document.getElementById('admin-password').value;
 
     if (usernameInput === ADMIN_USERNAME && passwordInput === ADMIN_PASSWORD) {
-        // Contraseña correcta: mostramos las acciones
         adminLoginView.style.display = 'none';
         adminActionsView.style.display = 'block';
         showNotification('Acceso Concedido', 'Bienvenido, Hechicero Mayor.');
     } else {
-        // Contraseña incorrecta
         showNotification('Acceso Denegado', 'Las credenciales no son correctas.');
         adminLoginForm.reset();
     }
 });
 
-// 5. Conectar los botones de admin a las funciones existentes
-adminUploadBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    zipUploadInput.click(); // Reutilizamos el input de archivo que ya existe
-});
-
-adminDownloadBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    downloadSourceCode(); // Reutilizamos la función de descarga
-});
-// --- INICIO: LÓGICA PARA ENVIAR SORTEO AL ADMIN ---
+adminUploadBtn.addEventListener('click', (e) => { e.preventDefault(); zipUploadInput.click(); });
+adminDownloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
+zipUploadInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { restoreFromBackup(file); } });
+// --- LÓGICA PARA ENVIAR SORTEO AL ADMIN ---
 const addGiveawayModalEl = document.getElementById('add-giveaway-modal');
-
 if (addGiveawayModalEl) {
     addGiveawayModalEl.addEventListener('click', (e) => {
         if (e.target.id === 'send-to-admin-btn') {
             e.preventDefault();
-
-            // 1. Recoger los datos del formulario
             const date = document.getElementById('giveaway-date').value;
             const prize = document.getElementById('giveaway-prize').value;
             const accounts = document.getElementById('giveaway-accounts').value;
@@ -5415,36 +5435,19 @@ if (addGiveawayModalEl) {
             const categorySelect = document.getElementById('giveaway-category');
             const category = categorySelect.options[categorySelect.selectedIndex].text;
 
-            // 2. Validación simple
             if (!date || !prize) {
                 showNotification('Faltan Datos', 'Por favor, completa al menos la fecha y el premio.');
                 return;
             }
 
-            // 3. Construir el email
             const emailAdmin = 'admin@misorteos.es';
             const subject = `Nuevo Sorteo Sugerido: ${prize.substring(0, 30)}...`;
-            const body = `
-¡Hola, Hechicero Mayor! 🧙‍♂️
+            const body = `¡Hola, Hechicero Mayor! 🧙‍♂️\n\nUn cazador de sorteos ha compartido un nuevo tesoro para el calendario público. Aquí están los detalles:\n\n- Fecha Finalización: ${date}\n- Premio: ${prize}\n- Cuentas: ${accounts || 'No especificadas'}\n- Valor Aprox.: ${price || 'No especificado'}\n- Categoría: ${category || 'No especificada'}\n\n¡Gracias por tu magia!`;
 
-Un cazador de sorteos ha compartido un nuevo tesoro para el calendario público. Aquí están los detalles:
-
-- Fecha Finalización: ${date}
-- Premio: ${prize}
-- Cuentas: ${accounts || 'No especificadas'}
-- Valor Aprox.: ${price || 'No especificado'}
-- Categoría: ${category || 'No especificada'}
-
-¡Gracias por tu magia!
-            `;
-
-            // 4. Crear y abrir el enlace mailto
             const mailtoLink = `mailto:${emailAdmin}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             window.location.href = mailtoLink;
-
             showNotification('¡Enviado!', 'Se ha abierto tu app de correo para enviar el sorteo. ¡Gracias por compartir!');
             
-            // Opcional: Limpiar y cerrar el modal tras el envío
             setTimeout(() => {
                 document.getElementById('add-giveaway-form').reset();
                 closeAddGiveawayModal();
@@ -5452,7 +5455,263 @@ Un cazador de sorteos ha compartido un nuevo tesoro para el calendario público.
         }
     });
 }
-// --- FIN: LÓGICA PARA ENVIAR SORTEO AL ADMIN ---
+
+// --- INICIO: LÓGICA COMPLETA PARA COMPARTIR VITRINA GRÁFICA ---
+
+const openShareOptionsBtn = document.getElementById('open-share-options-btn');
+const shareOptionsModal = document.getElementById('share-options-modal');
+const closeShareOptionsModalBtn = document.getElementById('close-share-options-modal');
+const generateAndDownloadBtn = document.getElementById('generate-and-download-btn');
+const shareNativeBtn = document.getElementById('share-native-btn');
+const previewContainer = document.getElementById('share-preview-container');
+
+// Función para abrir el modal y popular las opciones
+const openShareModal = () => {
+    const datepickerContainer = document.getElementById('datepicker-container');
+    if (datepicker) {
+        datepicker.destroy();
+    }
+    datepicker = new Datepicker(datepickerContainer, {
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayHighlight: true,
+        weekStart: 1,
+        pickerPosition: 'bottom-left',
+        rangePicker: true // Habilita la selección de rango
+    });
+    
+    datepickerContainer.addEventListener('changeDate', (e) => {
+        const checkedRadio = document.querySelector('#share-timeframe-radios input:checked');
+        if(checkedRadio) {
+            checkedRadio.checked = false;
+        }
+        handleTimeframeChange();
+    });
+
+    document.getElementById('time-month').checked = true;
+    handleTimeframeChange();
+    shareOptionsModal.classList.add('is-visible');
+};
+
+// Función para poblar la lista de premios
+const populatePrizeList = (trophies) => {
+    const prizeListDiv = document.getElementById('share-prize-list-container');
+    prizeListDiv.innerHTML = '';
+    if (trophies.length > 0) {
+        trophies.forEach(g => {
+            const prizeItem = document.createElement('div');
+            prizeItem.className = 'flex items-center';
+            prizeItem.innerHTML = `
+                <input type="checkbox" id="prize-${g.id}" data-prize-id="${g.id}" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" checked>
+                <label for="prize-${g.id}" class="ml-2 block text-sm text-gray-700 truncate">${g.prize}</label>
+            `;
+            prizeListDiv.appendChild(prizeItem);
+        });
+    } else {
+        prizeListDiv.innerHTML = '<p class="text-gray-500 text-center">No hay trofeos en este periodo.</p>';
+    }
+};
+
+// Función para manejar los cambios de tiempo y poblar la lista de premios
+const handleTimeframeChange = () => {
+    let selectionType = 'radio';
+    let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
+    const selectedDates = datepicker ? datepicker.getDates('yyyy-mm-dd') : [];
+    
+    if (selectedDates.length > 0) {
+        selectionType = 'calendar';
+        selectionValue = selectedDates;
+    }
+
+    const now = new Date();
+    const trophiesInTimeframe = wonGiveaways.filter(g => {
+        const wonDate = new Date(g.wonDate);
+        wonDate.setHours(0,0,0,0);
+        if(selectionType === 'radio') {
+            switch (selectionValue) {
+                case 'last_week': return (now - wonDate) / (1000 * 3600 * 24) <= 7;
+                case 'last_month': return (now - wonDate) / (1000 * 3600 * 24) <= 30;
+                case 'all': return true;
+                default: return false;
+            }
+        } else if (selectionType === 'calendar' && selectionValue.length > 0) {
+            const startDate = new Date(selectionValue[0]);
+            const endDate = selectionValue.length > 1 ? new Date(selectionValue[1]) : new Date(selectionValue[0]);
+            startDate.setHours(0,0,0,0);
+            endDate.setHours(0,0,0,0);
+            return wonDate >= startDate && wonDate <= endDate;
+        }
+        return false;
+    });
+    
+    populatePrizeList(trophiesInTimeframe);
+    updateSharePreview();
+};
+
+// Función para actualizar la vista previa
+const updateSharePreview = async () => {
+    previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
+    const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
+    
+    if (selectedPrizeIds.size === 0) {
+        previewContainer.innerHTML = '<span class="text-gray-500">Selecciona al menos un trofeo para mostrar.</span>';
+        return;
+    }
+    const prizesToRender = wonGiveaways.filter(g => selectedPrizeIds.has(g.id));
+    
+    let timeframeText = 'Resumen Personalizado';
+    const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+    const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+
+    if (selectedDates.length > 0) {
+        timeframeText = selectedDates.length === 1 ? `Día: ${selectedDates[0]}` : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+    } else if (radioChecked) {
+        const radioLabels = { 'all': 'Todos los Tiempos', 'last_month': 'Último Mes', 'last_week': 'Última Semana' };
+        timeframeText = radioLabels[radioChecked.value];
+    }
+    
+    const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+    const img = new Image();
+    img.src = canvas.toDataURL('image/png');
+    img.className = 'max-w-full max-h-full object-contain rounded-lg';
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(img);
+};
+
+// La función principal que dibuja la imagen
+const generateTrophyImage = async (prizesToRender, timeframeText) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 1000;
+    const ctx = canvas.getContext('2d');
+    const filteredTrophies = prizesToRender.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate));
+
+    // DIBUJAR FONDO Y BORDE
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#fffbef');
+    gradient.addColorStop(1, '#fef3c7');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 20;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    // DIBUJAR TÍTULOS
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#6a3805';
+    ctx.font = 'bold 50px Chewy';
+    ctx.fillText("Vitrina de Trofeos", canvas.width / 2, 80);
+    ctx.font = '30px Chewy';
+    ctx.fillStyle = '#b45309';
+    ctx.fillText(timeframeText, canvas.width / 2, 125);
+    
+    // DIBUJAR ESTADÍSTICAS
+    const totalWins = filteredTrophies.length;
+    const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
+    ctx.font = 'bold 32px Chewy';
+    ctx.fillStyle = '#4e342e';
+    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
+    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
+
+    // DIBUJAR LISTA DE PREMIOS
+    ctx.textAlign = 'left';
+    ctx.font = '22px Chewy';
+    let yPos = 250;
+    filteredTrophies.slice(0, 15).forEach(g => {
+        ctx.fillStyle = '#4e342e';
+        let prizeText = g.prize;
+        if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
+        ctx.fillText(`- ${prizeText}`, 50, yPos);
+        ctx.fillStyle = '#b45309';
+        ctx.textAlign = 'right';
+        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
+        ctx.textAlign = 'left';
+        yPos += 40;
+    });
+    if (filteredTrophies.length > 15) {
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#92400e';
+        ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+    }
+    
+    // DIBUJAR SELLO DE AGUA
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
+    ctx.rotate(-Math.PI / 6);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(106, 56, 5, 0.08)';
+    ctx.font = 'bold 90px Chewy';
+    ctx.fillText("Misorteos.es", 0, 0);
+    ctx.restore();
+
+    // DIBUJAR PIE DE PÁGINA
+    ctx.font = '20px Chewy';
+    ctx.fillStyle = '#92400e';
+    ctx.textAlign = 'center';
+    ctx.fillText("Generado con Misorteos.es ✨", canvas.width / 2, canvas.height - 40);
+
+    return canvas;
+};
+
+// --- EVENT LISTENERS PARA EL MODAL DE COMPARTIR ---
+const radioContainerShare = document.getElementById('share-timeframe-radios');
+const prizeListContainer = document.getElementById('share-prize-list-container');
+
+if (openShareOptionsBtn) {
+    openShareOptionsBtn.addEventListener('click', openShareModal);
+}
+if (closeShareOptionsModalBtn) {
+    closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
+}
+if (shareOptionsModal) {
+    shareOptionsModal.addEventListener('click', (e) => {
+        if (e.target === shareOptionsModal) shareOptionsModal.classList.remove('is-visible');
+    });
+}
+if(radioContainerShare) {
+    radioContainerShare.addEventListener('change', () => {
+        if(datepicker) datepicker.clear();
+        handleTimeframeChange();
+    });
+}
+if (prizeListContainer) {
+    prizeListContainer.addEventListener('change', updateSharePreview);
+}
+if (generateAndDownloadBtn) {
+    generateAndDownloadBtn.addEventListener('click', async () => {
+        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+        if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
+        const timeframeText = document.querySelector('#share-options-modal h2 + div .font-bold').textContent;
+        const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+        const link = document.createElement('a');
+        link.download = `Misorteos-Vitrina.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+}
+if (shareNativeBtn) {
+    shareNativeBtn.addEventListener('click', async () => {
+        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+        if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
+        const timeframeText = document.querySelector('#share-options-modal h2 + div .font-bold').textContent;
+        if (navigator.share) {
+            const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
+                try {
+                    await navigator.share({
+                        title: 'Mi Vitrina de Trofeos de Misorteos',
+                        text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
+                        files: [file],
+                    });
+                } catch (error) { console.error('Error al compartir:', error); }
+            }, 'image/png');
+        } else {
+            showNotification('No Soportado', 'Tu navegador no permite compartir archivos. Por favor, descarga la imagen.');
+        }
+    });
+}
+// --- FIN DE LÓGICA PARA COMPARTIR ---
 </script>
 </body>
 </html>

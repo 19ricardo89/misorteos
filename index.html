@@ -1562,10 +1562,7 @@
                 <p class="text-sm text-yellow-800 bg-yellow-100/50 p-3 rounded-lg border border-yellow-300">
                     Aquí se guardan los lotes de sorteos que has añadido con la IA. <strong>Pulsa sobre un lote para filtrar el calendario</strong> y ver únicamente los sorteos de esa captura.
                 </p>
-                <div class="text-center my-4">
-                    <button id="clear-batch-filter-btn" class="nav-btn px-4 py-2 text-sm" style="display: none;">Quitar Filtro y Ver Todos</button>
-                </div>
-                <div id="batch-history-list" class="space-y-2">
+                <div id="batch-history-list" class="space-y-2 mt-4">
                     </div>
             </div>
         </div>
@@ -2060,7 +2057,7 @@
 
         // Prioridad 1: Filtro de Lote de Capturas
         if (activeBatchFilterId) {
-            const activeBatch = (window.captureBatches || []).find(b => b.id === activeBatchFilterId);
+            const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
             if (activeBatch) {
                 bannerMessage = `Mostrando solo el lote: <strong>${activeBatch.name}</strong> (${activeBatch.giveawayIds.length} sorteos).`;
                 filterIsActive = true;
@@ -2068,7 +2065,7 @@
         } 
         // Prioridad 2: Filtro de Categoría Global
         else if (currentFilter && currentFilter !== 'all') {
-            const category = CATEGORY_INFO[currentFilter] || { name: currentFilter, emoji: '' };
+            const category = CATEGORY_INFO[currentFilter];
             bannerMessage = `Mostrando categoría: <strong>${category.emoji} ${category.name}</strong>.`;
             filterIsActive = true;
         }
@@ -2348,7 +2345,7 @@
         }
         return null;
     };
-   const renderCalendar = () => {
+    const renderCalendar = () => {
         if (!calendarDaysEl || !monthYearEl) return;
         calendarDaysEl.innerHTML = '';
         const month = currentDate.getMonth();
@@ -2366,7 +2363,7 @@
             let giveawaysForDay = giveaways[dateStr] || [];
 
             if (activeBatchFilterId) {
-                const activeBatch = (window.captureBatches || []).find(b => b.id === activeBatchFilterId);
+                const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
                 if (activeBatch) {
                     const batchGiveawayIds = new Set(activeBatch.giveawayIds);
                     giveawaysForDay = giveawaysForDay.filter(g => batchGiveawayIds.has(g.id));
@@ -2436,7 +2433,7 @@
         
         // --- INICIO DE LA MODIFICACIÓN PARA FILTRADO DE LOTE ---
         if (activeBatchFilterId) {
-            const activeBatch = (window.captureBatches || []).find(b => b.id === activeBatchFilterId);
+            const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
             if (activeBatch) {
                 const batchGiveawayIds = new Set(activeBatch.giveawayIds);
                 dayGiveaways = dayGiveaways.filter(g => batchGiveawayIds.has(g.id));
@@ -3350,20 +3347,16 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         };
         const statusKey = statusMap[action] || data.status;
 
-        const errorKeys = ['api_error', 'no_date', 'not_a_giveaway'];
-        if (errorKeys.includes(statusKey)) {
-            analysisResults.api_error.push(editedData);
-        } else if (analysisResults[statusKey]) {
-            analysisResults[statusKey].push(editedData);
+        // Limpiamos la entrada de la lista de errores antes de clasificarla de nuevo
+        if (analysisResults.api_error) {
+            analysisResults.api_error = analysisResults.api_error.filter(item => item.originalFile.name !== editedData.originalFile.name);
         }
         
-        updateAnalysisLegend();
-
         switch(action){
             case 'save':
             case 'add-new':
                 const newGiveaway = { 
-                    id: Date.now().toString(), 
+                    id: Date.now().toString(), // Generamos el ID aquí
                     date: editedData.date, 
                     prize: editedData.prize, 
                     accounts: editedData.accounts, 
@@ -3374,21 +3367,30 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     is_priority_time: editedData.is_priority_time,
                     prize_category: editedData.prize_category
                 };
+                
+                // VALIDACIÓN
                 if (!newGiveaway.date || !newGiveaway.prize) {
                     showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
-                    analysisResults[statusKey].pop();
-                    return; 
+                    return; // Detenemos la ejecución aquí
                 }
+                
+                // Guardamos el sorteo con su nuevo ID en el array de resultados
+                analysisResults.added.push(newGiveaway);
+
+                // Y añadimos ESE MISMO sorteo al calendario
                 addGiveaway(newGiveaway);
+
                 addPoints(5, `Sorteo añadido con IA`);
                 checkAchievements('add-ai');
                 break;
             case 'trash':
                 trashGiveaways.push({ ...editedData, id: Date.now().toString(), originalDate: editedData.date });
+                analysisResults.expired.push(editedData);
                 saveTrashGiveaways();
                 break;
             case 'mark-foreign':
                 discardedGiveaways.push({ ...editedData, id: Date.now().toString(), status: 'foreign' });
+                analysisResults.foreign.push(editedData);
                 editedData.accounts.forEach(acc => { if (acc && !foreignAccounts.includes(acc)) foreignAccounts.push(acc) });
                 saveDiscardedGiveaways();
                 saveForeignAccounts();
@@ -3397,21 +3399,26 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             case 'merge':
                 const original = Object.values(giveaways).flat().find(g => g.id === data.originalGiveaway.id);
                 if (original) {
-                    if (!original.price && discarded.price) original.price = discarded.price;
+                    if (!original.price && editedData.price) original.price = editedData.price;
                     if (editedData.prize.length > original.prize.length) original.prize = editedData.prize;
                     saveGiveaways();
                     showNotification('Fusión completada', 'Se han actualizado los datos del sorteo original.');
                     checkAchievements('merge');
                 }
+                analysisResults.duplicate.push(editedData);
                 break;
             case 'discard':
                 if (data.status === 'no_date' || data.status === 'not_a_giveaway' || data.status === 'duplicate') {
                      discardedGiveaways.push({ ...data, id: Date.now().toString() });
+                     analysisResults[data.status].push(editedData);
                      saveDiscardedGiveaways();
+                } else if (data.status === 'api_error') {
+                    analysisResults.api_error.push(editedData);
                 }
                 break;
         }
-
+        
+        updateAnalysisLegend();
         currentIndex++;
         processNextImage();
     }
@@ -5078,7 +5085,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     document.getElementById('batch-history-list').addEventListener('click', (e) => {
         const batchItem = e.target.closest('[data-batch-id]');
         if (batchItem) {
-            // Limpiamos otros filtros para dar prioridad al de lote
             searchQuery = '';
             currentFilter = 'all';
             if (document.getElementById('global-search-input')) document.getElementById('global-search-input').value = '';
@@ -5086,12 +5092,11 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
             activeBatchFilterId = Number(batchItem.dataset.batchId);
             renderCalendar();
-            updateFilterBanner();
-            document.getElementById('close-new-additions-modal').click();
+            updateFilterBanner(); // <-- Llamada clave para mostrar el banner
+            document.getElementById('close-new-additions-modal').click(); // Cerramos el modal
         }
     });
 
-    document.getElementById('clear-batch-filter-btn').addEventListener('click', clearAllFilters);
     document.getElementById('filter-banner-clear-btn').addEventListener('click', clearAllFilters);
     
     document.addEventListener('DOMContentLoaded', () => {

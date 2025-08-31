@@ -1235,6 +1235,11 @@
                         <label for="giveaway-price" class="block font-bold">Valor (aprox):</label>
                         <input type="text" id="giveaway-price" placeholder="Ej: 50€, 1300€ 💲" class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
                     </div>
+                    <div>
+                        <label for="giveaway-category" class="block font-bold">Categoría:</label>
+                        <select id="giveaway-category" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
+                            </select>
+                    </div>
                     <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg">Guardar Sorteo</button>
                 </form>
             </div>
@@ -1546,7 +1551,7 @@
                 </div>
         </div>
     </div>
-
+    
     <div id="new-additions-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -2009,6 +2014,24 @@
     let originalDateOfGiveaway = null;
     // --- FUNCIONES DE LA APLICACIÓN ---
     
+    const populateCategoryDropdown = (selectElementId) => {
+        const selectElement = document.getElementById(selectElementId);
+        if (!selectElement) return;
+        
+        // Limpiamos opciones existentes y añadimos una por defecto
+        selectElement.innerHTML = '<option value="" disabled selected>-- Selecciona una categoría --</option>';
+
+        for (const key in CATEGORY_INFO) {
+            if (key === 'all') continue; // No incluimos la opción "Todas"
+            
+            const category = CATEGORY_INFO[key];
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = `${category.emoji} ${category.name}`;
+            selectElement.appendChild(option);
+        }
+    };
+    
     const clearAllFilters = () => {
         activeBatchFilterId = null;
         searchQuery = '';
@@ -2325,7 +2348,6 @@
         }
         return null;
     };
-    
     const renderCalendar = () => {
         if (!calendarDaysEl || !monthYearEl) return;
         calendarDaysEl.innerHTML = '';
@@ -2371,7 +2393,7 @@
                 // Lógica de categoría
                 let prizeCategory = 'otros';
                 for (const [key, value] of Object.entries(CATEGORY_INFO)) {
-                    if (prize.includes(value.emoji)) {
+                    if (g.prize_category === key) {
                         prizeCategory = key;
                         break;
                     }
@@ -2425,14 +2447,15 @@
         // --- FIN DE LA MODIFICACIÓN ---
 
         const modalSearchInput = document.getElementById('modal-search-input');
-        const searchQuery = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
+        const searchQueryModal = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
         const selectedCategory = document.getElementById('category-filter-button')?.dataset.value || 'all';
 
         dayGiveaways = dayGiveaways.filter(g => {
-            const matchesSearch = !searchQuery || (g.prize && g.prize.toLowerCase().includes(searchQuery));
+            const matchesSearch = !searchQueryModal || (g.prize && g.prize.toLowerCase().includes(searchQueryModal));
             const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
             return matchesSearch && matchesCategory;
         });
+
         dayGiveaways.sort((a, b) => {
             const aCompleted = completedGiveaways[a.id];
             const bCompleted = completedGiveaways[b.id];
@@ -3418,6 +3441,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         analysisHistory = analysisHistory.slice(-20);
         saveAnalysisHistory();
         
+        // --- INICIO DE MODIFICACIÓN PARA GUARDAR LOTE DE CAPTURA ---
         if (analysisResults.added.length > 0) {
             const now = new Date();
             const newBatch = {
@@ -3435,8 +3459,9 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                 window.captureBatches = window.captureBatches.slice(-30);
             }
             
-            saveCaptureBatches();
+            saveCaptureBatches(); // Guardamos el nuevo estado de los lotes
         }
+        // --- FIN DE MODIFICACIÓN ---
 
         let summaryHTML = `
             <div class="space-y-4 text-yellow-300 w-full">
@@ -3461,6 +3486,24 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         }
         
         renderCalendar();
+        
+        // --- INICIO DE MODIFICACIÓN PARA ENVÍO SEMI-AUTOMÁTICO DE LOTE ---
+        if (totalAdded > 0) {
+            // Retrasamos ligeramente el mensaje para que el usuario vea primero el resumen.
+            setTimeout(() => {
+                const confirmationMessage = `¡Análisis completado!\n\nHas añadido ${totalAdded} sorteo(s) nuevo(s) a tu calendario. Recuerda que son privados para ti.\n\n¿Quieres enviar este lote al administrador por email para que pueda hacerlo público para todos los usuarios?`;
+                
+                if (confirm(confirmationMessage)) {
+                    const subject = 'Sugerencia de Nuevo Lote de Sorteos';
+                    // Usamos JSON.stringify con indentación para que el correo sea legible
+                    const body = `Hola, aquí tienes un nuevo lote de sorteos para añadir a la base de datos pública:\n\n${JSON.stringify(analysisResults.added, null, 2)}`;
+                    
+                    // Creamos y abrimos el enlace mailto:
+                    window.location.href = `mailto:admin@misorteos.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                }
+            }, 500); // 500ms de retraso
+        }
+        // --- FIN DE MODIFICACIÓN ---
     }
     
     const generateErrorCardHTML = (errorData) => {
@@ -4639,6 +4682,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     
     animateStarryBackground();
     animateTitle();
+    populateCategoryDropdown('giveaway-category');
     renderCalendar();
     updatePointsDisplay();
     if (userTitleEl) {
@@ -4684,14 +4728,29 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
     setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
     
+    addManualBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const confirmation = confirm("Aviso de Privacidad\n\nLos sorteos que añadas se guardarán de forma privada y segura únicamente en tu navegador. Nadie más podrá verlos.\n\nSolo el administrador de la web puede hacer públicos los sorteos para todos los usuarios. Si quieres contribuir, puedes enviarlos a: admin@misorteos.es\n\n¿Quieres continuar?");
+        if (confirmation) {
+            if (navMenu.classList.contains('is-open')) {
+                toggleNavMenu();
+            }
+            openAddGiveawayModal();
+        }
+    });
+
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (navMenu.classList.contains('is-open')) {
-            toggleNavMenu();
+        const confirmation = confirm("Aviso de Privacidad\n\nLos sorteos que añadas se guardarán de forma privada y segura únicamente en tu navegador. Nadie más podrá verlos.\n\nSolo el administrador de la web puede hacer públicos los sorteos para todos los usuarios. Si quieres contribuir, puedes enviarlos a: admin@misorteos.es\n\n¿Quieres continuar?");
+        if (confirmation) {
+            if (navMenu.classList.contains('is-open')) {
+                toggleNavMenu();
+            }
+            resetAIView();
+            aiFullscreenView.classList.add('is-visible');
         }
-        resetAIView();
-        aiFullscreenView.classList.add('is-visible');
     });
+
     closeAiViewBtn.addEventListener('click', () => {
         aiFullscreenView.classList.remove('is-visible');
         resetAIView();
@@ -4963,7 +5022,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
     addGiveawayForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value };
+        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, prize_category: document.getElementById('giveaway-category').value };
         addGiveaway(newGiveaway);
         closeAddGiveawayModal();
     });

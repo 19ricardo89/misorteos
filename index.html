@@ -127,6 +127,13 @@
         .calendar-day.all-done { background-color: rgba(34, 197, 94, 0.3); border-color: #22c55e; }
         .calendar-day.all-done .giveaway-count { display: none; }
         .giveaway-count { font-size: 0.7rem; color: #78350f; background-color: #f7d468; border: 1px solid #b45309; padding: 1px 5px; margin-top: 4px; }
+        /* [NUEVO] Estilo para resaltar los días con premios en el calendario de compartir */
+.datepicker-cell.highlighted {
+    border: 2px solid #3b82f6 !important; /* Borde azul brillante */
+    background-color: rgba(59, 130, 246, 0.15) !important; /* Fondo azulado sutil */
+    border-radius: 50%; /* Lo hacemos circular */
+    font-weight: bold;
+}
 
         /* --- MODAL --- */
         .modal {
@@ -5466,8 +5473,7 @@ const shareNativeBtn = document.getElementById('share-native-btn');
 const previewContainer = document.getElementById('share-preview-container');
 
 // [FIX DEFINITIVO v2] Reemplaza las dos funciones antiguas con estas:
-
-// Función para abrir el modal (con control de errores mejorado)
+// [NUEVA VERSIÓN] Reemplaza la función antigua con esta
 const openShareModal = () => {
     shareOptionsModal.classList.add('is-visible');
     try {
@@ -5476,24 +5482,30 @@ const openShareModal = () => {
             datepicker.destroy();
         }
 
-        // Creamos la nueva instancia del calendario
+        // 1. Recopilamos las fechas originales de los sorteos ganados.
+        // Se usa un Set para evitar fechas duplicadas y se filtran las inválidas.
+        const wonDatesToHighlight = [...new Set(wonGiveaways.map(g => g.date).filter(Boolean))];
+
+        // 2. Creamos la nueva instancia del calendario con la opción "datesHighlighted".
         const newDatepickerInstance = new Datepicker(datepickerContainer, {
             format: 'dd/mm/yyyy',
             language: 'es',
             todayHighlight: true,
             weekStart: 1,
             pickerPosition: 'bottom-left',
-            rangePicker: true
+            rangePicker: true,
+            datesHighlighted: wonDatesToHighlight // <-- AQUÍ OCURRE LA MAGIA
         });
-        // La guardamos en la variable global para que sea accesible
-        datepicker = newDatepickerInstance;
+        
+        datepicker = newDatepickerInstance; // Asignamos la nueva instancia a la variable global
 
-        // Limpiamos el listener anterior por si acaso y añadimos el nuevo
+        // Limpiamos listeners antiguos y añadimos el nuevo para evitar duplicados.
         datepickerContainer.removeEventListener('changeDate', handleDatepickerChange);
         datepickerContainer.addEventListener('changeDate', handleDatepickerChange);
         
         document.getElementById('time-month').checked = true;
-        // Llamamos a la función principal pasándole la instancia que acabamos de crear
+        
+        // Llamamos a la función principal para que cargue el contenido.
         handleTimeframeChange();
 
     } catch (error) {

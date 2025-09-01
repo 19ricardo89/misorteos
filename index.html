@@ -2931,9 +2931,10 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
 
 <PROCESO_MENTAL_GUIADO>
 1.  **Análisis Visual y OCR:** Realiza un reconocimiento óptico de caracteres (OCR) exhaustivo para extraer todo el texto de la imagen.
-2.  **Identificación de Entidades:** Identifica las entidades clave: Premio, Cuentas de Instagram, Valor del premio y cualquier mención a fechas o plazos.
+1.5. **Identificación del Autor (Máxima Prioridad):** Antes de analizar el contenido, localiza el nombre de usuario en la cabecera de la publicación (junto a la foto de perfil). Este nombre **no tendrá un '@'**. Captúralo, **añádele el '@' al principio**, y regístralo como la primera y más importante cuenta.
+2.  **Identificación de Entidades:** Identifica las demás entidades clave: Premio, Cuentas de Instagram adicionales (@mencionadas), Valor del premio y cualquier mención a fechas o plazos.
 3.  **Lógica de Fechas:** Aplica las 'REGLAS_DE_FECHA_JERARQUICAS' en el orden estricto en que se presentan para determinar la fecha correcta.
-4.  **Construcción del JSON:** Usa la información recopilada para construir el objeto JSON final, siguiendo la estructura y reglas de formato requeridas. Si la imagen NO es un sorteo, devuelve exclusivamente: {"status": "not_a_giveaway"}.
+4.  **Construcción del JSON:** Usa la información recopilada para construir el objeto JSON final.
 </PROCESO_MENTAL_GUIADO>
 <REGLAS_DE_VALIDEZ_GEOGRAFICA>
 Tu primera tarea es determinar si el sorteo es válido para un usuario en España y devolverlo en el campo \`is_spanish\`. Usa estas reglas en orden:
@@ -2976,7 +2977,7 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
 
 <REGLAS_ADICIONALES_DE_EXTRACCION>
 - **Cuentas (Extracción Inteligente y Completa):**
-    1.  **Prioridad 1 MAXIMA E INELUDIBLE SIEMPRE HAY cuenta principal (Cuenta Principal):** Identifica y extrae **siempre** el nombre de usuario de la cuenta que ha realizado la publicación del sorteo. Generalmente se encuentra en la parte superior de la imagen, donde empieza la publicación, está resaltada en negrita. siempre empieza por la cuenta y luego toda la publicación..
+1.  **Prioridad 1 MAXIMA E INELUDIBLE (Cuenta Principal/Autor):** Identifica el nombre de usuario que aparece en la **cabecera de la publicación**, usualmente al lado de la foto de perfil. **Importante: este nombre de usuario aparecerá sin el símbolo '@' delante.** Debes capturarlo igualmente y **añadirle tú mismo el '@'** al principio antes de incluirlo en la lista de cuentas. Este es el **autor** del post y su captura es obligatoria.
     2.  **Prioridad 2 (Cuentas Adicionales):** Además de la principal, extrae cualquier otra cuenta mencionada en el texto como requisito para participar (ej: "sigue a...", "en colaboración con...").
     3.  **Reglas de Exclusión (MUY IMPORTANTE):** Ignora activamente cualquier nombre de usuario que provenga de la sección de comentarios o de la sección de "Me gusta".
 
@@ -3160,6 +3161,23 @@ A continuación se presentan ejemplos de análisis para calibrar tu lógica y as
 }
 </EJEMPLO_7>
 
+<EJEMPLO_8: Caso Específico de Extracción de Autor sin '@'>
+- Texto de entrada: Una imagen de Instagram donde el usuario en la cabecera es "viajerofeliz" (sin el @) y en el texto del post dice: "¡Gana un viaje a la playa! Sigue a @hotelelsol y comenta..."
+- JSON de salida esperado:
+{
+  "prize": "Viaje a la playa",
+  "accounts": ["@viajerofeliz", "@hotelelsol"],
+  "date": "2025-XX-XX",
+  "price": null,
+  "ends_at_time": null,
+  "is_priority_time": false,
+  "status": "valid",
+  "is_spanish": true,
+  "prize_category": "viajes",
+  "winner_count": 1,
+  "confidence_score": 0.95
+}
+</EJEMPLO_8>
 </EJEMPLOS_GUIADOS_DE_ALTA_PRECISION>
 
 <FORMATO_DE_SALIDA_ESTRICTO>

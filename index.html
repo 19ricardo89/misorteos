@@ -170,6 +170,13 @@
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
         #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu, #new-additions-modal-body { overflow-y: auto; }
 
+        /* --- [FIX] CLASE PARA AÑADIR SCROLL AL MODAL DE COMPARTIR --- */
+        .modal-scroll-content {
+            flex-grow: 1; /* Hace que ocupe el espacio disponible */
+            overflow-y: auto; /* AÑADE EL SCROLL AUTOMÁTICO */
+            padding: 1rem; /* Mantiene un espaciado interior agradable */
+        }
+        
         /* --- ESTILOS PARA EL NUEVO FILTRO DE CATEGORÍAS --- */
         #category-filter-button.placeholder #category-filter-selected-text {
             color: #a16207;
@@ -1658,40 +1665,42 @@
 
     <div id="share-options-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-2xl rounded-2xl shadow-2xl modal-default-bg p-6">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center mb-4 p-6 pb-0">
                 <h2 class="text-2xl sm:text-3xl">Compartir Vitrina Personalizada</h2>
                 <button id="close-share-options-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
             </div>
             
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="w-full md:w-1/3 text-left">
-                    <label class="block font-bold mb-2">Paso 1: Elige el Periodo</label>
-                    
-                    <div id="share-timeframe-radios" class="space-y-2 mb-4">
-                        <div class="flex items-center"><input type="radio" id="time-all" name="timeframe_selection" value="all" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-all" class="ml-3 block text-sm font-bold">Todos los Tiempos</label></div>
-                        <div class="flex items-center"><input type="radio" id="time-month" name="timeframe_selection" value="last_month" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500" checked><label for="time-month" class="ml-3 block text-sm font-bold">Último Mes</label></div>
-                        <div class="flex items-center"><input type="radio" id="time-week" name="timeframe_selection" value="last_week" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-week" class="ml-3 block text-sm font-bold">Última Semana</label></div>
+            <div class="modal-scroll-content">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="w-full md:w-1/3 text-left">
+                        <label class="block font-bold mb-2">Paso 1: Elige el Periodo</label>
+                        
+                        <div id="share-timeframe-radios" class="space-y-2 mb-4">
+                            <div class="flex items-center"><input type="radio" id="time-all" name="timeframe_selection" value="all" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-all" class="ml-3 block text-sm font-bold">Todos los Tiempos</label></div>
+                            <div class="flex items-center"><input type="radio" id="time-month" name="timeframe_selection" value="last_month" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500" checked><label for="time-month" class="ml-3 block text-sm font-bold">Último Mes</label></div>
+                            <div class="flex items-center"><input type="radio" id="time-week" name="timeframe_selection" value="last_week" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-week" class="ml-3 block text-sm font-bold">Última Semana</label></div>
+                        </div>
+
+                        <div id="datepicker-container"></div>
                     </div>
 
-                    <div id="datepicker-container"></div>
+                    <div class="w-full md:w-2/3 text-left">
+                         <label class="block font-bold mb-2">Paso 2: Elige los Trofeos</label>
+                        <div id="share-prize-list-container" class="space-y-2 border border-yellow-400 p-3 rounded-lg max-h-48 overflow-y-auto">
+                            </div>
+                         <div id="share-preview-container" class="mt-4 bg-gray-200/50 p-2 rounded-lg border border-yellow-400 h-64 flex items-center justify-center">
+                            </div>
+                    </div>
                 </div>
 
-                <div class="w-full md:w-2/3 text-left">
-                     <label class="block font-bold mb-2">Paso 2: Elige los Trofeos</label>
-                    <div id="share-prize-list-container" class="space-y-2 border border-yellow-400 p-3 rounded-lg max-h-48 overflow-y-auto">
-                        </div>
-                     <div id="share-preview-container" class="mt-4 bg-gray-200/50 p-2 rounded-lg border border-yellow-400 h-64 flex items-center justify-center">
-                        </div>
+                <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                    <button id="generate-and-download-btn" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-green-600 transition-colors">
+                        <i class="fa-solid fa-download"></i> Descargar Imagen
+                    </button>
+                    <button id="share-native-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">
+                        <i class="fa-solid fa-paper-plane"></i> Compartir
+                    </button>
                 </div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-3 mt-6">
-                <button id="generate-and-download-btn" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-green-600 transition-colors">
-                    <i class="fa-solid fa-download"></i> Descargar Imagen
-                </button>
-                <button id="share-native-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">
-                    <i class="fa-solid fa-paper-plane"></i> Compartir
-                </button>
             </div>
         </div>
     </div>
@@ -3178,7 +3187,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
                 // --- [NUEVA LÓGICA DE DECISIÓN CON DOBLE FILTRO] ---
-                const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
+                const accounts = (aiData.accounts || []).map(acc => \`@\${acc.replace('@', '')}\`);
 
                 // 1. Comprobamos tu cortafuegos manual primero
                 const manuallyBlocked = accounts.some(acc => foreignAccounts.includes(acc));
@@ -3214,7 +3223,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     }
                 }
             } catch (error) {
-                console.error(`Error al analizar la imagen ${file.name}:`, error);
+                console.error(\`Error al analizar la imagen \${file.name}:\`, error);
                 resultData = { prize: 'Error de análisis', status: 'api_error', error: error.message, originalFile: file };
                 if (file) {
                     giveawaysWithErrors.push(file);
@@ -3244,119 +3253,119 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                 const category = CATEGORY_INFO[key];
                 // Marcamos como seleccionada la categoría que ha devuelto la IA
                 const isSelected = key === resultData.prize_category ? 'selected' : '';
-                return `<option value="${key}" ${isSelected}>${category.emoji} ${category.name}</option>`;
+                return \`<option value="\${key}" \${isSelected}>\${category.emoji} \${category.name}</option>\`;
             })
             .join('');
 
-        const formHTML = `
+        const formHTML = \`
             <div class="interactive-card-form space-y-2">
                 <div>
                     <label for="interactive-prize">Premio:</label>
-                    <input type="text" id="interactive-prize" value="${prize}" disabled>
+                    <input type="text" id="interactive-prize" value="\${prize}" disabled>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label for="interactive-date">Fecha:</label>
-                        <input type="date" id="interactive-date" value="${date}" disabled>
+                        <input type="date" id="interactive-date" value="\${date}" disabled>
                     </div>
                     <div>
                         <label for="interactive-price">Valor:</label>
-                        <input type="text" id="interactive-price" value="${price}" disabled>
+                        <input type="text" id="interactive-price" value="\${price}" disabled>
                     </div>
                 </div>
                 <div>
                     <label for="interactive-category">Categoría:</label>
                     <select id="interactive-category" class="w-full p-2 rounded-lg bg-white border border-yellow-400" disabled>
-                        ${categoryOptionsHTML}
+                        \${categoryOptionsHTML}
                     </select>
                 </div>
                 <div>
                     <label for="interactive-accounts">Cuentas:</label>
-                    <textarea id="interactive-accounts" rows="2" disabled>${accounts}</textarea>
+                    <textarea id="interactive-accounts" rows="2" disabled>\${accounts}</textarea>
                 </div>
             </div>
-        `;
+        \`;
         
         switch(resultData.status) {
             case 'valid':
                 const confidenceEmoji = getConfidenceEmoji(resultData.confidence_score);
-                title = `✅ Sorteo Válido ${confidenceEmoji}`;
+                title = \`✅ Sorteo Válido \${confidenceEmoji}\`;
                 cardStatusClass = 'card-status-valid';
-                buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-save" class="btn-save">Guardar</button>`;
-                cardHTML = `
-                <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                    <h3 class="card-title">${title}</h3>
-                    ${formHTML}
+                buttonsHTML = \`<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-save" class="btn-save">Guardar</button>\`;
+                cardHTML = \`
+                <div id="current-interactive-card" class="interactive-card \${cardStatusClass}">
+                    <h3 class="card-title">\${title}</h3>
+                    \${formHTML}
                     <div class="interactive-card-actions">
-                        ${buttonsHTML}
+                        \${buttonsHTML}
                     </div>
                 </div>
-            `;
+            \`;
                 break;
             case 'duplicate':
                 title = 'Comparar Sorteos Duplicados';
                 cardStatusClass = 'card-status-duplicate';
-                buttonsHTML = `<button id="btn-merge" class="btn-merge">Fusionar</button><button id="btn-add-new" class="btn-save">Añadir como Nuevo</button><button id="btn-discard" class="btn-discard">Descartar</button>`;
+                buttonsHTML = \`<button id="btn-merge" class="btn-merge">Fusionar</button><button id="btn-add-new" class="btn-save">Añadir como Nuevo</button><button id="btn-discard" class="btn-discard">Descartar</button>\`;
                 
                 const analyzedGiveawayHTML = generateGiveawayDetailsHTML(resultData, "Sorteo Analizado (Nuevo)");
                 const originalGiveawayHTML = generateGiveawayDetailsHTML(resultData.originalGiveaway, "Sorteo Original (Existente)");
 
-                cardHTML = `
-                    <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                        <h3 class="card-title">${title}</h3>
+                cardHTML = \`
+                    <div id="current-interactive-card" class="interactive-card \${cardStatusClass}">
+                        <h3 class="card-title">\${title}</h3>
                         <div class="space-y-4 mb-4">
-                            ${analyzedGiveawayHTML}
-                            ${originalGiveawayHTML}
+                            \${analyzedGiveawayHTML}
+                            \${originalGiveawayHTML}
                         </div>
                         <div class="interactive-card-actions">
-                            ${buttonsHTML}
+                            \${buttonsHTML}
                         </div>
                     </div>
-                `;
+                \`;
                 break;
             case 'expired':
                 const confidenceEmojiExpired = getConfidenceEmoji(resultData.confidence_score);
-                title = `⏳ Sorteo Caducado ${confidenceEmojiExpired}`;
+                title = \`⏳ Sorteo Caducado \${confidenceEmojiExpired}\`;
                 cardStatusClass = 'card-status-expired';
-                buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar Fecha</button><button id="btn-trash" class="btn-trash">A la Papelera</button>`;
-                cardHTML = `
-                <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                    <h3 class="card-title">${title}</h3>
-                    ${formHTML}
+                buttonsHTML = \`<button id="btn-edit" class="btn-edit">Editar Fecha</button><button id="btn-trash" class="btn-trash">A la Papelera</button>\`;
+                cardHTML = \`
+                <div id="current-interactive-card" class="interactive-card \${cardStatusClass}">
+                    <h3 class="card-title">\${title}</h3>
+                    \${formHTML}
                     <div class="interactive-card-actions">
-                        ${buttonsHTML}
+                        \${buttonsHTML}
                     </div>
                 </div>
-            `;
+            \`;
                 break;
             case 'foreign':
                 const confidenceEmojiForeign = getConfidenceEmoji(resultData.confidence_score);
-                title = `👽 Sorteo Extranjero ${confidenceEmojiForeign}`;
+                title = \`👽 Sorteo Extranjero \${confidenceEmojiForeign}\`;
                 cardStatusClass = 'card-status-foreign';
-                buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-mark-foreign" class="btn-foreign">Marcar como Extranjero</button>`;
-                cardHTML = `
-                <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                    <h3 class="card-title">${title}</h3>
-                    ${formHTML}
+                buttonsHTML = \`<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-mark-foreign" class="btn-foreign">Marcar como Extranjero</button>\`;
+                cardHTML = \`
+                <div id="current-interactive-card" class="interactive-card \${cardStatusClass}">
+                    <h3 class="card-title">\${title}</h3>
+                    \${formHTML}
                     <div class="interactive-card-actions">
-                        ${buttonsHTML}
+                        \${buttonsHTML}
                     </div>
                 </div>
-            `;
+            \`;
                 break;
             default:
-                title = `❌ ${resultData.status === 'not_a_giveaway' ? 'No es un Sorteo' : resultData.status === 'no_date' ? 'Sin Fecha Válida' : 'Error de Análisis'}`;
+                title = \`❌ \${resultData.status === 'not_a_giveaway' ? 'No es un Sorteo' : resultData.status === 'no_date' ? 'Sin Fecha Válida' : 'Error de Análisis'}\`;
                 cardStatusClass = 'card-status-error';
-                buttonsHTML = `<button id="btn-discard" class="btn-discard w-full">Descartar y Continuar</button>`;
-                cardHTML = `
-                <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                    <h3 class="card-title">${title}</h3>
-                    <p class="text-center p-4">${resultData.prize}</p>
+                buttonsHTML = \`<button id="btn-discard" class="btn-discard w-full">Descartar y Continuar</button>\`;
+                cardHTML = \`
+                <div id="current-interactive-card" class="interactive-card \${cardStatusClass}">
+                    <h3 class="card-title">\${title}</h3>
+                    <p class="text-center p-4">\${resultData.prize}</p>
                     <div class="interactive-card-actions">
-                        ${buttonsHTML}
+                        \${buttonsHTML}
                     </div>
                 </div>
-            `;
+            \`;
                 break;
         }
 
@@ -3439,7 +3448,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                 // Y añadimos ESE MISMO sorteo al calendario
                 addGiveaway(newGiveaway);
 
-                addPoints(5, `Sorteo añadido con IA`);
+                addPoints(5, \`Sorteo añadido con IA\`);
                 checkAchievements('add-ai');
                 break;
             case 'trash':
@@ -3512,7 +3521,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             const now = new Date();
             const newBatch = {
                 id: now.getTime(),
-                name: `Análisis del ${now.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`,
+                name: \`Análisis del \${now.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}\`,
                 giveawayIds: analysisResults.added.map(g => g.id)
             };
 
@@ -3527,19 +3536,19 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         }
         // --- FIN DE MODIFICACIÓN ---
 
-        let summaryHTML = `
+        let summaryHTML = \`
             <div class="space-y-4 text-yellow-300 w-full">
                 <h3 class="text-2xl font-bold text-center">✨ Resumen del Análisis</h3>
                 <ul class="space-y-2 text-lg">
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-image text-yellow-500 w-6 text-center"></i> Imágenes Procesadas: <strong>${totalCaptures}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-500 w-6 text-center"></i> Sorteos Añadidos: <strong>${totalAdded}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-copy text-gray-400 w-6 text-center"></i> Duplicados: <strong>${totalDuplicates}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-clock text-yellow-600 w-6 text-center"></i> Caducados: <strong>${totalExpired}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-globe text-blue-400 w-6 text-center"></i> Extranjeros: <strong>${totalForeign}</strong></li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-red-500 w-6 text-center"></i> Errores: <strong>${totalErrors}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-image text-yellow-500 w-6 text-center"></i> Imágenes Procesadas: <strong>\${totalCaptures}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-500 w-6 text-center"></i> Sorteos Añadidos: <strong>\${totalAdded}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-copy text-gray-400 w-6 text-center"></i> Duplicados: <strong>\${totalDuplicates}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-clock text-yellow-600 w-6 text-center"></i> Caducados: <strong>\${totalExpired}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-globe text-blue-400 w-6 text-center"></i> Extranjeros: <strong>\${totalForeign}</strong></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-red-500 w-6 text-center"></i> Errores: <strong>\${totalErrors}</strong></li>
                 </ul>
             </div>
-        `;
+        \`;
         
         aiSummaryResultsContainer.innerHTML = summaryHTML;
         
@@ -3555,15 +3564,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         if (totalAdded > 0) {
             // Retrasamos ligeramente el mensaje para que el usuario vea primero el resumen.
             setTimeout(() => {
-                const confirmationMessage = `🔮 ¡El Oráculo ha Hablado! 🔮\n\n¡Análisis completado! Has añadido con éxito ${totalAdded} nuevo(s) tesoro(s) a tu mapa privado.\n\nTienes en tus manos un valioso botín. ¿Quieres compartirlo con la comunidad de cazadores?\n\nSi pulsas 'Aceptar', se abrirá tu correo para enviar este lote al Hechicero Mayor (admin) y que pueda hacerlo público para todos. Si no, seguirá siendo tu secreto.\n\n¿Enviamos el informe al torreón del Hechicero?`;
+                const confirmationMessage = \`🔮 ¡El Oráculo ha Hablado! 🔮\\n\\n¡Análisis completado! Has añadido con éxito \${totalAdded} nuevo(s) tesoro(s) a tu mapa privado.\\n\\nTienes en tus manos un valioso botín. ¿Quieres compartirlo con la comunidad de cazadores?\\n\\nSi pulsas 'Aceptar', se abrirá tu correo para enviar este lote al Hechicero Mayor (admin) y que pueda hacerlo público para todos. Si no, seguirá siendo tu secreto.\\n\\n¿Enviamos el informe al torreón del Hechicero?\`;
                 
                 if (confirm(confirmationMessage)) {
                     const subject = 'Sugerencia de Nuevo Lote de Sorteos';
                     // Usamos JSON.stringify con indentación para que el correo sea legible
-                    const body = `Hola, aquí tienes un nuevo lote de sorteos para añadir a la base de datos pública:\n\n${JSON.stringify(analysisResults.added, null, 2)}`;
+                    const body = \`Hola, aquí tienes un nuevo lote de sorteos para añadir a la base de datos pública:\\n\\n\${JSON.stringify(analysisResults.added, null, 2)}\`;
                     
                     // Creamos y abrimos el enlace mailto:
-                    window.location.href = `mailto:admin@misorteos.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    window.location.href = \`mailto:admin@misorteos.es?subject=\${encodeURIComponent(subject)}&body=\${encodeURIComponent(body)}\`;
                 }
             }, 500); // 500ms de retraso
         }
@@ -3571,12 +3580,12 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     }
     
     const generateErrorCardHTML = (errorData) => {
-         return `
+         return \`
              <div class="giveaway-card bg-red-100/50 border-red-400">
-                 <h3 class="text-red-800">⚠️ Error en el archivo: ${errorData.filename}</h3>
-                 <p class="text-sm"><strong>Motivo:</strong> ${errorData.error}</p>
+                 <h3 class="text-red-800">⚠️ Error en el archivo: \${errorData.filename}</h3>
+                 <p class="text-sm"><strong>Motivo:</strong> \${errorData.error}</p>
              </div>
-         `;
+         \`;
     };
 
     const renderHistoryModal = () => {
@@ -3590,20 +3599,20 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             const date = new Date(summary.analysisDate);
             const formattedDate = date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             const totalDiscarded = (summary.duplicateGiveawaysCount || 0) + (summary.expiredGiveawaysCount || 0) + (summary.foreignGiveawaysCount || 0) + (summary.noDateGiveawaysCount || 0);
-            let summaryHTML = `<details class="mb-4"><summary class="font-bold text-lg cursor-pointer">Análisis del ${formattedDate}</summary>`;
-            summaryHTML += `<div class="p-2 border-t border-yellow-600/20 mt-2">`;
-            summaryHTML += `<h3 class="text-lg font-bold mb-2">✨ Resumen General</h3><ul><li>Imágenes Enviadas: <strong>${summary.totalCaptures}</strong></li><li>✅ Sorteos Añadidos: <strong>${summary.addedGiveawaysCount}</strong></li><li>❌ Sorteos Descartados: <strong>${totalDiscarded}</strong></li><li>⚠️ Errores de Análisis: <strong>${(summary.failedFilesDetails || []).length}</strong></li></ul><hr class="border-yellow-500/20 my-4">`;
+            let summaryHTML = \`<details class="mb-4"><summary class="font-bold text-lg cursor-pointer">Análisis del \${formattedDate}</summary>\`;
+            summaryHTML += \`<div class="p-2 border-t border-yellow-600/20 mt-2">\`;
+            summaryHTML += \`<h3 class="text-lg font-bold mb-2">✨ Resumen General</h3><ul><li>Imágenes Enviadas: <strong>\${summary.totalCaptures}</strong></li><li>✅ Sorteos Añadidos: <strong>\${summary.addedGiveawaysCount}</strong></li><li>❌ Sorteos Descartados: <strong>\${totalDiscarded}</strong></li><li>⚠️ Errores de Análisis: <strong>\${(summary.failedFilesDetails || []).length}</strong></li></ul><hr class="border-yellow-500/20 my-4">\`;
             if (summary.addedGiveawaysDetails && summary.addedGiveawaysDetails.length > 0) {
-                summaryHTML += `<h4 class="text-md font-bold mb-2">✅ Sorteos Añadidos</h4><ul>${summary.addedGiveawaysDetails.map(g => `<li><strong>${g.prize}</strong></li>`).join('')}</ul><hr class="border-yellow-500/20 my-4">`;
+                summaryHTML += \`<h4 class="text-md font-bold mb-2">✅ Sorteos Añadidos</h4><ul>\${summary.addedGiveawaysDetails.map(g => \`<li><strong>\${g.prize}</strong></li>\`).join('')}</ul><hr class="border-yellow-500/20 my-4">\`;
             }
              if (totalDiscarded > 0) {
-                summaryHTML += `<h4 class="text-md font-bold mb-2">❌ Desglose de Descartados</h4>`;
-                if (summary.duplicateGiveawaysCount > 0) { summaryHTML += `<p><strong>📋 Duplicados:</strong> ${summary.duplicateGiveawaysCount}</p>`; }
-                if (summary.expiredGiveawaysCount > 0) { summaryHTML += `<p><strong>📅 Caducados:</strong> ${summary.expiredGiveawaysCount}</p>`; }
-                if (summary.foreignGiveawaysCount > 0) { summaryHTML += `<p><strong>🌐 Extranjeros:</strong> ${summary.foreignGiveawaysCount}</p>`; }
-                if ((summary.noDateGiveawaysCount || 0) > 0) { summaryHTML += `<p><strong>❓ Sin Fecha:</strong> ${summary.noDateGiveawaysCount}</p>`; }
+                summaryHTML += \`<h4 class="text-md font-bold mb-2">❌ Desglose de Descartados</h4>\`;
+                if (summary.duplicateGiveawaysCount > 0) { summaryHTML += \`<p><strong>📋 Duplicados:</strong> \${summary.duplicateGiveawaysCount}</p>\`; }
+                if (summary.expiredGiveawaysCount > 0) { summaryHTML += \`<p><strong>📅 Caducados:</strong> \${summary.expiredGiveawaysCount}</p>\`; }
+                if (summary.foreignGiveawaysCount > 0) { summaryHTML += \`<p><strong>🌐 Extranjeros:</strong> \${summary.foreignGiveawaysCount}</p>\`; }
+                if ((summary.noDateGiveawaysCount || 0) > 0) { summaryHTML += \`<p><strong>❓ Sin Fecha:</strong> \${summary.noDateGiveawaysCount}</p>\`; }
             }
-            summaryHTML += `</div></details>`;
+            summaryHTML += \`</div></details>\`;
             historyModalBody.innerHTML += summaryHTML;
         });
     };
@@ -3630,7 +3639,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                 console.error("Respuesta inválida de la API de Visión:", result);
                 let errorMessage = "Respuesta incompleta o inválida de la API de Visión.";
                 if (result.promptFeedback && result.promptFeedback.blockReason) {
-                    errorMessage = `Bloqueado por seguridad: ${result.promptFeedback.blockReason}`;
+                    errorMessage = \`Bloqueado por seguridad: \${result.promptFeedback.blockReason}\`;
                 }
                 throw new Error(errorMessage);
             }
@@ -3673,7 +3682,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         };
 
         if(categoryMap[aiData.prize_category]) {
-            prizeWithEmoji += ` ${categoryMap[aiData.prize_category]}`;
+            prizeWithEmoji += \` \${categoryMap[aiData.prize_category]}\`;
         }
 
         if (!isNaN(numericValue) && numericValue > 500) {
@@ -3715,7 +3724,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         }
     };
 
-    const renderTrashModal = () => { trashModalBody.innerHTML = ''; if (trashGiveaways.length === 0) { trashModalBody.innerHTML = '<p>No hay sorteos en la papelera.</p>'; return; } trashGiveaways.forEach(giveaway => { const itemContainer = document.createElement('div'); itemContainer.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20'; itemContainer.innerHTML = `<div class="w-full"><p class="text-base sm:text-lg">${giveaway.prize}</p><p class="text-sm">Fecha original: ${giveaway.originalDate}</p></div><button class="restore-btn ml-4 bg-yellow-500 text-yellow-900 p-2 rounded-full hover:bg-yellow-400" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-rotate-left"></i></button>`; trashModalBody.appendChild(itemContainer); }); };
+    const renderTrashModal = () => { trashModalBody.innerHTML = ''; if (trashGiveaways.length === 0) { trashModalBody.innerHTML = '<p>No hay sorteos en la papelera.</p>'; return; } trashGiveaways.forEach(giveaway => { const itemContainer = document.createElement('div'); itemContainer.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20'; itemContainer.innerHTML = \`<div class="w-full"><p class="text-base sm:text-lg">\${giveaway.prize}</p><p class="text-sm">Fecha original: \${giveaway.originalDate}</p></div><button class="restore-btn ml-4 bg-yellow-500 text-yellow-900 p-2 rounded-full hover:bg-yellow-400" data-giveaway-id="\${giveaway.id}"><i class="fa-solid fa-rotate-left"></i></button>\`; trashModalBody.appendChild(itemContainer); }); };
     const restoreGiveawayFromTrash = (giveawayId) => { const giveawayToRestore = trashGiveaways.find(g => g.id === giveawayId); if (giveawayToRestore) { trashGiveaways = trashGiveaways.filter(g => g.id !== giveawayId); openAddGiveawayModal({ date: giveawayToRestore.originalDate, prize: giveawayToRestore.prize, accounts: giveawayToRestore.accounts.join(', '), price: giveawayToRestore.price }); saveTrashGiveaways(); renderTrashModal(); checkAchievements('restore'); } };
     const deleteAllTrash = () => { if(confirm("¿Estás seguro de que quieres vaciar la papelera? Esta acción no se puede deshacer.")) { trashGiveaways = []; saveTrashGiveaways(); renderTrashModal(); showNotification('Papelera vaciada', 'Se han eliminado todos los sorteos de la papelera.'); } }
     const deleteAllDiscarded = () => { if(confirm("¿Estás seguro de que quieres eliminar todos los sorteos descartados?")) { discardedGiveaways = []; saveDiscardedGiveaways(); renderDiscardedModal(); showNotification('Sorteos descartados eliminados', 'Se han eliminado todos los sorteos de la lista de descartados.'); } }
@@ -3745,13 +3754,13 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         }
 
         const generateDetailsHTML = (giveaway, date) => {
-             const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
-             return `
-                <div class="detail-item mb-2"><strong>Premio:</strong> ${giveaway.prize || 'N/A'}</div>
-                <div class="detail-item mb-2"><strong>Cuentas:</strong> ${accountsHTML || 'N/A'}</div>
-                <div class="detail-item mb-2"><strong>Valor:</strong> ${giveaway.price || 'N/A'}</div>
-                <div class="detail-item"><strong>Fecha del Sorteo:</strong> ${date || 'No encontrada'}</div>
-             `;
+             const accountsHTML = (giveaway.accounts || []).map(acc => \`<a href="https://instagram.com/\${acc.replace('@', '')}" target="_blank" class="hover:underline">\${acc}</a>\`).join(', ');
+             return \`
+                <div class="detail-item mb-2"><strong>Premio:</strong> \${giveaway.prize || 'N/A'}</div>
+                <div class="detail-item mb-2"><strong>Cuentas:</strong> \${accountsHTML || 'N/A'}</div>
+                <div class="detail-item mb-2"><strong>Valor:</strong> \${giveaway.price || 'N/A'}</div>
+                <div class="detail-item"><strong>Fecha del Sorteo:</strong> \${date || 'No encontrada'}</div>
+             \`;
         };
 
         originalGiveawayDetails.innerHTML = generateDetailsHTML(originalGiveawayComplete, originalDate);
@@ -3782,39 +3791,39 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             api_error: 'Error API',
         };
 
-        const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
+        const accountsHTML = (giveaway.accounts || []).map(acc => \`<a href="https://instagram.com/\${acc.replace('@', '')}" target="_blank" class="hover:underline">\${acc}</a>\`).join(', ');
 
-        return `
+        return \`
             <div class="giveaway-card text-left">
-                <h3>${giveaway.prize || 'Premio no definido'}</h3>
+                <h3>\${giveaway.prize || 'Premio no definido'}</h3>
                 <div class="giveaway-card-details">
-                    ${giveaway.date ? `
+                    \${giveaway.date ? \`
                     <div class="detail-item">
                         <i class="fa-solid fa-calendar-day"></i>
-                        <span>Fecha: <strong>${giveaway.date}</strong></span>
-                    </div>` : ''}
-                    ${accountsHTML ? `
+                        <span>Fecha: <strong>\${giveaway.date}</strong></span>
+                    </div>\` : ''}
+                    \${accountsHTML ? \`
                     <div class="detail-item">
                         <i class="fa-solid fa-at"></i>
-                        <span>Cuentas: ${accountsHTML}</span>
-                    </div>` : ''}
-                    ${giveaway.price ? `
+                        <span>Cuentas: \${accountsHTML}</span>
+                    </div>\` : ''}
+                    \${giveaway.price ? \`
                     <div class="detail-item">
                         <i class="fa-solid fa-coins"></i>
-                        <span>Valor: <strong>${giveaway.price}</strong></span>
-                    </div>` : ''}
-                    ${giveaway.status ? `
+                        <span>Valor: <strong>\${giveaway.price}</strong></span>
+                    </div>\` : ''}
+                    \${giveaway.status ? \`
                     <div class="detail-item">
                         <i class="fa-solid fa-tag"></i>
-                        <span class="status-tag ${statusClasses[giveaway.status] || ''}">${statusText[giveaway.status] || giveaway.status}</span>
-                    </div>` : ''}
+                        <span class="status-tag \${statusClasses[giveaway.status] || ''}">\${statusText[giveaway.status] || giveaway.status}</span>
+                    </div>\` : ''}
                 </div>
                 <div class="flex justify-end gap-2 mt-3">
-                    <button class="add-discarded-btn text-xs bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-plus mr-1"></i> Recuperar</button>
-                    <button class="delete-discarded-btn text-xs bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-trash-can mr-1"></i> Eliminar</button>
+                    <button class="add-discarded-btn text-xs bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600" data-giveaway-id="\${giveaway.id}"><i class="fa-solid fa-plus mr-1"></i> Recuperar</button>
+                    <button class="delete-discarded-btn text-xs bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600" data-giveaway-id="\${giveaway.id}"><i class="fa-solid fa-trash-can mr-1"></i> Eliminar</button>
                 </div>
             </div>
-        `;
+        \`;
     };
 
     const renderTrophyModal = () => {
@@ -3825,21 +3834,21 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         }
 
         [...wonGiveaways].reverse().forEach(giveaway => {
-            const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
+            const accountsHTML = (giveaway.accounts || []).map(acc => \`<a href="https://instagram.com/\${acc.replace('@','')}" target="_blank" class="hover:underline">\${acc}</a>\`).join(', ');
             const wonDate = giveaway.wonDate ? new Date(giveaway.wonDate).toLocaleDateString('es-ES') : 'Fecha desconocida';
-            const trophyCard = `
+            const trophyCard = \`
                 <div class="trophy-card">
-                    <button class="trophy-delete-btn" data-giveaway-id="${giveaway.id}" title="Eliminar de la vitrina">
+                    <button class="trophy-delete-btn" data-giveaway-id="\${giveaway.id}" title="Eliminar de la vitrina">
                         <i class="fa-solid fa-times"></i>
                     </button>
-                    <h3 class="mb-2">${giveaway.prize}</h3>
+                    <h3 class="mb-2">\${giveaway.prize}</h3>
                     <div class="text-xs space-y-1 text-left">
-                        <p><i class="fa-solid fa-coins w-4 mr-1"></i> <strong>Valor:</strong> ${giveaway.price || 'No especificado'}</p>
-                        <p><i class="fa-solid fa-at w-4 mr-1"></i> ${accountsHTML}</p>
-                        <p><i class="fa-solid fa-calendar-check w-4 mr-1"></i> <strong>Ganado el:</strong> ${wonDate}</p>
+                        <p><i class="fa-solid fa-coins w-4 mr-1"></i> <strong>Valor:</strong> \${giveaway.price || 'No especificado'}</p>
+                        <p><i class="fa-solid fa-at w-4 mr-1"></i> \${accountsHTML}</p>
+                        <p><i class="fa-solid fa-calendar-check w-4 mr-1"></i> <strong>Ganado el:</strong> \${wonDate}</p>
                     </div>
                 </div>
-            `;
+            \`;
             trophyModalBody.innerHTML += trophyCard;
         });
     };
@@ -3856,7 +3865,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         [...filteredGiveaways].reverse().forEach(giveaway => { 
             const cardHTML = generateGiveawayCardHTML(giveaway);
             const itemContainer = document.createElement('div');
-            itemContainer.className = `giveaway-item-discarded ${giveaway.status === 'duplicate' ? 'duplicate-item' : ''} mb-4`;
+            itemContainer.className = \`giveaway-item-discarded \${giveaway.status === 'duplicate' ? 'duplicate-item' : ''} mb-4\`;
             itemContainer.dataset.giveawayId = giveaway.id;
             itemContainer.innerHTML = cardHTML;
             discardedModalBody.appendChild(itemContainer);
@@ -3876,12 +3885,12 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         [...captureBatches].reverse().forEach(batch => {
             const isActive = batch.id === activeBatchFilterId;
             const item = document.createElement('div');
-            item.className = `p-3 rounded-lg shadow-inner border cursor-pointer transition-all ${isActive ? 'bg-yellow-200 border-yellow-400' : 'bg-yellow-100/50 border-yellow-600/20 hover:bg-yellow-200/70'}`;
+            item.className = \`p-3 rounded-lg shadow-inner border cursor-pointer transition-all \${isActive ? 'bg-yellow-200 border-yellow-400' : 'bg-yellow-100/50 border-yellow-600/20 hover:bg-yellow-200/70'}\`;
             item.dataset.batchId = batch.id;
-            item.innerHTML = `
-                <p class="font-bold text-yellow-900">${batch.name}</p>
-                <p class="text-sm text-yellow-800">${batch.giveawayIds.length} sorteo(s) añadido(s)</p>
-            `;
+            item.innerHTML = \`
+                <p class="font-bold text-yellow-900">\${batch.name}</p>
+                <p class="text-sm text-yellow-800">\${batch.giveawayIds.length} sorteo(s) añadido(s)</p>
+            \`;
             batchList.appendChild(item);
         });
     };
@@ -3892,16 +3901,16 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const originalCardHTML = generateGiveawayCardHTML({ ...originalGiveaway, date: originalGiveaway.date });
         const discardedCardHTML = generateGiveawayCardHTML(discardedGiveaway);
 
-        previewContainer.innerHTML = `
+        previewContainer.innerHTML = \`
             <div>
                 <h4 class="font-bold text-lg mb-2 text-gray-700">Sorteo Original (Ya guardado)</h4>
-                ${originalCardHTML}
+                \${originalCardHTML}
             </div>
             <div>
                 <h4 class="font-bold text-lg mb-2 text-red-800">Sorteo Descartado (Nuevo)</h4>
-                ${discardedCardHTML}
+                \${discardedCardHTML}
             </div>
-        `;
+        \`;
         
         confirmRestoreBtn.dataset.giveawayId = discardedGiveaway.id;
         duplicateModal.classList.add('is-visible');
@@ -3999,83 +4008,83 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const estrategiaTab = document.getElementById('tab-estrategia');
         const redesTab = document.getElementById('tab-redes');
 
-        resumenTab.innerHTML = `
+        resumenTab.innerHTML = \`
             <div class="space-y-4">
                 <div>
                     <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📊 Resumen General</h3>
                     <ul class="space-y-1">
-                        <li>Sorteos Totales Registrados: <strong>${totalRegistered}</strong></li>
-                        <li>Sorteos Completados: <strong>${totalCompleted}</strong></li>
-                        <li>Sorteos Ganados: <strong>${totalWon}</strong></li>
+                        <li>Sorteos Totales Registrados: <strong>\${totalRegistered}</strong></li>
+                        <li>Sorteos Completados: <strong>\${totalCompleted}</strong></li>
+                        <li>Sorteos Ganados: <strong>\${totalWon}</strong></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🏆 Victorias y Premios</h3>
                     <ul class="space-y-1">
-                        <li>Valor Total de Premios: <strong>${totalValueWon.toFixed(2)}€</strong></li>
-                        <li>Valor Medio por Premio: <strong>${avgValuePerWin}€</strong></li>
-                        <li>Premio de Más Valor: <strong>${mostValuableWin ? `${mostValuableWin.prize} (${mostValuableWin.price})` : 'N/A'}</strong></li>
-                        <li>Premio Más Humilde: <strong>${leastValuableWin ? `${leastValuableWin.prize} (${leastValuableWin.price})` : 'N/A'}</strong></li>
-                        <li>Victorias por Categoría: <ol class="list-disc list-inside pl-4 text-sm">${Object.entries(categoryWins).map(([cat, count]) => `<li>${cat}: ${count}</li>`).join('') || '<li>N/A</li>'}</ol></li>
+                        <li>Valor Total de Premios: <strong>\${totalValueWon.toFixed(2)}€</strong></li>
+                        <li>Valor Medio por Premio: <strong>\${avgValuePerWin}€</strong></li>
+                        <li>Premio de Más Valor: <strong>\${mostValuableWin ? \`\${mostValuableWin.prize} (\${mostValuableWin.price})\` : 'N/A'}</strong></li>
+                        <li>Premio Más Humilde: <strong>\${leastValuableWin ? \`\${leastValuableWin.prize} (\${leastValuableWin.price})\` : 'N/A'}</strong></li>
+                        <li>Victorias por Categoría: <ol class="list-disc list-inside pl-4 text-sm">\${Object.entries(categoryWins).map(([cat, count]) => \`<li>\${cat}: \${count}</li>\`).join('') || '<li>N/A</li>'}</ol></li>
                     </ul>
                 </div>
             </div>
-        `;
+        \`;
 
-        rendimientoTab.innerHTML = `
+        rendimientoTab.innerHTML = \`
              <div class="space-y-4">
                 <div>
                     <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">📈 Análisis de Rendimiento y Eficiencia</h3>
                     <ul class="space-y-1">
-                        <li>Tasa de Participación: <strong>${participationRate}%</strong></li>
-                        <li>Porcentaje de Éxito (Win Rate): <strong>${winRate}%</strong></li>
-                        <li>Eficiencia de Participación: <strong>1 victoria cada ${eficienciaParticipacion} participaciones</strong></li>
-                        <li>Valor por Participación (VPP): <strong>${valorPorParticipacion}€ por cada sorteo completado</strong></li>
-                        <li>Índice de Estilo: <strong>${estiloCazador}</strong></li>
+                        <li>Tasa de Participación: <strong>\${participationRate}%</strong></li>
+                        <li>Porcentaje de Éxito (Win Rate): <strong>\${winRate}%</strong></li>
+                        <li>Eficiencia de Participación: <strong>1 victoria cada \${eficienciaParticipacion} participaciones</strong></li>
+                        <li>Valor por Participación (VPP): <strong>\${valorPorParticipacion}€ por cada sorteo completado</strong></li>
+                        <li>Índice de Estilo: <strong>\${estiloCazador}</strong></li>
                     </ul>
                 </div>
             </div>
-        `;
+        \`;
 
-        estrategiaTab.innerHTML = `
+        estrategiaTab.innerHTML = \`
             <div class="space-y-4">
                 <div>
                     <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🎯 Análisis Estratégico y de Oportunidad</h3>
                     <ul class="space-y-1">
                         <li><strong>Tasa de Éxito por Valor:</strong>
                             <ol class="list-disc list-inside pl-4 text-sm">
-                                <li>Premios < 50€: <strong>${tasaExitoModestos}%</strong></li>
-                                <li>Premios 50€ - 250€: <strong>${tasaExitoIntermedios}%</strong></li>
-                                <li>Premios > 250€: <strong>${tasaExitoGrandes}%</strong></li>
+                                <li>Premios < 50€: <strong>\${tasaExitoModestos}%</strong></li>
+                                <li>Premios 50€ - 250€: <strong>\${tasaExitoIntermedios}%</strong></li>
+                                <li>Premios > 250€: <strong>\${tasaExitoGrandes}%</strong></li>
                             </ol>
                         </li>
                         <li class="pt-2"><strong>Análisis de "Fatiga de Calendario":</strong>
                              <ol class="list-disc list-inside pl-4 text-sm">
-                                <li>Tasa de participación (próximos 7 días): <strong>${tasaParticipacionCercanos}%</strong></li>
-                                <li>Tasa de participación (> 30 días): <strong>${tasaParticipacionLejanos}%</strong></li>
+                                <li>Tasa de participación (próximos 7 días): <strong>\${tasaParticipacionCercanos}%</strong></li>
+                                <li>Tasa de participación (> 30 días): <strong>\${tasaParticipacionLejanos}%</strong></li>
                             </ol>
                         </li>
                     </ul>
                 </div>
             </div>
-        `;
+        \`;
         
-        redesTab.innerHTML = `
+        redesTab.innerHTML = \`
             <div class="space-y-4">
                 <div>
                     <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">🔮 Análisis Predictivo y de Redes</h3>
                     <ul class="space-y-1">
-                        <li>Indicador de "Racha Caliente": <strong class="${rachaCaliente ? 'text-green-500' : 'text-red-500'}">${rachaCaliente ? 'ACTIVADO 🔥' : 'INACTIVO'}</strong></li>
-                        <li>Radar de "Talismanes Activos": <strong>${sorteosPendientesTalismanes} sorteos pendientes de tus 3 cuentas top</strong></li>
+                        <li>Indicador de "Racha Caliente": <strong class="\${rachaCaliente ? 'text-green-500' : 'text-red-500'}">\${rachaCaliente ? 'ACTIVADO 🔥' : 'INACTIVO'}</strong></li>
+                        <li>Radar de "Talismanes Activos": <strong>\${sorteosPendientesTalismanes} sorteos pendientes de tus 3 cuentas top</strong></li>
                         <li><strong>Top Colaboradores Frecuentes:</strong>
                              <ol class="list-decimal list-inside pl-4 text-sm">
-                                ${topColaboradores.map(c => `<li>${c[0].replace('|', ' & ')} (${c[1]} veces)</li>`).join('') || '<li>N/A</li>'}
+                                \${topColaboradores.map(c => \`<li>\${c[0].replace('|', ' & ')} (\${c[1]} veces)</li>\`).join('') || '<li>N/A</li>'}
                             </ol>
                         </li>
                     </ul>
                 </div>
             </div>
-        `;
+        \`;
     };
     
     let categoryPieChart = null;
@@ -4243,10 +4252,10 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             const wins = winsByDay[dateStr] || 0;
             const dayEl = document.createElement('div');
             dayEl.className = 'heatmap-day';
-            dayEl.title = `${dateStr}: ${wins} victoria(s)`;
+            dayEl.title = \`\${dateStr}: \${wins} victoria(s)\`;
             if (wins > 0) {
                 const opacity = wins / (maxWinsInADay || 1);
-                dayEl.style.backgroundColor = `rgba(34, 197, 94, ${opacity})`;
+                dayEl.style.backgroundColor = \`rgba(34, 197, 94, \${opacity})\`;
                 dayEl.textContent = wins;
                 dayEl.style.color = 'white';
             }
@@ -4267,19 +4276,19 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         };
         let achievementsHTML = '';
         for (const groupName in achievementGroups) {
-            achievementsHTML += `<h3 class="text-xl font-bold text-yellow-700 mt-4 mb-2">${groupName}</h3>`;
+            achievementsHTML += \`<h3 class="text-xl font-bold text-yellow-700 mt-4 mb-2">\${groupName}</h3>\`;
             achievementsHTML += '<div class="space-y-3">';
             achievementsHTML += achievementGroups[groupName].map(ach => {
                 const isUnlocked = unlockedIds.includes(ach.id);
-                return `
-                <div class="achievement-item ${isUnlocked ? '' : 'locked'} bg-yellow-100/50 p-4 rounded-lg flex items-center gap-4">
-                    <div class="ach-icon text-4xl">${ach.icon}</div>
+                return \`
+                <div class="achievement-item \${isUnlocked ? '' : 'locked'} bg-yellow-100/50 p-4 rounded-lg flex items-center gap-4">
+                    <div class="ach-icon text-4xl">\${ach.icon}</div>
                     <div class="flex-grow">
-                        <h4 class="font-bold text-lg">${ach.name}</h4>
-                        <p class="text-sm">${ach.desc}</p>
+                        <h4 class="font-bold text-lg">\${ach.name}</h4>
+                        <p class="text-sm">\${ach.desc}</p>
                     </div>
-                    ${isUnlocked ? `<div class="text-right flex-shrink-0"><span class="font-bold text-green-600">+${ach.ps} PS</span></div>` : ''}
-                </div>`;
+                    \${isUnlocked ? \`<div class="text-right flex-shrink-0"><span class="font-bold text-green-600">+\${ach.ps} PS</span></div>\` : ''}
+                </div>\`;
             }).join('');
             achievementsHTML += '</div>';
         }
@@ -4287,30 +4296,30 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const titlesHTML = achievementList.prestige.map(item => {
             const isUnlocked = unlockedIds.includes(item.id);
             const isSelected = userAchievements.title === item.title;
-            return `
-                <div class="title-item ${isUnlocked ? '' : 'locked'} ${isSelected ? 'selected' : ''} border-2 border-transparent p-4 rounded-lg flex flex-col items-center justify-center text-center gap-2 bg-yellow-100/50">
+            return \`
+                <div class="title-item \${isUnlocked ? '' : 'locked'} \${isSelected ? 'selected' : ''} border-2 border-transparent p-4 rounded-lg flex flex-col items-center justify-center text-center gap-2 bg-yellow-100/50">
                     <div class="text-5xl">👑</div>
-                    <h4 class="font-bold text-lg">${item.title}</h4>
-                    <p class="text-xs italic text-gray-600">${item.req}</p>
-                    ${isUnlocked ? `<button data-title="${item.title}" class="select-title-btn mt-2 py-1 px-3 rounded-full text-xs font-bold ${isSelected ? 'bg-green-500 text-white cursor-default' : 'bg-yellow-500 text-yellow-900'}">${isSelected ? 'Seleccionado' : 'Seleccionar'}</button>` : ''}
+                    <h4 class="font-bold text-lg">\${item.title}</h4>
+                    <p class="text-xs italic text-gray-600">\${item.req}</p>
+                    \${isUnlocked ? \`<button data-title="\${item.title}" class="select-title-btn mt-2 py-1 px-3 rounded-full text-xs font-bold \${isSelected ? 'bg-green-500 text-white cursor-default' : 'bg-yellow-500 text-yellow-900'}">\${isSelected ? 'Seleccionado' : 'Seleccionar'}</button>\` : ''}
                 </div>
-            `;
+            \`;
         }).join('');
 
         let meritsHTML = achievementList.merits.map(ach => {
              const isUnlocked = unlockedIds.includes(ach.id);
-             return `
-                <div class="achievement-item ${isUnlocked ? '' : 'locked'} bg-blue-100/50 p-4 rounded-lg flex items-center gap-4 border-l-4 border-blue-400">
-                    <div class="ach-icon text-4xl">${ach.icon}</div>
+             return \`
+                <div class="achievement-item \${isUnlocked ? '' : 'locked'} bg-blue-100/50 p-4 rounded-lg flex items-center gap-4 border-l-4 border-blue-400">
+                    <div class="ach-icon text-4xl">\${ach.icon}</div>
                     <div class="flex-grow">
-                        <h4 class="font-bold text-lg">${ach.name}</h4>
-                        <p class="text-sm">${ach.desc}</p>
+                        <h4 class="font-bold text-lg">\${ach.name}</h4>
+                        <p class="text-sm">\${ach.desc}</p>
                     </div>
-                    ${isUnlocked ? `<div class="text-right flex-shrink-0"><span class="font-bold text-green-600">+${ach.ps} PS</span></div>` : ''}
-                </div>`;
+                    \${isUnlocked ? \`<div class="text-right flex-shrink-0"><span class="font-bold text-green-600">+\${ach.ps} PS</span></div>\` : ''}
+                </div>\`;
         }).join('');
 
-        const psInfoHTML = `
+        const psInfoHTML = \`
             <div class="p-4 bg-yellow-100/50 rounded-lg space-y-3">
                 <h3 class="text-xl font-bold text-yellow-800">¿Cómo funcionan los Puntos de Sorteo (PS)?</h3>
                 <p class="text-sm">Los PS miden tu progreso y dedicación. ¡Acumúlalos para desbloquear títulos y demostrar tu maestría!</p>
@@ -4324,22 +4333,22 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     <li><strong>+250 PS (Bonus)</strong> si el premio ganado supera los 500€ de valor.</li>
                 </ul>
             </div>
-        `;
+        \`;
 
-        achievementsModalBody.innerHTML = `
+        achievementsModalBody.innerHTML = \`
             <div class="achievement-tabs flex flex-wrap gap-x-4 border-b border-yellow-600/20 mb-4">
-                <button data-tab="logros" class="py-2 px-4 font-bold ${activeTab === 'logros' ? 'active' : ''}">Logros</button>
-                <button data-tab="titulos" class="py-2 px-4 font-bold ${activeTab === 'titulos' ? 'active' : ''}">Títulos de Prestigio</button>
-                <button data-tab="meritos" class="py-2 px-4 font-bold ${activeTab === 'meritos' ? 'active' : ''}">Méritos Únicos</button>
-                <button data-tab="ps_info" class="py-2 px-4 font-bold ${activeTab === 'ps_info' ? 'active' : ''}">Sistema de Puntos</button>
+                <button data-tab="logros" class="py-2 px-4 font-bold \${activeTab === 'logros' ? 'active' : ''}">Logros</button>
+                <button data-tab="titulos" class="py-2 px-4 font-bold \${activeTab === 'titulos' ? 'active' : ''}">Títulos de Prestigio</button>
+                <button data-tab="meritos" class="py-2 px-4 font-bold \${activeTab === 'meritos' ? 'active' : ''}">Méritos Únicos</button>
+                <button data-tab="ps_info" class="py-2 px-4 font-bold \${activeTab === 'ps_info' ? 'active' : ''}">Sistema de Puntos</button>
             </div>
             <div id="achievements-content" class="space-y-3">
-                <div class="tab-content ${activeTab === 'logros' ? '' : 'hidden'}" data-tab-content="logros">${achievementsHTML}</div>
-                <div class="tab-content ${activeTab === 'titulos' ? '' : 'hidden'}" data-tab-content="titulos"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${titlesHTML}</div></div>
-                <div class="tab-content ${activeTab === 'meritos' ? '' : 'hidden'}" data-tab-content="meritos"><div class="space-y-3">${meritsHTML}</div></div>
-                <div class="tab-content ${activeTab === 'ps_info' ? '' : 'hidden'}" data-tab-content="ps_info">${psInfoHTML}</div>
+                <div class="tab-content \${activeTab === 'logros' ? '' : 'hidden'}" data-tab-content="logros">\${achievementsHTML}</div>
+                <div class="tab-content \${activeTab === 'titulos' ? '' : 'hidden'}" data-tab-content="titulos"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">\${titlesHTML}</div></div>
+                <div class="tab-content \${activeTab === 'meritos' ? '' : 'hidden'}" data-tab-content="meritos"><div class="space-y-3">\${meritsHTML}</div></div>
+                <div class="tab-content \${activeTab === 'ps_info' ? '' : 'hidden'}" data-tab-content="ps_info">\${psInfoHTML}</div>
             </div>
-        `;
+        \`;
 
         achievementsModalBody.querySelectorAll('.achievement-tabs button').forEach(button => {
             button.addEventListener('click', () => {
@@ -4370,15 +4379,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
         recentLogs.forEach(entry => {
             const entryDate = new Date(entry.date).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-            const itemHTML = `
+            const itemHTML = \`
                 <div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 flex justify-between items-center">
                     <div>
-                        <p class="font-bold text-green-600">+${entry.points} PS</p>
-                        <p class="text-sm text-yellow-900 truncate" style="max-width: 250px;">${entry.reason}</p>
+                        <p class="font-bold text-green-600">+\${entry.points} PS</p>
+                        <p class="text-sm text-yellow-900 truncate" style="max-width: 250px;">\${entry.reason}</p>
                     </div>
-                    <span class="text-xs text-gray-500 flex-shrink-0">${entryDate}</span>
+                    <span class="text-xs text-gray-500 flex-shrink-0">\${entryDate}</span>
                 </div>
-            `;
+            \`;
             psSummaryModalBody.innerHTML += itemHTML;
         });
     };
@@ -4408,15 +4417,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         for (const date in groupedByDate) {
             const dayContainer = document.createElement('div');
             const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-            let dayHTML = `<h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1 text-left">${formattedDate}</h3>`;
+            let dayHTML = \`<h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1 text-left">\${formattedDate}</h3>\`;
             dayHTML += '<div class="space-y-2">';
             groupedByDate[date].forEach(giveaway => {
-                 dayHTML += `
+                 dayHTML += \`
                     <div class="p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 text-left">
-                        <p class="font-bold text-yellow-900 truncate">${giveaway.prize}</p>
-                        <p class="text-sm text-gray-600">Finaliza el: ${giveaway.date}</p>
+                        <p class="font-bold text-yellow-900 truncate">\${giveaway.prize}</p>
+                        <p class="text-sm text-gray-600">Finaliza el: \${giveaway.date}</p>
                     </div>
-                 `;
+                 \`;
             });
             dayHTML += '</div>';
             dayContainer.innerHTML = dayHTML;
@@ -4428,28 +4437,28 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         showNotification('Preparando descarga...', 'Se está generando el archivo .zip con tus datos actualizados.');
         const zip = new JSZip();
 
-        const giveawaysContent = `window.giveaways = ${JSON.stringify(giveaways, null, 4)};`;
-        const discardedGiveawaysContent = `const initialDiscardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};\n\nif (localStorage.getItem('discardedGiveaways') === null) {\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\n}\n\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];`;
+        const giveawaysContent = \`window.giveaways = \${JSON.stringify(giveaways, null, 4)};\`;
+        const discardedGiveawaysContent = \`const initialDiscardedGiveaways = \${JSON.stringify(discardedGiveaways, null, 4)};\\n\\nif (localStorage.getItem('discardedGiveaways') === null) {\\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\\n}\\n\\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];\`;
         
-        const foreignAccountsContent = `window.foreignAccounts = ${JSON.stringify(foreignAccounts, null, 4)};`;
-        const captureBatchesContent = `window.captureBatches = ${JSON.stringify(captureBatches, null, 4)};`;
+        const foreignAccountsContent = \`window.foreignAccounts = \${JSON.stringify(foreignAccounts, null, 4)};\`;
+        const captureBatchesContent = \`window.captureBatches = \${JSON.stringify(captureBatches, null, 4)};\`;
         
         const indexHtmlContent = document.documentElement.outerHTML;
 
-        const netlifyTomlContent = `[build]
+        const netlifyTomlContent = \`[build]
           command = "npm install"
-          functions = "netlify/functions"`;
+          functions = "netlify/functions"\`;
 
-        const packageJsonContent = `{
+        const packageJsonContent = \`{
           "name": "misorteos-functions",
           "version": "1.0.0",
           "description": "Dependencias para las funciones de Netlify",
           "dependencies": {
             "node-fetch": "^3.3.2"
           }
-        }`;
+        }\`;
 
-        const geminiJsContent = `// netlify/functions/gemini.js
+        const geminiJsContent = \`// netlify/functions/gemini.js
         exports.handler = async function (event, context) {
             const fetch = (await import('node-fetch')).default;
             const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -4461,7 +4470,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Faltan datos en la petición.' })
                 };
             }
-            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
+            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -4497,9 +4506,9 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
                 };
             }
-        };`;
+        };\`;
 
-        const searchJsContent = `// netlify/functions/search.js
+        const searchJsContent = \`// netlify/functions/search.js
         exports.handler = async function (event, context) {
             const fetch = (await import('node-fetch')).default;
             const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -4510,12 +4519,12 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Falta la consulta (query).' })
                 };
             }
-            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
-            const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
+            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const prompt = \\\`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
     
             1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
-                * Producto: "\${query}"
-                * Cuentas de Instagram: \${accounts.join(', ')}
+                * Producto: "\\\${query}"
+                * Cuentas de Instagram: \\\${accounts.join(', ')}
 
             2.  **Si no se encuentra en la página oficial:** Busca el precio y el enlace del producto en Google.
 
@@ -4525,7 +4534,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                   "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
                 }
 
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`.\`;
+            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \\\`\\\`\\\`.\\\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -4558,7 +4567,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Error al contactar la API de Gemini.' })
                 };
             }
-        };`;
+        };\`;
 
         zip.file("index.html", indexHtmlContent);
         zip.file("giveaways_new.js", giveawaysContent);
@@ -4576,7 +4585,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             const link = document.createElement('a');
             link.href = URL.createObjectURL(content);
             const today = new Date().toISOString().slice(0, 10);
-            link.download = `Misorteos-Backup-Completo-${today}.zip`;
+            link.download = \`Misorteos-Backup-Completo-\${today}.zip\`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -4599,10 +4608,10 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
          foreignAccounts.forEach(account => {
              const itemContainer = document.createElement('div');
              itemContainer.className = 'flex justify-between items-center p-3 bg-red-100/50 rounded-lg shadow-inner border border-red-600/20';
-             itemContainer.innerHTML = `
-                 <span class="font-bold">${account}</span>
-                 <button class="remove-foreign-account-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-400" data-account-name="${account}"><i class="fa-solid fa-trash-can"></i></button>
-             `;
+             itemContainer.innerHTML = \`
+                 <span class="font-bold">\${account}</span>
+                 <button class="remove-foreign-account-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-400" data-account-name="\${account}"><i class="fa-solid fa-trash-can"></i></button>
+             \`;
              foreignAccountsModalBody.appendChild(itemContainer);
          });
     };
@@ -4611,7 +4620,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
          foreignAccounts = foreignAccounts.filter(acc => acc !== accountName);
          saveForeignAccounts();
          renderForeignAccountsModal();
-         showNotification('Cuenta eliminada', `La cuenta ${accountName} se ha eliminado de la lista de extranjeras.`);
+         showNotification('Cuenta eliminada', \`La cuenta \${accountName} se ha eliminado de la lista de extranjeras.\`);
     };
 
     const renderBlockManagementModal = () => {
@@ -4637,15 +4646,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             avgCommentGap = (totalGap / (commentBlocks.length - 1) / ONE_DAY_MS).toFixed(1);
         }
         
-        blockStatsContainer.innerHTML = `
+        blockStatsContainer.innerHTML = \`
             <h3 class="text-xl font-bold text-yellow-700 mb-2 border-b-2 border-yellow-200 pb-1">Estadísticas de Bloqueos</h3>
             <ul class="space-y-2">
-                <li>Total Bloqueos de 'Me Gusta': <strong>${likeBlocks.length}</strong></li>
-                <li>Tiempo medio entre bloqueos de 'Like': <strong>${avgLikeGap} días</strong></li>
-                <li class="pt-2 border-t border-yellow-600/10">Total Bloqueos de Comentario: <strong>${commentBlocks.length}</strong></li>
-                <li>Tiempo medio entre bloqueos de Comentario: <strong>${avgCommentGap} días</strong></li>
+                <li>Total Bloqueos de 'Me Gusta': <strong>\${likeBlocks.length}</strong></li>
+                <li>Tiempo medio entre bloqueos de 'Like': <strong>\${avgLikeGap} días</strong></li>
+                <li class="pt-2 border-t border-yellow-600/10">Total Bloqueos de Comentario: <strong>\${commentBlocks.length}</strong></li>
+                <li>Tiempo medio entre bloqueos de Comentario: <strong>\${avgCommentGap} días</strong></li>
             </ul>
-        `;
+        \`;
     };
 
     const consultarOraculo = (tipo) => {
@@ -4670,7 +4679,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
         if (tipo === 'premio') {
             const sorteoElegido = proximosSorteos[Math.floor(Math.random() * proximosSorteos.length)];
-            showNotification('✨ Oráculo del Premio', `El cosmos susurra sobre... "${sorteoElegido.prize}"`);
+            showNotification('✨ Oráculo del Premio', \`El cosmos susurra sobre... "\${sorteoElegido.prize}"\`);
         }
     };
 
@@ -4680,15 +4689,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const winRate = Object.keys(completedGiveaways).length > 0 ? ((totalWon / Object.keys(completedGiveaways).length) * 100).toFixed(2) : 0;
         const title = userAchievements.title;
 
-        const summaryText = `
+        const summaryText = \`
 ✨ Mi Resumen de Misorteos ✨
-- Título Actual: ${title}
-- Victorias Totales: ${totalWon} 🏆
-- Valor Acumulado: ${totalValueWon.toFixed(2)}€ 💰
-- Win Rate: ${winRate}% 🎯
+- Título Actual: \${title}
+- Victorias Totales: \${totalWon} 🏆
+- Valor Acumulado: \${totalValueWon.toFixed(2)}€ 💰
+- Win Rate: \${winRate}% 🎯
 
 ¡Generado desde mi app de sorteos!
-        `.trim();
+        \`.trim();
 
         navigator.clipboard.writeText(summaryText).then(() => {
             showNotification('📋 Resumen Copiado', '¡Ya puedes pegarlo donde quieras!');
@@ -4711,19 +4720,19 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             const card = document.createElement('div');
             card.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner flex flex-col sm:flex-row justify-between items-center border border-yellow-600/20 text-left gap-3';
             
-            const accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('@', '')}" target="_blank" class="hover:underline">${acc}</a>`).join(', ');
+            const accountsHTML = (giveaway.accounts || []).map(acc => \`<a href="https://instagram.com/\${acc.replace('@', '')}" target="_blank" class="hover:underline">\${acc}</a>\`).join(', ');
 
-            card.innerHTML = `
+            card.innerHTML = \`
                 <div class="flex-grow w-full">
-                    <p class="font-bold text-yellow-900">${giveaway.prize}</p>
-                    <p class="text-sm">${accountsHTML}</p>
-                    <p class="text-xs text-gray-600">Finaliza: ${giveaway.date} | Valor: ${giveaway.price || 'N/A'}</p>
+                    <p class="font-bold text-yellow-900">\${giveaway.prize}</p>
+                    <p class="text-sm">\${accountsHTML}</p>
+                    <p class="text-xs text-gray-600">Finaliza: \${giveaway.date} | Valor: \${giveaway.price || 'N/A'}</p>
                 </div>
                 <div class="flex-shrink-0 flex items-center gap-2 w-full sm:w-auto">
-                    <button class="reviewed-vis-btn w-1/2 sm:w-auto bg-gray-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-gray-600 transition-colors text-sm" data-giveaway-id="${giveaway.id}">Revisado</button>
-                    <button class="won-vis-btn w-1/2 sm:w-auto bg-green-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-green-600 transition-colors text-sm" data-giveaway-id="${giveaway.id}">Ganado 🏆</button>
+                    <button class="reviewed-vis-btn w-1/2 sm:w-auto bg-gray-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-gray-600 transition-colors text-sm" data-giveaway-id="\${giveaway.id}">Revisado</button>
+                    <button class="won-vis-btn w-1/2 sm:w-auto bg-green-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-green-600 transition-colors text-sm" data-giveaway-id="\${giveaway.id}">Ganado 🏆</button>
                 </div>
-            `;
+            \`;
             visModalBody.appendChild(card);
         });
     };
@@ -4829,7 +4838,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     
     addManualBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const confirmationMessage = `✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨
+        const confirmationMessage = \`✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨
 
 ¿Cómo quieres guardar este sorteo?
 
@@ -4837,7 +4846,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
 - 🧙‍♂️ **Enviar al Hechicero (Público):** ¿Has encontrado un gran tesoro y quieres compartirlo con la comunidad? ¡Envíamelo! Lo revisaré y en unas horas aparecerá en el mapa de todos.
 
-Elige la opción que prefieras dentro del formulario.`;
+Elige la opción que prefieras dentro del formulario.\`;
         if (confirm(confirmationMessage)) {
             if (navMenu.classList.contains('is-open')) {
                 toggleNavMenu();
@@ -4848,7 +4857,7 @@ Elige la opción que prefieras dentro del formulario.`;
 
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\n\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\n\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\n\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\n- Enviarlos uno a uno a: admin@misorteos.es\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\n\n¿Añadimos este tesoro a tu colección privada?";
+        const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\\n\\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\\n\\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\\n\\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\\n- Enviarlos uno a uno a: admin@misorteos.es\\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\\n\\n¿Añadimos este tesoro a tu colección privada?";
 
         if (confirm(confirmationMessage)) {
             if (navMenu.classList.contains('is-open')) {
@@ -4939,7 +4948,7 @@ Elige la opción que prefieras dentro del formulario.`;
                 if (!isAlreadyInVIS) {
                     visGiveaways.push(giveaway);
                     saveVisGiveaways();
-                    showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se ha enviado a tu sala de revisión.`);
+                    showNotification('Sorteo VIP Añadido', \`"\${giveaway.prize}" se ha enviado a tu sala de revisión.\`);
                 } else {
                     showNotification('Ya en la lista', 'Este sorteo ya está en tu sala de revisión.');
                 }
@@ -4966,7 +4975,7 @@ Elige la opción que prefieras dentro del formulario.`;
         if (!giveaway) return;
 
         if (e.target.closest('.reviewed-vis-btn')) {
-            if (confirm(`¿Confirmas que ya se han anunciado los ganadores de "${giveaway.prize}" y no has ganado?`)) {
+            if (confirm(\`¿Confirmas que ya se han anunciado los ganadores de "\${giveaway.prize}" y no has ganado?\`)) {
                 removeFromVIS(giveawayId);
                 showNotification('Sorteo Revisado', 'Se ha quitado de tu lista de seguimiento.');
             }
@@ -5138,7 +5147,7 @@ Elige la opción que prefieras dentro del formulario.`;
             document.querySelectorAll('.stats-tab-content').forEach(content => {
                 content.classList.remove('active');
             });
-            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(\`tab-\${tabId}\`).classList.add('active');
 
             if (tabId === 'graficos') {
                 setTimeout(renderCharts, 50);
@@ -5154,7 +5163,7 @@ Elige la opción que prefieras dentro del formulario.`;
             document.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active'));
 
             e.target.classList.add('active');
-            document.getElementById(`tab-content-${tabId}`).classList.add('active');
+            document.getElementById(\`tab-content-\${tabId}\`).classList.add('active');
         }
     });
 
@@ -5222,7 +5231,7 @@ Elige la opción que prefieras dentro del formulario.`;
             // 3. Aplicamos la animación a cada frase con un retraso escalonado
             headlines.forEach((headline, index) => {
                 headline.style.animation = ''; // Limpiamos para que se aplique la regla de CSS
-                headline.style.animationDelay = `${index * 0.4}s`; // 0.4s de retraso entre cada frase
+                headline.style.animationDelay = \`\${index * 0.4}s\`; // 0.4s de retraso entre cada frase
             });
 
             // Muestra el contenedor principal del aviso
@@ -5266,7 +5275,7 @@ Elige la opción que prefieras dentro del formulario.`;
                 const serverVersion = data.version;
                 const localVersion = parseInt(localStorage.getItem('appVersion')) || 0;
 
-                console.log(`Versión del servidor: ${serverVersion}, Versión local: ${localVersion}`);
+                console.log(\`Versión del servidor: \${serverVersion}, Versión local: \${localVersion}\`);
 
                 if (serverVersion > localVersion) {
                     console.log('¡Nueva versión detectada! Mostrando aviso de actualización.');
@@ -5303,7 +5312,7 @@ function populateGlobalCategoryFilter() {
     for (const key in CATEGORY_INFO) {
         const option = document.createElement('option');
         option.value = key;
-        option.textContent = `${CATEGORY_INFO[key].emoji} ${CATEGORY_INFO[key].name}`;
+        option.textContent = \`\${CATEGORY_INFO[key].emoji} \${CATEGORY_INFO[key].name}\`;
         globalCategoryFilter.appendChild(option);
     }
 }
@@ -5333,23 +5342,23 @@ populateGlobalCategoryFilter();
 const HELP_CONTENT = {
     'modal': {
         title: '🌟 Guía del Cazador de Sorteos',
-        content: `¡Aquí es donde ocurre la magia! Gestiona los sorteos del día seleccionado.\n\n- Búsqueda y Filtros: Usa el campo de búsqueda para encontrar un premio por su nombre o el filtro de categorías para ver solo los que te interesan.\n- El Premio: El texto principal te dice qué se sortea. ¡Haz clic sobre el precio para buscarlo directamente en Google!\n- Cuentas Mágicas: Toca sobre cualquier cuenta @usuario para que te llevemos volando a su perfil de Instagram.\n- Checkbox de Realizado (✅): ¡Márcalo cuando hayas participado! El sorteo se moverá al final de la lista.\n- Botones de Acción (al completar):\n  - Trofeo (🏆): ¡Has ganado! Púlsalo para mover el sorteo a tu Vitrina de Trofeos.\n  - Estrella (🌟): ¿Es un sorteo muy importante (VIS)? Púlsalo para enviarlo a una lista especial de seguimiento.\n- Herramientas del Organizador:\n  - Calendario (🗓️): Mueve el sorteo a una nueva fecha.\n  - Papelera (🗑️): Envía el sorteo a la papelera (puedes restaurarlo).\n  - Globo (🌍): Descarta el sorteo como extranjero y añade las cuentas al cortafuegos.`
+        content: \`¡Aquí es donde ocurre la magia! Gestiona los sorteos del día seleccionado.\\n\\n- Búsqueda y Filtros: Usa el campo de búsqueda para encontrar un premio por su nombre o el filtro de categorías para ver solo los que te interesan.\\n- El Premio: El texto principal te dice qué se sortea. ¡Haz clic sobre el precio para buscarlo directamente en Google!\\n- Cuentas Mágicas: Toca sobre cualquier cuenta @usuario para que te llevemos volando a su perfil de Instagram.\\n- Checkbox de Realizado (✅): ¡Márcalo cuando hayas participado! El sorteo se moverá al final de la lista.\\n- Botones de Acción (al completar):\\n  - Trofeo (🏆): ¡Has ganado! Púlsalo para mover el sorteo a tu Vitrina de Trofeos.\\n  - Estrella (🌟): ¿Es un sorteo muy importante (VIS)? Púlsalo para enviarlo a una lista especial de seguimiento.\\n- Herramientas del Organizador:\\n  - Calendario (🗓️): Mueve el sorteo a una nueva fecha.\\n  - Papelera (🗑️): Envía el sorteo a la papelera (puedes restaurarlo).\\n  - Globo (🌍): Descarta el sorteo como extranjero y añade las cuentas al cortafuegos.\`
     },
     'add-giveaway-modal': {
         title: '✍️ ¡Añade tu Tesoro!',
-        content: 'Registra un nuevo sorteo manualmente.\n\n- Fecha: El día que finaliza el sorteo.\n- Premio: Sé descriptivo y usa los emojis para categorizar (🥎, 🛩️, 🃏, 💲).\n- Cuentas: Escribe las cuentas de Instagram separadas por comas (ej: @cuenta1,@cuenta2).\n- Valor: El precio aproximado del premio.'
+        content: 'Registra un nuevo sorteo manualmente.\\n\\n- Fecha: El día que finaliza el sorteo.\\n- Premio: Sé descriptivo y usa los emojis para categorizar (🥎, 🛩️, 🃏, 💲).\\n- Cuentas: Escribe las cuentas de Instagram separadas por comas (ej: @cuenta1,@cuenta2).\\n- Valor: El precio aproximado del premio.'
     },
     'ai-fullscreen-view': {
         title: '🤖 El Asistente Mágico de IA',
-        content: '¡Deja que la IA trabaje por ti!\n\n1. Selecciona Imágenes: Pulsa el botón y sube hasta 100 capturas de pantalla de sorteos.\n2. Inicia el Análisis: La IA leerá cada imagen, extraerá toda la información y la clasificará por ti.\n3. Revisa y Confirma: Aparecerá una tarjeta interactiva por cada imagen. Podrás editar cualquier dato o simplemente guardar si todo es correcto.'
+        content: '¡Deja que la IA trabaje por ti!\\n\\n1. Selecciona Imágenes: Pulsa el botón y sube hasta 100 capturas de pantalla de sorteos.\\n2. Inicia el Análisis: La IA leerá cada imagen, extraerá toda la información y la clasificará por ti.\\n3. Revisa y Confirma: Aparecerá una tarjeta interactiva por cada imagen. Podrás editar cualquier dato o simplemente guardar si todo es correcto.'
     },
     'trash-modal': {
         title: '🗑️ La Papelera de Oportunidades',
-        content: 'Aquí descansan los sorteos que has eliminado.\n\n- Restaurar (↩️): Pulsa este botón para devolver el sorteo a tu calendario.\n- Vaciar Papelera: ¡Cuidado! Esta acción elimina permanentemente todos los sorteos de la papelera.'
+        content: 'Aquí descansan los sorteos que has eliminado.\\n\\n- Restaurar (↩️): Pulsa este botón para devolver el sorteo a tu calendario.\\n- Vaciar Papelera: ¡Cuidado! Esta acción elimina permanentemente todos los sorteos de la papelera.'
     },
     'discarded-modal': {
         title: '🗂️ El Archivo de los Descartados',
-        content: 'Aquí van los sorteos que la IA o tú habéis filtrado por no ser válidos (duplicados, caducados, extranjeros...).\n\n- Filtros: Usa los botones de arriba para navegar entre las distintas categorías de descarte.\n- Recuperar (+): Si un sorteo se descartó por error, pulsa para añadirlo manualmente.\n- Comparar (en Duplicados): Pulsa sobre un sorteo duplicado para ver una comparación y decidir qué hacer.'
+        content: 'Aquí van los sorteos que la IA o tú habéis filtrado por no ser válidos (duplicados, caducados, extranjeros...).\\n\\n- Filtros: Usa los botones de arriba para navegar entre las distintas categorías de descarte.\\n- Recuperar (+): Si un sorteo se descartó por error, pulsa para añadirlo manualmente.\\n- Comparar (en Duplicados): Pulsa sobre un sorteo duplicado para ver una comparación y decidir qué hacer.'
     },
     'trophy-modal': {
         title: '🏆 ¡Tu Salón de la Fama!',
@@ -5357,11 +5366,11 @@ const HELP_CONTENT = {
     },
     'stats-modal': {
         title: '📊 Tu Centro de Estrategia',
-        content: '¡Los números no mienten! Analiza tu rendimiento para optimizar tu estrategia.\n\n- Pestañas: Navega por las diferentes secciones para ver un resumen, tu rendimiento, consejos y gráficos visuales.\n- Oráculos: ¿Necesitas inspiración? Consulta a los oráculos para ver qué te depara el futuro.\n- Compartir: ¡Presume de tus logros! Copia un resumen de tus estadísticas.'
+        content: '¡Los números no mienten! Analiza tu rendimiento para optimizar tu estrategia.\\n\\n- Pestañas: Navega por las diferentes secciones para ver un resumen, tu rendimiento, consejos y gráficos visuales.\\n- Oráculos: ¿Necesitas inspiración? Consulta a los oráculos para ver qué te depara el futuro.\\n- Compartir: ¡Presume de tus logros! Copia un resumen de tus estadísticas.'
     },
     'achievements-modal': {
         title: '🏅 Logros, Títulos y Méritos',
-        content: '¡Demuestra tu maestría como cazador de sorteos!\n\n- Logros: Hitos que desbloqueas al usar la aplicación. ¡Dan Puntos de Sorteo (PS)!\n- Títulos de Prestigio: Recompensas especiales por hazañas legendarias. Puedes elegir cuál mostrar en la pantalla principal.\n- Méritos: Reconocimientos por ganar tipos específicos de sorteos.'
+        content: '¡Demuestra tu maestría como cazador de sorteos!\\n\\n- Logros: Hitos que desbloqueas al usar la aplicación. ¡Dan Puntos de Sorteo (PS)!\\n- Títulos de Prestigio: Recompensas especiales por hazañas legendarias. Puedes elegir cuál mostrar en la pantalla principal.\\n- Méritos: Reconocimientos por ganar tipos específicos de sorteos.'
     },
     'history-modal': {
         title: '🕒 Historial de Análisis de IA',
@@ -5369,7 +5378,7 @@ const HELP_CONTENT = {
     },
     'vis-modal': {
         title: '🌟 Revisión VIS (Very Important Sorteos)',
-        content: 'Esta es tu sala de seguimiento personal para los sorteos más importantes.\n\n- ¿Cómo funciona?: Cuando participas en un sorteo, si pulsas el botón de la estrella (🌟), se añade a esta lista.\n- Revisado: Cuando sepas que el sorteo ha finalizado y no has ganado, pulsa este botón para quitarlo de la lista.\n- Ganado: ¡Si has ganado, pulsa aquí para moverlo a tu vitrina de trofeos!'
+        content: 'Esta es tu sala de seguimiento personal para los sorteos más importantes.\\n\\n- ¿Cómo funciona?: Cuando participas en un sorteo, si pulsas el botón de la estrella (🌟), se añade a esta lista.\\n- Revisado: Cuando sepas que el sorteo ha finalizado y no has ganado, pulsa este botón para quitarlo de la lista.\\n- Ganado: ¡Si has ganado, pulsa aquí para moverlo a tu vitrina de trofeos!'
     }
 };
 
@@ -5379,7 +5388,7 @@ document.addEventListener('click', function(e) {
         const modalId = helpBtn.dataset.modalId;
         const helpData = HELP_CONTENT[modalId];
         if (helpData) {
-            alert(`${helpData.title}\n\n${helpData.content}`);
+            alert(\`\${helpData.title}\\n\\n\${helpData.content}\`);
         }
     }
 });
@@ -5441,10 +5450,10 @@ if (addGiveawayModalEl) {
             }
 
             const emailAdmin = 'admin@misorteos.es';
-            const subject = `Nuevo Sorteo Sugerido: ${prize.substring(0, 30)}...`;
-            const body = `¡Hola, Hechicero Mayor! 🧙‍♂️\n\nUn cazador de sorteos ha compartido un nuevo tesoro para el calendario público. Aquí están los detalles:\n\n- Fecha Finalización: ${date}\n- Premio: ${prize}\n- Cuentas: ${accounts || 'No especificadas'}\n- Valor Aprox.: ${price || 'No especificado'}\n- Categoría: ${category || 'No especificada'}\n\n¡Gracias por tu magia!`;
+            const subject = \`Nuevo Sorteo Sugerido: \${prize.substring(0, 30)}...\`;
+            const body = \`¡Hola, Hechicero Mayor! 🧙‍♂️\\n\\nUn cazador de sorteos ha compartido un nuevo tesoro para el calendario público. Aquí están los detalles:\\n\\n- Fecha Finalización: \${date}\\n- Premio: \${prize}\\n- Cuentas: \${accounts || 'No especificadas'}\\n- Valor Aprox.: \${price || 'No especificado'}\\n- Categoría: \${category || 'No especificada'}\\n\\n¡Gracias por tu magia!\`;
 
-            const mailtoLink = `mailto:${emailAdmin}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            const mailtoLink = \`mailto:\${emailAdmin}?subject=\${encodeURIComponent(subject)}&body=\${encodeURIComponent(body)}\`;
             window.location.href = mailtoLink;
             showNotification('¡Enviado!', 'Se ha abierto tu app de correo para enviar el sorteo. ¡Gracias por compartir!');
             
@@ -5466,12 +5475,10 @@ const shareNativeBtn = document.getElementById('share-native-btn');
 const previewContainer = document.getElementById('share-preview-container');
 
 // Función para abrir el modal y popular las opciones
-// CÓDIGO CORREGIDO Y MEJORADO
 const openShareModal = () => {
-    // 1. Hacemos visible el modal INMEDIATAMENTE.
+    // [FIX] MOVER EL CÓDIGO A LA NUEVA FUNCIÓN CORREGIDA
     shareOptionsModal.classList.add('is-visible');
 
-    // 2. Envolvemos la lógica de contenido en un try...catch para que no bloquee la app.
     try {
         const datepickerContainer = document.getElementById('datepicker-container');
         if (datepicker) {
@@ -5483,7 +5490,7 @@ const openShareModal = () => {
             todayHighlight: true,
             weekStart: 1,
             pickerPosition: 'bottom-left',
-            rangePicker: true
+            rangePicker: true // Habilita la selección de rango
         });
         
         datepickerContainer.addEventListener('changeDate', (e) => {
@@ -5494,13 +5501,10 @@ const openShareModal = () => {
             handleTimeframeChange();
         });
 
-        // 3. Populamos el contenido ahora que el modal ya es visible.
         document.getElementById('time-month').checked = true;
         handleTimeframeChange();
     } catch (error) {
         console.error("Error al preparar el modal de compartir:", error);
-        // Opcional: Mostrar un mensaje de error dentro del modal
-        const previewContainer = document.getElementById('share-preview-container');
         if(previewContainer) {
             previewContainer.innerHTML = '<span class="text-red-600">Error al cargar los datos.</span>';
         }
@@ -5515,10 +5519,10 @@ const populatePrizeList = (trophies) => {
         trophies.forEach(g => {
             const prizeItem = document.createElement('div');
             prizeItem.className = 'flex items-center';
-            prizeItem.innerHTML = `
-                <input type="checkbox" id="prize-${g.id}" data-prize-id="${g.id}" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" checked>
-                <label for="prize-${g.id}" class="ml-2 block text-sm text-gray-700 truncate">${g.prize}</label>
-            `;
+            prizeItem.innerHTML = \`
+                <input type="checkbox" id="prize-\${g.id}" data-prize-id="\${g.id}" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" checked>
+                <label for="prize-\${g.id}" class="ml-2 block text-sm text-gray-700 truncate">\${g.prize}</label>
+            \`;
             prizeListDiv.appendChild(prizeItem);
         });
     } else {
@@ -5562,9 +5566,10 @@ const handleTimeframeChange = () => {
     updateSharePreview();
 };
 
-// Función para actualizar la vista previa
+// [FIX] FUNCIÓN CORREGIDA
 const updateSharePreview = async () => {
     previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
+    
     const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
     
     if (selectedPrizeIds.size === 0) {
@@ -5578,12 +5583,16 @@ const updateSharePreview = async () => {
     const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
 
     if (selectedDates.length > 0) {
-        timeframeText = selectedDates.length === 1 ? `Día: ${selectedDates[0]}` : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+        timeframeText = selectedDates.length === 1 
+            ? \`Día: \${selectedDates[0]}\` 
+            : \`Del \${selectedDates[0]} al \${selectedDates[selectedDates.length - 1]}\`;
     } else if (radioChecked) {
-        const radioLabels = { 'all': 'Todos los Tiempos', 'last_month': 'Último Mes', 'last_week': 'Última Semana' };
-        timeframeText = radioLabels[radioChecked.value];
+        const label = document.querySelector(\`label[for="\${radioChecked.id}"]\`);
+        if (label) {
+            timeframeText = label.textContent;
+        }
     }
-    
+
     const canvas = await generateTrophyImage(prizesToRender, timeframeText);
     const img = new Image();
     img.src = canvas.toDataURL('image/png');
@@ -5624,8 +5633,8 @@ const generateTrophyImage = async (prizesToRender, timeframeText) => {
     const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
     ctx.font = 'bold 32px Chewy';
     ctx.fillStyle = '#4e342e';
-    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
-    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
+    ctx.fillText(\`🏆 \${totalWins} Premios\`, canvas.width * 0.28, 190);
+    ctx.fillText(\`💰 \${totalValue.toFixed(0)}€\`, canvas.width * 0.72, 190);
 
     // DIBUJAR LISTA DE PREMIOS
     ctx.textAlign = 'left';
@@ -5635,17 +5644,17 @@ const generateTrophyImage = async (prizesToRender, timeframeText) => {
         ctx.fillStyle = '#4e342e';
         let prizeText = g.prize;
         if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
-        ctx.fillText(`- ${prizeText}`, 50, yPos);
+        ctx.fillText(\`- \${prizeText}\`, 50, yPos);
         ctx.fillStyle = '#b45309';
         ctx.textAlign = 'right';
-        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
+        ctx.fillText(\`\${g.price || 'N/A'}\`, canvas.width - 50, yPos);
         ctx.textAlign = 'left';
         yPos += 40;
     });
     if (filteredTrophies.length > 15) {
         ctx.textAlign = 'center';
         ctx.fillStyle = '#92400e';
-        ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+        ctx.fillText(\`...y \${filteredTrophies.length - 15} más!\`, canvas.width / 2, yPos);
     }
     
     // DIBUJAR SELLO DE AGUA
@@ -5693,29 +5702,53 @@ if (prizeListContainer) {
 }
 if (generateAndDownloadBtn) {
     generateAndDownloadBtn.addEventListener('click', async () => {
-        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+        const prizesToRender = wonGiveaways.filter(g => document.getElementById(\`prize-\${g.id}\`)?.checked);
         if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
-        const timeframeText = document.querySelector('#share-options-modal h2 + div .font-bold').textContent;
+        
+        // Obtenemos el texto del timeframe de la misma manera que en la vista previa
+        let timeframeText = 'Resumen Personalizado';
+        const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+        const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+
+        if (selectedDates.length > 0) {
+            timeframeText = selectedDates.length === 1 
+                ? \`Día: \${selectedDates[0]}\` 
+                : \`Del \${selectedDates[0]} al \${selectedDates[selectedDates.length - 1]}\`;
+        } else if (radioChecked) {
+            const label = document.querySelector(\`label[for="\${radioChecked.id}"]\`);
+            if (label) timeframeText = label.textContent;
+        }
+
         const canvas = await generateTrophyImage(prizesToRender, timeframeText);
         const link = document.createElement('a');
-        link.download = `Misorteos-Vitrina.png`;
+        link.download = \`Misorteos-Vitrina.png\`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     });
 }
 if (shareNativeBtn) {
     shareNativeBtn.addEventListener('click', async () => {
-        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+        const prizesToRender = wonGiveaways.filter(g => document.getElementById(\`prize-\${g.id}\`)?.checked);
         if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
-        const timeframeText = document.querySelector('#share-options-modal h2 + div .font-bold').textContent;
+        
+        let timeframeText = 'Resumen Personalizado';
+        const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+        const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+        if (selectedDates.length > 0) {
+            timeframeText = selectedDates.length === 1 ? \`Día: \${selectedDates[0]}\` : \`Del \${selectedDates[0]} al \${selectedDates[selectedDates.length - 1]}\`;
+        } else if (radioChecked) {
+            const label = document.querySelector(\`label[for="\${radioChecked.id}"]\`);
+            if (label) timeframeText = label.textContent;
+        }
+
         if (navigator.share) {
             const canvas = await generateTrophyImage(prizesToRender, timeframeText);
             canvas.toBlob(async (blob) => {
-                const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
+                const file = new File([blob], \`Misorteos-Vitrina.png\`, { type: 'image/png' });
                 try {
                     await navigator.share({
                         title: 'Mi Vitrina de Trofeos de Misorteos',
-                        text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
+                        text: \`¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es\`,
                         files: [file],
                     });
                 } catch (error) { console.error('Error al compartir:', error); }

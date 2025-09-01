@@ -2766,36 +2766,45 @@
     const setFilterAndRender = (filter) => { currentFilter = filter; renderCalendar(); checkAchievements('search'); }
 
     const markAsWon = (giveawayId, dateStr) => {
-        if (!giveaways[dateStr]) return;
-        const giveawayIndex = giveaways[dateStr].findIndex(g => g.id === giveawayId);
-        if (giveawayIndex === -1) return;
-        const [wonGiveaway] = giveaways[dateStr].splice(giveawayIndex, 1);
-        
-        let points = 100;
-        let reason = `¡Has ganado "${wonGiveaway.prize}"!`;
-        if (wonGiveaway.prize.includes('🥎') || wonGiveaway.prize.includes('🛩️') || wonGiveaway.prize.includes('🃏')) points += 25;
-        if (parsePrice(wonGiveaway.price) > 500) points += 250;
-        addPoints(points, reason);
+    if (!giveaways[dateStr]) return;
+    const giveawayIndex = giveaways[dateStr].findIndex(g => g.id === giveawayId);
+    if (giveawayIndex === -1) return;
+    
+    const [wonGiveaway] = giveaways[dateStr].splice(giveawayIndex, 1);
+    
+    // --- [ESTA ES LA LÍNEA CLAVE] ---
+    // Guardamos la fecha original del sorteo en el objeto del trofeo.
+    wonGiveaway.date = dateStr; 
+    // --------------------------------
 
-        wonGiveaway.wonDate = new Date().toISOString();
-        wonGiveaways.push(wonGiveaway);
-        if (!completedGiveaways[giveawayId]) {
-            completedGiveaways[giveawayId] = true;
-            completedGiveawayCount++;
-            addPoints(2, `Completado: ${wonGiveaway.prize.substring(0, 20)}...`);
-            saveCompletedGiveaways();
-        }
-        if (giveaways[dateStr].length === 0) {
-            delete giveaways[dateStr];
-        }
-        saveGiveaways();
-        saveWonGiveaways();
-        closeModal();
-        renderCalendar();
-        renderTrophyModal();
-        showNotification('¡Enhorabuena!', `Has añadido "${wonGiveaway.prize}" a tu vitrina de trofeos.`);
-        checkAchievements('win', wonGiveaway);
-    };
+    let points = 100;
+    let reason = `¡Has ganado "${wonGiveaway.prize}"!`;
+    if (wonGiveaway.prize.includes('🥎') || wonGiveaway.prize.includes('🛩️') || wonGiveaway.prize.includes('🃏')) points += 25;
+    if (parsePrice(wonGiveaway.price) > 500) points += 250;
+    addPoints(points, reason);
+
+    wonGiveaway.wonDate = new Date().toISOString();
+    wonGiveaways.push(wonGiveaway);
+    
+    if (!completedGiveaways[giveawayId]) {
+        completedGiveaways[giveawayId] = true;
+        completedGiveawayCount++;
+        addPoints(2, `Completado: ${wonGiveaway.prize.substring(0, 20)}...`);
+        saveCompletedGiveaways();
+    }
+    
+    if (giveaways[dateStr].length === 0) {
+        delete giveaways[dateStr];
+    }
+    
+    saveGiveaways();
+    saveWonGiveaways();
+    closeModal();
+    renderCalendar();
+    renderTrophyModal();
+    showNotification('¡Enhorabuena!', `Has añadido "${wonGiveaway.prize}" a tu vitrina de trofeos.`);
+    checkAchievements('win', wonGiveaway);
+};
 
     const deleteWonGiveaway = (giveawayId) => {
         if (confirm("¿Estás seguro de que quieres eliminar este sorteo de la vitrina?")) {

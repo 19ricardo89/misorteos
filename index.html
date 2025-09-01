@@ -5565,51 +5565,7 @@ const handleTimeframeChange = () => {
 // [FIX DEFINITIVO] Reemplaza las dos funciones antiguas con estas:
 
 // Función para manejar los cambios de tiempo (con control de errores y limpieza de datos)
-const handleTimeframeChange = () => {
-    try {
-        // 1. [NUEVO] Filtro de seguridad para limpiar datos corruptos al inicio.
-        const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.wonDate);
 
-        let selectionType = 'radio';
-        let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
-        const selectedDates = datepicker ? datepicker.getDates('yyyy-mm-dd') : [];
-        
-        if (selectedDates.length > 0) {
-            selectionType = 'calendar';
-            selectionValue = selectedDates;
-        }
-
-        const now = new Date();
-        // 2. Usamos el array ya limpio y seguro para filtrar por fecha.
-        const trophiesInTimeframe = validWonGiveaways.filter(g => {
-            const wonDate = new Date(g.wonDate);
-            wonDate.setHours(0,0,0,0);
-            if (isNaN(wonDate.getTime())) return false; // Protección extra
-
-            if(selectionType === 'radio') {
-                switch (selectionValue) {
-                    case 'last_week': return (now - wonDate) / (1000 * 3600 * 24) <= 7;
-                    case 'last_month': return (now - wonDate) / (1000 * 3600 * 24) <= 30;
-                    case 'all': return true;
-                    default: return false;
-                }
-            } else if (selectionType === 'calendar' && selectionValue.length > 0) {
-                const startDate = new Date(selectionValue[0]);
-                const endDate = selectionValue.length > 1 ? new Date(selectionValue[1]) : new Date(selectionValue[0]);
-                startDate.setHours(0,0,0,0);
-                endDate.setHours(0,0,0,0);
-                return wonDate >= startDate && wonDate <= endDate;
-            }
-            return false;
-        });
-        
-        // 3. Pasamos la lista limpia a las siguientes funciones.
-        populatePrizeList(trophiesInTimeframe);
-        updateSharePreview(trophiesInTimeframe); // <-- Importante: pasamos la lista limpia
-    } catch(error) {
-        throw new Error(`Fallo en handleTimeframeChange: ${error.message}`);
-    }
-};
 
 // Función para actualizar la vista previa (modificada para recibir la lista limpia)
 const updateSharePreview = async (trophiesToShow) => {

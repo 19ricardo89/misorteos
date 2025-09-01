@@ -5495,7 +5495,7 @@ if (addGiveawayModalEl) {
         }
     });
 }
-// --- INICIO: LÓGICA PARA COMPARTIR (VERSIÓN 8 - COMPLETA Y FUNCIONAL) ---
+// --- INICIO: LÓGICA PARA COMPARTIR (VERSIÓN 9 - DISEÑO PLACA CELESTIAL INTEGRADO) ---
 
 const openShareOptionsBtn = document.getElementById('open-share-options-btn');
 const shareOptionsModal = document.getElementById('share-options-modal');
@@ -5508,7 +5508,7 @@ const previewContainer = document.getElementById('share-preview-container');
 const openShareModal = () => {
     shareOptionsModal.classList.add('is-visible');
     
-    // Conectar todos los listeners una sola vez
+    // Conectar todos los listeners
     document.querySelector('#share-timeframe-radios').onchange = handleShareUIUpdate;
     document.getElementById('share-start-date').onchange = handleShareUIUpdate;
     document.getElementById('share-end-date').onchange = handleShareUIUpdate;
@@ -5540,7 +5540,7 @@ const handleShareUIUpdate = () => {
     const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
     let trophiesInTimeframe = [];
 
-    if (radioChecked) {
+    if (radioChecked) { // Filtro por Radio Buttons
         const timeframe = radioChecked.value;
         const now = new Date();
         trophiesInTimeframe = validWonGiveaways.filter(g => {
@@ -5552,7 +5552,7 @@ const handleShareUIUpdate = () => {
             if (timeframe === 'last_month') return daysAgo <= 30;
             return false;
         });
-    } else if (startDateInput.value) {
+    } else if (startDateInput.value) { // Filtro por Rango de Fechas
         const startDate = new Date(startDateInput.value + 'T00:00:00');
         const endDate = endDateInput.value ? new Date(endDateInput.value + 'T23:59:59') : new Date();
 
@@ -5586,10 +5586,9 @@ const populatePrizeList = (trophies) => {
 // Actualiza la vista previa de la imagen
 const updateSharePreview = async () => {
     previewContainer.innerHTML = '<span class="animate-pulse">Generando vista previa...</span>';
-    
     const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
+    
     const prizesToRender = wonGiveaways.filter(g => g && g.id && selectedPrizeIds.has(g.id));
-
     if (prizesToRender.length === 0) {
         previewContainer.innerHTML = '<span>Selecciona al menos un trofeo.</span>';
         return;
@@ -5606,78 +5605,77 @@ const updateSharePreview = async () => {
     }
 
     const canvas = await generateTrophyImage(prizesToRender, timeframeText);
-    const img = new Image();
-    img.src = canvas.toDataURL('image/png');
-    img.className = 'max-w-full max-h-full object-contain rounded-lg';
     previewContainer.innerHTML = '';
-    previewContainer.appendChild(img);
+    canvas.className = 'max-w-full max-h-full object-contain rounded-lg';
+    previewContainer.appendChild(canvas);
 };
 
-// Dibuja la imagen en el canvas
+// Dibuja la imagen final en el canvas
 const generateTrophyImage = async (prizesToRender, timeframeText) => {
     const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
     canvas.width = 800;
     canvas.height = 1000;
-    const ctx = canvas.getContext('2d');
-    const filteredTrophies = prizesToRender.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate));
 
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#fffbef');
-    gradient.addColorStop(1, '#fef3c7');
-    ctx.fillStyle = gradient;
+    // 1. Dibuja el fondo degradado
+    const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    bgGradient.addColorStop(0, '#0f0c29');
+    bgGradient.addColorStop(0.5, '#302b63');
+    bgGradient.addColorStop(1, '#24243e');
+    ctx.fillStyle = bgGradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 2. Dibuja la placa dorada central
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+    ctx.shadowBlur = 15;
+    ctx.shadowOffsetY = 5;
+    const plaqueMargin = 50;
+    ctx.fillRect(plaqueMargin, plaqueMargin, canvas.width - plaqueMargin * 2, canvas.height - plaqueMargin * 2);
+    ctx.shadowColor = 'transparent'; // Reset shadow
+
+    // 3. Dibuja el borde dorado
     ctx.strokeStyle = '#d4af37';
-    ctx.lineWidth = 20;
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 4;
+    ctx.strokeRect(plaqueMargin, plaqueMargin, canvas.width - plaqueMargin * 2, canvas.height - plaqueMargin * 2);
 
+    // 4. Escribe los textos
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#6a3805';
-    ctx.font = 'bold 50px Chewy';
-    ctx.fillText("Vitrina de Trofeos", canvas.width / 2, 80);
-    ctx.font = '30px Chewy';
-    ctx.fillStyle = '#b45309';
-    ctx.fillText(timeframeText, canvas.width / 2, 125);
-    
-    const totalWins = filteredTrophies.length;
-    const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
-    ctx.font = 'bold 32px Chewy';
-    ctx.fillStyle = '#4e342e';
-    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
-    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
+    ctx.fillStyle = '#f7d468';
+    ctx.font = `bold 60px 'Chewy', cursive`;
+    ctx.fillText('VITRINA DE TROFEOS', canvas.width / 2, 150);
 
+    ctx.fillStyle = '#f0e6d2';
+    ctx.font = `30px 'Chewy', cursive`;
+    ctx.fillText(timeframeText.toUpperCase(), canvas.width / 2, 200);
+
+    // 5. Escribe los totales
+    const totalWins = prizesToRender.length;
+    const totalValue = prizesToRender.reduce((sum, g) => sum + parsePrice(g.price), 0);
+    ctx.font = `bold 32px 'Chewy', cursive`;
+    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.3, 270);
+    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.7, 270);
+
+    // 6. Dibuja la lista de premios
     ctx.textAlign = 'left';
-    ctx.font = '22px Chewy';
-    let yPos = 250;
-    filteredTrophies.slice(0, 15).forEach(g => {
-        ctx.fillStyle = '#4e342e';
-        let prizeText = g.prize;
-        if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
-        ctx.fillText(`- ${prizeText}`, 50, yPos);
-        ctx.fillStyle = '#b45309';
-        ctx.textAlign = 'right';
-        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
-        ctx.textAlign = 'left';
+    ctx.fillStyle = '#f0e6d2';
+    ctx.font = `24px sans-serif`;
+    let yPos = 340;
+    prizesToRender.slice(0, 12).forEach(g => { // Limitamos a 12 para que quepa
+        ctx.fillText(`- ${g.prize}`, plaqueMargin + 30, yPos);
         yPos += 40;
     });
-    if (filteredTrophies.length > 15) {
+     if (prizesToRender.length > 12) {
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#92400e';
-        ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+        ctx.fillText(`...y ${prizesToRender.length - 12} más!`, canvas.width/2, yPos);
     }
-    
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
-    ctx.rotate(-Math.PI / 6);
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(106, 56, 5, 0.08)';
-    ctx.font = 'bold 90px Chewy';
-    ctx.fillText("Misorteos.es", 0, 0);
-    ctx.restore();
 
-    ctx.font = '20px Chewy';
-    ctx.fillStyle = '#92400e';
+
+    // 7. Escribe el pie de página
     ctx.textAlign = 'center';
-    ctx.fillText("Generado con Misorteos.es ✨", canvas.width / 2, canvas.height - 40);
+    ctx.font = `20px 'Chewy', cursive`;
+    ctx.fillStyle = '#f7d468';
+    ctx.fillText('Generado con Misorteos.es ✨', canvas.width / 2, canvas.height - 80);
 
     return canvas;
 };
@@ -5688,8 +5686,10 @@ const downloadShareImage = async () => {
     if (canvas) {
         const link = document.createElement('a');
         link.download = `Misorteos-Vitrina-${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png');
+        link.href = canvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
     } else {
         showNotification('Error', 'No se pudo encontrar la imagen para descargar.');
     }
@@ -5706,18 +5706,21 @@ const shareImageNatively = async () => {
         canvas.toBlob(async (blob) => {
             const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
             try {
-                await navigator.share({
-                    title: 'Mi Vitrina de Trofeos de Misorteos',
-                    text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
-                    files: [file],
-                });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        title: 'Mi Vitrina de Trofeos',
+                        text: `¡Mira los premios que he ganado con la app Misorteos! ✨`,
+                        files: [file],
+                    });
+                } else {
+                     showNotification('Error', 'Tu navegador no puede compartir esta imagen.');
+                }
             } catch (error) { console.error('Error al compartir:', error); }
         }, 'image/png');
     } else {
         showNotification('No Soportado', 'Tu navegador no permite compartir archivos. Usa la descarga.');
     }
 };
-
 
 // Event Listeners principales
 if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShareModal);

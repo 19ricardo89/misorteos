@@ -5529,11 +5529,12 @@ const populatePrizeList = (trophies) => {
 
 // Función para manejar los cambios de tiempo (con control de errores)
 // [FIX DEFINITIVO] Esta versión limpia los datos antes de usarlos
+// [FIX DEFINITIVO] Reemplaza las dos funciones antiguas con estas:
+
+// Función para manejar los cambios de tiempo (con control de errores y limpieza de datos)
 const handleTimeframeChange = () => {
     try {
-        console.log("Debug: Iniciando handleTimeframeChange...");
-        
-        // 1. [NUEVO] Filtro de seguridad para limpiar datos corruptos
+        // 1. [NUEVO] Filtro de seguridad para limpiar datos corruptos al inicio.
         const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.wonDate);
 
         let selectionType = 'radio';
@@ -5546,7 +5547,7 @@ const handleTimeframeChange = () => {
         }
 
         const now = new Date();
-        // 2. Usamos el array ya limpio y seguro
+        // 2. Usamos el array ya limpio y seguro para filtrar por fecha.
         const trophiesInTimeframe = validWonGiveaways.filter(g => {
             const wonDate = new Date(g.wonDate);
             wonDate.setHours(0,0,0,0);
@@ -5569,18 +5570,17 @@ const handleTimeframeChange = () => {
             return false;
         });
         
+        // 3. Pasamos la lista limpia a las siguientes funciones.
         populatePrizeList(trophiesInTimeframe);
-        updateSharePreview();
-        console.log("Debug: handleTimeframeChange completado.");
+        updateSharePreview(trophiesInTimeframe); // <-- Importante: pasamos la lista limpia
     } catch(error) {
         throw new Error(`Fallo en handleTimeframeChange: ${error.message}`);
     }
 };
 
-// Función para actualizar la vista previa (con control de errores)
-const updateSharePreview = async () => {
+// Función para actualizar la vista previa (modificada para recibir la lista limpia)
+const updateSharePreview = async (trophiesToShow) => {
     try {
-        console.log("Debug: Iniciando updateSharePreview...");
         previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
         
         const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
@@ -5589,7 +5589,9 @@ const updateSharePreview = async () => {
             previewContainer.innerHTML = '<span class="text-gray-500">Selecciona al menos un trofeo para mostrar.</span>';
             return;
         }
-        const prizesToRender = wonGiveaways.filter(g => selectedPrizeIds.has(g.id));
+        
+        // 4. [CORREGIDO] Filtramos desde la lista segura que recibe como argumento, no de la global.
+        const prizesToRender = trophiesToShow.filter(g => selectedPrizeIds.has(g.id));
         
         let timeframeText = 'Resumen Personalizado';
         const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
@@ -5612,7 +5614,6 @@ const updateSharePreview = async () => {
         img.className = 'max-w-full max-h-full object-contain rounded-lg';
         previewContainer.innerHTML = '';
         previewContainer.appendChild(img);
-        console.log("Debug: updateSharePreview completado.");
     } catch(error) {
         throw new Error(`Fallo en updateSharePreview: ${error.message}`);
     }

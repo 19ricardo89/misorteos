@@ -5556,9 +5556,11 @@ const handleTimeframeChange = () => {
     updateSharePreview();
 };
 
+// [FIX] FUNCIÓN CORREGIDA Y ROBUSTA PARA ACTUALIZAR LA VISTA PREVIA
 const updateSharePreview = async () => {
     previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
     
+    // Obtenemos los trofeos seleccionados
     const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
     
     if (selectedPrizeIds.size === 0) {
@@ -5567,6 +5569,7 @@ const updateSharePreview = async () => {
     }
     const prizesToRender = wonGiveaways.filter(g => selectedPrizeIds.has(g.id));
     
+    // Lógica segura para obtener el texto del período de tiempo
     let timeframeText = 'Resumen Personalizado';
     const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
     const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
@@ -5576,6 +5579,7 @@ const updateSharePreview = async () => {
             ? `Día: ${selectedDates[0]}` 
             : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
     } else if (radioChecked) {
+        // Obtenemos el texto de la etiqueta asociada al radio button
         const label = document.querySelector(`label[for="${radioChecked.id}"]`);
         if (label) {
             timeframeText = label.textContent;
@@ -5589,7 +5593,6 @@ const updateSharePreview = async () => {
     previewContainer.innerHTML = '';
     previewContainer.appendChild(img);
 };
-
 // La función principal que dibuja la imagen
 const generateTrophyImage = async (prizesToRender, timeframeText) => {
     const canvas = document.createElement('canvas');

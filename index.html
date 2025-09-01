@@ -5528,9 +5528,14 @@ const populatePrizeList = (trophies) => {
 };
 
 // Función para manejar los cambios de tiempo (con control de errores)
+// [FIX DEFINITIVO] Esta versión limpia los datos antes de usarlos
 const handleTimeframeChange = () => {
     try {
         console.log("Debug: Iniciando handleTimeframeChange...");
+        
+        // 1. [NUEVO] Filtro de seguridad para limpiar datos corruptos
+        const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.wonDate);
+
         let selectionType = 'radio';
         let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
         const selectedDates = datepicker ? datepicker.getDates('yyyy-mm-dd') : [];
@@ -5541,11 +5546,11 @@ const handleTimeframeChange = () => {
         }
 
         const now = new Date();
-        const trophiesInTimeframe = wonGiveaways.filter(g => {
-            if (!g.wonDate) return false; // Protección contra datos antiguos
+        // 2. Usamos el array ya limpio y seguro
+        const trophiesInTimeframe = validWonGiveaways.filter(g => {
             const wonDate = new Date(g.wonDate);
             wonDate.setHours(0,0,0,0);
-            if (isNaN(wonDate.getTime())) return false; // Protección contra fechas inválidas
+            if (isNaN(wonDate.getTime())) return false; // Protección extra
 
             if(selectionType === 'radio') {
                 switch (selectionValue) {

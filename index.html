@@ -5610,36 +5610,66 @@ const updateSharePreview = async () => {
     previewContainer.appendChild(canvas);
 };
 
-// Dibuja la imagen final en el canvas
+// [VERSIÓN FINAL CON TU FONDO ESTRELLADO]
 const generateTrophyImage = async (prizesToRender, timeframeText) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = 800;
     canvas.height = 1000;
 
-    // 1. Dibuja el fondo degradado
-    const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    bgGradient.addColorStop(0, '#0f0c29');
-    bgGradient.addColorStop(0.5, '#302b63');
-    bgGradient.addColorStop(1, '#24243e');
-    ctx.fillStyle = bgGradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // --- Cargar tu imagen de fondo estrellado ---
+    const backgroundImage = new Image();
+    backgroundImage.src = 'Assets/img/fondo.jpg'; // <-- RUTA ACTUALIZADA
 
-    // 2. Dibuja la placa dorada central
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-    ctx.shadowBlur = 15;
-    ctx.shadowOffsetY = 5;
+    // Usamos una promesa para asegurarnos de que la imagen se cargue antes de usarla
+    await new Promise(resolve => {
+        backgroundImage.onload = resolve;
+        backgroundImage.onerror = () => {
+            console.error("Error al cargar la imagen de fondo local. Usando fondo degradado.");
+            resolve(); // Continuamos para que no se bloquee si hay un error
+        };
+    });
+
+    if (backgroundImage.complete && backgroundImage.naturalHeight !== 0) {
+        // Esta lógica escala la imagen para que siempre cubra el lienzo sin deformarse
+        const hRatio = canvas.width / backgroundImage.width;
+        const vRatio = canvas.height / backgroundImage.height;
+        const ratio = Math.max(hRatio, vRatio);
+        const sWidth = backgroundImage.width * ratio;
+        const sHeight = backgroundImage.height * ratio;
+        const sx = (canvas.width - sWidth) / 2;
+        const sy = (canvas.height - sHeight) / 2;
+        ctx.drawImage(backgroundImage, sx, sy, sWidth, sHeight);
+    } else {
+        // Fondo de respaldo si la imagen local no carga por alguna razón
+        const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        bgGradient.addColorStop(0, '#0f0c29');
+        bgGradient.addColorStop(0.5, '#302b63');
+        bgGradient.addColorStop(1, '#24243e');
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // --- Dibuja la placa dorada central ---
     const plaqueMargin = 50;
-    ctx.fillRect(plaqueMargin, plaqueMargin, canvas.width - plaqueMargin * 2, canvas.height - plaqueMargin * 2);
-    ctx.shadowColor = 'transparent'; // Reset shadow
+    const plaqueWidth = canvas.width - plaqueMargin * 2;
+    const plaqueHeight = canvas.height - plaqueMargin * 2;
 
-    // 3. Dibuja el borde dorado
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetY = 10;
+    ctx.shadowOffsetX = 0;
+
+    ctx.fillStyle = 'rgba(20, 20, 40, 0.7)'; 
+    ctx.fillRect(plaqueMargin, plaqueMargin, plaqueWidth, plaqueHeight);
+    
+    ctx.shadowColor = 'transparent';
+
     ctx.strokeStyle = '#d4af37';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(plaqueMargin, plaqueMargin, canvas.width - plaqueMargin * 2, canvas.height - plaqueMargin * 2);
-
-    // 4. Escribe los textos
+    ctx.lineWidth = 8;
+    ctx.strokeRect(plaqueMargin, plaqueMargin, plaqueWidth, plaqueHeight);
+    
+    // --- Contenido de la placa ---
     ctx.textAlign = 'center';
     ctx.fillStyle = '#f7d468';
     ctx.font = `bold 60px 'Chewy', cursive`;
@@ -5649,29 +5679,38 @@ const generateTrophyImage = async (prizesToRender, timeframeText) => {
     ctx.font = `30px 'Chewy', cursive`;
     ctx.fillText(timeframeText.toUpperCase(), canvas.width / 2, 200);
 
-    // 5. Escribe los totales
     const totalWins = prizesToRender.length;
     const totalValue = prizesToRender.reduce((sum, g) => sum + parsePrice(g.price), 0);
     ctx.font = `bold 32px 'Chewy', cursive`;
     ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.3, 270);
     ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.7, 270);
 
-    // 6. Dibuja la lista de premios
     ctx.textAlign = 'left';
     ctx.fillStyle = '#f0e6d2';
-    ctx.font = `24px sans-serif`;
+    ctx.font = `24px 'Arial', sans-serif`;
     let yPos = 340;
-    prizesToRender.slice(0, 12).forEach(g => { // Limitamos a 12 para que quepa
-        ctx.fillText(`- ${g.prize}`, plaqueMargin + 30, yPos);
+    const maxPrizeNameLength = 30;
+
+    prizesToRender.slice(0, 12).forEach(g => {
+        let prizeText = g.prize;
+        if (prizeText.length > maxPrizeNameLength) {
+            prizeText = prizeText.substring(0, maxPrizeNameLength) + '...';
+        }
+        ctx.fillText(`- ${prizeText}`, plaqueMargin + 30, yPos);
+        
+        ctx.textAlign = 'right';
+        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - plaqueMargin - 30, yPos);
+        ctx.textAlign = 'left';
         yPos += 40;
     });
-     if (prizesToRender.length > 12) {
+
+    if (prizesToRender.length > 12) {
         ctx.textAlign = 'center';
-        ctx.fillText(`...y ${prizesToRender.length - 12} más!`, canvas.width/2, yPos);
+        ctx.fillStyle = '#aaa';
+        ctx.font = `20px 'Arial', sans-serif`;
+        ctx.fillText(`...y ${prizesToRender.length - 12} más!`, canvas.width / 2, yPos);
     }
 
-
-    // 7. Escribe el pie de página
     ctx.textAlign = 'center';
     ctx.font = `20px 'Chewy', cursive`;
     ctx.fillStyle = '#f7d468';

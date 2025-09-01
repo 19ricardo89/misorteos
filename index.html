@@ -1337,6 +1337,10 @@
                      <a href="#" onclick="setFilterAndRender('tecnologia'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
                         <span class="relative z-10">Tecnología 💻</span>
                     </a>
+                
+                    <a href="#" onclick="setFilterAndRender('moviles'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
+                        <span class="relative z-10">Móviles 📱</span>
+                    </a>   
                     <a href="#" onclick="setFilterAndRender('comida'); closeSearchModal();" class="shooting-star-line relative block text-center text-xl font-bold p-4 rounded-full nav-btn overflow-hidden">
                         <span class="relative z-10">Comida 🍔</span>
                     </a>
@@ -1870,8 +1874,10 @@
         'viajes': { name: 'Viajes', emoji: '✈️', desc: 'Estancias, vuelos, hoteles, escapadas.' },
         'ocio': { name: 'Ocio', emoji: '🎟️', desc: 'Entradas, cine, teatro, parques, cenas.' },
         'aventura': { name: 'Aventura', emoji: '🧗', desc: 'Experiencias de adrenalina.' },
-        'suscripciones': { name: 'Suscripciones', emoji: '💻', desc: 'Servicios digitales, Netflix, cursos online.' },
+        'suscripciones': { name: 'Suscripciones', emoji: '🔑', desc: 'Servicios digitales, Netflix, cursos online.' }, // <-- EMOJI CAMBIADO
         'gaming': { name: 'Gaming', emoji: '🎮', desc: 'Consolas, videojuegos, accesorios.' },
+        'tecnologia': { name: 'Tecnología', emoji: '💻', desc: 'PCs, portátiles, componentes.' }, // <-- NUEVA
+        'moviles': { name: 'Móviles', emoji: '📱', desc: 'Smartphones y accesorios.' }, // <-- NUEVA
         'foto': { name: 'Fotografía', emoji: '📸', desc: 'Cámaras, drones, objetivos.' },
         'musica': { name: 'Música', emoji: '🎵', desc: 'Auriculares, altavoces, instrumentos.' },
         'deporte': { name: 'Deporte', emoji: '💪', desc: 'Equipamiento y ropa deportiva general.' },
@@ -3029,31 +3035,35 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
 
     **--- NIVEL 3: HOBBIES Y ARTÍCULOS PERSONALES ---**
     10. **Regla de Gaming:** Si son consolas (PS5, Nintendo Switch), videojuegos o accesorios gaming (sillas, teclados), clasifícalo como 'gaming'.
-    11. **Regla de Fotografía y Vídeo:** Si son cámaras (Instax), drones, objetivos o trípodes, clasifícalo como 'foto'.
-    12. **Regla de Música y Sonido:** Si son auriculares, altavoces o instrumentos musicales, clasifícalo como 'musica'.
-    13. **Regla de Deporte (General):** Si es equipamiento o ropa para un deporte (que no sea pádel), clasifícalo como 'deporte'.
-    14. **Regla de Libros y Formación:** Si el premio principal es un libro o un curso (que no sea online), clasifícalo como 'libros'.
-    15. **Regla de Frikis:** Si son figuras coleccionables (Funko), juegos de mesa, cómics o merchandising de cultura pop, clasifícalo como 'frikis'.
-    16. **Regla de Joyería y Relojes:** Si son relojes, pulseras, collares o gafas de sol, clasifícalo como 'joyeria'.
-    17. **Regla de Bolsos y Accesorios:** Si son bolsos, mochilas, maletas o neceseres, clasifícalo como 'accesorios'.
-    18. **Regla de Moda:** Si es ropa o calzado de uso casual, clasifícalo como 'moda'.
-    19. **Regla de Belleza:** Si son productos de cosmética, maquillaje o perfumes, clasifícalo como 'belleza'.
-    20. **Regla de Salud y Cuidado Personal:** Si son productos de farmacia, cuidado dental, vitaminas o servicios de bienestar (spa, masaje), clasifícalo como 'salud'.
+    // [NUEVA REGLA]
+    11. **Regla de Móviles:** Si el premio principal es un smartphone (iPhone, Samsung Galaxy, Xiaomi, etc.) o accesorios directos como fundas o cargadores específicos, clasifícalo como 'moviles'.
+    // [NUEVA REGLA]
+    12. **Regla de Tecnología (General):** Si es un producto tecnológico que no encaja en las categorías más específicas de arriba (portátiles, tablets, monitores, PCs), clasifícalo como 'tecnologia'.
+    13. **Regla de Fotografía y Vídeo:** Si son cámaras (Instax), drones, objetivos o trípodes, clasifícalo como 'foto'.
+    14. **Regla de Música y Sonido:** Si son auriculares, altavoces o instrumentos musicales, clasifícalo como 'musica'.
+    15. **Regla de Deporte (General):** Si es equipamiento o ropa para un deporte (que no sea pádel), clasifícalo como 'deporte'.
+    16. **Regla de Libros y Formación:** Si el premio principal es un libro o un curso (que no sea online), clasifícalo como 'libros'.
+    17. **Regla de Frikis:** Si son figuras coleccionables (Funko), juegos de mesa, cómics o merchandising de cultura pop, clasifícalo como 'frikis'.
+    18. **Regla de Joyería y Relojes:** Si son relojes, pulseras, collares o gafas de sol, clasifícalo como 'joyeria'.
+    19. **Regla de Bolsos y Accesorios:** Si son bolsos, mochilas, maletas o neceseres, clasifícalo como 'accesorios'.
+    20. **Regla de Moda:** Si es ropa o calzado de uso casual, clasifícalo como 'moda'.
+    21. **Regla de Belleza:** Si son productos de cosmética, maquillaje o perfumes, clasifícalo como 'belleza'.
+    22. **Regla de Salud y Cuidado Personal:** Si son productos de farmacia, cuidado dental, vitaminas o servicios de bienestar (spa, masaje), clasifícalo como 'salud'.
 
     **--- NIVEL 4: ARTÍCULOS PARA EL HOGAR Y OTROS ---**
-    21. **Regla de Electrodomésticos:** Si es un electrodoméstico grande (TV, lavadora, frigorífico, robot aspirador), clasifícalo como 'electrodomesticos'.
-    22. **Regla de Cocina y Menaje:** Si es un pequeño electrodoméstico (freidora de aire, cafetera) o menaje, clasifícalo como 'cocina'.
-    23. **Regla de Bricolaje y Herramientas:** Si son herramientas o material de bricolaje, clasifícalo como 'bricolaje'.
-    24. **Regla de Jardinería y Plantas:** Si son plantas, macetas o herramientas de jardín, clasifícalo como 'jardineria'.
-    25. **Regla de Papelería y Oficina:** Si son agendas, cuadernos, bolígrafos o material de oficina, clasifícalo como 'papeleria'.
-    26. **Regla de Arte y Manualidades:** Si son materiales para hobbies creativos (pintura, arcilla, kits), clasifícalo como 'arte'.
-    27. **Regla de Sostenible y Eco:** Si el principal atractivo del producto es que es ecológico o sostenible, clasifícalo como 'eco'.
-    28. **Regla de Gourmet y Vinos:** Si son productos de alimentación de alta gama (jamón ibérico, vinos, aceites premium), clasifícalo como 'gourmet'.
-    29. **Regla de Comida:** Si son productos de alimentación general no gourmet, clasifícalo como 'comida'.
-    30. **Regla de Hogar:** Si son objetos de decoración o textiles para el hogar no incluidos antes, clasifícalo como 'hogar'.
+    23. **Regla de Electrodomésticos:** Si es un electrodoméstico grande (TV, lavadora, frigorífico, robot aspirador), clasifícalo como 'electrodomesticos'.
+    24. **Regla de Cocina y Menaje:** Si es un pequeño electrodoméstico (freidora de aire, cafetera) o menaje, clasifícalo como 'cocina'.
+    25. **Regla de Bricolaje y Herramientas:** Si son herramientas o material de bricolaje, clasifícalo como 'bricolaje'.
+    26. **Regla de Jardinería y Plantas:** Si son plantas, macetas o herramientas de jardín, clasifícalo como 'jardineria'.
+    27. **Regla de Papelería y Oficina:** Si son agendas, cuadernos, bolígrafos o material de oficina, clasifícalo como 'papeleria'.
+    28. **Regla de Arte y Manualidades:** Si son materiales para hobbies creativos (pintura, arcilla, kits), clasifícalo como 'arte'.
+    29. **Regla de Sostenible y Eco:** Si el principal atractivo del producto es que es ecológico o sostenible, clasifícalo como 'eco'.
+    30. **Regla de Gourmet y Vinos:** Si son productos de alimentación de alta gama (jamón ibérico, vinos, aceites premium), clasifícalo como 'gourmet'.
+    31. **Regla de Comida:** Si son productos de alimentación general no gourmet, clasifícalo como 'comida'.
+    32. **Regla de Hogar:** Si son objetos de decoración o textiles para el hogar no incluidos antes, clasifícalo como 'hogar'.
 
     **--- NIVEL 5: CATEGORÍA POR DEFECTO ---**
-    31. **Regla Final:** Si ninguna de las reglas anteriores aplica, clasifícalo como 'otros'.
+    33. **Regla Final:** Si ninguna de las reglas anteriores aplica, clasifícalo como 'otros'.
 - **Confianza:** Evalúa tu certeza sobre la extracción de la FECHA (0.0 a 1.0). Si la fecha es explícita y clara, usa 1.0. Si es deducida o ambigua, usa un valor inferior.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 
@@ -3206,7 +3216,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
   "is_priority_time": boolean,
   "is_spanish": boolean,
   "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
-  "prize_category": "string ('padel', 'motor', 'mascotas', 'bebes', 'bodas', 'dinero', 'viajes', 'ocio', 'aventura', 'suscripciones', 'gaming', 'foto', 'musica', 'deporte', 'libros', 'frikis', 'joyeria', 'accesorios', 'moda', 'belleza', 'salud', 'electrodomesticos', 'cocina', 'bricolaje', 'jardineria', 'papeleria', 'arte', 'eco', 'gourmet', 'comida', 'hogar', 'otros')",
+  "prize_category": "string ('padel', 'motor', 'mascotas', 'bebes', 'bodas', 'dinero', 'viajes', 'ocio', 'aventura', 'suscripciones', 'gaming', 'tecnologia', 'moviles', 'foto', 'musica', 'deporte', 'libros', 'frikis', 'joyeria', 'accesorios', 'moda', 'belleza', 'salud', 'electrodomesticos', 'cocina', 'bricolaje', 'jardineria', 'papeleria', 'arte', 'eco', 'gourmet', 'comida', 'hogar', 'otros')",
   "winner_count": integer (por defecto 1),
   "confidence_score": float
 }

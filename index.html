@@ -5489,8 +5489,7 @@ if (addGiveawayModalEl) {
         }
     });
 }
-
-// --- INICIO: LÓGICA COMPLETA PARA COMPARTIR VITRINA GRÁFICA (VERSIÓN 5 - DEBUGGED) ---
+// --- INICIO: LÓGICA COMPLETA PARA COMPARTIR VITRINA GRÁFICA (VERSIÓN 7 - FINAL) ---
 
 const openShareOptionsBtn = document.getElementById('open-share-options-btn');
 const shareOptionsModal = document.getElementById('share-options-modal');
@@ -5498,21 +5497,38 @@ const closeShareOptionsModalBtn = document.getElementById('close-share-options-m
 const generateAndDownloadBtn = document.getElementById('generate-and-download-btn');
 const shareNativeBtn = document.getElementById('share-native-btn');
 const previewContainer = document.getElementById('share-preview-container');
-
-// [CRÍTICO] Declaramos shareDatepicker como variable global y la inicializamos a null
 let shareDatepicker = null; 
+let lastSelectedDates = []; // Variable segura para guardar las fechas del calendario
+
+// Función que se dispara CUANDO el calendario cambia
+const handleDatepickerChange = (e) => {
+    const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+    if (radioChecked) {
+        radioChecked.checked = false;
+    }
+    // Guardamos las fechas directamente desde el evento del calendario
+    if (e.detail.dates) {
+        lastSelectedDates = e.detail.dates.map(timestamp => {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        });
+    }
+    handleShareUIUpdate();
+};
 
 // Función principal que se llama al hacer clic en "Compartir"
 const openShareModal = () => {
     shareOptionsModal.classList.add('is-visible');
     try {
-        // [FIX 1] Siempre destruimos y volvemos a crear para asegurar una instancia limpia.
         if (shareDatepicker) {
             shareDatepicker.destroy();
-            shareDatepicker = null; // Aseguramos que sea null antes de recrearlo
+            shareDatepicker = null;
         }
+        lastSelectedDates = []; 
 
-        // [FIX 2] Recopilamos y limpiamos los datos ANTES de cualquier otra cosa.
         const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
         const wonDatesToHighlight = [...new Set(validWonGiveaways.map(g => g.date))];
 
@@ -5524,12 +5540,11 @@ const openShareModal = () => {
             weekStart: 1,
             pickerPosition: 'bottom-left',
             rangePicker: true,
-            datesHighlighted: wonDatesToHighlight 
+            datesHighlighted: wonDatesToHighlight
         });
         
-        // [FIX 3] Re-adjuntamos los listeners para asegurar que apunten a la nueva instancia
-        datepickerContainer.removeEventListener('changeDate', handleShareUIUpdate);
-        datepickerContainer.addEventListener('changeDate', handleShareUIUpdate);
+        datepickerContainer.removeEventListener('changeDate', handleDatepickerChange);
+        datepickerContainer.addEventListener('changeDate', handleDatepickerChange);
 
         const timeframeRadios = document.querySelector('#share-timeframe-radios');
         timeframeRadios.removeEventListener('change', handleShareUIUpdate);
@@ -5538,9 +5553,8 @@ const openShareModal = () => {
         document.getElementById('share-prize-list-container').removeEventListener('change', updateSharePreview);
         document.getElementById('share-prize-list-container').addEventListener('change', updateSharePreview);
 
-        // [FIX 4] Seleccionamos el mes actual por defecto y forzamos la primera actualización.
         document.getElementById('time-month').checked = true;
-        handleShareUIUpdate(); 
+        handleShareUIUpdate();
 
     } catch (error) {
         console.error("Error FATAL al abrir el modal de compartir:", error);
@@ -5548,33 +5562,30 @@ const openShareModal = () => {
     }
 };
 
-// [NUEVA FUNCIÓN] Maneja todos los cambios de UI en el modal
+// Función que actualiza la UI
 const handleShareUIUpdate = async () => {
     try {
         const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
         
         let selectionType = 'radio';
         let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
-        
-        const selectedDates = shareDatepicker ? shareDatepicker.getDates('yyyy-mm-dd') : [];
+        const selectedDates = lastSelectedDates; 
         
         if (selectedDates.length > 0) {
-            const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
-            if (radioChecked) radioChecked.checked = false; // Deseleccionar radio si se usa el calendario
             selectionType = 'calendar';
             selectionValue = selectedDates;
         }
 
         const now = new Date();
         const trophiesInTimeframe = validWonGiveaways.filter(g => {
-            const giveawayDate = new Date(g.date); // Usamos la fecha original del sorteo
+            const giveawayDate = new Date(g.date);
             giveawayDate.setHours(0,0,0,0);
             if (isNaN(giveawayDate.getTime())) return false;
 
             if(selectionType === 'radio') {
                 switch (selectionValue) {
-                    case 'last_week': return (now - giveawayDate) / (1000 * 3600 * 24) <= 7;
-                    case 'last_month': return (now - giveawayDate) / (1000 * 3600 * 24) <= 30;
+                    case 'last_week': return (now - new Date(g.wonDate)) / (1000 * 3600 * 24) <= 7;
+                    case 'last_month': return (now - new Date(g.wonDate)) / (1000 * 3600 * 24) <= 30;
                     case 'all': return true;
                     default: return false;
                 }
@@ -5589,7 +5600,7 @@ const handleShareUIUpdate = async () => {
         });
         
         populatePrizeList(trophiesInTimeframe);
-        await updateSharePreview(); // Esperamos a que la vista previa se actualice
+        await updateSharePreview();
         
     } catch(error) {
         console.error("Error en handleShareUIUpdate:", error);
@@ -5614,16 +5625,13 @@ const populatePrizeList = (trophies) => {
 
 const updateSharePreview = async () => {
     previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
-    
-    // Filtramos para asegurar que solo trabajamos con trofeos válidos
-    const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
     const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
     
     if (selectedPrizeIds.size === 0) {
         previewContainer.innerHTML = '<span class="text-gray-500">Selecciona al menos un trofeo.</span>';
         return;
     }
-    const prizesToRender = validWonGiveaways.filter(g => selectedPrizeIds.has(g.id));
+    const prizesToRender = wonGiveaways.filter(g => g && g.id && selectedPrizeIds.has(g.id));
     
     let timeframeText = 'Resumen Personalizado';
     const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
@@ -5636,17 +5644,82 @@ const updateSharePreview = async () => {
         if (label) timeframeText = label.textContent;
     }
 
-    // Aquí es donde mi sistema detecta la necesidad de generar una imagen
-    // Y la sustituye por el prompt del modelo de imagen
-    previewContainer.innerHTML = `
-        <img src="
-        " class="max-w-full max-h-full object-contain rounded-lg" alt="Vitrina de Trofeos">
-    `;
+    const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+    const img = new Image();
+    img.src = canvas.toDataURL('image/png');
+    img.className = 'max-w-full max-h-full object-contain rounded-lg';
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(img);
 };
 
-// La función generateTrophyImage ya no es necesaria aquí, mi sistema la manejará
+const generateTrophyImage = async (prizesToRender, timeframeText) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 1000;
+    const ctx = canvas.getContext('2d');
+    const filteredTrophies = prizesToRender.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate));
 
-// --- EVENT LISTENERS PARA EL MODAL DE COMPARTIR ---
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#fffbef');
+    gradient.addColorStop(1, '#fef3c7');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 20;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#6a3805';
+    ctx.font = 'bold 50px Chewy';
+    ctx.fillText("Vitrina de Trofeos", canvas.width / 2, 80);
+    ctx.font = '30px Chewy';
+    ctx.fillStyle = '#b45309';
+    ctx.fillText(timeframeText, canvas.width / 2, 125);
+    
+    const totalWins = filteredTrophies.length;
+    const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
+    ctx.font = 'bold 32px Chewy';
+    ctx.fillStyle = '#4e342e';
+    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
+    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
+
+    ctx.textAlign = 'left';
+    ctx.font = '22px Chewy';
+    let yPos = 250;
+    filteredTrophies.slice(0, 15).forEach(g => {
+        ctx.fillStyle = '#4e342e';
+        let prizeText = g.prize;
+        if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
+        ctx.fillText(`- ${prizeText}`, 50, yPos);
+        ctx.fillStyle = '#b45309';
+        ctx.textAlign = 'right';
+        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
+        ctx.textAlign = 'left';
+        yPos += 40;
+    });
+    if (filteredTrophies.length > 15) {
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#92400e';
+        ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+    }
+    
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
+    ctx.rotate(-Math.PI / 6);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(106, 56, 5, 0.08)';
+    ctx.font = 'bold 90px Chewy';
+    ctx.fillText("Misorteos.es", 0, 0);
+    ctx.restore();
+
+    ctx.font = '20px Chewy';
+    ctx.fillStyle = '#92400e';
+    ctx.textAlign = 'center';
+    ctx.fillText("Generado con Misorteos.es ✨", canvas.width / 2, canvas.height - 40);
+
+    return canvas;
+};
+
 if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShareModal);
 if (closeShareOptionsModalBtn) closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
 if (shareOptionsModal) shareOptionsModal.addEventListener('click', (e) => { if (e.target === shareOptionsModal) shareOptionsModal.classList.remove('is-visible'); });
@@ -5654,8 +5727,7 @@ if (shareOptionsModal) shareOptionsModal.addEventListener('click', (e) => { if (
 if (generateAndDownloadBtn) {
     generateAndDownloadBtn.addEventListener('click', async () => {
         try {
-            const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
-            const prizesToRender = validWonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+            const prizesToRender = wonGiveaways.filter(g => g && g.id && document.getElementById(`prize-${g.id}`)?.checked);
             if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
             
             let timeframeText = 'Resumen Personalizado';
@@ -5668,11 +5740,12 @@ if (generateAndDownloadBtn) {
                 const label = document.querySelector(`label[for="${radioChecked.id}"]`);
                 if (label) timeframeText = label.textContent;
             }
-            
-            // Simulación de descarga de imagen
-            showNotification('Descargando', 'La imagen se descargará en breve...');
-            // Aquí en un entorno real se haría la llamada al servicio de imagen y se descargaría
-            
+
+            const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+            const link = document.createElement('a');
+            link.download = `Misorteos-Vitrina.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         } catch(error) {
             showNotification('Error al Descargar', error.message);
         }
@@ -5681,8 +5754,7 @@ if (generateAndDownloadBtn) {
 if (shareNativeBtn) {
     shareNativeBtn.addEventListener('click', async () => {
         try {
-            const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
-            const prizesToRender = validWonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+            const prizesToRender = wonGiveaways.filter(g => g && g.id && document.getElementById(`prize-${g.id}`)?.checked);
             if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
             
             let timeframeText = 'Resumen Personalizado';
@@ -5696,8 +5768,17 @@ if (shareNativeBtn) {
             }
 
             if (navigator.share) {
-                showNotification('Compartiendo', 'Preparando imagen para compartir...');
-                // Aquí en un entorno real se haría la llamada al servicio de imagen y se compartiría
+                const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
+                    try {
+                        await navigator.share({
+                            title: 'Mi Vitrina de Trofeos de Misorteos',
+                            text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
+                            files: [file],
+                        });
+                    } catch (error) { console.error('Error al compartir:', error); }
+                }, 'image/png');
             } else {
                 showNotification('No Soportado', 'Tu navegador no permite compartir archivos.');
             }

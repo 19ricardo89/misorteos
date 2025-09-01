@@ -5456,7 +5456,7 @@ if (addGiveawayModalEl) {
     });
 }
 
-// --- INICIO: LÓGICA COMPLETA PARA COMPARTIR VITRINA GRÁFICA ---
+// --- INICIO: LÓGICA COMPLETA PARA COMPARTIR VITRINA GRÁFICA (VERSIÓN DE DEPURACIÓN) ---
 
 const openShareOptionsBtn = document.getElementById('open-share-options-btn');
 const shareOptionsModal = document.getElementById('share-options-modal');
@@ -5465,11 +5465,11 @@ const generateAndDownloadBtn = document.getElementById('generate-and-download-bt
 const shareNativeBtn = document.getElementById('share-native-btn');
 const previewContainer = document.getElementById('share-preview-container');
 
-// Función para abrir el modal y popular las opciones
+// Función para abrir el modal (con control de errores mejorado)
 const openShareModal = () => {
     shareOptionsModal.classList.add('is-visible');
-
     try {
+        console.log("Debug: Iniciando openShareModal...");
         const datepickerContainer = document.getElementById('datepicker-container');
         if (datepicker) {
             datepicker.destroy();
@@ -5493,179 +5493,199 @@ const openShareModal = () => {
 
         document.getElementById('time-month').checked = true;
         handleTimeframeChange();
+        console.log("Debug: openShareModal completado con éxito.");
     } catch (error) {
-        console.error("Error al preparar el modal de compartir:", error);
+        console.error("Error FATAL en openShareModal:", error);
         if(previewContainer) {
-            previewContainer.innerHTML = '<span class="text-red-600">Error al cargar los datos.</span>';
+            previewContainer.innerHTML = `<div class="text-red-600 text-xs p-2 text-left"><b>Error al iniciar modal:</b><br>${error.message}</div>`;
         }
     }
 };
 
-// Función para poblar la lista de premios
+// Función para poblar la lista de premios (con control de errores)
 const populatePrizeList = (trophies) => {
-    const prizeListDiv = document.getElementById('share-prize-list-container');
-    prizeListDiv.innerHTML = '';
-    if (trophies.length > 0) {
-        trophies.forEach(g => {
-            const prizeItem = document.createElement('div');
-            prizeItem.className = 'flex items-center';
-            prizeItem.innerHTML = `
-                <input type="checkbox" id="prize-${g.id}" data-prize-id="${g.id}" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" checked>
-                <label for="prize-${g.id}" class="ml-2 block text-sm text-gray-700 truncate">${g.prize}</label>
-            `;
-            prizeListDiv.appendChild(prizeItem);
-        });
-    } else {
-        prizeListDiv.innerHTML = '<p class="text-gray-500 text-center">No hay trofeos en este periodo.</p>';
+    try {
+        console.log(`Debug: Iniciando populatePrizeList con ${trophies.length} trofeos.`);
+        const prizeListDiv = document.getElementById('share-prize-list-container');
+        prizeListDiv.innerHTML = '';
+        if (trophies.length > 0) {
+            trophies.forEach(g => {
+                const prizeItem = document.createElement('div');
+                prizeItem.className = 'flex items-center';
+                prizeItem.innerHTML = `
+                    <input type="checkbox" id="prize-${g.id}" data-prize-id="${g.id}" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" checked>
+                    <label for="prize-${g.id}" class="ml-2 block text-sm text-gray-700 truncate">${g.prize}</label>
+                `;
+                prizeListDiv.appendChild(prizeItem);
+            });
+        } else {
+            prizeListDiv.innerHTML = '<p class="text-gray-500 text-center">No hay trofeos en este periodo.</p>';
+        }
+        console.log("Debug: populatePrizeList completado.");
+    } catch (error) {
+        throw new Error(`Fallo en populatePrizeList: ${error.message}`);
     }
 };
 
-// Función para manejar los cambios de tiempo y poblar la lista de premios
+// Función para manejar los cambios de tiempo (con control de errores)
 const handleTimeframeChange = () => {
-    let selectionType = 'radio';
-    let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
-    const selectedDates = datepicker ? datepicker.getDates('yyyy-mm-dd') : [];
-    
-    if (selectedDates.length > 0) {
-        selectionType = 'calendar';
-        selectionValue = selectedDates;
-    }
+    try {
+        console.log("Debug: Iniciando handleTimeframeChange...");
+        let selectionType = 'radio';
+        let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
+        const selectedDates = datepicker ? datepicker.getDates('yyyy-mm-dd') : [];
+        
+        if (selectedDates.length > 0) {
+            selectionType = 'calendar';
+            selectionValue = selectedDates;
+        }
 
-    const now = new Date();
-    const trophiesInTimeframe = wonGiveaways.filter(g => {
-        const wonDate = new Date(g.wonDate);
-        wonDate.setHours(0,0,0,0);
-        if(selectionType === 'radio') {
-            switch (selectionValue) {
-                case 'last_week': return (now - wonDate) / (1000 * 3600 * 24) <= 7;
-                case 'last_month': return (now - wonDate) / (1000 * 3600 * 24) <= 30;
-                case 'all': return true;
-                default: return false;
+        const now = new Date();
+        const trophiesInTimeframe = wonGiveaways.filter(g => {
+            if (!g.wonDate) return false; // Protección contra datos antiguos
+            const wonDate = new Date(g.wonDate);
+            wonDate.setHours(0,0,0,0);
+            if (isNaN(wonDate.getTime())) return false; // Protección contra fechas inválidas
+
+            if(selectionType === 'radio') {
+                switch (selectionValue) {
+                    case 'last_week': return (now - wonDate) / (1000 * 3600 * 24) <= 7;
+                    case 'last_month': return (now - wonDate) / (1000 * 3600 * 24) <= 30;
+                    case 'all': return true;
+                    default: return false;
+                }
+            } else if (selectionType === 'calendar' && selectionValue.length > 0) {
+                const startDate = new Date(selectionValue[0]);
+                const endDate = selectionValue.length > 1 ? new Date(selectionValue[1]) : new Date(selectionValue[0]);
+                startDate.setHours(0,0,0,0);
+                endDate.setHours(0,0,0,0);
+                return wonDate >= startDate && wonDate <= endDate;
             }
-        } else if (selectionType === 'calendar' && selectionValue.length > 0) {
-            const startDate = new Date(selectionValue[0]);
-            const endDate = selectionValue.length > 1 ? new Date(selectionValue[1]) : new Date(selectionValue[0]);
-            startDate.setHours(0,0,0,0);
-            endDate.setHours(0,0,0,0);
-            return wonDate >= startDate && wonDate <= endDate;
-        }
-        return false;
-    });
-    
-    populatePrizeList(trophiesInTimeframe);
-    updateSharePreview();
+            return false;
+        });
+        
+        populatePrizeList(trophiesInTimeframe);
+        updateSharePreview();
+        console.log("Debug: handleTimeframeChange completado.");
+    } catch(error) {
+        throw new Error(`Fallo en handleTimeframeChange: ${error.message}`);
+    }
 };
 
-// [FIX] FUNCIÓN CORREGIDA Y ROBUSTA PARA ACTUALIZAR LA VISTA PREVIA
+// Función para actualizar la vista previa (con control de errores)
 const updateSharePreview = async () => {
-    previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
-    
-    // Obtenemos los trofeos seleccionados
-    const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
-    
-    if (selectedPrizeIds.size === 0) {
-        previewContainer.innerHTML = '<span class="text-gray-500">Selecciona al menos un trofeo para mostrar.</span>';
-        return;
-    }
-    const prizesToRender = wonGiveaways.filter(g => selectedPrizeIds.has(g.id));
-    
-    // Lógica segura para obtener el texto del período de tiempo
-    let timeframeText = 'Resumen Personalizado';
-    const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
-    const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
-
-    if (selectedDates.length > 0) {
-        timeframeText = selectedDates.length === 1 
-            ? `Día: ${selectedDates[0]}` 
-            : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
-    } else if (radioChecked) {
-        // Obtenemos el texto de la etiqueta asociada al radio button
-        const label = document.querySelector(`label[for="${radioChecked.id}"]`);
-        if (label) {
-            timeframeText = label.textContent;
+    try {
+        console.log("Debug: Iniciando updateSharePreview...");
+        previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
+        
+        const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
+        
+        if (selectedPrizeIds.size === 0) {
+            previewContainer.innerHTML = '<span class="text-gray-500">Selecciona al menos un trofeo para mostrar.</span>';
+            return;
         }
-    }
+        const prizesToRender = wonGiveaways.filter(g => selectedPrizeIds.has(g.id));
+        
+        let timeframeText = 'Resumen Personalizado';
+        const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+        const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
 
-    const canvas = await generateTrophyImage(prizesToRender, timeframeText);
-    const img = new Image();
-    img.src = canvas.toDataURL('image/png');
-    img.className = 'max-w-full max-h-full object-contain rounded-lg';
-    previewContainer.innerHTML = '';
-    previewContainer.appendChild(img);
+        if (selectedDates.length > 0) {
+            timeframeText = selectedDates.length === 1 
+                ? `Día: ${selectedDates[0]}` 
+                : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+        } else if (radioChecked) {
+            const label = document.querySelector(`label[for="${radioChecked.id}"]`);
+            if (label) {
+                timeframeText = label.textContent;
+            }
+        }
+
+        const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+        const img = new Image();
+        img.src = canvas.toDataURL('image/png');
+        img.className = 'max-w-full max-h-full object-contain rounded-lg';
+        previewContainer.innerHTML = '';
+        previewContainer.appendChild(img);
+        console.log("Debug: updateSharePreview completado.");
+    } catch(error) {
+        throw new Error(`Fallo en updateSharePreview: ${error.message}`);
+    }
 };
-// La función principal que dibuja la imagen
+
+// La función principal que dibuja la imagen (con control de errores)
 const generateTrophyImage = async (prizesToRender, timeframeText) => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 1000;
-    const ctx = canvas.getContext('2d');
-    const filteredTrophies = prizesToRender.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate));
+    try {
+        console.log("Debug: Iniciando generateTrophyImage...");
+        const canvas = document.createElement('canvas');
+        canvas.width = 800;
+        canvas.height = 1000;
+        const ctx = canvas.getContext('2d');
+        const filteredTrophies = prizesToRender.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate));
 
-    // DIBUJAR FONDO Y BORDE
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#fffbef');
-    gradient.addColorStop(1, '#fef3c7');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = '#d4af37';
-    ctx.lineWidth = 20;
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#fffbef');
+        gradient.addColorStop(1, '#fef3c7');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 20;
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-    // DIBUJAR TÍTULOS
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#6a3805';
-    ctx.font = 'bold 50px Chewy';
-    ctx.fillText("Vitrina de Trofeos", canvas.width / 2, 80);
-    ctx.font = '30px Chewy';
-    ctx.fillStyle = '#b45309';
-    ctx.fillText(timeframeText, canvas.width / 2, 125);
-    
-    // DIBUJAR ESTADÍSTICAS
-    const totalWins = filteredTrophies.length;
-    const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
-    ctx.font = 'bold 32px Chewy';
-    ctx.fillStyle = '#4e342e';
-    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
-    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
-
-    // DIBUJAR LISTA DE PREMIOS
-    ctx.textAlign = 'left';
-    ctx.font = '22px Chewy';
-    let yPos = 250;
-    filteredTrophies.slice(0, 15).forEach(g => {
-        ctx.fillStyle = '#4e342e';
-        let prizeText = g.prize;
-        if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
-        ctx.fillText(`- ${prizeText}`, 50, yPos);
-        ctx.fillStyle = '#b45309';
-        ctx.textAlign = 'right';
-        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
-        ctx.textAlign = 'left';
-        yPos += 40;
-    });
-    if (filteredTrophies.length > 15) {
         ctx.textAlign = 'center';
+        ctx.fillStyle = '#6a3805';
+        ctx.font = 'bold 50px Chewy';
+        ctx.fillText("Vitrina de Trofeos", canvas.width / 2, 80);
+        ctx.font = '30px Chewy';
+        ctx.fillStyle = '#b45309';
+        ctx.fillText(timeframeText, canvas.width / 2, 125);
+        
+        const totalWins = filteredTrophies.length;
+        const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
+        ctx.font = 'bold 32px Chewy';
+        ctx.fillStyle = '#4e342e';
+        ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
+        ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
+
+        ctx.textAlign = 'left';
+        ctx.font = '22px Chewy';
+        let yPos = 250;
+        filteredTrophies.slice(0, 15).forEach(g => {
+            ctx.fillStyle = '#4e342e';
+            let prizeText = g.prize;
+            if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
+            ctx.fillText(`- ${prizeText}`, 50, yPos);
+            ctx.fillStyle = '#b45309';
+            ctx.textAlign = 'right';
+            ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
+            ctx.textAlign = 'left';
+            yPos += 40;
+        });
+        if (filteredTrophies.length > 15) {
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#92400e';
+            ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+        }
+        
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
+        ctx.rotate(-Math.PI / 6);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(106, 56, 5, 0.08)';
+        ctx.font = 'bold 90px Chewy';
+        ctx.fillText("Misorteos.es", 0, 0);
+        ctx.restore();
+
+        ctx.font = '20px Chewy';
         ctx.fillStyle = '#92400e';
-        ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+        ctx.textAlign = 'center';
+        ctx.fillText("Generado con Misorteos.es ✨", canvas.width / 2, canvas.height - 40);
+
+        console.log("Debug: generateTrophyImage completado.");
+        return canvas;
+    } catch (error) {
+        throw new Error(`Fallo en generateTrophyImage: ${error.message}`);
     }
-    
-    // DIBUJAR SELLO DE AGUA
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
-    ctx.rotate(-Math.PI / 6);
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(106, 56, 5, 0.08)';
-    ctx.font = 'bold 90px Chewy';
-    ctx.fillText("Misorteos.es", 0, 0);
-    ctx.restore();
-
-    // DIBUJAR PIE DE PÁGINA
-    ctx.font = '20px Chewy';
-    ctx.fillStyle = '#92400e';
-    ctx.textAlign = 'center';
-    ctx.fillText("Generado con Misorteos.es ✨", canvas.width / 2, canvas.height - 40);
-
-    return canvas;
 };
 
 // --- EVENT LISTENERS PARA EL MODAL DE COMPARTIR ---
@@ -5694,59 +5714,64 @@ if (prizeListContainer) {
 }
 if (generateAndDownloadBtn) {
     generateAndDownloadBtn.addEventListener('click', async () => {
-        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
-        if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
-        
-        // Obtenemos el texto del timeframe de la misma manera que en la vista previa
-        let timeframeText = 'Resumen Personalizado';
-        const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
-        const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+        try {
+            const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+            if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
+            
+            let timeframeText = 'Resumen Personalizado';
+            const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+            const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
 
-        if (selectedDates.length > 0) {
-            timeframeText = selectedDates.length === 1 
-                ? `Día: ${selectedDates[0]}` 
-                : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
-        } else if (radioChecked) {
-            const label = document.querySelector(`label[for="${radioChecked.id}"]`);
-            if (label) timeframeText = label.textContent;
+            if (selectedDates.length > 0) {
+                timeframeText = selectedDates.length === 1 ? `Día: ${selectedDates[0]}` : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+            } else if (radioChecked) {
+                const label = document.querySelector(`label[for="${radioChecked.id}"]`);
+                if (label) timeframeText = label.textContent;
+            }
+
+            const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+            const link = document.createElement('a');
+            link.download = `Misorteos-Vitrina.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        } catch(error) {
+            showNotification('Error al Descargar', error.message);
         }
-
-        const canvas = await generateTrophyImage(prizesToRender, timeframeText);
-        const link = document.createElement('a');
-        link.download = `Misorteos-Vitrina.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
     });
 }
 if (shareNativeBtn) {
     shareNativeBtn.addEventListener('click', async () => {
-        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
-        if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
-        
-        let timeframeText = 'Resumen Personalizado';
-        const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
-        const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
-        if (selectedDates.length > 0) {
-            timeframeText = selectedDates.length === 1 ? `Día: ${selectedDates[0]}` : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
-        } else if (radioChecked) {
-            const label = document.querySelector(`label[for="${radioChecked.id}"]`);
-            if (label) timeframeText = label.textContent;
-        }
+        try {
+            const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+            if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
+            
+            let timeframeText = 'Resumen Personalizado';
+            const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+            const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+            if (selectedDates.length > 0) {
+                timeframeText = selectedDates.length === 1 ? `Día: ${selectedDates[0]}` : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+            } else if (radioChecked) {
+                const label = document.querySelector(`label[for="${radioChecked.id}"]`);
+                if (label) timeframeText = label.textContent;
+            }
 
-        if (navigator.share) {
-            const canvas = await generateTrophyImage(prizesToRender, timeframeText);
-            canvas.toBlob(async (blob) => {
-                const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
-                try {
-                    await navigator.share({
-                        title: 'Mi Vitrina de Trofeos de Misorteos',
-                        text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
-                        files: [file],
-                    });
-                } catch (error) { console.error('Error al compartir:', error); }
-            }, 'image/png');
-        } else {
-            showNotification('No Soportado', 'Tu navegador no permite compartir archivos. Por favor, descarga la imagen.');
+            if (navigator.share) {
+                const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
+                    try {
+                        await navigator.share({
+                            title: 'Mi Vitrina de Trofeos de Misorteos',
+                            text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
+                            files: [file],
+                        });
+                    } catch (error) { console.error('Error al compartir:', error); }
+                }, 'image/png');
+            } else {
+                showNotification('No Soportado', 'Tu navegador no permite compartir archivos. Por favor, descarga la imagen.');
+            }
+        } catch(error) {
+            showNotification('Error al Compartir', error.message);
         }
     });
 }

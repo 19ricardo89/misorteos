@@ -2660,6 +2660,699 @@ const initialDiscardedGiveaways = [
         ],
         "status": "foreign",
         "originalDate": "2025-08-31"
+    },
+    {
+        "id": "sorteo-31-ofix",
+        "prize": "plumo es edición especial en Ofix",
+        "price": "30€",
+        "accounts": [
+            "@ofix.mx"
+        ],
+        "status": "foreign",
+        "originalDate": "2025-08-31"
+    },
+    {
+        "id": "1756121571254",
+        "date": "2025-08-31",
+        "prize": "Pala de pádel Technical Viper firmada por Juan Lebrón 🥎",
+        "accounts": [
+            "@babolat.arg"
+        ],
+        "price": "No encontrado",
+        "url": null,
+        "addDate": "2025-08-25",
+        "ends_at_time": null,
+        "status": "foreign",
+        "originalDate": "2025-08-31"
+    },
+    {
+        "id": "1756556512984",
+        "date": "2025-08-31",
+        "prize": "Accesorio Varoma para Thermomix",
+        "accounts": [
+            "@thermomixeras"
+        ],
+        "price": "No encontrado",
+        "addDate": "2025-08-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize_category": "cocina",
+        "status": "foreign",
+        "originalDate": "2025-08-31"
+    },
+    {
+        "prize": "Tienda de techo Dodo Expedition 💲",
+        "accounts": [
+            "@dodoexpedition",
+            "@fang.family3"
+        ],
+        "date": "2025-09-03",
+        "price": "600",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "https://www.google.com/search?q=dodo+expedition+roof+top+tent",
+        "originalGiveaway": {
+            "id": "1756115761071",
+            "date": "2025-09-03",
+            "prize": "Tienda de techo Dodo Expedition 💲",
+            "accounts": [
+                "@dodoexpedition",
+                "@fang.family3"
+            ],
+            "price": "No encontrado",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        "originalFile": {},
+        "id": "1756713059967"
+    },
+    {
+        "prize": "Pack de libros para entender el mundo: política, economía, adolescencia... 📚",
+        "accounts": [
+            "@libros_usborne",
+            "@kidslapera"
+        ],
+        "date": "2025-09-01",
+        "price": "75",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "libros",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.google.com/search?q=pack+de+libros+para+entender+el+mundo",
+        "originalGiveaway": {
+            "id": "1756144835669",
+            "date": "2025-09-01",
+            "prize": "Pack de libros ideal para chicos que quieren entender el mundo: política, economía, adolescencia y más...",
+            "accounts": [
+                "@libros_usborne",
+                "@kidslapera"
+            ],
+            "price": "80",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        "originalFile": {},
+        "id": "1756713119950"
+    },
+    {
+        "prize": "Taller DIY, regalos y mucho mimo 🎟️",
+        "accounts": [
+            "@ruxandaghemis",
+            "@cheerzesp",
+            "@eurostarshotels"
+        ],
+        "date": "2025-09-17",
+        "price": "250",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "ocio",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "null",
+        "originalGiveaway": {
+            "id": "1756126604303",
+            "date": "2025-09-17",
+            "prize": "Taller DIY, regalos y mucho mimo",
+            "accounts": [
+                "@ruxandaghemis",
+                "@cheerzesp",
+                "@eurostarshotels"
+            ],
+            "price": "150",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        "originalFile": {},
+        "id": "1756713974751"
+    },
+    {
+        "prize": "Lote productos de Garnier, Essie, Mixa, L'OREAL, Maybelline y NixCosmetic 💄",
+        "accounts": [
+            "@yolandamaquieira"
+        ],
+        "date": "2025-09-07",
+        "price": "150",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "belleza",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "null",
+        "originalGiveaway": {
+            "id": "1756126668645",
+            "date": "2025-09-07",
+            "prize": "Lote de productos de Garnier, Essie, Mixa, L'Oréal, Maybelline y NyxCosmetic 💄",
+            "accounts": [
+                "@yolandamaquieira"
+            ],
+            "price": "75",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        "originalFile": {},
+        "id": "1756714018720"
+    },
+    {
+        "prize": "Fiambrera y botella personalizada, junto con un pack de 58 etiquetas personalizadas",
+        "accounts": [
+            "@losmundosdekatia_",
+            "@bienpegado"
+        ],
+        "date": "2025-08-31",
+        "price": "35",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": null,
+        "originalGiveaway": {
+            "id": "1756144923650",
+            "date": "2025-08-31",
+            "prize": "Fiambrera y botella personalizada + pack de 58 etiquetas personalizadas",
+            "accounts": [
+                "@losmundosdekatia_",
+                "@bienpegado"
+            ],
+            "price": "35",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        "originalFile": {},
+        "id": "1756714037850"
+    },
+    {
+        "prize": "Set Coolpack (mochila + neceser)",
+        "accounts": [
+            "@familiateleyoubee",
+            "@coolpack.es"
+        ],
+        "date": "2025-09-04",
+        "price": "60",
+        "ends_at_time": "23h59",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.coolpack.es/mochilas-escolares",
+        "originalGiveaway": {
+            "id": "1756128572290",
+            "date": "2025-09-04",
+            "prize": "Set Coolpack (mochila + neceser)",
+            "accounts": [
+                "@coolpack.es",
+                "@familiateleyoubee"
+            ],
+            "price": "60",
+            "url": "null",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23h59"
+        },
+        "originalFile": {},
+        "id": "1756714397073"
+    },
+    {
+        "prize": "Dos pares de zapatillas Mustang Free 'more than barefoot' 👠",
+        "accounts": [
+            "@mtngmustang",
+            "@drlopezmartinez"
+        ],
+        "date": "2025-09-07",
+        "price": "120",
+        "ends_at_time": "20:59",
+        "is_priority_time": true,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "moda",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.amazon.es/s?k=zapatillas+mustang+free",
+        "originalGiveaway": {
+            "id": "1756489180496",
+            "date": "2025-09-07",
+            "prize": "Dos pares de zapatillas MustangFree 'more than barefoot' 👠",
+            "accounts": [
+                "@mtngmustang",
+                "@drlopezmartinez"
+            ],
+            "price": "120",
+            "url": "https://www.amazon.es/s?k=zapatillas+mustang+free",
+            "addDate": "2025-08-29",
+            "ends_at_time": "20:59",
+            "is_priority_time": true,
+            "prize_category": "moda"
+        },
+        "originalFile": {},
+        "id": "1756715357356"
+    },
+    {
+        "prize": "8 pares de calzado respetuoso para toda la familia de la tienda @minivillenacalzados",
+        "accounts": [
+            "@el_diario_d_valeria",
+            "@sweetcarolblog",
+            "@minivillenacalzados"
+        ],
+        "date": "2025-08-30",
+        "price": "240",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.minivillenacalzados.com/",
+        "originalGiveaway": {
+            "id": "1756145101162",
+            "date": "2025-08-31",
+            "prize": "8 pares de calzados respetuosos para toda la familia de la tienda @minivillenacalzados",
+            "accounts": [
+                "@el_diario_d_valeria",
+                "@minivillenacalzados",
+                "@sweetcarolblog"
+            ],
+            "price": "400",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        "originalFile": {},
+        "id": "1756715428709"
+    },
+    {
+        "prize": "8 pares de calzados respetuosos para toda la familia 👠",
+        "accounts": [
+            "@sweetcarolblog",
+            "@el_diario_d_valeria",
+            "@minivillenacalzados"
+        ],
+        "date": "2025-09-07",
+        "price": "240",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "moda",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "null",
+        "originalGiveaway": {
+            "id": "1756489074596",
+            "date": "2025-09-01",
+            "prize": "8 pares de calzado respetuoso para toda la familia",
+            "accounts": [
+                "@el_diario_d_valeria",
+                "@sweetcarolblog",
+                "@minivillenacalzados"
+            ],
+            "price": "240",
+            "url": "null",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "otros",
+            "moved": true
+        },
+        "originalFile": {},
+        "id": "1756715451667"
+    },
+    {
+        "prize": "Iphone 16 Pro 128GB 💲",
+        "accounts": [
+            "@postquamoficial"
+        ],
+        "date": "2025-09-06",
+        "price": "1100",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.amazon.com/Apple-iPhone-16-Pro-128GB/dp/B0BL888888",
+        "originalGiveaway": {
+            "id": "1756145119368",
+            "date": "2025-09-05",
+            "prize": "iPhone 16 Pro 128GB 💻 💲",
+            "accounts": [
+                "@postquamoficial"
+            ],
+            "price": "1320",
+            "url": "https://www.apple.com/es/shop/buy-iphone/iphone-16-pro",
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        "originalFile": {},
+        "id": "1756715459570"
+    },
+    {
+        "prize": "3 fiambreras Yumbox",
+        "accounts": [
+            "@walanata_",
+            "@btbox_bebes",
+            "@yumboxlunch"
+        ],
+        "date": "2025-08-31",
+        "price": "75",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.amazon.com/Yumbox-Original-Premium-Leakproof-Compartments/dp/B07F27216Q",
+        "originalGiveaway": {
+            "id": "1756145149390",
+            "date": "2025-08-31",
+            "prize": "3 fiambreras Yumbox Lunch",
+            "accounts": [
+                "@walanata_",
+                "@btbox_bebes",
+                "@yumboxlunch"
+            ],
+            "price": "119.97",
+            "url": "https://www.amazon.com/Yumbox-Original-Pack-Lunch-Containers/dp/B07F22426K",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        "originalFile": {},
+        "id": "1756715501152"
+    },
+    {
+        "prize": "2 floreros impresos en 3D 🏠",
+        "accounts": [
+            "@reinathepom",
+            "@prinx3d"
+        ],
+        "date": "2025-08-24",
+        "price": "30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "hogar",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "https://www.etsy.com/market/3d_printed_vases",
+        "originalGiveaway": {
+            "id": "1756489007773",
+            "date": "2025-08-25",
+            "prize": "2 floreros impresos en 3D 🏠",
+            "accounts": [
+                "@reinathepom",
+                "@prinx3d"
+            ],
+            "price": "30",
+            "url": "https://www.etsy.com/market/3d_printed_vases",
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "hogar"
+        },
+        "originalFile": {},
+        "id": "1756715571477"
+    },
+    {
+        "prize": "Lote de merchandising de superhéroes o Stitch 🃏",
+        "accounts": [
+            "@marymarcasta",
+            "@karactermania"
+        ],
+        "date": "2025-08-24",
+        "price": "30",
+        "ends_at_time": "23:59",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "frikis",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "https://www.google.com/search?q=merchandising+superh%C3%A9roes+stitch",
+        "originalGiveaway": {
+            "id": "1756489817251",
+            "date": "2025-08-25",
+            "prize": "Lote de material escolar de superhéroes o Stitch",
+            "accounts": [
+                "@karactermania",
+                "@marymarcasta"
+            ],
+            "price": "30",
+            "url": "https://www.google.com/search?q=material+escolar+superheroes+stitch",
+            "addDate": "2025-08-29",
+            "ends_at_time": "23:59 h",
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        "originalFile": {},
+        "id": "1756715586432"
+    },
+    {
+        "prize": "Set de maquillaje Charlotte Tilbury valorado en más de 300€",
+        "accounts": [
+            "@sephora_spain",
+            "@charlottetilbury"
+        ],
+        "date": "2025-08-30",
+        "price": "300€",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "belleza",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": null,
+        "originalGiveaway": {
+            "id": "1756145254361",
+            "date": "2025-08-31",
+            "prize": "Set de maquillaje Charlotte Tilbury valorado en más de 300€. 💄",
+            "accounts": [
+                "@sephora_spain",
+                "@charlottetilbury"
+            ],
+            "price": "350",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        "originalFile": {},
+        "id": "1756715830509"
+    },
+    {
+        "prize": "Bolso Tommy Hilfiger",
+        "accounts": [
+            "@fund_grube"
+        ],
+        "date": "2025-09-08",
+        "price": "150",
+        "ends_at_time": "23:59hrs",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "accesorios",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.google.com/search?q=Bolso+Tommy+Hilfiger",
+        "originalGiveaway": {
+            "id": "1756145285947",
+            "date": "2025-09-08",
+            "prize": "Bolso Tommy Hilfiger 👠",
+            "accounts": [
+                "@fund_grube"
+            ],
+            "price": "150",
+            "url": "null",
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59hrs"
+        },
+        "originalFile": {},
+        "id": "1756715866514"
+    },
+    {
+        "prize": "Cooler bag, set de cubiertos, sandwich box, bento lunch, bento cube, klip it 1L, klip it 400ml, mini bites to go",
+        "accounts": [
+            "@sistema_espana"
+        ],
+        "date": "2025-08-28",
+        "price": "35",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "https://www.amazon.com/s?k=lunch+bag+set&i=kitchen&hvadid=241900378708&hvdev=c&hvlocphy=9003783&hvnetw=g&hvqmt=e&hvrand=13498747569327719231&hvtargid=kwd-2246740178&hydadcr=8482_10383125&tag=googhydr-20&ref=pd_sl_7wzkwzk6k_e",
+        "originalGiveaway": {
+            "id": "1756145066442",
+            "date": "2025-08-28",
+            "prize": "1 cooler bag, set de cubiertos, sandwich box, bento lunch, bento cube, Klip It 1L, Klip It 400ml, Mini Bites To Go",
+            "accounts": [
+                "@sistema_espana"
+            ],
+            "price": "60",
+            "url": "null",
+            "addDate": "2025-08-25",
+            "ends_at_time": null
+        },
+        "originalFile": {},
+        "id": "1756715876310"
+    },
+    {
+        "prize": "3 kits de planificación completos",
+        "accounts": [
+            "@luconurse13"
+        ],
+        "date": null,
+        "price": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "no_date",
+        "is_spanish": true,
+        "prize_category": "papeleria",
+        "winner_count": 3,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756716111354"
+    },
+    {
+        "prize": "Lote Vinamiel de @lavina_gourmet",
+        "accounts": [
+            "@sandrinaferre29",
+            "@lavina_gourmet"
+        ],
+        "date": "2025-08-29",
+        "price": "25",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "gourmet",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": null,
+        "originalGiveaway": {
+            "id": "1756145381398",
+            "date": "2025-08-30",
+            "prize": "Lote Vinamiel de @lavina_gourmet",
+            "accounts": [
+                "@sandrinaferre29",
+                "@lavina_gourmet"
+            ],
+            "price": "60",
+            "url": null,
+            "addDate": "2025-08-25",
+            "ends_at_time": "23:59h"
+        },
+        "originalFile": {},
+        "id": "1756716230422"
+    },
+    {
+        "prize": "Lote de brochas de maquillaje, esponjas y diadema",
+        "accounts": [
+            "@yolandamaquieira"
+        ],
+        "date": null,
+        "price": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "no_date",
+        "is_spanish": true,
+        "prize_category": "belleza",
+        "winner_count": 1,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756732859918"
+    },
+    {
+        "prize": "Silla gaming + mousepad de Valk Gaming",
+        "accounts": [
+            "@becausesizematters",
+            "@valk_gaming"
+        ],
+        "date": null,
+        "price": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "no_date",
+        "is_spanish": true,
+        "prize_category": "gaming",
+        "winner_count": 1,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756733267122"
+    },
+    {
+        "prize": "Juego de mesa a elección",
+        "accounts": [
+            "@tresoles.sunchales"
+        ],
+        "date": null,
+        "price": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "no_date",
+        "is_spanish": true,
+        "prize_category": "otros",
+        "winner_count": 1,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756733803984"
+    },
+    {
+        "prize": "PS5",
+        "accounts": [
+            "@cashconverterses"
+        ],
+        "date": "2025-09-07",
+        "price": "450",
+        "ends_at_time": "16:00",
+        "is_priority_time": true,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "gaming",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.cashconverters.es/busqueda?q=ps5",
+        "originalGiveaway": {
+            "id": "1756732489074",
+            "date": "2025-09-01",
+            "prize": "PS5",
+            "accounts": [
+                "@cashconverterses"
+            ],
+            "price": "450",
+            "url": "https://www.cashconverters.es/consola-playstation-5-1024gb",
+            "addDate": "2025-09-01",
+            "ends_at_time": "16:00",
+            "is_priority_time": true,
+            "prize_category": "gaming"
+        },
+        "originalFile": {},
+        "id": "1756733889520"
     }
 ];
 

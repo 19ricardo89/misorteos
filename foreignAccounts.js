@@ -10,5 +10,8 @@ window.foreignAccounts = [
     "@celumaniacos_rafaela",
     "@grandiosas.rafaela",
     "@ferropartes_",
-    "@madereraceballos"
+    "@madereraceballos",
+    "@ofix.mx",
+    "@babolat.arg",
+    "@thermomixeras"
 ];

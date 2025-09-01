@@ -5610,62 +5610,55 @@ const updateSharePreview = async () => {
     previewContainer.appendChild(canvas);
 };
 
-// [VERSIÓN FINAL CON ESQUINAS Y TOTALES MEJORADOS]
+// [VERSIÓN FINAL CON IMAGEN DE BORDE DE ESTRELLAS]
 const generateTrophyImage = async (prizesToRender, timeframeText) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = 800;
     canvas.height = 1000;
 
-    // --- Cargar imágenes (Fondo y Esquinas) ---
+    // --- Cargar imágenes ---
     const backgroundImage = new Image();
     backgroundImage.src = 'Assets/img/fondo.jpg'; 
-    const cornerImage = new Image();
-    cornerImage.src = 'https://i.ibb.co/wJ2d9j8/corner-ornament.png'; // URL de un adorno dorado
+    const borderStarsImage = new Image();
+    borderStarsImage.src = 'Assets/img/borde.png'; // TU IMAGEN DE ESTRELLAS
 
-    // Esperamos a que ambas imágenes se carguen
+    // Esperamos a que todas las imágenes se carguen
     await Promise.all([
         new Promise(resolve => { backgroundImage.onload = resolve; backgroundImage.onerror = resolve; }),
-        new Promise(resolve => { cornerImage.onload = resolve; cornerImage.onerror = resolve; })
+        new Promise(resolve => { borderStarsImage.onload = resolve; borderStarsImage.onerror = resolve; })
     ]);
 
-    // Dibujar Fondo
+    // 1. Dibujar Fondo Estrellado
     if (backgroundImage.complete && backgroundImage.naturalHeight !== 0) {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     } else {
         const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        bgGradient.addColorStop(0, '#0f0c29'); bgGradient.addColorStop(1, '#24243e');
+        bgGradient.addColorStop(0, '#0f0c29');
+        bgGradient.addColorStop(1, '#24243e');
         ctx.fillStyle = bgGradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    // --- Dibujar la placa ---
+    // --- Dibujar la Placa Central (sin borde rectangular ni esquinas) ---
     const plaqueMargin = 50;
     const plaqueWidth = canvas.width - plaqueMargin * 2;
     const plaqueHeight = canvas.height - plaqueMargin * 2;
-    ctx.strokeStyle = '#d4af37';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(plaqueMargin, plaqueMargin, plaqueWidth, plaqueHeight);
+
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetY = 10;
+    ctx.shadowOffsetX = 0;
+
+    ctx.fillStyle = 'rgba(20, 20, 40, 0.7)'; 
+    ctx.fillRect(plaqueMargin, plaqueMargin, plaqueWidth, plaqueHeight);
     
-    // --- [NUEVO] Dibujar las esquinas ornamentales ---
-    if (cornerImage.complete && cornerImage.naturalHeight !== 0) {
-        const cornerSize = 120; // Tamaño del adorno
-        ctx.save();
-        // Top-left
-        ctx.drawImage(cornerImage, plaqueMargin, plaqueMargin, cornerSize, cornerSize);
-        // Top-right
-        ctx.translate(canvas.width - plaqueMargin, plaqueMargin);
-        ctx.rotate(Math.PI / 2);
-        ctx.drawImage(cornerImage, 0, 0, cornerSize, cornerSize);
-        // Bottom-right
-        ctx.translate(plaqueWidth, plaqueHeight);
-        ctx.rotate(Math.PI / 2);
-        ctx.drawImage(cornerImage, 0, 0, cornerSize, cornerSize);
-        // Bottom-left
-        ctx.translate(-plaqueHeight, plaqueWidth);
-        ctx.rotate(Math.PI / 2);
-        ctx.drawImage(cornerImage, 0, 0, cornerSize, cornerSize);
-        ctx.restore();
+    ctx.shadowColor = 'transparent'; // Reset shadow
+
+    // --- [NUEVO] Dibujar la imagen de estrellas doradas como borde ---
+    if (borderStarsImage.complete && borderStarsImage.naturalHeight !== 0) {
+        // Escalar la imagen de borde para que se ajuste al tamaño del canvas
+        ctx.drawImage(borderStarsImage, 0, 0, canvas.width, canvas.height);
     }
     
     // --- Contenido de la placa ---
@@ -5678,7 +5671,6 @@ const generateTrophyImage = async (prizesToRender, timeframeText) => {
     ctx.font = `30px 'Chewy', cursive`;
     ctx.fillText(timeframeText.toUpperCase(), canvas.width / 2, 200);
 
-    // --- [NUEVO] Totales más claros ---
     const totalWins = prizesToRender.length;
     const totalValue = prizesToRender.reduce((sum, g) => sum + parsePrice(g.price), 0);
     ctx.font = `bold 32px 'Chewy', cursive`;
@@ -5687,16 +5679,14 @@ const generateTrophyImage = async (prizesToRender, timeframeText) => {
     ctx.textAlign = 'right';
     ctx.fillText(`Valor Total: ${totalValue.toFixed(0)}€`, canvas.width - plaqueMargin - 40, 270);
 
-    // --- Lista de premios con corte de texto ---
     ctx.textAlign = 'left';
     ctx.fillStyle = '#f0e6d2';
     ctx.font = `24px 'Arial', sans-serif`;
     let yPos = 340;
-    const maxTextWidth = plaqueWidth - 180; // Ancho máximo para el texto del premio
+    const maxTextWidth = plaqueWidth - 180;
 
     prizesToRender.slice(0, 12).forEach(g => {
         let prizeText = g.prize;
-        // Cortar texto si es muy largo
         if (ctx.measureText(prizeText).width > maxTextWidth) {
             while (ctx.measureText(prizeText + '...').width > maxTextWidth) {
                 prizeText = prizeText.slice(0, -1);

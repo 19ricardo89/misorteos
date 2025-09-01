@@ -5495,7 +5495,7 @@ if (addGiveawayModalEl) {
         }
     });
 }
-// --- INICIO: LÓGICA PARA COMPARTIR (VERSIÓN 7 - NATIVA Y ESTABLE) ---
+// --- INICIO: LÓGICA PARA COMPARTIR (VERSIÓN 8 - COMPLETA Y FUNCIONAL) ---
 
 const openShareOptionsBtn = document.getElementById('open-share-options-btn');
 const shareOptionsModal = document.getElementById('share-options-modal');
@@ -5504,14 +5504,17 @@ const generateAndDownloadBtn = document.getElementById('generate-and-download-bt
 const shareNativeBtn = document.getElementById('share-native-btn');
 const previewContainer = document.getElementById('share-preview-container');
 
+// Función principal que se llama al hacer clic en "Compartir"
 const openShareModal = () => {
     shareOptionsModal.classList.add('is-visible');
     
-    // Conectar todos los listeners
-    document.querySelector('#share-timeframe-radios').addEventListener('change', handleShareUIUpdate);
-    document.getElementById('share-start-date').addEventListener('change', handleShareUIUpdate);
-    document.getElementById('share-end-date').addEventListener('change', handleShareUIUpdate);
-    document.getElementById('share-prize-list-container').addEventListener('change', updateSharePreview);
+    // Conectar todos los listeners una sola vez
+    document.querySelector('#share-timeframe-radios').onchange = handleShareUIUpdate;
+    document.getElementById('share-start-date').onchange = handleShareUIUpdate;
+    document.getElementById('share-end-date').onchange = handleShareUIUpdate;
+    document.getElementById('share-prize-list-container').onchange = updateSharePreview;
+    generateAndDownloadBtn.onclick = downloadShareImage;
+    shareNativeBtn.onclick = shareImageNatively;
 
     // Carga inicial
     document.querySelector('input[name="timeframe_selection"][value="last_month"]').checked = true;
@@ -5520,16 +5523,15 @@ const openShareModal = () => {
     handleShareUIUpdate();
 };
 
+// Actualiza la lista de trofeos disponibles según el rango de fechas
 const handleShareUIUpdate = () => {
     const startDateInput = document.getElementById('share-start-date');
     const endDateInput = document.getElementById('share-end-date');
     const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
 
-    // Si se cambia una fecha, se desmarcan los radios
     if (event && (event.target.type === 'date')) {
         if (radioChecked) radioChecked.checked = false;
     }
-    // Si se cambia un radio, se limpian las fechas
     if (event && (event.target.type === 'radio')) {
         startDateInput.value = '';
         endDateInput.value = '';
@@ -5538,7 +5540,7 @@ const handleShareUIUpdate = () => {
     const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
     let trophiesInTimeframe = [];
 
-    if (radioChecked) { // Filtro por Radio Buttons
+    if (radioChecked) {
         const timeframe = radioChecked.value;
         const now = new Date();
         trophiesInTimeframe = validWonGiveaways.filter(g => {
@@ -5550,9 +5552,9 @@ const handleShareUIUpdate = () => {
             if (timeframe === 'last_month') return daysAgo <= 30;
             return false;
         });
-    } else if (startDateInput.value) { // Filtro por Rango de Fechas
+    } else if (startDateInput.value) {
         const startDate = new Date(startDateInput.value + 'T00:00:00');
-        const endDate = endDateInput.value ? new Date(endDateInput.value + 'T23:59:59') : new Date(); // Si no hay fecha fin, usa hoy
+        const endDate = endDateInput.value ? new Date(endDateInput.value + 'T23:59:59') : new Date();
 
         trophiesInTimeframe = validWonGiveaways.filter(g => {
             const giveawayDate = new Date(g.date);
@@ -5564,6 +5566,7 @@ const handleShareUIUpdate = () => {
     updateSharePreview();
 };
 
+// Pinta la lista de trofeos con checkboxes
 const populatePrizeList = (trophies) => {
     const prizeListDiv = document.getElementById('share-prize-list-container');
     prizeListDiv.innerHTML = '';
@@ -5580,17 +5583,18 @@ const populatePrizeList = (trophies) => {
     }
 };
 
-const updateSharePreview = () => {
+// Actualiza la vista previa de la imagen
+const updateSharePreview = async () => {
     previewContainer.innerHTML = '<span class="animate-pulse">Generando vista previa...</span>';
-    const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
     
+    const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
     const prizesToRender = wonGiveaways.filter(g => g && g.id && selectedPrizeIds.has(g.id));
+
     if (prizesToRender.length === 0) {
         previewContainer.innerHTML = '<span>Selecciona al menos un trofeo.</span>';
         return;
     }
 
-    // El resto de la lógica para generar la imagen es la misma y ahora debería funcionar
     let timeframeText = 'Resumen Personalizado';
     const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
     if (radioChecked) {
@@ -5601,30 +5605,125 @@ const updateSharePreview = () => {
         timeframeText = `Del ${start} al ${end}`;
     }
 
-    // Esta parte genera la imagen, que ahora debería funcionar
-    generateAndRenderImage(prizesToRender, timeframeText);
+    const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+    const img = new Image();
+    img.src = canvas.toDataURL('image/png');
+    img.className = 'max-w-full max-h-full object-contain rounded-lg';
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(img);
 };
 
-const generateAndRenderImage = async (prizes, timeframe) => {
-    // Aquí iría tu lógica original para crear el canvas y la imagen
-    // Por ahora, mostraremos un placeholder para confirmar que funciona
-    const totalWins = prizes.length;
-    const totalValue = prizes.reduce((sum, g) => sum + parsePrice(g.price), 0);
-    previewContainer.innerHTML = `
-        <div class="p-4 text-center">
-            <h4 class="font-bold text-lg">Imagen de \`${timeframe}\`</h4>
-            <p>${totalWins} premios</p>
-            <p>Valor: ${totalValue.toFixed(0)}€</p>
-            <p class="text-xs mt-4">(Aquí se generaría la imagen final)</p>
-        </div>
-    `;
+// Dibuja la imagen en el canvas
+const generateTrophyImage = async (prizesToRender, timeframeText) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 1000;
+    const ctx = canvas.getContext('2d');
+    const filteredTrophies = prizesToRender.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate));
+
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#fffbef');
+    gradient.addColorStop(1, '#fef3c7');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 20;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#6a3805';
+    ctx.font = 'bold 50px Chewy';
+    ctx.fillText("Vitrina de Trofeos", canvas.width / 2, 80);
+    ctx.font = '30px Chewy';
+    ctx.fillStyle = '#b45309';
+    ctx.fillText(timeframeText, canvas.width / 2, 125);
+    
+    const totalWins = filteredTrophies.length;
+    const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
+    ctx.font = 'bold 32px Chewy';
+    ctx.fillStyle = '#4e342e';
+    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
+    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
+
+    ctx.textAlign = 'left';
+    ctx.font = '22px Chewy';
+    let yPos = 250;
+    filteredTrophies.slice(0, 15).forEach(g => {
+        ctx.fillStyle = '#4e342e';
+        let prizeText = g.prize;
+        if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
+        ctx.fillText(`- ${prizeText}`, 50, yPos);
+        ctx.fillStyle = '#b45309';
+        ctx.textAlign = 'right';
+        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
+        ctx.textAlign = 'left';
+        yPos += 40;
+    });
+    if (filteredTrophies.length > 15) {
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#92400e';
+        ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+    }
+    
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
+    ctx.rotate(-Math.PI / 6);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(106, 56, 5, 0.08)';
+    ctx.font = 'bold 90px Chewy';
+    ctx.fillText("Misorteos.es", 0, 0);
+    ctx.restore();
+
+    ctx.font = '20px Chewy';
+    ctx.fillStyle = '#92400e';
+    ctx.textAlign = 'center';
+    ctx.fillText("Generado con Misorteos.es ✨", canvas.width / 2, canvas.height - 40);
+
+    return canvas;
 };
 
-// Event Listeners
+// Función para el botón de descargar
+const downloadShareImage = async () => {
+    const canvas = previewContainer.querySelector('canvas');
+    if (canvas) {
+        const link = document.createElement('a');
+        link.download = `Misorteos-Vitrina-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    } else {
+        showNotification('Error', 'No se pudo encontrar la imagen para descargar.');
+    }
+};
+
+// Función para el botón de compartir nativo
+const shareImageNatively = async () => {
+    const canvas = previewContainer.querySelector('canvas');
+    if (!canvas) {
+        showNotification('Error', 'No se pudo encontrar la imagen para compartir.');
+        return;
+    }
+    if (navigator.share) {
+        canvas.toBlob(async (blob) => {
+            const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
+            try {
+                await navigator.share({
+                    title: 'Mi Vitrina de Trofeos de Misorteos',
+                    text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
+                    files: [file],
+                });
+            } catch (error) { console.error('Error al compartir:', error); }
+        }, 'image/png');
+    } else {
+        showNotification('No Soportado', 'Tu navegador no permite compartir archivos. Usa la descarga.');
+    }
+};
+
+
+// Event Listeners principales
 if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShareModal);
 if (closeShareOptionsModalBtn) closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
 
-// --- FIN DE LÓGICA PARA COMPARTIR (VERSIÓN NATIVA) ---
+// --- FIN DE LÓGICA PARA COMPARTIR (VERSIÓN NATIVA Y ESTABLE) ---
 </script>
 </body>
 </html>

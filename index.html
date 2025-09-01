@@ -5610,64 +5610,63 @@ const updateSharePreview = async () => {
     previewContainer.appendChild(canvas);
 };
 
-// [VERSIÓN FINAL CON TU FONDO ESTRELLADO]
+// [VERSIÓN FINAL CON ESQUINAS Y TOTALES MEJORADOS]
 const generateTrophyImage = async (prizesToRender, timeframeText) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = 800;
     canvas.height = 1000;
 
-    // --- Cargar tu imagen de fondo estrellado ---
+    // --- Cargar imágenes (Fondo y Esquinas) ---
     const backgroundImage = new Image();
-    backgroundImage.src = 'Assets/img/fondo.jpg'; // <-- RUTA ACTUALIZADA
+    backgroundImage.src = 'Assets/img/fondo.jpg'; 
+    const cornerImage = new Image();
+    cornerImage.src = 'https://i.ibb.co/wJ2d9j8/corner-ornament.png'; // URL de un adorno dorado
 
-    // Usamos una promesa para asegurarnos de que la imagen se cargue antes de usarla
-    await new Promise(resolve => {
-        backgroundImage.onload = resolve;
-        backgroundImage.onerror = () => {
-            console.error("Error al cargar la imagen de fondo local. Usando fondo degradado.");
-            resolve(); // Continuamos para que no se bloquee si hay un error
-        };
-    });
+    // Esperamos a que ambas imágenes se carguen
+    await Promise.all([
+        new Promise(resolve => { backgroundImage.onload = resolve; backgroundImage.onerror = resolve; }),
+        new Promise(resolve => { cornerImage.onload = resolve; cornerImage.onerror = resolve; })
+    ]);
 
+    // Dibujar Fondo
     if (backgroundImage.complete && backgroundImage.naturalHeight !== 0) {
-        // Esta lógica escala la imagen para que siempre cubra el lienzo sin deformarse
-        const hRatio = canvas.width / backgroundImage.width;
-        const vRatio = canvas.height / backgroundImage.height;
-        const ratio = Math.max(hRatio, vRatio);
-        const sWidth = backgroundImage.width * ratio;
-        const sHeight = backgroundImage.height * ratio;
-        const sx = (canvas.width - sWidth) / 2;
-        const sy = (canvas.height - sHeight) / 2;
-        ctx.drawImage(backgroundImage, sx, sy, sWidth, sHeight);
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     } else {
-        // Fondo de respaldo si la imagen local no carga por alguna razón
         const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        bgGradient.addColorStop(0, '#0f0c29');
-        bgGradient.addColorStop(0.5, '#302b63');
-        bgGradient.addColorStop(1, '#24243e');
+        bgGradient.addColorStop(0, '#0f0c29'); bgGradient.addColorStop(1, '#24243e');
         ctx.fillStyle = bgGradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    // --- Dibuja la placa dorada central ---
+    // --- Dibujar la placa ---
     const plaqueMargin = 50;
     const plaqueWidth = canvas.width - plaqueMargin * 2;
     const plaqueHeight = canvas.height - plaqueMargin * 2;
-
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-    ctx.shadowBlur = 20;
-    ctx.shadowOffsetY = 10;
-    ctx.shadowOffsetX = 0;
-
-    ctx.fillStyle = 'rgba(20, 20, 40, 0.7)'; 
-    ctx.fillRect(plaqueMargin, plaqueMargin, plaqueWidth, plaqueHeight);
-    
-    ctx.shadowColor = 'transparent';
-
     ctx.strokeStyle = '#d4af37';
-    ctx.lineWidth = 8;
+    ctx.lineWidth = 4;
     ctx.strokeRect(plaqueMargin, plaqueMargin, plaqueWidth, plaqueHeight);
+    
+    // --- [NUEVO] Dibujar las esquinas ornamentales ---
+    if (cornerImage.complete && cornerImage.naturalHeight !== 0) {
+        const cornerSize = 120; // Tamaño del adorno
+        ctx.save();
+        // Top-left
+        ctx.drawImage(cornerImage, plaqueMargin, plaqueMargin, cornerSize, cornerSize);
+        // Top-right
+        ctx.translate(canvas.width - plaqueMargin, plaqueMargin);
+        ctx.rotate(Math.PI / 2);
+        ctx.drawImage(cornerImage, 0, 0, cornerSize, cornerSize);
+        // Bottom-right
+        ctx.translate(plaqueWidth, plaqueHeight);
+        ctx.rotate(Math.PI / 2);
+        ctx.drawImage(cornerImage, 0, 0, cornerSize, cornerSize);
+        // Bottom-left
+        ctx.translate(-plaqueHeight, plaqueWidth);
+        ctx.rotate(Math.PI / 2);
+        ctx.drawImage(cornerImage, 0, 0, cornerSize, cornerSize);
+        ctx.restore();
+    }
     
     // --- Contenido de la placa ---
     ctx.textAlign = 'center';
@@ -5679,27 +5678,35 @@ const generateTrophyImage = async (prizesToRender, timeframeText) => {
     ctx.font = `30px 'Chewy', cursive`;
     ctx.fillText(timeframeText.toUpperCase(), canvas.width / 2, 200);
 
+    // --- [NUEVO] Totales más claros ---
     const totalWins = prizesToRender.length;
     const totalValue = prizesToRender.reduce((sum, g) => sum + parsePrice(g.price), 0);
     ctx.font = `bold 32px 'Chewy', cursive`;
-    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.3, 270);
-    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.7, 270);
+    ctx.textAlign = 'left';
+    ctx.fillText(`Total Premios: ${totalWins}`, plaqueMargin + 40, 270);
+    ctx.textAlign = 'right';
+    ctx.fillText(`Valor Total: ${totalValue.toFixed(0)}€`, canvas.width - plaqueMargin - 40, 270);
 
+    // --- Lista de premios con corte de texto ---
     ctx.textAlign = 'left';
     ctx.fillStyle = '#f0e6d2';
     ctx.font = `24px 'Arial', sans-serif`;
     let yPos = 340;
-    const maxPrizeNameLength = 30;
+    const maxTextWidth = plaqueWidth - 180; // Ancho máximo para el texto del premio
 
     prizesToRender.slice(0, 12).forEach(g => {
         let prizeText = g.prize;
-        if (prizeText.length > maxPrizeNameLength) {
-            prizeText = prizeText.substring(0, maxPrizeNameLength) + '...';
+        // Cortar texto si es muy largo
+        if (ctx.measureText(prizeText).width > maxTextWidth) {
+            while (ctx.measureText(prizeText + '...').width > maxTextWidth) {
+                prizeText = prizeText.slice(0, -1);
+            }
+            prizeText += '...';
         }
-        ctx.fillText(`- ${prizeText}`, plaqueMargin + 30, yPos);
+        ctx.fillText(`- ${prizeText}`, plaqueMargin + 40, yPos);
         
         ctx.textAlign = 'right';
-        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - plaqueMargin - 30, yPos);
+        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - plaqueMargin - 40, yPos);
         ctx.textAlign = 'left';
         yPos += 40;
     });

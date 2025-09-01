@@ -3353,6 +3353,221 @@ const initialDiscardedGiveaways = [
         },
         "originalFile": {},
         "id": "1756733889520"
+    },
+    {
+        "id": "1756493307407",
+        "date": "2025-09-01",
+        "prize": "Cama Box Roma 🏠",
+        "accounts": [
+            "@marimarsrl"
+        ],
+        "price": "300",
+        "url": "https://www.google.com/search?q=cama+box+roma+marimarsrl",
+        "addDate": "2025-08-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize_category": "hogar",
+        "moved": true,
+        "status": "foreign",
+        "originalDate": "2025-09-01"
+    },
+    {
+        "prize": "Equipaciones de pádel SNP Amstel Radler",
+        "accounts": [
+            "@seriesnacionalesdepadel"
+        ],
+        "date": null,
+        "price": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "no_date",
+        "is_spanish": true,
+        "prize_category": "deporte",
+        "winner_count": 1,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756756641433"
+    },
+    {
+        "prize": "Cepillo eléctrico Oral-B iO2",
+        "accounts": [
+            "@atida_mifarma"
+        ],
+        "date": null,
+        "price": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "no_date",
+        "prize_category": "salud",
+        "winner_count": 7,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756757929157"
+    },
+    {
+        "prize": "20 botellas exclusivas Made by Me",
+        "accounts": [
+            "@sodastream"
+        ],
+        "date": null,
+        "price": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "no_date",
+        "prize_category": "otros",
+        "winner_count": 20,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756757976553"
+    },
+    {
+        "prize": "Dos jarrones lisos (negro): uno de 50cm y otro de 35cm 🏠",
+        "accounts": [
+            "@macetas.iluminadas"
+        ],
+        "date": "2025-09-21",
+        "price": "80",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "hogar",
+        "winner_count": 2,
+        "confidence_score": 1,
+        "url": "https://www.google.com/search?q=precio+jarrón+cerámica+negro+50cm&tbm=shop",
+        "originalGiveaway": {
+            "id": "1756759123275",
+            "date": "2025-09-20",
+            "prize": "Dos jarrones lisos (negro): uno de 50cm y otro de 35cm 🏠",
+            "accounts": [
+                "@macetas.iluminadas"
+            ],
+            "price": "75",
+            "url": "https://www.google.com/search?q=jarrones+lisos+negros",
+            "addDate": "2025-09-01",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "hogar"
+        },
+        "originalFile": {},
+        "id": "1756759132427"
+    },
+    {
+        "prize": "Wireless Gaming Headset Dragon Ball Z, Dragon Ball Z Premium Bag, Mochila Mercury Dragon Ball Symbol, Mochila Heady Dragon Ball Z, Mochila Heady Dragon Ball Bulma",
+        "accounts": [
+            "@bladegear_",
+            "@karactermania"
+        ],
+        "date": "2025-09-08",
+        "price": "250",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "gaming",
+        "winner_count": 1,
+        "confidence_score": 0.9,
+        "url": "null",
+        "originalGiveaway": {
+            "id": "1756759081511",
+            "date": "2025-09-08",
+            "prize": "Wireless Gaming Headset Dragon Ball Z, Dragon Ball Z Premium Bag, Mochila Mercury Dragon Ball Symbol, Mochila Heady Dragon Ball Z, Mochila Heady Dragon Ball Bulma",
+            "accounts": [
+                "@bladegear_",
+                "@karactermania"
+            ],
+            "price": "250",
+            "url": "https://www.amazon.com/s?k=gaming+headset+dragon+ball+z&i=electronics&hvadid=617980028488&hvdev=c&hvlocphy=9003883&hvnetw=g&hvqmt=e&hvrand=13548797342417661092&hvtargid=kwd-3107375605&hydadcr=24738_13818508&tag=googhydr-20&ref=pd_sl_7wzk7w785w_e",
+            "addDate": "2025-09-01",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "frikis"
+        },
+        "originalFile": {},
+        "id": "1756759153096"
+    },
+    {
+        "prize": "Pack de gafas de sol, camiseta y calcetines",
+        "accounts": [
+            "@somospimientonegro"
+        ],
+        "date": null,
+        "price": "78€",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "no_date",
+        "is_spanish": true,
+        "prize_category": "moda",
+        "winner_count": 1,
+        "confidence_score": 0,
+        "originalFile": {},
+        "id": "1756759285313"
+    },
+    {
+        "prize": "Funko Pop de Harry Potter 🃏",
+        "accounts": [
+            "@esmovix"
+        ],
+        "date": "2025-09-10",
+        "price": "20",
+        "ends_at_time": "23:59",
+        "is_priority_time": false,
+        "is_spanish": true,
+        "status": "duplicate",
+        "prize_category": "frikis",
+        "winner_count": 1,
+        "confidence_score": 1,
+        "url": "https://www.esmovix.com/buscar?q=Funko+Pop+Harry+Potter",
+        "originalGiveaway": {
+            "id": "1756733455831",
+            "date": "2025-09-10",
+            "prize": "Funko Pop de Harry Potter 🃏",
+            "accounts": [
+                "@esmovix"
+            ],
+            "price": "25",
+            "url": "https://www.esmovix.com/buscar?q=Funko+Pop+Harry+Potter",
+            "addDate": "2025-09-01",
+            "ends_at_time": "23:59",
+            "is_priority_time": false,
+            "prize_category": "frikis"
+        },
+        "originalFile": {},
+        "id": "1756759601503"
+    },
+    {
+        "prize": "10 entradas dobles Weekend Pass para la LEC Summer Finals 2025 en Madrid 🎟️ 💲",
+        "accounts": [
+            "@lg_espana"
+        ],
+        "date": "2025-09-14",
+        "price": "1000",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "status": "duplicate",
+        "is_spanish": true,
+        "prize_category": "ocio",
+        "winner_count": 10,
+        "confidence_score": 1,
+        "url": "null",
+        "originalGiveaway": {
+            "id": "1756488240243",
+            "date": "2025-09-13",
+            "prize": "10 entradas dobles Weekend Pass para la LEC Summer Finals 2025 en Madrid 🎟️ 💲",
+            "accounts": [
+                "@lg_espana"
+            ],
+            "price": "1000",
+            "url": null,
+            "addDate": "2025-08-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "ocio"
+        },
+        "originalFile": {},
+        "id": "1756759912110"
     }
 ];
 

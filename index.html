@@ -5465,16 +5465,19 @@ const generateAndDownloadBtn = document.getElementById('generate-and-download-bt
 const shareNativeBtn = document.getElementById('share-native-btn');
 const previewContainer = document.getElementById('share-preview-container');
 
+// [FIX DEFINITIVO v2] Reemplaza las dos funciones antiguas con estas:
+
 // Función para abrir el modal (con control de errores mejorado)
 const openShareModal = () => {
     shareOptionsModal.classList.add('is-visible');
     try {
-        console.log("Debug: Iniciando openShareModal...");
         const datepickerContainer = document.getElementById('datepicker-container');
         if (datepicker) {
             datepicker.destroy();
         }
-        datepicker = new Datepicker(datepickerContainer, {
+
+        // Creamos la nueva instancia del calendario
+        const newDatepickerInstance = new Datepicker(datepickerContainer, {
             format: 'dd/mm/yyyy',
             language: 'es',
             todayHighlight: true,
@@ -5482,18 +5485,17 @@ const openShareModal = () => {
             pickerPosition: 'bottom-left',
             rangePicker: true
         });
-        
-        datepickerContainer.addEventListener('changeDate', (e) => {
-            const checkedRadio = document.querySelector('#share-timeframe-radios input:checked');
-            if(checkedRadio) {
-                checkedRadio.checked = false;
-            }
-            handleTimeframeChange();
-        });
+        // La guardamos en la variable global para que sea accesible
+        datepicker = newDatepickerInstance;
 
+        // Limpiamos el listener anterior por si acaso y añadimos el nuevo
+        datepickerContainer.removeEventListener('changeDate', handleDatepickerChange);
+        datepickerContainer.addEventListener('changeDate', handleDatepickerChange);
+        
         document.getElementById('time-month').checked = true;
+        // Llamamos a la función principal pasándole la instancia que acabamos de crear
         handleTimeframeChange();
-        console.log("Debug: openShareModal completado con éxito.");
+
     } catch (error) {
         console.error("Error FATAL en openShareModal:", error);
         if(previewContainer) {
@@ -5502,28 +5504,59 @@ const openShareModal = () => {
     }
 };
 
-// Función para poblar la lista de premios (con control de errores)
-const populatePrizeList = (trophies) => {
+// Creamos una función separada para el evento del datepicker para más claridad
+const handleDatepickerChange = () => {
+    const checkedRadio = document.querySelector('#share-timeframe-radios input:checked');
+    if(checkedRadio) {
+        checkedRadio.checked = false;
+    }
+    handleTimeframeChange();
+}
+
+// Función para manejar los cambios de tiempo (modificada para usar la variable global correcta)
+const handleTimeframeChange = () => {
     try {
-        console.log(`Debug: Iniciando populatePrizeList con ${trophies.length} trofeos.`);
-        const prizeListDiv = document.getElementById('share-prize-list-container');
-        prizeListDiv.innerHTML = '';
-        if (trophies.length > 0) {
-            trophies.forEach(g => {
-                const prizeItem = document.createElement('div');
-                prizeItem.className = 'flex items-center';
-                prizeItem.innerHTML = `
-                    <input type="checkbox" id="prize-${g.id}" data-prize-id="${g.id}" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" checked>
-                    <label for="prize-${g.id}" class="ml-2 block text-sm text-gray-700 truncate">${g.prize}</label>
-                `;
-                prizeListDiv.appendChild(prizeItem);
-            });
-        } else {
-            prizeListDiv.innerHTML = '<p class="text-gray-500 text-center">No hay trofeos en este periodo.</p>';
+        const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.wonDate);
+
+        let selectionType = 'radio';
+        let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
+        
+        // [CORRECCIÓN CLAVE] Usamos la variable global 'datepicker' que ya está inicializada
+        const selectedDates = datepicker ? datepicker.getDates('yyyy-mm-dd') : [];
+        
+        if (selectedDates.length > 0) {
+            selectionType = 'calendar';
+            selectionValue = selectedDates;
         }
-        console.log("Debug: populatePrizeList completado.");
-    } catch (error) {
-        throw new Error(`Fallo en populatePrizeList: ${error.message}`);
+
+        const now = new Date();
+        const trophiesInTimeframe = validWonGiveaways.filter(g => {
+            const wonDate = new Date(g.wonDate);
+            wonDate.setHours(0,0,0,0);
+            if (isNaN(wonDate.getTime())) return false;
+
+            if(selectionType === 'radio') {
+                switch (selectionValue) {
+                    case 'last_week': return (now - wonDate) / (1000 * 3600 * 24) <= 7;
+                    case 'last_month': return (now - wonDate) / (1000 * 3600 * 24) <= 30;
+                    case 'all': return true;
+                    default: return false;
+                }
+            } else if (selectionType === 'calendar' && selectionValue.length > 0) {
+                const startDate = new Date(selectionValue[0]);
+                const endDate = selectionValue.length > 1 ? new Date(selectionValue[1]) : new Date(selectionValue[0]);
+                startDate.setHours(0,0,0,0);
+                endDate.setHours(0,0,0,0);
+                return wonDate >= startDate && wonDate <= endDate;
+            }
+            return false;
+        });
+        
+        populatePrizeList(trophiesInTimeframe);
+        updateSharePreview(trophiesInTimeframe);
+    } catch(error) {
+        // Este error se mostrará ahora en la vista previa del modal
+        throw new Error(`Fallo en handleTimeframeChange: ${error.message}`);
     }
 };
 

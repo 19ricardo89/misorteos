@@ -1108,6 +1108,7 @@
              <span class="text-xl sm:text-2xl">❓</span>
              <span>Ayuda</span>
         </a>
+        <a href="#" id="roadmap-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2"> <span class="text-xl sm:text-2xl">✨</span> <span>Próximas novedades</span> </a>
         <a href="#" id="admin-panel-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2 mt-auto border-t border-yellow-600/20 pt-4">
             <span class="text-xl sm:text-2xl">🔑</span>
             <span>Admin</span>
@@ -1790,7 +1791,42 @@
             </div>
         </div>
     </div>
-    <div id="admin-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+  <div id="roadmap-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-2xl rounded-2xl shadow-2xl modal-default-bg p-6 flex-col">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <h2 class="text-2xl sm:text-3xl">Hoja de Ruta 🗺️</h2>
+                <button id="close-roadmap-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            <div class="mt-4 flex-grow overflow-y-auto text-left text-base p-2 space-y-4">
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700">El Presente: Almacenamiento 100% Local y Privado</h3>
+                    <p class="text-sm mt-2">Actualmente, Misorteos.es utiliza el <strong>Almacenamiento Local (LocalStorage) de tu navegador</strong> para guardar toda tu información (sorteos, trofeos, etc.). Esto garantiza que tus datos son <strong>completamente privados y anónimos</strong>. Nadie, ni siquiera el administrador de la web, tiene acceso a tu información.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700">La Limitación Actual: Sin Sincronización entre Dispositivos</h3>
+                    <p class="text-sm mt-2">La principal desventaja de este método es que <strong>tus datos NO se sincronizan en la nube</strong>. Esto significa que tu información está atada a un único navegador en un único dispositivo.</p>
+                    <ul class="list-disc list-inside space-y-2 text-sm pl-4 mt-3 bg-red-100/10 p-3 border-l-4 border-red-400 rounded">
+                        <li>Si accedes a la web desde un <strong>navegador diferente</strong> (ej. de Chrome a Firefox), no verás tus datos.</li>
+                        <li>Si cambias de <strong>dispositivo</strong> (ej. de tu móvil a un ordenador), tampoco verás tus datos.</li>
+                        <li><strong>¡MUY IMPORTANTE!</strong> Si <strong>borras los datos de navegación</strong>, <strong>perderás toda tu información</strong> guardada aquí.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-yellow-700">El Futuro: Cuentas de Cazador Sincronizadas ☁️</h3>
+                    <p class="text-sm mt-2">¡La próxima gran actualización de Misorteos.es solucionará esto para siempre! Estoy trabajando en la implementación de <strong>cuentas de usuario</strong>.</p>
+                    <p class="text-sm mt-2">Podrás crear tu propia cuenta de forma gratuita con un correo y contraseña. A partir de ese momento, todos tus datos se guardarán en la nube, asociados a tu perfil.</p>
+                    <ul class="list-disc list-inside space-y-2 text-sm pl-4 mt-3">
+                        <li><strong>Acceso Universal:</strong> Inicia sesión y ten todos tus datos disponibles al instante en tu móvil, tablet y ordenador.</li>
+                        <li><strong>Seguridad Mejorada:</strong> Tus datos estarán a salvo en tu cuenta, incluso si cambias de dispositivo.</li>
+                        <li><strong>Nuevas Funciones Sociales:</strong> ¡Las cuentas son el primer paso para futuras funcionalidades comunitarias!</li>
+                    </ul>
+                    <p class="text-sm mt-3">Es un cambio de estructuración muy grande y un proyecto ambicioso, pero estoy poniendo toda mi magia en ello para que esté disponible lo antes posible. ¡Gracias por formar parte de esta aventura!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <div id="admin-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-sm rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🔑 Panel de Admin</h2>
@@ -5035,7 +5071,12 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
     setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
+   // --- [NUEVO] Lógica para el Modal de Hoja de Ruta ---
+    const roadmapModal = document.getElementById('roadmap-modal');
+    const roadmapBtn = document.getElementById('roadmap-btn');
+    const closeRoadmapModalBtn = document.getElementById('close-roadmap-modal');
     
+    setupModal(roadmapBtn, roadmapModal, closeRoadmapModalBtn); 
     addManualBtn.addEventListener('click', (e) => {
         e.preventDefault();
         const confirmationMessage = `✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨

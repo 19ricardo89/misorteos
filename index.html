@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta property="og:type" content="website" />
+<meta property="og:url" content="https://misorteos.es/" />
+<meta property="og:title" content="Misorteos - Expertos en el Arte de Participar" />
+<meta property="og:description" content="Para los que tenemos el pulgar desgastado de dar 'like' y etiquetar amigos. Aquí tienes tu recompensa: los mejores sorteos y mucha mierda 💩" />
+<meta property="og:image" content="https://misorteos.es/assets/img/Misorteos.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://misorteos.es/">
+<meta name="twitter:title" content="Misorteos - Expertos en el Arte de Participar">
+<meta name="twitter:description" content="Para los que tenemos el pulgar desgastado de dar 'like' y etiquetar amigos. Aquí tienes tu recompensa: los mejores sorteos y mucha mierda 💩">
+<meta name="twitter:image" content="https://misorteos.es/assets/img/Misorteos.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misorteos</title>
@@ -10,10 +24,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+
+
     <style>
         /* --- KEYFRAMES --- */
         @keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
@@ -35,6 +53,10 @@
         @keyframes vortex {
             from { transform: rotate(0deg) scale(1); }
             to { transform: rotate(360deg) scale(0); }
+        }
+        @keyframes pulse-help {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(253, 224, 71, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 10px 5px rgba(253, 224, 71, 0); }
         }
 
         /* --- ESTILOS NOTIFICACIÓN TOAST --- */
@@ -82,7 +104,7 @@
         .bg-web-gradient {
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
         }
-        
+
         /* --- FONDO ESTRELLADO --- */
         #magic-stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 5px white, 0 0 10px white; animation: twinkle 2s infinite ease-in-out; }
@@ -105,7 +127,7 @@
         .calendar-day.all-done { background-color: rgba(34, 197, 94, 0.3); border-color: #22c55e; }
         .calendar-day.all-done .giveaway-count { display: none; }
         .giveaway-count { font-size: 0.7rem; color: #78350f; background-color: #f7d468; border: 1px solid #b45309; padding: 1px 5px; margin-top: 4px; }
-        
+
         /* --- MODAL --- */
         .modal {
             z-index: 50;
@@ -146,8 +168,15 @@
         .modal-default-bg { background-color: #fffbef; }
         .modal-travel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=1170&auto=format&fit=crop'); }
         .modal-padel-bg { background-image: linear-gradient(rgba(255, 251, 235, 0.85), rgba(255, 251, 235, 0.85)), url('https://images.unsplash.com/photo-1621288228964-67ac723a9b8a?q=80&w=1170&auto=format&fit=crop'); }
-        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu { overflow-y: auto; }
-
+        #modal-body, #add-giveaway-form-body, #search-modal-body, #trash-modal-body, #discarded-modal-body, #duplicate-giveaway-info, #foreign-accounts-modal-body, #trophy-modal-body, #stats-modal-body, #history-modal-body, #achievements-modal-body, #ps-summary-modal-body, #recent-adds-modal-body, #vis-modal-body, .nav-menu, #new-additions-modal-body { overflow-y: auto; }
+        
+        /* --- [FIX] CLASE PARA AÑADIR SCROLL AL MODAL DE COMPARTIR --- */
+        .modal-scroll-content {
+            flex-grow: 1; /* Hace que ocupe el espacio disponible */
+            overflow-y: auto; /* AÑADE EL SCROLL AUTOMÁTICO */
+            padding: 1rem; /* Mantiene un espaciado interior agradable */
+        }
+        
         /* --- ESTILOS PARA EL NUEVO FILTRO DE CATEGORÍAS --- */
         #category-filter-button.placeholder #category-filter-selected-text {
             color: #a16207;
@@ -251,7 +280,7 @@
         .nav-menu.is-open {
             transform: translateX(0);
         }
-        
+
         .nav-menu-btn {
              background-color: transparent;
              color: #f7d468;
@@ -299,7 +328,7 @@
             font-size: 1rem;
             padding: 0.5rem 1rem;
         }
-        
+
         /* Estilos del agujero negro */
         .vortex-btn {
             background-color: transparent;
@@ -324,11 +353,11 @@
         .calendar-nav-btn {
              height: 48px;
         }
-        
+
         .giveaway-item-discarded.duplicate-item {
              cursor: pointer;
         }
-        
+
         .giveaway-item-discarded.duplicate-item:hover {
              background-color: rgba(255, 0, 0, 0.2);
              box-shadow: 0 0 10px #f87171;
@@ -339,7 +368,7 @@
              justify-content: space-between;
              align-items: center;
         }
-        
+
         /* Estilos para el modal de duplicados */
         #duplicate-modal .modal-content {
              max-width: 90%;
@@ -351,7 +380,7 @@
             gap: 1rem;
             overflow-y: auto;
         }
-        
+
         /* --- AJUSTES RESPONSIVE PARA EL HEADER --- */
         #user-title {
             font-size: 1.1rem; /* Más pequeño en móvil */
@@ -394,11 +423,11 @@
         }
         /* Estilo para el texto principal del premio */
         .giveaway-item .text-yellow-900 {
-            color: #4e342e !important; 
+            color: #4e342e !important;
         }
         /* NUEVO: Color más oscuro para cuentas y precio */
         .giveaway-item a,
-        .giveaway-item .text-amber-600, 
+        .giveaway-item .text-amber-600,
         .giveaway-item .text-yellow-700 {
             color: #6a3805 !important; /* Marrón oscuro para máxima legibilidad */
             font-weight: bold; /* Añadimos negrita para que destaque más */
@@ -445,13 +474,35 @@
         .vis-giveaway-btn:hover {
             background-color: #d1d5db !important;
         }
+        
+        /* [NUEVO] Botón de Ayuda */
+        .help-btn {
+            background-color: #fde047;
+            color: #78350f;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            cursor: pointer;
+            border: 1px solid #facc15;
+            transition: all 0.2s ease-in-out;
+            animation: pulse-help 2.5s infinite;
+        }
+        .help-btn:hover {
+            transform: scale(1.1);
+            background-color: #facc15;
+        }
 
 
         /* Títulos de los modales */
-        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2 {
-            color: #8c5a15; 
+        #modal-title, #add-giveaway-modal-title, #search-modal h2, #trash-modal h2, #discarded-modal h2, #duplicate-modal h2, #move-giveaway-modal h2, #foreign-accounts-modal h2, #trophy-modal h2, #stats-modal h2, #history-modal h2, #achievements-modal h2, #ps-summary-modal h2, #recent-adds-modal h2, #new-additions-modal h2, #admin-modal h2 {
+            color: #8c5a15;
         }
-        
+
         /* --- ESTILOS PARA EL NUEVO RESUMEN DETALLADO DE IA --- */
         #ai-summary-results h3, #ai-summary-results h4, #history-modal h3, #history-modal h4 {
             color: #8c5a15; /* Usar el mismo color dorado intenso para los títulos */
@@ -488,7 +539,7 @@
         #ai-summary-results .view-original-duplicate:hover {
             color: #8c5a15;
         }
-        
+
         /* --- ESTILOS VITRINA, ESTADÍSTICAS Y LOGROS --- */
         #trophy-modal-body {
             display: grid;
@@ -550,7 +601,7 @@
             font-size: 1rem;
             padding: 0.25rem 0;
          }
-        
+
         #charts-modal-body {
             display: flex;
             flex-direction: column;
@@ -609,7 +660,7 @@
             cursor: not-allowed;
             opacity: 0.5;
         }
-        
+
         /* --- ESTILOS PARA LAS NUEVAS TARJETAS DE SORTEO --- */
         .giveaway-card {
             border: 2px solid #d4af37;
@@ -653,7 +704,7 @@
         .status-foreign { background-color: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
         .status-no_date { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
         .status-not_a_giveaway, .status-api_error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-        
+
         /* --- NUEVOS ESTILOS PARA LA VISTA DE ANÁLISIS A PANTALLA COMPLETA --- */
         .ai-fullscreen-view {
             position: fixed;
@@ -772,7 +823,7 @@
         .interactive-card-form input:disabled, .interactive-card-form textarea:disabled, .interactive-card-form select:disabled {
             background-color: #fef3c7;
         }
-        
+
         /* Efectos de brillo para las tarjetas interactivas */
         .card-status-valid { box-shadow: 0 0 15px 5px rgba(34, 197, 94, 0.5); border-color: #22c55e; }
         .card-status-duplicate { box-shadow: 0 0 15px 5px rgba(107, 114, 128, 0.5); border-color: #6b7280; }
@@ -832,10 +883,10 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             cursor: zoom-out;
         }
-        
+
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.7; }
         }
 
         /* --- NUEVOS ESTILOS PARA PESTAÑAS Y GRÁFICOS --- */
@@ -881,7 +932,129 @@
             font-weight: bold;
             text-align: center;
         }
+
+        /* --- [NUEVO] ESTILOS PARA EL AVISO DE ACTUALIZACIÓN --- */
+        #refreshOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000; /* Fondo completamente negro */
+            z-index: 1000;
+            opacity: 0; /* Empieza transparente */
+            pointer-events: none; /* No se puede hacer clic cuando está oculto */
+            transition: opacity 1s ease-in-out; /* Transición de 1 segundo */
+            display: flex; /* Usamos flex para el layout */
+            flex-direction: column;
+            justify-content: space-between; /* Espacio entre los elementos */
+            align-items: center;
+            padding: 2rem;
+            cursor: pointer;
+        }
+        #refreshOverlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        /* Animación de la estrella fugaz para el aviso */
+       @keyframes shoot-right-to-left {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(0deg); /* Aplicamos la rotación desde el inicio */
+        left: 110%; 
+        top: 25%;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-150vw, 50vh) rotate(0deg); /* Mantenemos la rotación */
+        left: 110%; 
+        top: 25%;
+    }
+}
+
+#shootingStarRefresh {
+    position: absolute;
+    width: 300px;
+    height: auto;
+    opacity: 0;
+    animation-name: shoot-right-to-left;
+    animation-duration: 5s;
+    animation-timing-function: ease-in;
+    animation-iteration-count: infinite;
+    animation-delay: 1.5s;
+    pointer-events: none;
+    transform: rotate(0deg); /* Inclinación base de la imagen */
+}
+        @keyframes zoom-in-3d {
+            from {
+                opacity: 0;
+                transform: perspective(400px) scale3d(0.5, 0.5, 0.5) rotate3d(1, 0, 0, -90deg);
+            }
+            to {
+                opacity: 1;
+                transform: perspective(400px) scale3d(1, 1, 1) rotate3d(0, 0, 0, 0);
+            }
+        }
+        .dynamic-headline {
+            opacity: 0;
+            animation-fill-mode: forwards;
+            animation-duration: 0.8s;
+            animation-name: zoom-in-3d;
+            color: #E0E0E0; /* Letras plateadas */
+        }
         /* --- FIN DE NUEVOS ESTILOS --- */
+        /* --- [NUEVO] ESTILOS PARA FILTROS GLOBALES DEL MENÚ --- */
+#global-search-input, #global-category-filter {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid #d4af37;
+    color: #f0e6d2;
+    -webkit-appearance: none; /* Quita estilos por defecto en Safari/Chrome */
+    -moz-appearance: none;    /* Quita estilos por defecto en Firefox */
+    appearance: none;
+}
+
+#global-search-input::placeholder {
+    color: #b45309;
+    opacity: 0.8;
+}
+
+#global-category-filter option {
+    background-color: #302b63;
+    color: #f0e6d2;
+}
+        /* --- ESTILOS PARA PESTAÑAS DEL MODAL DIARIO --- */
+        .modal-tabs {
+            display: flex;
+            border-bottom: 2px solid #fde68a;
+        }
+        .modal-tab-btn {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: #b45309;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .modal-tab-btn.active {
+            color: #78350f;
+            border-bottom-color: #f59e0b;
+        }
+        .modal-tab-content {
+            display: none;
+        }
+        .modal-tab-content.active {
+            display: block;
+        }
+        .giveaway-item.not-interested {
+            opacity: 0.6;
+            filter: grayscale(80%);
+        }
     </style>
 </head>
 <body class="p-4">
@@ -891,9 +1064,17 @@
     </div>
     <input type="file" id="zip-upload" class="hidden" accept=".zip">
     <div id="magic-stars-container"></div>
-    
+
     <div id="nav-menu" class="nav-menu flex flex-col items-start gap-4">
-        <button id="close-nav-menu" class="text-yellow-600 hover:text-yellow-800 text-4xl self-end">&times;</button>
+        <div class="flex justify-between items-center w-full">
+            <h3 class="text-xl font-bold text-yellow-400">Menú</h3>
+            <button id="close-nav-menu" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+        </div>
+        <div class="w-full px-1 py-2 border-b border-t border-yellow-600/20 my-4">
+            <input type="text" id="global-search-input" placeholder="Buscar en todo el calendario..." class="w-full p-2 rounded-lg text-sm mb-2">
+            <select id="global-category-filter" class="w-full p-2 rounded-lg text-sm">
+            </select>
+        </div>
         <a href="#" id="add-manual-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
             <span class="text-xl sm:text-2xl">📝</span>
             <span>Añadir</span>
@@ -922,22 +1103,18 @@
              <span class="text-xl sm:text-2xl">🏆</span>
              <span>Vitrina</span>
         </a>
-        <a href="#" id="upload-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
-            <span class="text-xl sm:text-2xl">📤</span>
-            <span>Cargar Copia</span>
-        </a>
-        <a href="#" id="download-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
-            <span class="text-xl sm:text-2xl">💾</span>
-            <span>Descargar</span>
+        <a href="#" id="admin-panel-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2 mt-auto border-t border-yellow-600/20 pt-4">
+            <span class="text-xl sm:text-2xl">🔑</span>
+            <span>Admin</span>
         </a>
     </div>
     <div id="menu-overlay" class="menu-overlay"></div>
-    
+
     <main class="w-full flex flex-col items-center">
         <div class="title-container">
             <h1 id="main-title" class="magic-title"></h1>
         </div>
-        
+
         <header class="flex items-center justify-between p-4 mb-2 flex-shrink-0 w-full max-w-4xl">
             <button id="open-nav-menu" class="nav-menu-btn rounded-full">
                 <i class="fa-solid fa-bars text-xl"></i>
@@ -949,6 +1126,11 @@
                <span id="total-ps-count">0</span> PS ✨
            </div>
         </header>
+        
+        <div id="filter-banner" class="w-full max-w-4xl mx-auto p-2 my-2 text-center text-yellow-800 bg-yellow-200 rounded-lg shadow-md" style="display: none;">
+            <span id="filter-banner-text"></span>
+            <button id="filter-banner-clear-btn" class="ml-2 font-bold underline hover:text-yellow-600">[Quitar filtro]</button>
+        </div>
 
         <div class="w-full max-w-4xl mx-auto flex items-center justify-between mb-2 flex-shrink-0 px-4">
             <button id="prev-month" class="px-3 py-1 sm:px-4 sm:py-2 nav-btn calendar-nav-btn">&lt;</button>
@@ -960,38 +1142,54 @@
             <div id="calendar-days" class="calendar-grid w-full"></div>
         </div>
     </main>
-    
+
     <footer class="w-full max-w-4xl mx-auto p-4 flex justify-between items-center">
-        <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <div class="flex items-center gap-4">
+            <button id="trash-btn" class="nav-btn p-2 sm:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="2" y1="12" x2="22" y2="12" stroke="#f7d468" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        
         <div id="total-giveaways-container">
             <span id="total-giveaways-count">0</span>
         </div>
-        <button id="discarded-btn" class="nav-btn p-2 sm:p-4 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#f7d468" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="2" y1="12" x2="22" y2="12" stroke="#f7d468" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </button>
+        
+        <div class="flex items-center">
+             <button id="new-additions-btn" class="nav-btn px-4 py-3 flex items-center shadow-lg transition-transform duration-300 transform hover:scale-110">
+                <span class="text-lg sm:text-xl mr-2">✨</span>
+                <span class="font-bold text-sm sm:text-base">Nuevos</span>
+            </button>
+        </div>
     </footer>
-    
+
     <div id="trash-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">Papelera de Sorteos</h2>
-                <button id="close-trash-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-trash-modal" class="help-btn" data-modal-id="trash-modal">?</button>
+                    <button id="close-trash-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="trash-modal-body" class="space-y-4 max-h-[60vh]"></div>
             <button id="delete-all-trash-btn" class="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">Vaciar papelera</button>
         </div>
     </div>
-    
+
     <div id="discarded-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="discarded-modal-title" class="text-2xl sm:text-3xl">Sorteos Descartados</h2>
-                <button id="close-discarded-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-discarded-modal" class="help-btn" data-modal-id="discarded-modal">?</button>
+                    <button id="close-discarded-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
              <div class="flex justify-between items-center flex-wrap gap-2 mb-4">
                 <div>
@@ -1007,13 +1205,16 @@
             <button id="delete-all-discarded-btn" class="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-400 transition-colors">Eliminar todos los descartados</button>
         </div>
     </div>
-    
+
     <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div id="modal-content" class="w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg flex-col">
              <div class="flex-shrink-0 p-4 sm:p-6 pb-0">
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="modal-title" class="text-2xl sm:text-3xl">Sorteos del Día</h2>
-                    <button id="close-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                    <div class="flex items-center gap-2">
+                        <button id="help-daily-modal" class="help-btn" data-modal-id="modal">?</button>
+                        <button id="close-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                    </div>
                 </div>
                 <div id="modal-filters" class="flex flex-col sm:flex-row gap-2 mb-2">
                     <input type="text" id="modal-search-input" placeholder="Buscar por premio..." class="w-full p-2 rounded-lg bg-white border border-yellow-400 text-sm flex-grow">
@@ -1027,12 +1228,29 @@
                     </div>
                 </div>
                 </div>
-            <div class="p-4 sm:p-6 pt-0">
-                <div class="flex justify-between items-center mb-4 text-yellow-900">
-                    <button id="select-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Seleccionar todo</button>
-                    <button id="deselect-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Deseleccionar todo</button>
+            <div class="p-4 sm:p-6 pt-0 flex flex-col flex-grow overflow-hidden">
+                <div class="modal-tabs flex-shrink-0">
+                    <button class="modal-tab-btn active" data-tab="sorteos">Sorteos</button>
+                    <button class="modal-tab-btn" data-tab="no-interesa">No me Interesa</button>
                 </div>
-                <div id="modal-body" class="space-y-4 max-h-[60vh]"></div>
+
+                <div class="mt-4 flex-grow overflow-y-auto">
+                    <div id="tab-content-sorteos" class="modal-tab-content active">
+                        <div class="flex justify-between items-center mb-2 text-yellow-900">
+                            <button id="select-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Seleccionar todo</button>
+                            <button id="deselect-all-btn" class="text-sm font-bold bg-yellow-300 px-3 py-1 rounded-full hover:bg-yellow-400">Deseleccionar todo</button>
+                        </div>
+                        <div id="insta-hint" class="p-2 my-3 rounded-lg bg-blue-100/50 border border-blue-400 text-center text-sm text-blue-900 font-bold">
+                            👉 <strong>¡Atajo a la vista!</strong> Toca en las <code>@cuentas</code> y salta a su Instagram sin teclear.
+                        </div>
+                        <div id="modal-body" class="space-y-4 max-h-[50vh]"></div>
+                    </div>
+
+                    <div id="tab-content-no-interesa" class="modal-tab-content">
+                        <div id="not-interested-body" class="space-y-4 max-h-[60vh]">
+                            </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1041,7 +1259,10 @@
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="add-giveaway-modal-title" class="text-2xl sm:text-3xl">Añadir Nuevo Sorteo</h2>
-                <button id="close-add-giveaway-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                 <div class="flex items-center gap-2">
+                    <button id="help-add-manual-modal" class="help-btn" data-modal-id="add-giveaway-modal">?</button>
+                    <button id="close-add-giveaway-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="add-giveaway-form-body">
                 <form id="add-giveaway-form" class="space-y-4">
@@ -1062,12 +1283,24 @@
                         <label for="giveaway-price" class="block font-bold">Valor (aprox):</label>
                         <input type="text" id="giveaway-price" placeholder="Ej: 50€, 1300€ 💲" class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
                     </div>
-                    <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg">Guardar Sorteo</button>
+                    <div>
+                        <label for="giveaway-category" class="block font-bold">Categoría:</label>
+                        <select id="giveaway-category" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
+                            </select>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 mt-4">
+                        <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg">
+                            📜 Guardar en mi Calendario
+                        </button>
+                        <button type="button" id="send-to-admin-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors shadow-lg">
+                            🧙‍♂️ Enviar al Hechicero
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-    
+
     <div id="search-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1136,7 +1369,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="duplicate-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1152,7 +1385,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="duplicate-comparison-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1192,17 +1425,20 @@
             </form>
         </div>
     </div>
-    
+
     <div id="history-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🕒 Historial de Análisis</h2>
-                <button id="close-history-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-history-modal" class="help-btn" data-modal-id="history-modal">?</button>
+                    <button id="close-history-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="history-modal-body" class="max-h-[60vh] text-left"></div>
         </div>
     </div>
-    
+
     <div id="foreign-accounts-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1213,22 +1449,31 @@
             <div id="foreign-accounts-modal-body" class="space-y-2 max-h-[60vh]"></div>
         </div>
     </div>
-    
+
     <div id="trophy-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🏆 Vitrina de Trofeos 🏆</h2>
-                <button id="close-trophy-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="open-share-options-btn" class="bg-blue-500 text-white py-2 px-3 rounded-lg font-bold hover:bg-blue-400 transition-colors text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-share-alt"></i> Compartir
+                    </button>
+                    <button id="help-trophy-modal" class="help-btn" data-modal-id="trophy-modal">?</button>
+                    <button id="close-trophy-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="trophy-modal-body" class="max-h-[60vh]"></div>
         </div>
     </div>
-    
+
     <div id="stats-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-4xl rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">📊 Estadísticas y Estrategia</h2>
-                <button id="close-stats-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-stats-modal" class="help-btn" data-modal-id="stats-modal">?</button>
+                    <button id="close-stats-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
 
             <div class="stats-tabs flex flex-wrap border-b border-yellow-600/20 mb-4">
@@ -1289,7 +1534,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="block-management-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
@@ -1315,13 +1560,16 @@
         <div class="modal-content w-full max-w-3xl rounded-2xl shadow-2xl modal-default-bg p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">🏅 Logros y Metas</h2>
-                <button id="close-achievements-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-achievements-modal" class="help-btn" data-modal-id="achievements-modal">?</button>
+                    <button id="close-achievements-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="achievements-modal-body" class="max-h-[60vh] text-left">
             </div>
         </div>
     </div>
-    
+
     <div id="zoom-modal" class="modal fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[200]">
         <div id="zoom-modal-content" class="modal-content">
             <img id="zoomed-image" src="" alt="Vista ampliada">
@@ -1352,16 +1600,113 @@
         <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl sm:text-3xl">Very Important Sorteos 💫</h2>
-                <button id="close-vis-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                <div class="flex items-center gap-2">
+                    <button id="help-vis-modal" class="help-btn" data-modal-id="vis-modal">?</button>
+                    <button id="close-vis-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+                </div>
             </div>
             <div id="vis-modal-body" class="space-y-4 max-h-[60vh]">
                 </div>
         </div>
     </div>
+    
+    <div id="new-additions-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">✨ Historial de Capturas</h2>
+                <button id="close-new-additions-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            <div id="new-additions-modal-body" class="space-y-4 max-h-[60vh] text-left">
+                <p class="text-sm text-yellow-800 bg-yellow-100/50 p-3 rounded-lg border border-yellow-300">
+                    Aquí se guardan los lotes de sorteos que has añadido con la IA. <strong>Pulsa sobre un lote para filtrar el calendario</strong> y ver únicamente los sorteos de esa captura.
+                </p>
+                <div id="batch-history-list" class="space-y-2 mt-4">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-sm rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl sm:text-3xl">🔑 Panel de Admin</h2>
+                <button id="close-admin-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+
+            <div id="admin-login-view">
+                <form id="admin-login-form" class="space-y-4">
+                    <div>
+                        <label for="admin-username" class="block font-bold text-left">Usuario:</label>
+                        <input type="text" id="admin-username" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
+                    </div>
+                    <div>
+                        <label for="admin-password" class="block font-bold text-left">Contraseña:</label>
+                        <input type="password" id="admin-password" required class="w-full p-2 mt-1 rounded-lg bg-white border border-yellow-400">
+                    </div>
+                    <button type="submit" class="w-full bg-yellow-500 text-yellow-900 py-2 px-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg">Entrar</button>
+                </form>
+            </div>
+
+            <div id="admin-actions-view" class="hidden space-y-4">
+                 <p class="text-sm text-yellow-800 bg-yellow-100/50 p-3 rounded-lg border border-yellow-300">
+                    Acceso concedido. Aquí tienes tus herramientas de Hechicero Mayor.
+                </p>
+                <button id="admin-upload-btn" class="w-full px-3 py-2 nav-btn flex items-center justify-center gap-2">
+                    <span class="text-xl">📤</span>
+                    <span>Cargar Copia</span>
+                </button>
+                <button id="admin-download-btn" class="w-full px-3 py-2 nav-btn flex items-center justify-center gap-2">
+                    <span class="text-xl">💾</span>
+                    <span>Descargar Copia</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="share-options-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-2xl rounded-2xl shadow-2xl modal-default-bg p-0"> <div class="flex justify-between items-center mb-4 p-6 pb-0"> <h2 class="text-2xl sm:text-3xl">Compartir Vitrina Personalizada</h2>
+                <button id="close-share-options-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
+            
+            <div class="modal-scroll-content">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="w-full md:w-1/3 text-left">
+                        <label class="block font-bold mb-2">Paso 1: Elige el Periodo</label>
+                        <div id="share-timeframe-radios" class="space-y-2 mb-4">
+                            <div class="flex items-center"><input type="radio" id="time-all" name="timeframe_selection" value="all" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-all" class="ml-3 block text-sm font-bold">Todos los Tiempos</label></div>
+                            <div class="flex items-center"><input type="radio" id="time-month" name="timeframe_selection" value="last_month" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500" checked><label for="time-month" class="ml-3 block text-sm font-bold">Último Mes</label></div>
+                            <div class="flex items-center"><input type="radio" id="time-week" name="timeframe_selection" value="last_week" class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"><label for="time-week" class="ml-3 block text-sm font-bold">Última Semana</label></div>
+                        </div>
+                        <div id="datepicker-container"></div>
+                    </div>
+                    <div class="w-full md:w-2/3 text-left">
+                        <label class="block font-bold mb-2">Paso 2: Elige los Trofeos</label>
+                        <div id="share-prize-list-container" class="space-y-2 border border-yellow-400 p-3 rounded-lg max-h-48 overflow-y-auto"></div>
+                        <div id="share-preview-container" class="mt-4 bg-gray-200/50 p-2 rounded-lg border border-yellow-400 h-64 flex items-center justify-center"></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                    <button id="generate-and-download-btn" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-green-600 transition-colors">
+                        <i class="fa-solid fa-download"></i> Descargar Imagen
+                    </button>
+                    <button id="share-native-btn" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-400 transition-colors">
+                        <i class="fa-solid fa-paper-plane"></i> Compartir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <section id="ai-fullscreen-view" class="ai-fullscreen-view">
-        <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold absolute top-2 right-4 z-10">&times;</button>
-        
+        <div class="flex justify-between items-center w-full absolute top-2 right-4 z-10">
+            <div></div> <div class="flex items-center gap-2">
+                <button id="help-ai-modal" class="help-btn" data-modal-id="ai-fullscreen-view">?</button>
+                <button id="close-ai-view" class="text-yellow-400 hover:text-yellow-600 text-5xl font-bold">&times;</button>
+            </div>
+        </div>
+
         <div id="ai-initial-view" class="w-full max-w-lg mx-auto flex flex-col items-center justify-center h-full">
             <p class="text-2xl font-semibold mb-6 text-center text-yellow-300">Selecciona hasta 100 imágenes del sorteo.</p>
             <input type="file" id="ai-image-upload" accept="image/*" multiple class="hidden">
@@ -1398,9 +1743,24 @@
             </button>
         </div>
     </section>
+
+    <div id="refreshOverlay" class="fixed inset-0 bg-black bg-opacity-70 flex-col items-center justify-center p-4 z-[999] hidden">
+        <div class="relative w-full h-full pointer-events-none">
+            <img id="shootingStarRefresh" src="/assets/img/Fugaz.png" alt="Estrella Fugaz" class="absolute w-48 h-auto opacity-0" style="left: -200px; top: 20%;">
+        </div>
+        <div class="absolute text-center bg-black bg-opacity-60 p-6 rounded-lg shadow-2xl max-w-lg mx-auto">
+            <h2 class="text-white text-3xl font-bold mb-4 animate-pulse">¡Atención, Cazador/a de Sorteos! 💫</h2>
+            <p class="text-white text-lg mb-6 leading-relaxed">
+                El cosmos de los premios nos ha enviado una señal... ¡Hay nuevos sorteos recién llegados!
+                <br>
+                <strong>Pulsa la estrella fugaz para que aparezcan en tu calendario.</strong>
+            </p>
+        </div>
+    </div>
     <script src="giveaways_new.js"></script>
     <script src="discardedGiveaways_new.js"></script>
-    <script src="foreignAccounts.js"></script> 
+    <script src="foreignAccounts.js"></script>
+    <script src="capture_batches.js"></script>
     <script id="animations-script">
         function animateStarryBackground() {
             const starsContainer = document.getElementById('magic-stars-container');
@@ -1442,7 +1802,7 @@
                     }
                 }, index * 150);
             });
-            
+
             setTimeout(() => {
                 setInterval(() => {
                     if (document.hidden) return; // No animar si la pestaña no está visible
@@ -1461,7 +1821,7 @@
             const star = document.createElement('div');
             star.className = 'shooting-star';
             itemContainer.appendChild(star);
-            
+
             star.addEventListener('animationend', () => {
                 star.remove();
                 if (callback) callback();
@@ -1481,6 +1841,7 @@
     }
 
     let completedGiveaways = JSON.parse(localStorage.getItem(`completedGiveaways`)) || {};
+    let notInterestedGiveaways = JSON.parse(localStorage.getItem('notInterestedGiveaways')) || {};
     let wonGiveaways = JSON.parse(localStorage.getItem('wonGiveaways')) || [];
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
     let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
@@ -1520,7 +1881,6 @@
         'hogar': { name: 'Hogar', emoji: '🏠', desc: 'Decoración y textiles para el hogar.' },
         'otros': { name: 'Otros', emoji: '⭐', desc: 'Sorteos que no encajan en otra categoría.' }
     };
-    
     const achievementList = {
         bronze: [
             { id: 'b_add_1', name: 'El Primer Paso', icon: '🌱', desc: 'Añade tu primer sorteo manualmente.', ps: 5, condition: (c) => c.totalManualAdds >= 1 },
@@ -1628,6 +1988,7 @@
     let searchQuery = '';
     const MAX_IMAGES = 100;
     let discardedFilter = 'all';
+    let activeBatchFilterId = null; // null significa que no hay filtro activo
     
     // Variables para el estado del análisis de IA
     let imageQueue = [];
@@ -1657,6 +2018,7 @@
 
     let foreignAccounts = JSON.parse(localStorage.getItem('foreignAccounts')) || (window.foreignAccounts || []);
     let visGiveaways = JSON.parse(localStorage.getItem('visGiveaways')) || [];
+    let captureBatches = JSON.parse(localStorage.getItem('captureBatches')) || [];
     // --- Referencias a elementos del DOM ---
     const monthYearEl = document.getElementById('month-year');
     const calendarDaysEl = document.getElementById('calendar-days');
@@ -1771,10 +2133,142 @@
     const visReviewBtn = document.getElementById('vis-review-btn');
     const visModal = document.getElementById('vis-modal');
     const closeVisModalBtn = document.getElementById('close-vis-modal');
+    const newAdditionsBtn = document.getElementById('new-additions-btn');
+    const newAdditionsModal = document.getElementById('new-additions-modal');
+    const closeNewAdditionsModalBtn = document.getElementById('close-new-additions-modal');
 
     let giveawayToMove = null;
     let originalDateOfGiveaway = null;
+    let datepicker = null;
     // --- FUNCIONES DE LA APLICACIÓN ---
+    
+    const populateCategoryDropdown = (selectElementId) => {
+        const selectElement = document.getElementById(selectElementId);
+        if (!selectElement) return;
+        
+        // Limpiamos opciones existentes y añadimos una por defecto
+        selectElement.innerHTML = '<option value="" disabled selected>-- Selecciona una categoría --</option>';
+
+        for (const key in CATEGORY_INFO) {
+            if (key === 'all') continue; // No incluimos la opción "Todas"
+            
+            const category = CATEGORY_INFO[key];
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = `${category.emoji} ${category.name}`;
+            selectElement.appendChild(option);
+        }
+    };
+    
+    const clearAllFilters = () => {
+        activeBatchFilterId = null;
+        searchQuery = '';
+        currentFilter = 'all';
+
+        // Reseteamos los controles del menú
+        if (document.getElementById('global-search-input')) {
+            document.getElementById('global-search-input').value = '';
+        }
+        if (document.getElementById('global-category-filter')) {
+            document.getElementById('global-category-filter').value = 'all';
+        }
+
+        renderCalendar();
+        updateFilterBanner(); // Ocultará el banner
+        showNotification('Filtros Limpiados', 'Mostrando todos los sorteos.');
+    };
+
+    const updateFilterBanner = () => {
+        const banner = document.getElementById('filter-banner');
+        const bannerText = document.getElementById('filter-banner-text');
+        if (!banner || !bannerText) return;
+
+        let filterIsActive = false;
+        let bannerMessage = '';
+
+        // Prioridad 1: Filtro de Lote de Capturas
+        if (activeBatchFilterId) {
+            const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
+            if (activeBatch) {
+                bannerMessage = `Mostrando solo el lote: <strong>${activeBatch.name}</strong> (${activeBatch.giveawayIds.length} sorteos).`;
+                filterIsActive = true;
+            }
+        } 
+        // Prioridad 2: Filtro de Categoría Global
+        else if (currentFilter && currentFilter !== 'all') {
+            const category = CATEGORY_INFO[currentFilter];
+            bannerMessage = `Mostrando categoría: <strong>${category.emoji} ${category.name}</strong>.`;
+            filterIsActive = true;
+        }
+        // Prioridad 3: Búsqueda por Texto Global
+        else if (searchQuery && searchQuery.trim() !== '') {
+            bannerMessage = `Buscando: "<strong>${searchQuery}</strong>".`;
+            filterIsActive = true;
+        }
+
+        if (filterIsActive) {
+            bannerText.innerHTML = bannerMessage;
+            banner.style.display = 'block';
+        } else {
+            banner.style.display = 'none';
+        }
+    };
+
+    function setupCustomCategoryFilter() {
+        const button = document.getElementById('category-filter-button');
+        const selectedText = document.getElementById('category-filter-selected-text');
+        const optionsContainer = document.getElementById('category-filter-options');
+        if (!button || !selectedText || !optionsContainer) return;
+
+        // Limpiar opciones existentes
+        optionsContainer.innerHTML = '';
+
+        // Llenar con las categorías
+        Object.keys(CATEGORY_INFO).forEach(key => {
+            const category = CATEGORY_INFO[key];
+            const li = document.createElement('li');
+            li.className = 'custom-dropdown-option';
+            li.dataset.value = key;
+            li.innerHTML = `
+                <span class="category-name">${category.emoji} ${category.name}</span>
+                <span class="category-desc">${category.desc}</span>
+            `;
+            optionsContainer.appendChild(li);
+        });
+
+        // Añadir el manejador de eventos al contenedor de opciones (más eficiente)
+        optionsContainer.addEventListener('click', (e) => {
+            const selectedOption = e.target.closest('.custom-dropdown-option');
+            if (!selectedOption) return;
+
+            const selectedValue = selectedOption.dataset.value;
+            const category = CATEGORY_INFO[selectedValue];
+            
+            button.dataset.value = selectedValue;
+            selectedText.textContent = `${category.emoji} ${category.name}`;
+            
+            if (selectedValue === 'all') {
+                button.classList.add('placeholder');
+            } else {
+                button.classList.remove('placeholder');
+            }
+
+            // Ocultar el menú desplegable
+            optionsContainer.classList.add('hidden');
+            
+            // Volver a renderizar el modal con el filtro aplicado
+            const dateStr = modal.dataset.date;
+            if (dateStr) {
+                buildModal(dateStr);
+            }
+        });
+
+        // Establecer el estado inicial del botón
+        const initialCategory = CATEGORY_INFO['all'];
+        selectedText.textContent = `${initialCategory.emoji} ${initialCategory.name}`;
+        button.dataset.value = 'all';
+        button.classList.add('placeholder');
+    }
 
     const resetAIView = () => {
         // Resetear variables de estado
@@ -1827,6 +2321,7 @@
 
     const saveGiveaways = () => localStorage.setItem('giveaways', JSON.stringify(giveaways));
     const saveCompletedGiveaways = () => localStorage.setItem(`completedGiveaways`, JSON.stringify(completedGiveaways));
+    const saveNotInterestedGiveaways = () => localStorage.setItem('notInterestedGiveaways', JSON.stringify(notInterestedGiveaways));
     const saveTrashGiveaways = () => localStorage.setItem('trashGiveaways', JSON.stringify(trashGiveaways));
     const saveDiscardedGiveaways = () => localStorage.setItem('discardedGiveaways', JSON.stringify(discardedGiveaways));
     const saveForeignAccounts = () => localStorage.setItem('foreignAccounts', JSON.stringify(foreignAccounts));
@@ -1836,6 +2331,7 @@
     const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
     const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
     const saveVisGiveaways = () => localStorage.setItem('visGiveaways', JSON.stringify(visGiveaways));
+    const saveCaptureBatches = () => localStorage.setItem('captureBatches', JSON.stringify(captureBatches));
 
     const getConfidenceEmoji = (score) => {
         if (score === null || score === undefined) return '❔';
@@ -1981,7 +2477,6 @@
         }
         return null;
     };
-    
     const renderCalendar = () => {
         if (!calendarDaysEl || !monthYearEl) return;
         calendarDaysEl.innerHTML = '';
@@ -1995,7 +2490,23 @@
         for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+
+            // --- INICIO DE LA MODIFICACIÓN PARA FILTRADO DE LOTE ---
+            let giveawaysForDay = giveaways[dateStr] || [];
+
+            if (activeBatchFilterId) {
+                const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
+                if (activeBatch) {
+                    const batchGiveawayIds = new Set(activeBatch.giveawayIds);
+                    giveawaysForDay = giveawaysForDay.filter(g => batchGiveawayIds.has(g.id));
+                } else {
+                    // Si el lote no se encuentra por alguna razón, no mostramos nada.
+                    giveawaysForDay = []; 
+                }
+            }
+            // --- FIN DE LA MODIFICACIÓN ---
+
+            const dayGiveaways = giveawaysForDay.filter(g => { // <-- MODIFICADO para usar la variable filtrada
                 const prize = g.prize ? g.prize.toLowerCase() : '';
                 const searchText = searchQuery.toLowerCase();
 
@@ -2007,26 +2518,17 @@
                 if (currentFilter === 'all') {
                     return true;
                 }
-
-                const matchesCategory =
-                    (currentFilter === 'padel' && prize.includes('🥎')) ||
-                    (currentFilter === 'travel' && prize.includes('🛩️')) ||
-                    (currentFilter === 'price' && prize.includes('💲')) ||
-                    (currentFilter === 'frikis' && prize.includes('🃏')) ||
-                    (currentFilter === 'moda' && prize.includes('👠')) ||
-                    (currentFilter === 'belleza' && prize.includes('💄')) ||
-                    (currentFilter === 'hogar' && prize.includes('🏠')) ||
-                    (currentFilter === 'tecnologia' && prize.includes('💻')) ||
-                    (currentFilter === 'comida' && prize.includes('🍔')) ||
-                    (currentFilter === 'ocio' && prize.includes('🎟️')) ||
-                    (currentFilter === 'deporte' && prize.includes('💪')) ||
-                    (currentFilter === 'infantil' && prize.includes('🧸')) ||
-                    (currentFilter === 'mascotas' && prize.includes('🐾')) ||
-                    (currentFilter === 'dinero' && prize.includes('💰')) ||
-                    (currentFilter === 'libros' && prize.includes('📚')) ||
-                    (currentFilter === 'motor' && prize.includes('🚗'));
-
-                return matchesCategory;
+                
+                // Lógica de categoría
+                let prizeCategory = 'otros';
+                for (const [key, value] of Object.entries(CATEGORY_INFO)) {
+                    if (g.prize_category === key) {
+                        prizeCategory = key;
+                        break;
+                    }
+                }
+                
+                return currentFilter === prizeCategory;
             });
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
@@ -2059,154 +2561,108 @@
     };
 
     const buildModal = (dateStr) => {
+        const modalBody = document.getElementById('modal-body');
+        const notInterestedBody = document.getElementById('not-interested-body');
+        modalBody.innerHTML = '';
+        notInterestedBody.innerHTML = '';
+
         let dayGiveaways = (giveaways[dateStr] || []);
         
-        const modalSearchInput = document.getElementById('modal-search-input');
-        const searchQuery = modalSearchInput ? modalSearchInput.value.toLowerCase() : '';
-        const selectedCategory = document.getElementById('category-filter-button')?.dataset.value || 'all';
-
-        dayGiveaways = dayGiveaways.filter(g => {
-            const matchesSearch = !searchQuery || (g.prize && g.prize.toLowerCase().includes(searchQuery));
-            const matchesCategory = selectedCategory === 'all' || g.prize_category === selectedCategory;
-            return matchesSearch && matchesCategory;
-        });
-
-
+        // --- INICIO DEL CÓDIGO DE ORDENACIÓN ---
         dayGiveaways.sort((a, b) => {
-            const aCompleted = completedGiveaways[a.id];
-            const bCompleted = completedGiveaways[b.id];
-            if (aCompleted !== bCompleted) {
-                return aCompleted ? 1 : -1;
-            }
-            const aIsPriority = a.is_priority_time === true;
-            const bIsPriority = b.is_priority_time === true;
-            if (aIsPriority !== bIsPriority) {
-                return aIsPriority ? -1 : 1;
-            }
-            const aPrice = parsePrice(a.price);
-            const bPrice = parsePrice(b.price);
-            return bPrice - aPrice;
-        });
+            const isACompleted = !!completedGiveaways[a.id];
+            const isBCompleted = !!completedGiveaways[b.id];
 
-        document.getElementById('modal-title').textContent = `Sorteos del ${new Date(dateStr+'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}`;
-        modalBody.innerHTML = '';
-        let hasPadel = false, hasTravel = false;
+            // 1. Prioridad MÁXIMA: Sorteos completados siempre van al final.
+            if (isACompleted && !isBCompleted) return 1; // 'a' (completado) va después de 'b'
+            if (!isACompleted && isBCompleted) return -1; // 'b' (completado) va después de 'a'
+
+            // Si ambos están completados o ambos no lo están, se aplican las siguientes reglas.
+
+            // 2. Prioridad: Sorteos con hora específica que no sea medianoche.
+            const aHasPriorityTime = a.is_priority_time === true;
+            const bHasPriorityTime = b.is_priority_time === true;
+
+            if (aHasPriorityTime && !bHasPriorityTime) return -1; // 'a' (prioritario) va antes que 'b'
+            if (!aHasPriorityTime && bHasPriorityTime) return 1; // 'b' (prioritario) va antes que 'a'
+
+            // Si ambos tienen (o no tienen) hora prioritaria, se ordenan por valor.
+
+            // 3. Prioridad: Valor del premio (de mayor a menor).
+            const priceA = parsePrice(a.price);
+            const priceB = parsePrice(b.price);
+
+            return priceB - priceA; // Orden descendente
+        });
+        // --- FIN DEL CÓDIGO DE ORDENACIÓN ---
+
+        const dayNotInterested = notInterestedGiveaways[dateStr] || [];
+
         dayGiveaways.forEach(giveaway => {
+            const isCompleted = !!completedGiveaways[giveaway.id];
             const itemContainer = document.createElement('div');
-            itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${completedGiveaways[giveaway.id] ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
+            itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${isCompleted ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
             
-            const leftSideContainer = document.createElement('div');
-            leftSideContainer.className = 'flex items-center flex-1 overflow-hidden';
-
-            const controlsContainer = document.createElement('div');
-            controlsContainer.className = 'flex flex-col items-center mr-3 flex-shrink-0';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.dataset.giveawayId = giveaway.id;
-            checkbox.className = 'h-5 w-5 sm:h-6 sm:w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500';
-            checkbox.checked = completedGiveaways[giveaway.id];
-            controlsContainer.appendChild(checkbox);
-            
-            const postCompleteActions = document.createElement('div');
-            postCompleteActions.className = 'flex flex-col items-center space-y-1 mt-1';
-            postCompleteActions.style.display = completedGiveaways[giveaway.id] ? 'flex' : 'none';
-
-            const winBtn = document.createElement('button');
-            winBtn.className = 'win-giveaway-btn p-1 rounded-full text-lg';
-            winBtn.innerHTML = `🏆`;
-            winBtn.dataset.giveawayId = giveaway.id;
-            winBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(winBtn);
-
-            const visBtn = document.createElement('button');
-            visBtn.className = 'vis-giveaway-btn p-1 rounded-full text-lg';
-            visBtn.innerHTML = `🌟`;
-            visBtn.dataset.giveawayId = giveaway.id;
-            visBtn.dataset.giveawayDate = dateStr;
-            postCompleteActions.appendChild(visBtn);
-
-            controlsContainer.appendChild(postCompleteActions);
-
-            const prizeContainer = document.createElement('div');
-            prizeContainer.className = 'overflow-hidden';
-
-            let accountsHTML = (giveaway.accounts || []).map(acc => `<a href="https://instagram.com/${acc.replace('⚠️','').substring(1)}" target="_blank" class="underline">${acc}</a>`).join(', ');
-            
-            const timeEmoji = giveaway.is_priority_time ? '⏰' : (giveaway.ends_at_time ? '⏰' : '');
+            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
             const categoryInfo = getCategoryInfo(giveaway.prize_category);
-            
-            prizeContainer.innerHTML = `
-                <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize} ${timeEmoji}</p>
-                <p class="text-sm truncate">${accountsHTML}</p>
-                <span class="text-xl" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji}</span>
+
+            itemContainer.innerHTML = `
+                <div class="flex items-start flex-1 overflow-hidden">
+                    <div class="flex flex-col items-center mr-3 flex-shrink-0">
+                        <input type="checkbox" data-giveaway-id="${giveaway.id}" class="h-6 w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500" ${isCompleted ? 'checked' : ''}>
+                        <button class="not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}" style="display: ${isCompleted ? 'none' : 'block'};">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </button>
+                        <div class="post-complete-actions flex flex-col items-center space-y-1 mt-1" style="display: ${isCompleted ? 'flex' : 'none'};">
+                            <button class="win-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🏆</button>
+                            <button class="vis-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🌟</button>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
+                        <div class="text-sm">${accountsHTML}</div>
+                        <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji}</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="text-right flex-shrink-0 ml-2">
+                        ${giveaway.price ? `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>` : ''}
+                    </div>
+                    <div class="flex flex-col items-center ml-2 space-y-1">
+                        <button class="move-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-calendar-days"></i></button>
+                        <button class="delete-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-trash-can"></i></button>
+                        <button class="delete-giveaway-foreign-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-globe"></i></button>
+                    </div>
+                </div>
             `;
-
-            leftSideContainer.appendChild(controlsContainer);
-            leftSideContainer.appendChild(prizeContainer);
-
-            const detailsContainer = document.createElement('div');
-            detailsContainer.className = 'text-right flex-shrink-0 ml-2';
-            if (giveaway.price) {
-                detailsContainer.innerHTML = `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>`;
-            }
-
-            const actionsContainer = document.createElement('div');
-            actionsContainer.className = 'flex flex-col items-center ml-2 space-y-1';
-
-            const moveBtn = document.createElement('button');
-            moveBtn.className = 'move-giveaway-btn p-1 rounded-full text-sm';
-            moveBtn.innerHTML = `<i class="fa-solid fa-calendar-days"></i>`;
-            moveBtn.dataset.giveawayId = giveaway.id;
-            moveBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(moveBtn);
-            
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-giveaway-btn p-1 rounded-full text-sm';
-            deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-            deleteBtn.dataset.giveawayId = giveaway.id;
-            deleteBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(deleteBtn);
-
-            const foreignBtn = document.createElement('button');
-            foreignBtn.className = 'delete-giveaway-foreign-btn p-1 rounded-full text-sm';
-            foreignBtn.innerHTML = `<i class="fa-solid fa-globe"></i>`;
-            foreignBtn.dataset.giveawayId = giveaway.id;
-            foreignBtn.dataset.giveawayDate = dateStr;
-            actionsContainer.appendChild(foreignBtn);
-
-            itemContainer.appendChild(leftSideContainer);
-            itemContainer.appendChild(detailsContainer);
-            itemContainer.appendChild(actionsContainer);
-
             modalBody.appendChild(itemContainer);
-
-            if (giveaway.prize.includes('🥎')) hasPadel = true;
-            if (giveaway.prize.includes('🛩️')) hasTravel = true;
         });
-        const modalContent = document.getElementById('modal-content');
-        modalContent.classList.remove('modal-default-bg', 'modal-padel-bg', 'modal-travel-bg');
-        if (hasPadel) modalContent.classList.add('modal-padel-bg');
-        else if (hasTravel) modalContent.classList.add('modal-travel-bg');
-        else modalContent.classList.add('modal-default-bg');
-        
-        const searchInput = document.getElementById('modal-search-input');
 
-        const applyFilters = () => buildModal(dateStr);
+        dayNotInterested.forEach(giveaway => {
+            const itemContainer = document.createElement('div');
+            itemContainer.className = 'giveaway-item not-interested p-3 rounded-lg shadow-inner flex justify-between items-center border border-gray-400/20 bg-gray-100/30';
+            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
+            itemContainer.innerHTML = `
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-base sm:text-lg text-gray-700 truncate">${giveaway.prize}</p>
+                    <div class="text-sm text-gray-600">${accountsHTML}</div>
+                </div>
+                <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            `;
+            notInterestedBody.appendChild(itemContainer);
+        });
 
-        searchInput.onkeyup = null;
-        searchInput.onkeydown = null;
-        
-        searchInput.onkeydown = (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                applyFilters();
-            }
-        };
+        if (dayGiveaways.length === 0) {
+            modalBody.innerHTML = '<p class="text-center text-gray-500">¡No hay sorteos aquí! Mueve alguno a este día o añade uno nuevo.</p>';
+        }
+        if (dayNotInterested.length === 0) {
+            notInterestedBody.innerHTML = '<p class="text-center text-gray-500">No has marcado ningún sorteo como no interesante para hoy.</p>';
+        }
 
         modal.dataset.date = dateStr;
     };
-
 
     const openModal = (dateStr) => { 
         if (navMenu.classList.contains('is-open')) {
@@ -2214,14 +2670,24 @@
         }
         
         const modalSearchInput = document.getElementById('modal-search-input');
-        if(modalSearchInput) modalSearchInput.value = '';
+        if (modalSearchInput) {
+            modalSearchInput.value = searchQuery;
+        }
 
         const catButton = document.getElementById('category-filter-button');
-        if(catButton) {
-            catButton.dataset.value = 'all';
-            const info = CATEGORY_INFO['all'];
-            document.getElementById('category-filter-selected-text').textContent = `${info.emoji} ${info.name}`;
-            catButton.classList.add('placeholder');
+        const catText = document.getElementById('category-filter-selected-text');
+        if (catButton && catText) {
+            if (currentFilter && currentFilter !== 'all') {
+                catButton.dataset.value = currentFilter;
+                const info = CATEGORY_INFO[currentFilter];
+                catText.textContent = `${info.emoji} ${info.name}`;
+                catButton.classList.remove('placeholder');
+            } else {
+                catButton.dataset.value = 'all';
+                const info = CATEGORY_INFO['all'];
+                catText.textContent = `${info.emoji} ${info.name}`;
+                catButton.classList.add('placeholder');
+            }
         }
         
         buildModal(dateStr); 
@@ -2445,10 +2911,8 @@
         reader.onload = async (event) => {
             const base64Data = event.target.result;
             analysisImagePreview.src = base64Data;
-
             const hoy = new Date();
             const fechaFormateada = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-            
             const dynamicPrompt = `
 <ROL_Y_OBJETIVO>
 Actuarás como un Analista de Datos Experto en Extracción de Información Visual, especializado en sorteos de redes sociales. Tu única misión es analizar la imagen proporcionada y devolver un único objeto JSON válido, sin ningún texto, saludo o explicación adicional. La precisión, el cumplimiento de las reglas y la consistencia son de máxima prioridad.
@@ -2464,6 +2928,13 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
 3.  **Lógica de Fechas:** Aplica las 'REGLAS_DE_FECHA_JERARQUICAS' en el orden estricto en que se presentan para determinar la fecha correcta.
 4.  **Construcción del JSON:** Usa la información recopilada para construir el objeto JSON final, siguiendo la estructura y reglas de formato requeridas. Si la imagen NO es un sorteo, devuelve exclusivamente: {"status": "not_a_giveaway"}.
 </PROCESO_MENTAL_GUIADO>
+<REGLAS_DE_VALIDEZ_GEOGRAFICA>
+Tu primera tarea es determinar si el sorteo es válido para un usuario en España y devolverlo en el campo \`is_spanish\`. Usa estas reglas en orden:
+
+1.  **REGLA DE EXCLUSIÓN (INVÁLIDO):** Si el texto menciona explícitamente que el sorteo es solo para un país de Latinoamérica (Argentina, Colombia, México, Paraguay, Uruguay, etc.) o para la región "LATAM", establece \`is_spanish\` en \`false\`.
+2.  **REGLA DE INCLUSIÓN (VÁLIDO):** Si el texto menciona explícitamente "España", "Península", "Baleares" O dice que es "Internacional" / "Worldwide", establece \`is_spanish\` en \`true\`.
+3.  **REGLA POR DEFECTO (VÁLIDO):** Si ninguna de las reglas anteriores se cumple (el sorteo no especifica ninguna región), asume que es válido y establece \`is_spanish\` en \`true\`.
+</REGLAS_DE_VALIDEZ_GEOGRAFICA>
 
 <REGLAS_DE_FECHA_JERARQUICAS_V6_AI_Final>
 **Instrucción: Evalúa estas reglas en orden descendente. La PRIMERA regla que se cumpla determina el resultado y finaliza el análisis de fechas.**
@@ -2498,7 +2969,7 @@ La fecha de hoy es ${fechaFormateada}. Usa esta fecha como referencia inmutable 
 
 <REGLAS_ADICIONALES_DE_EXTRACCION>
 - **Cuentas (Extracción Inteligente y Completa):**
-    1.  **Prioridad 1 (Cuenta Principal):** Identifica y extrae **siempre** el nombre de usuario de la cuenta que ha realizado la publicación del sorteo. Generalmente se encuentra en la parte superior de la imagen, junto a la foto de perfil.
+    1.  **Prioridad 1 MAXIMA E INELUDIBLE SIEMPRE HAY cuenta principal (Cuenta Principal):** Identifica y extrae **siempre** el nombre de usuario de la cuenta que ha realizado la publicación del sorteo. Generalmente se encuentra en la parte superior de la imagen, donde empieza la publicación, está resaltada en negrita. siempre empieza por la cuenta y luego toda la publicación..
     2.  **Prioridad 2 (Cuentas Adicionales):** Además de la principal, extrae cualquier otra cuenta mencionada en el texto como requisito para participar (ej: "sigue a...", "en colaboración con...").
     3.  **Reglas de Exclusión (MUY IMPORTANTE):** Ignora activamente cualquier nombre de usuario que provenga de la sección de comentarios o de la sección de "Me gusta".
 
@@ -2693,8 +3164,8 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
   "price": "string | null",
   "ends_at_time": "string | null",
   "is_priority_time": boolean,
-  "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
   "is_spanish": boolean,
+  "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
   "prize_category": "string ('padel', 'motor', 'mascotas', 'bebes', 'bodas', 'dinero', 'viajes', 'ocio', 'aventura', 'suscripciones', 'gaming', 'foto', 'musica', 'deporte', 'libros', 'frikis', 'joyeria', 'accesorios', 'moda', 'belleza', 'salud', 'electrodomesticos', 'cocina', 'bricolaje', 'jardineria', 'papeleria', 'arte', 'eco', 'gourmet', 'comida', 'hogar', 'otros')",
   "winner_count": integer (por defecto 1),
   "confidence_score": float
@@ -2706,25 +3177,35 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             try {
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
+                // --- [NUEVA LÓGICA DE DECISIÓN CON DOBLE FILTRO] ---
+                const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
+
+                // 1. Comprobamos tu cortafuegos manual primero
+                const manuallyBlocked = accounts.some(acc => foreignAccounts.includes(acc));
+
+                // 2. Tomamos la decisión final
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
-                } else if (aiData.status === 'discard_no_date' || !aiData.date) {
+                
+                } else if (aiData.is_spanish === false || manuallyBlocked) {
+                    // Si la IA dice que no es válido O si una cuenta está en tu lista negra, se descarta.
+                    resultData = { ...aiData, accounts, status: 'foreign', originalFile: file };
+                
+                } else if (!aiData.date) {
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
+                
                 } else {
-                    const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
-                    const isForeign = accounts.some(acc => foreignAccounts.includes(acc));
+                    // Si pasa ambos filtros, el sorteo es VÁLIDO. Procedemos con las comprobaciones de siempre.
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
                     
                     let priceInfo = { prize: aiData.prize, value: aiData.price, url: null };
-                    if (!aiData.price) { // Solo busca el valor si la IA no lo encontró en la imagen
+                    if (!aiData.price) {
                         priceInfo = await searchPrizeValue(aiData);
                     }
 
-                    if (isForeign) {
-                        resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'foreign', originalFile: file };
-                    } else if (existingGiveaway) {
+                    if (existingGiveaway) {
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'duplicate', originalGiveaway: existingGiveaway, originalFile: file };
                     } else if (isExpired) {
                         resultData = { ...aiData, price: priceInfo.value, url: priceInfo.url, prize: priceInfo.prize, accounts, status: 'expired', originalFile: file };
@@ -2930,26 +3411,11 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             editedData.prize_category = document.getElementById('interactive-category').value;
         }
         
-        const statusMap = {
-            'save': 'added', 'add-new': 'added', 'merge': 'duplicate',
-            'trash': 'expired', 'mark-foreign': 'foreign', 'discard': data.status,
-        };
-        const statusKey = statusMap[action] || data.status;
-
-        const errorKeys = ['api_error', 'no_date', 'not_a_giveaway'];
-        if (errorKeys.includes(statusKey)) {
-            analysisResults.api_error.push(editedData);
-        } else if (analysisResults[statusKey]) {
-            analysisResults[statusKey].push(editedData);
-        }
-        
-        updateAnalysisLegend();
-
         switch(action){
             case 'save':
             case 'add-new':
                 const newGiveaway = { 
-                    id: Date.now().toString(), 
+                    id: Date.now().toString(), // Generamos el ID aquí
                     date: editedData.date, 
                     prize: editedData.prize, 
                     accounts: editedData.accounts, 
@@ -2960,21 +3426,30 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     is_priority_time: editedData.is_priority_time,
                     prize_category: editedData.prize_category
                 };
+                
+                // VALIDACIÓN
                 if (!newGiveaway.date || !newGiveaway.prize) {
                     showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
-                    analysisResults[statusKey].pop();
-                    return; 
+                    return; // Detenemos la ejecución aquí
                 }
+                
+                // Guardamos el sorteo con su nuevo ID en el array de resultados
+                analysisResults.added.push(newGiveaway);
+
+                // Y añadimos ESE MISMO sorteo al calendario
                 addGiveaway(newGiveaway);
+
                 addPoints(5, `Sorteo añadido con IA`);
                 checkAchievements('add-ai');
                 break;
             case 'trash':
                 trashGiveaways.push({ ...editedData, id: Date.now().toString(), originalDate: editedData.date });
+                analysisResults.expired.push(editedData);
                 saveTrashGiveaways();
                 break;
             case 'mark-foreign':
                 discardedGiveaways.push({ ...editedData, id: Date.now().toString(), status: 'foreign' });
+                analysisResults.foreign.push(editedData);
                 editedData.accounts.forEach(acc => { if (acc && !foreignAccounts.includes(acc)) foreignAccounts.push(acc) });
                 saveDiscardedGiveaways();
                 saveForeignAccounts();
@@ -2983,21 +3458,26 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             case 'merge':
                 const original = Object.values(giveaways).flat().find(g => g.id === data.originalGiveaway.id);
                 if (original) {
-                    if (!original.price && discarded.price) original.price = discarded.price;
+                    if (!original.price && editedData.price) original.price = editedData.price;
                     if (editedData.prize.length > original.prize.length) original.prize = editedData.prize;
                     saveGiveaways();
                     showNotification('Fusión completada', 'Se han actualizado los datos del sorteo original.');
                     checkAchievements('merge');
                 }
+                analysisResults.duplicate.push(editedData);
                 break;
             case 'discard':
                 if (data.status === 'no_date' || data.status === 'not_a_giveaway' || data.status === 'duplicate') {
                      discardedGiveaways.push({ ...data, id: Date.now().toString() });
+                     analysisResults[data.status].push(editedData);
                      saveDiscardedGiveaways();
+                } else if (data.status === 'api_error') {
+                    analysisResults.api_error.push(editedData);
                 }
                 break;
         }
-
+        
+        updateAnalysisLegend();
         currentIndex++;
         processNextImage();
     }
@@ -3020,12 +3500,32 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             expiredGiveawaysCount: totalExpired,
             foreignGiveawaysCount: totalForeign,
             noDateGiveawaysCount: analysisResults.no_date.length,
-            addedGiveawaysDetails: analysisResults.added,
+            addedGiveawaysDetails: analysisResults.added.map(g => ({ prize: g.prize, id: g.id })),
             failedFilesDetails: analysisResults.api_error.map(e => ({ filename: e.originalFile.name, error: e.error }))
         };
         analysisHistory.push(historyEntry);
         analysisHistory = analysisHistory.slice(-20);
         saveAnalysisHistory();
+        
+        // --- INICIO DE MODIFICACIÓN PARA GUARDAR LOTE DE CAPTURA ---
+        if (analysisResults.added.length > 0) {
+            const now = new Date();
+            const newBatch = {
+                id: now.getTime(),
+                name: `Análisis del ${now.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`,
+                giveawayIds: analysisResults.added.map(g => g.id)
+            };
+
+            captureBatches.push(newBatch); // <-- CORREGIDO
+            
+            // Limitamos el historial a los últimos 30 lotes para no sobrecargar
+            if (captureBatches.length > 30) { // <-- CORREGIDO
+                captureBatches = captureBatches.slice(-30); // <-- CORREGIDO
+            }
+            
+            saveCaptureBatches(); // Guardamos el nuevo estado de los lotes
+        }
+        // --- FIN DE MODIFICACIÓN ---
 
         let summaryHTML = `
             <div class="space-y-4 text-yellow-300 w-full">
@@ -3050,6 +3550,24 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         }
         
         renderCalendar();
+        
+        // --- INICIO DE MODIFICACIÓN PARA ENVÍO SEMI-AUTOMÁTICO DE LOTE ---
+        if (totalAdded > 0) {
+            // Retrasamos ligeramente el mensaje para que el usuario vea primero el resumen.
+            setTimeout(() => {
+                const confirmationMessage = `🔮 ¡El Oráculo ha Hablado! 🔮\n\n¡Análisis completado! Has añadido con éxito ${totalAdded} nuevo(s) tesoro(s) a tu mapa privado.\n\nTienes en tus manos un valioso botín. ¿Quieres compartirlo con la comunidad de cazadores?\n\nSi pulsas 'Aceptar', se abrirá tu correo para enviar este lote al Hechicero Mayor (admin) y que pueda hacerlo público para todos. Si no, seguirá siendo tu secreto.\n\n¿Enviamos el informe al torreón del Hechicero?`;
+                
+                if (confirm(confirmationMessage)) {
+                    const subject = 'Sugerencia de Nuevo Lote de Sorteos';
+                    // Usamos JSON.stringify con indentación para que el correo sea legible
+                    const body = `Hola, aquí tienes un nuevo lote de sorteos para añadir a la base de datos pública:\n\n${JSON.stringify(analysisResults.added, null, 2)}`;
+                    
+                    // Creamos y abrimos el enlace mailto:
+                    window.location.href = `mailto:admin@misorteos.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                }
+            }, 500); // 500ms de retraso
+        }
+        // --- FIN DE MODIFICACIÓN ---
     }
     
     const generateErrorCardHTML = (errorData) => {
@@ -3343,6 +3861,29 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             itemContainer.innerHTML = cardHTML;
             discardedModalBody.appendChild(itemContainer);
         }); 
+    };
+    
+    const renderNewAdditionsModal = () => {
+        const batchList = document.getElementById('batch-history-list');
+        batchList.innerHTML = ''; // Limpiamos la lista
+
+        if (captureBatches.length === 0) {
+            batchList.innerHTML = '<p class="text-center text-yellow-700">Aún no has añadido sorteos con la IA.</p>';
+            return;
+        }
+
+        // Mostramos los lotes del más reciente al más antiguo
+        [...captureBatches].reverse().forEach(batch => {
+            const isActive = batch.id === activeBatchFilterId;
+            const item = document.createElement('div');
+            item.className = `p-3 rounded-lg shadow-inner border cursor-pointer transition-all ${isActive ? 'bg-yellow-200 border-yellow-400' : 'bg-yellow-100/50 border-yellow-600/20 hover:bg-yellow-200/70'}`;
+            item.dataset.batchId = batch.id;
+            item.innerHTML = `
+                <p class="font-bold text-yellow-900">${batch.name}</p>
+                <p class="text-sm text-yellow-800">${batch.giveawayIds.length} sorteo(s) añadido(s)</p>
+            `;
+            batchList.appendChild(item);
+        });
     };
 
     const openDuplicateModal = (discardedGiveaway, originalGiveaway) => {
@@ -3891,6 +4432,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const discardedGiveawaysContent = `const initialDiscardedGiveaways = ${JSON.stringify(discardedGiveaways, null, 4)};\n\nif (localStorage.getItem('discardedGiveaways') === null) {\n    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));\n}\n\nwindow.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];`;
         
         const foreignAccountsContent = `window.foreignAccounts = ${JSON.stringify(foreignAccounts, null, 4)};`;
+        const captureBatchesContent = `window.captureBatches = ${JSON.stringify(captureBatches, null, 4)};`;
         
         const indexHtmlContent = document.documentElement.outerHTML;
 
@@ -3919,7 +4461,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Faltan datos en la petición.' })
                 };
             }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -3968,7 +4510,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                     body: JSON.stringify({ error: 'Falta la consulta (query).' })
                 };
             }
-            const apiUrl = \\\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\\\${GEMINI_API_KEY}\\\`;
+            const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
             const prompt = \`Actúa como un asistente de investigación de mercado. Tu tarea es encontrar el precio y el enlace de un producto.
     
             1.  **Prioridad Principal:** Busca el producto en la página web oficial de la marca o cuenta del sorteo.
@@ -3983,7 +4525,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
                   "url": "string del enlace de la página web donde encontraste el precio, o null si no lo encontraste"
                 }
 
-            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \\\`\\\`\\\`. \`;
+            Tu respuesta debe ser solo el objeto JSON, sin ningún texto adicional, explicaciones o formato Markdown como \`\`\`.\`;
             const payload = {
                 contents: [{
                     role: "user",
@@ -4022,6 +4564,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         zip.file("giveaways_new.js", giveawaysContent);
         zip.file("discardedGiveaways_new.js", discardedGiveawaysContent);
         zip.file("foreignAccounts.js", foreignAccountsContent);
+        zip.file("capture_batches.js", captureBatchesContent);
         zip.file("netlify.toml", netlifyTomlContent);
         zip.file("package.json", packageJsonContent);
 
@@ -4040,7 +4583,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         });
     };
     
-    const restoreFromBackup = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { JSZip.loadAsync(e.target.result).then(zip => { const giveawaysFile = zip.file("giveaways_new.js"); const discardedFile = zip.file("discardedGiveaways_new.js"); const foreignFile = zip.file("foreignAccounts.js"); if (!giveawaysFile || !discardedFile || !foreignFile) { showNotification('Error', 'El archivo .zip no parece una copia de seguridad válida.'); return; } Promise.all([giveawaysFile.async("string"), discardedFile.async("string"), foreignFile.async("string")]) .then(contents => { try { const giveawaysContent = contents[0].replace('window.giveaways = ', '').slice(0, -1); const discardedContent = contents[1].replace('window.discardedGiveaways = ', '').slice(0, -1); const foreignContent = contents[2].replace('window.foreignAccounts = ', '').slice(0, -1); const parsedGiveaways = JSON.parse(giveawaysContent); const parsedDiscarded = JSON.parse(discardedContent); const parsedForeign = JSON.parse(foreignContent); if (confirm("¿Seguro que quieres restaurar esta copia? Se borrarán todos los datos actuales y se reemplazarán por los del archivo.")) { giveaways = parsedGiveaways; discardedGiveaways = parsedDiscarded; foreignAccounts = parsedForeign; saveGiveaways(); saveDiscardedGiveaways(); saveForeignAccounts(); renderCalendar(); showNotification('¡Éxito!', 'La copia de seguridad se ha restaurado correctamente.'); } } catch (error) { showNotification('Error de formato', 'No se pudo leer el contenido del archivo .zip.'); console.error("Error al parsear la copia de seguridad:", error); } }); }); }; reader.readAsArrayBuffer(file); };
+    const restoreFromBackup = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { JSZip.loadAsync(e.target.result).then(zip => { const giveawaysFile = zip.file("giveaways_new.js"); const discardedFile = zip.file("discardedGiveaways_new.js"); const foreignFile = zip.file("foreignAccounts.js"); const batchesFile = zip.file("capture_batches.js"); if (!giveawaysFile || !discardedFile || !foreignFile || !batchesFile) { showNotification('Error', 'El archivo .zip no parece una copia de seguridad válida.'); return; } Promise.all([giveawaysFile.async("string"), discardedFile.async("string"), foreignFile.async("string"), batchesFile.async("string")]) .then(contents => { try { const giveawaysContent = contents[0].replace('window.giveaways = ', '').slice(0, -1); const discardedContent = contents[1].replace('window.discardedGiveaways = ', '').slice(0, -1); const foreignContent = contents[2].replace('window.foreignAccounts = ', '').slice(0, -1); const batchesContent = contents[3].replace('window.captureBatches = ', '').slice(0, -1); const parsedGiveaways = JSON.parse(giveawaysContent); const parsedDiscarded = JSON.parse(discardedContent); const parsedForeign = JSON.parse(foreignContent); const parsedBatches = JSON.parse(batchesContent); if (confirm("¿Seguro que quieres restaurar esta copia? Se borrarán todos los datos actuales y se reemplazarán por los del archivo.")) { giveaways = parsedGiveaways; discardedGiveaways = parsedDiscarded; foreignAccounts = parsedForeign; captureBatches = parsedBatches; saveGiveaways(); saveDiscardedGiveaways(); saveForeignAccounts(); saveCaptureBatches(); renderCalendar(); showNotification('¡Éxito!', 'La copia de seguridad se ha restaurado correctamente.'); } } catch (error) { showNotification('Error de formato', 'No se pudo leer el contenido del archivo .zip.'); console.error("Error al parsear la copia de seguridad:", error); } }); }); }; reader.readAsArrayBuffer(file); };
 
     const toggleNavMenu = () => {
         navMenu.classList.toggle('is-open');
@@ -4191,10 +4734,55 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         renderVisModal();
     };
 
+    const moveToNotInterested = (giveawayId, dateStr) => {
+        if (!giveaways[dateStr]) return;
+
+        const giveawayIndex = giveaways[dateStr].findIndex(g => g.id === giveawayId);
+        if (giveawayIndex > -1) {
+            const [giveawayToMove] = giveaways[dateStr].splice(giveawayIndex, 1);
+            if (giveaways[dateStr].length === 0) {
+                delete giveaways[dateStr];
+            }
+
+            if (!notInterestedGiveaways[dateStr]) {
+                notInterestedGiveaways[dateStr] = [];
+            }
+            notInterestedGiveaways[dateStr].push(giveawayToMove);
+
+            saveGiveaways();
+            saveNotInterestedGiveaways();
+            buildModal(dateStr); // Re-render the modal to reflect the change
+            renderCalendar(); // Update the main calendar view
+        }
+    };
+
+    const restoreFromNotInterested = (giveawayId, dateStr) => {
+        if (!notInterestedGiveaways[dateStr]) return;
+
+        const giveawayIndex = notInterestedGiveaways[dateStr].findIndex(g => g.id === giveawayId);
+        if (giveawayIndex > -1) {
+            const [giveawayToRestore] = notInterestedGiveaways[dateStr].splice(giveawayIndex, 1);
+            if (notInterestedGiveaways[dateStr].length === 0) {
+                delete notInterestedGiveaways[dateStr];
+            }
+
+            if (!giveaways[dateStr]) {
+                giveaways[dateStr] = [];
+            }
+            giveaways[dateStr].push(giveawayToRestore);
+
+            saveGiveaways();
+            saveNotInterestedGiveaways();
+            buildModal(dateStr);
+            renderCalendar();
+        }
+    };
+
     // --- CÓDIGO DE INICIALIZACIÓN ---
     
     animateStarryBackground();
     animateTitle();
+    populateCategoryDropdown('giveaway-category');
     renderCalendar();
     updatePointsDisplay();
     if (userTitleEl) {
@@ -4229,32 +4817,55 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
     setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
     setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
-    setupModal(addManualBtn, addGiveawayModal, closeAddGiveawayModalBtn);
-    setupModal(null, searchModal, closeSearchModalBtn); // <-- MODIFICADO: ya no se abre desde el menú
+    setupModal(null, searchModal, closeSearchModalBtn);
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
-    //setupModal(manageBlocksBtn, blockManagementModal, closeBlockManagementModalBtn, renderBlockManagementModal);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
     setupModal(null, psSummaryModal, closePsSummaryModalBtn);
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
+    setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
     
+    addManualBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const confirmationMessage = `✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨
+
+¿Cómo quieres guardar este sorteo?
+
+- 📜 **Guardar en mi Calendario (Privado):** El sorteo se añadirá a TU mapa personal. ¡Será tu secreto y nadie más lo verá!
+
+- 🧙‍♂️ **Enviar al Hechicero (Público):** ¿Has encontrado un gran tesoro y quieres compartirlo con la comunidad? ¡Envíamelo! Lo revisaré y en unas horas aparecerá en el mapa de todos.
+
+Elige la opción que prefieras dentro del formulario.`;
+        if (confirm(confirmationMessage)) {
+            if (navMenu.classList.contains('is-open')) {
+                toggleNavMenu();
+            }
+            openAddGiveawayModal();
+        }
+    });
+
     addAIBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (navMenu.classList.contains('is-open')) {
-            toggleNavMenu();
+        const confirmationMessage = "✨ ¡Un Momento, Cazador/a de Tesoros! ✨\n\nEstás a punto de añadir un sorteo a tu mapa del tesoro personal.\n\nSe guardará de forma secreta solo en tu navegador, ¡será tu botín privado! Nadie más lo verá.\n\nPara que aparezca en el mapa de todos, el Hechicero Mayor (admin) debe añadirlo al grimorio público. Si quieres compartir tus hallazgos, puedes:\n- Enviarlos uno a uno a: admin@misorteos.es\n- O usar la Magia de la IA ✨. Al finalizar un análisis, tendrás la opción de enviar el lote completo con un solo clic.\n\n¿Añadimos este tesoro a tu colección privada?";
+
+        if (confirm(confirmationMessage)) {
+            if (navMenu.classList.contains('is-open')) {
+                toggleNavMenu();
+            }
+            resetAIView();
+            aiFullscreenView.classList.add('is-visible');
         }
-        resetAIView(); // <--- MODIFICACIÓN
-        aiFullscreenView.classList.add('is-visible');
     });
+
     closeAiViewBtn.addEventListener('click', () => {
         aiFullscreenView.classList.remove('is-visible');
-        resetAIView(); // <--- MODIFICACIÓN
+        resetAIView();
     });
     aiSummaryCloseBtn.addEventListener('click', () => {
         aiFullscreenView.classList.remove('is-visible');
-        resetAIView(); // <--- MODIFICACIÓN
+        resetAIView();
     });
 
     const closeZoomModal = () => { if(zoomModal) zoomModal.classList.remove('is-visible'); };
@@ -4286,85 +4897,56 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         const dateStr = modal.dataset.date;
         if (!dateStr) return;
 
-        if (e.target.id === 'select-all-btn' || e.target.closest('#select-all-btn')) {
-            const checkboxes = modalBody.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                if (!checkbox.checked) {
-                    checkbox.checked = true;
-                    const giveawayId = checkbox.dataset.giveawayId;
-                    if (!completedGiveaways[giveawayId]) {
-                         completedGiveaways[giveawayId] = true;
-                         const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
-                         if(giveaway) {
-                            addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
-                         }
-                    }
-                }
-            });
-            saveCompletedGiveaways();
-            buildModal(dateStr);
-            renderCalendar();
-            checkAchievements('complete', { giveawayDate: dateStr });
-            return; 
-        }
+        const giveawayId = e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
+        const checkbox = e.target.closest('input[type="checkbox"]');
 
-        if (e.target.id === 'deselect-all-btn' || e.target.closest('#deselect-all-btn')) {
-            const checkboxes = modalBody.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    checkbox.checked = false;
-                    delete completedGiveaways[checkbox.dataset.giveawayId];
-                }
-            });
-            saveCompletedGiveaways();
-            buildModal(dateStr);
-            renderCalendar();
-            return;
-        }
-        const giveawayId = e.target.dataset.giveawayId || e.target.closest('[data-giveaway-id]')?.dataset.giveawayId;
-        if (!giveawayId) return;
-
-        const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
-        if (!giveaway) return;
-        const itemContainer = e.target.closest('.giveaway-item');
-
-        if (e.target.type === 'checkbox') {
-            if (e.target.checked) {
+        if (checkbox) {
+            const itemContainer = checkbox.closest('.giveaway-item');
+            if (checkbox.checked) {
                 completedGiveaways[giveawayId] = true;
                 animateShootingStar(itemContainer, () => {
-                    itemContainer.classList.add('completed');
                     buildModal(dateStr);
                     renderCalendar();
                 });
-                addPoints(2, `Completado: ${giveaway.prize.substring(0, 20)}...`);
             } else {
                 delete completedGiveaways[giveawayId];
-                itemContainer.classList.remove('completed');
                 buildModal(dateStr);
                 renderCalendar();
             }
             saveCompletedGiveaways();
             checkAchievements('complete', { giveawayDate: dateStr });
-            
-            const postCompleteActions = itemContainer.querySelector('.flex-col.items-center.space-y-1.mt-1');
-            if (e.target.checked) {
-                if (postCompleteActions) postCompleteActions.style.display = 'flex';
-            } else {
-                if (postCompleteActions) postCompleteActions.style.display = 'none';
-            }
-        } else if (e.target.closest('.win-giveaway-btn')) {
+            return;
+        }
+
+        const restoreBtn = e.target.closest('.restore-not-interested-btn');
+        if (restoreBtn) {
+            restoreFromNotInterested(restoreBtn.dataset.giveawayId, dateStr);
+            return;
+        }
+
+        const notInterestedBtn = e.target.closest('.not-interested-btn');
+        if (notInterestedBtn) {
+            moveToNotInterested(notInterestedBtn.dataset.giveawayId, dateStr);
+            return;
+        }
+        
+        if (e.target.closest('.win-giveaway-btn')) {
             markAsWon(giveawayId, dateStr);
         } else if (e.target.closest('.vis-giveaway-btn')) {
-            const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
-            if (!isAlreadyInVIS) {
-                visGiveaways.push(giveaway);
-                saveVisGiveaways();
-                showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se ha enviado a tu sala de revisión.`);
-            } else {
-                showNotification('Ya en la lista', 'Este sorteo ya está en tu sala de revisión.');
+            const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
+            if(giveaway) {
+                const isAlreadyInVIS = visGiveaways.some(vis => vis.id === giveawayId);
+                if (!isAlreadyInVIS) {
+                    visGiveaways.push(giveaway);
+                    saveVisGiveaways();
+                    showNotification('Sorteo VIP Añadido', `"${giveaway.prize}" se ha enviado a tu sala de revisión.`);
+                } else {
+                    showNotification('Ya en la lista', 'Este sorteo ya está en tu sala de revisión.');
+                }
             }
         } else if (e.target.closest('.move-giveaway-btn')) {
-            openMoveGiveawayModal(giveaway, dateStr);
+            const giveaway = giveaways[dateStr]?.find(g => g.id === giveawayId);
+            if(giveaway) openMoveGiveawayModal(giveaway, dateStr);
         } else if (e.target.closest('.delete-giveaway-btn')) {
             if (confirm('¿Seguro que quieres mover este sorteo a la papelera?')) {
                 deleteGiveawayFromCalendar(dateStr, giveawayId);
@@ -4519,7 +5101,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
     addGiveawayForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value };
+        const newGiveaway = { id: Date.now().toString(), date: giveawayDateInput.value, prize: giveawayPrizeInput.value, accounts: giveawayAccountsInput.value.split(',').map(acc => acc.trim()), price: giveawayPriceInput.value, prize_category: document.getElementById('giveaway-category').value };
         addGiveaway(newGiveaway);
         closeAddGiveawayModal();
     });
@@ -4541,13 +5123,6 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         renderRecentAddsModal();
         recentAddsModal.classList.add('is-visible');
     });
-
-    const downloadBtn = document.getElementById('download-btn');
-    const uploadBtn = document.getElementById('upload-btn');
-    const zipUploadInput = document.getElementById('zip-upload');
-    if(downloadBtn) downloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
-    if(uploadBtn) uploadBtn.addEventListener('click', (e) => { e.preventDefault(); if(zipUploadInput) zipUploadInput.click(); });
-    if(zipUploadInput) zipUploadInput.addEventListener('change', (e) => { restoreFromBackup(e.target.files[0]); });
     
     const statsTabsContainer = document.querySelector('.stats-tabs');
     if (statsTabsContainer) {
@@ -4571,11 +5146,39 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         });
     }
 
+    document.querySelector('.modal-tabs').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-tab-btn')) {
+            const tabId = e.target.dataset.tab;
+
+            document.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active'));
+
+            e.target.classList.add('active');
+            document.getElementById(`tab-content-${tabId}`).classList.add('active');
+        }
+    });
+
     document.getElementById('oracle-proximity-btn').addEventListener('click', () => consultarOraculo('proximidad'));
     document.getElementById('oracle-prize-btn').addEventListener('click', () => consultarOraculo('premio'));
     document.getElementById('share-stats-btn').addEventListener('click', shareStats);
     deleteAllTrashBtn.addEventListener('click', deleteAllTrash);
     deleteAllDiscardedBtn.addEventListener('click', deleteAllDiscarded);
+    document.getElementById('batch-history-list').addEventListener('click', (e) => {
+        const batchItem = e.target.closest('[data-batch-id]');
+        if (batchItem) {
+            searchQuery = '';
+            currentFilter = 'all';
+            if (document.getElementById('global-search-input')) document.getElementById('global-search-input').value = '';
+            if (document.getElementById('global-category-filter')) document.getElementById('global-category-filter').value = 'all';
+
+            activeBatchFilterId = Number(batchItem.dataset.batchId);
+            renderCalendar();
+            updateFilterBanner(); // <-- Llamada clave para mostrar el banner
+            document.getElementById('close-new-additions-modal').click(); // Cerramos el modal
+        }
+    });
+
+    document.getElementById('filter-banner-clear-btn').addEventListener('click', clearAllFilters);
     
     document.addEventListener('DOMContentLoaded', () => {
         setupCustomCategoryFilter();
@@ -4599,7 +5202,552 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
             }
         });
     }
+
+    // [NUEVO] LÓGICA PARA EL AVISO DE ACTUALIZACIÓN
+    const refreshOverlay = document.getElementById('refreshOverlay');
+
+    function showRefreshOverlay() {
+        if (refreshOverlay) {
+            const headlines = document.querySelectorAll('.dynamic-headline');
+            
+            // 1. Reiniciamos las frases a su estado inicial para que la animación pueda repetirse
+            headlines.forEach(headline => {
+                headline.style.animation = 'none';
+                headline.style.opacity = '0';
+            });
+            
+            // 2. Forzamos al navegador a "ver" los cambios antes de volver a animar
+            void refreshOverlay.offsetWidth;
+
+            // 3. Aplicamos la animación a cada frase con un retraso escalonado
+            headlines.forEach((headline, index) => {
+                headline.style.animation = ''; // Limpiamos para que se aplique la regla de CSS
+                headline.style.animationDelay = `${index * 0.4}s`; // 0.4s de retraso entre cada frase
+            });
+
+            // Muestra el contenedor principal del aviso
+            refreshOverlay.classList.add('is-visible');
+            
+            // Reinicia la animación de la estrella fugaz
+            const shootingStarRefresh = document.getElementById('shootingStarRefresh');
+            if (shootingStarRefresh) {
+                shootingStarRefresh.style.animation = 'none';
+                void shootingStarRefresh.offsetWidth;
+                shootingStarRefresh.style.animation = 'shoot-right-to-left 5s ease-in infinite 1.5s';
+            }
+        }
+    }
+
+    function hideOverlayAndRefresh() {
+        if (refreshOverlay) {
+            refreshOverlay.classList.remove('is-visible');
+        }
+        // Esperamos a que la transición de 1 segundo termine antes de recargar
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    }
+
+    if (refreshOverlay) {
+        refreshOverlay.addEventListener('click', hideOverlayAndRefresh);
+    }
     
+    // Función para comprobar si hay una nueva versión de los sorteos
+    function checkForUpdates() {
+        // El "?v=" + new Date().getTime() es un truco para evitar que el navegador use una versión antigua del archivo cacheada
+        fetch('/version.json?v=' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo comprobar la versión.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const serverVersion = data.version;
+                const localVersion = parseInt(localStorage.getItem('appVersion')) || 0;
+
+                console.log(`Versión del servidor: ${serverVersion}, Versión local: ${localVersion}`);
+
+                if (serverVersion > localVersion) {
+                    console.log('¡Nueva versión detectada! Mostrando aviso de actualización.');
+                    showRefreshOverlay();
+                    localStorage.setItem('appVersion', serverVersion);
+                }
+            })
+            .catch(error => {
+                console.error('Error al comprobar actualizaciones:', error);
+            });
+    }
+
+    // --- CÓDIGO PARA ACTIVAR LA COMPROBACIÓN ---
+
+    // 1. Ejecuta la comprobación EN CUANTO la página carga.
+    checkForUpdates();
+
+    // 2. Además, establece un temporizador para que se repita cada HORA.
+    // (60 minutos * 60 segundos * 1000 milisegundos = 3600000)
+    setInterval(checkForUpdates, 3600000);
+    // --- [NUEVO] LÓGICA PARA LOS FILTROS GLOBALES ---
+
+const globalSearchInput = document.getElementById('global-search-input');
+const globalCategoryFilter = document.getElementById('global-category-filter');
+
+// 1. Función para rellenar el desplegable de categorías
+function populateGlobalCategoryFilter() {
+    if (!globalCategoryFilter) return;
+    
+    // Limpiamos por si acaso y añadimos la opción por defecto
+    globalCategoryFilter.innerHTML = '';
+
+    // Usamos el objeto CATEGORY_INFO que ya tienes
+    for (const key in CATEGORY_INFO) {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = `${CATEGORY_INFO[key].emoji} ${CATEGORY_INFO[key].name}`;
+        globalCategoryFilter.appendChild(option);
+    }
+}
+
+// 2. Evento para el buscador de texto
+if (globalSearchInput) {
+    globalSearchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value; // Actualizamos la variable global de búsqueda
+        renderCalendar(); // Redibujamos el calendario con el filtro aplicado
+        updateFilterBanner();
+    });
+}
+
+// 3. Evento para el filtro de categoría
+if (globalCategoryFilter) {
+    globalCategoryFilter.addEventListener('change', (e) => {
+        setFilterAndRender(e.target.value);
+        updateFilterBanner();
+        toggleNavMenu(); // Cerramos el menú para ver el resultado
+    });
+}
+
+// 4. Llamamos a la función para que el filtro se cree al cargar la página
+populateGlobalCategoryFilter();
+
+// [NUEVO] LÓGICA PARA LOS BOTONES DE AYUDA
+const HELP_CONTENT = {
+    'modal': {
+        title: '🌟 Guía del Cazador de Sorteos',
+        content: `¡Aquí es donde ocurre la magia! Gestiona los sorteos del día seleccionado.\n\n- Búsqueda y Filtros: Usa el campo de búsqueda para encontrar un premio por su nombre o el filtro de categorías para ver solo los que te interesan.\n- El Premio: El texto principal te dice qué se sortea. ¡Haz clic sobre el precio para buscarlo directamente en Google!\n- Cuentas Mágicas: Toca sobre cualquier cuenta @usuario para que te llevemos volando a su perfil de Instagram.\n- Checkbox de Realizado (✅): ¡Márcalo cuando hayas participado! El sorteo se moverá al final de la lista.\n- Botones de Acción (al completar):\n  - Trofeo (🏆): ¡Has ganado! Púlsalo para mover el sorteo a tu Vitrina de Trofeos.\n  - Estrella (🌟): ¿Es un sorteo muy importante (VIS)? Púlsalo para enviarlo a una lista especial de seguimiento.\n- Herramientas del Organizador:\n  - Calendario (🗓️): Mueve el sorteo a una nueva fecha.\n  - Papelera (🗑️): Envía el sorteo a la papelera (puedes restaurarlo).\n  - Globo (🌍): Descarta el sorteo como extranjero y añade las cuentas al cortafuegos.`
+    },
+    'add-giveaway-modal': {
+        title: '✍️ ¡Añade tu Tesoro!',
+        content: 'Registra un nuevo sorteo manualmente.\n\n- Fecha: El día que finaliza el sorteo.\n- Premio: Sé descriptivo y usa los emojis para categorizar (🥎, 🛩️, 🃏, 💲).\n- Cuentas: Escribe las cuentas de Instagram separadas por comas (ej: @cuenta1,@cuenta2).\n- Valor: El precio aproximado del premio.'
+    },
+    'ai-fullscreen-view': {
+        title: '🤖 El Asistente Mágico de IA',
+        content: '¡Deja que la IA trabaje por ti!\n\n1. Selecciona Imágenes: Pulsa el botón y sube hasta 100 capturas de pantalla de sorteos.\n2. Inicia el Análisis: La IA leerá cada imagen, extraerá toda la información y la clasificará por ti.\n3. Revisa y Confirma: Aparecerá una tarjeta interactiva por cada imagen. Podrás editar cualquier dato o simplemente guardar si todo es correcto.'
+    },
+    'trash-modal': {
+        title: '🗑️ La Papelera de Oportunidades',
+        content: 'Aquí descansan los sorteos que has eliminado.\n\n- Restaurar (↩️): Pulsa este botón para devolver el sorteo a tu calendario.\n- Vaciar Papelera: ¡Cuidado! Esta acción elimina permanentemente todos los sorteos de la papelera.'
+    },
+    'discarded-modal': {
+        title: '🗂️ El Archivo de los Descartados',
+        content: 'Aquí van los sorteos que la IA o tú habéis filtrado por no ser válidos (duplicados, caducados, extranjeros...).\n\n- Filtros: Usa los botones de arriba para navegar entre las distintas categorías de descarte.\n- Recuperar (+): Si un sorteo se descartó por error, pulsa para añadirlo manualmente.\n- Comparar (en Duplicados): Pulsa sobre un sorteo duplicado para ver una comparación y decidir qué hacer.'
+    },
+    'trophy-modal': {
+        title: '🏆 ¡Tu Salón de la Fama!',
+        content: '¡Aquí brillan todos los premios que has ganado! Es el resultado de tu esfuerzo. Si añadiste un premio por error, puedes pulsar el icono (❌) para eliminarlo.'
+    },
+    'stats-modal': {
+        title: '📊 Tu Centro de Estrategia',
+        content: '¡Los números no mienten! Analiza tu rendimiento para optimizar tu estrategia.\n\n- Pestañas: Navega por las diferentes secciones para ver un resumen, tu rendimiento, consejos y gráficos visuales.\n- Oráculos: ¿Necesitas inspiración? Consulta a los oráculos para ver qué te depara el futuro.\n- Compartir: ¡Presume de tus logros! Copia un resumen de tus estadísticas.'
+    },
+    'achievements-modal': {
+        title: '🏅 Logros, Títulos y Méritos',
+        content: '¡Demuestra tu maestría como cazador de sorteos!\n\n- Logros: Hitos que desbloqueas al usar la aplicación. ¡Dan Puntos de Sorteo (PS)!\n- Títulos de Prestigio: Recompensas especiales por hazañas legendarias. Puedes elegir cuál mostrar en la pantalla principal.\n- Méritos: Reconocimientos por ganar tipos específicos de sorteos.'
+    },
+    'history-modal': {
+        title: '🕒 Historial de Análisis de IA',
+        content: 'Aquí puedes revisar los resúmenes de tus últimas sesiones de análisis con la IA. Despliega cada entrada para ver un desglose de los sorteos que se añadieron y los que se descartaron.'
+    },
+    'vis-modal': {
+        title: '🌟 Revisión VIS (Very Important Sorteos)',
+        content: 'Esta es tu sala de seguimiento personal para los sorteos más importantes.\n\n- ¿Cómo funciona?: Cuando participas en un sorteo, si pulsas el botón de la estrella (🌟), se añade a esta lista.\n- Revisado: Cuando sepas que el sorteo ha finalizado y no has ganado, pulsa este botón para quitarlo de la lista.\n- Ganado: ¡Si has ganado, pulsa aquí para moverlo a tu vitrina de trofeos!'
+    }
+};
+
+document.addEventListener('click', function(e) {
+    const helpBtn = e.target.closest('.help-btn');
+    if (helpBtn) {
+        const modalId = helpBtn.dataset.modalId;
+        const helpData = HELP_CONTENT[modalId];
+        if (helpData) {
+            alert(`${helpData.title}\n\n${helpData.content}`);
+        }
+    }
+});
+
+// --- LÓGICA DEL PANEL DE ADMINISTRADOR ---
+const ADMIN_USERNAME = "Misorteos";
+const ADMIN_PASSWORD = "Saul31322";
+
+const adminPanelBtn = document.getElementById('admin-panel-btn');
+const adminModal = document.getElementById('admin-modal');
+const closeAdminModalBtn = document.getElementById('close-admin-modal');
+const adminLoginForm = document.getElementById('admin-login-form');
+const adminLoginView = document.getElementById('admin-login-view');
+const adminActionsView = document.getElementById('admin-actions-view');
+const adminUploadBtn = document.getElementById('admin-upload-btn');
+const adminDownloadBtn = document.getElementById('admin-download-btn');
+const zipUploadInput = document.getElementById('zip-upload');
+
+setupModal(adminPanelBtn, adminModal, closeAdminModalBtn, () => {
+    adminLoginView.style.display = 'block';
+    adminActionsView.style.display = 'none';
+    adminLoginForm.reset();
+});
+
+adminLoginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const usernameInput = document.getElementById('admin-username').value;
+    const passwordInput = document.getElementById('admin-password').value;
+
+    if (usernameInput === ADMIN_USERNAME && passwordInput === ADMIN_PASSWORD) {
+        adminLoginView.style.display = 'none';
+        adminActionsView.style.display = 'block';
+        showNotification('Acceso Concedido', 'Bienvenido, Hechicero Mayor.');
+    } else {
+        showNotification('Acceso Denegado', 'Las credenciales no son correctas.');
+        adminLoginForm.reset();
+    }
+});
+
+adminUploadBtn.addEventListener('click', (e) => { e.preventDefault(); zipUploadInput.click(); });
+adminDownloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
+zipUploadInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { restoreFromBackup(file); } });
+// --- LÓGICA PARA ENVIAR SORTEO AL ADMIN ---
+const addGiveawayModalEl = document.getElementById('add-giveaway-modal');
+if (addGiveawayModalEl) {
+    addGiveawayModalEl.addEventListener('click', (e) => {
+        if (e.target.id === 'send-to-admin-btn') {
+            e.preventDefault();
+            const date = document.getElementById('giveaway-date').value;
+            const prize = document.getElementById('giveaway-prize').value;
+            const accounts = document.getElementById('giveaway-accounts').value;
+            const price = document.getElementById('giveaway-price').value;
+            const categorySelect = document.getElementById('giveaway-category');
+            const category = categorySelect.options[categorySelect.selectedIndex].text;
+
+            if (!date || !prize) {
+                showNotification('Faltan Datos', 'Por favor, completa al menos la fecha y el premio.');
+                return;
+            }
+
+            const emailAdmin = 'admin@misorteos.es';
+            const subject = `Nuevo Sorteo Sugerido: ${prize.substring(0, 30)}...`;
+            const body = `¡Hola, Hechicero Mayor! 🧙‍♂️\n\nUn cazador de sorteos ha compartido un nuevo tesoro para el calendario público. Aquí están los detalles:\n\n- Fecha Finalización: ${date}\n- Premio: ${prize}\n- Cuentas: ${accounts || 'No especificadas'}\n- Valor Aprox.: ${price || 'No especificado'}\n- Categoría: ${category || 'No especificada'}\n\n¡Gracias por tu magia!`;
+
+            const mailtoLink = `mailto:${emailAdmin}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            showNotification('¡Enviado!', 'Se ha abierto tu app de correo para enviar el sorteo. ¡Gracias por compartir!');
+            
+            setTimeout(() => {
+                document.getElementById('add-giveaway-form').reset();
+                closeAddGiveawayModal();
+            }, 500);
+        }
+    });
+}
+
+// --- INICIO: LÓGICA COMPLETA PARA COMPARTIR VITRINA GRÁFICA ---
+
+const openShareOptionsBtn = document.getElementById('open-share-options-btn');
+const shareOptionsModal = document.getElementById('share-options-modal');
+const closeShareOptionsModalBtn = document.getElementById('close-share-options-modal');
+const generateAndDownloadBtn = document.getElementById('generate-and-download-btn');
+const shareNativeBtn = document.getElementById('share-native-btn');
+const previewContainer = document.getElementById('share-preview-container');
+
+// Función para abrir el modal y popular las opciones
+const openShareModal = () => {
+    shareOptionsModal.classList.add('is-visible');
+
+    try {
+        const datepickerContainer = document.getElementById('datepicker-container');
+        if (datepicker) {
+            datepicker.destroy();
+        }
+        datepicker = new Datepicker(datepickerContainer, {
+            format: 'dd/mm/yyyy',
+            language: 'es',
+            todayHighlight: true,
+            weekStart: 1,
+            pickerPosition: 'bottom-left',
+            rangePicker: true
+        });
+        
+        datepickerContainer.addEventListener('changeDate', (e) => {
+            const checkedRadio = document.querySelector('#share-timeframe-radios input:checked');
+            if(checkedRadio) {
+                checkedRadio.checked = false;
+            }
+            handleTimeframeChange();
+        });
+
+        document.getElementById('time-month').checked = true;
+        handleTimeframeChange();
+    } catch (error) {
+        console.error("Error al preparar el modal de compartir:", error);
+        if(previewContainer) {
+            previewContainer.innerHTML = '<span class="text-red-600">Error al cargar los datos.</span>';
+        }
+    }
+};
+
+// Función para poblar la lista de premios
+const populatePrizeList = (trophies) => {
+    const prizeListDiv = document.getElementById('share-prize-list-container');
+    prizeListDiv.innerHTML = '';
+    if (trophies.length > 0) {
+        trophies.forEach(g => {
+            const prizeItem = document.createElement('div');
+            prizeItem.className = 'flex items-center';
+            prizeItem.innerHTML = `
+                <input type="checkbox" id="prize-${g.id}" data-prize-id="${g.id}" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" checked>
+                <label for="prize-${g.id}" class="ml-2 block text-sm text-gray-700 truncate">${g.prize}</label>
+            `;
+            prizeListDiv.appendChild(prizeItem);
+        });
+    } else {
+        prizeListDiv.innerHTML = '<p class="text-gray-500 text-center">No hay trofeos en este periodo.</p>';
+    }
+};
+
+// Función para manejar los cambios de tiempo y poblar la lista de premios
+const handleTimeframeChange = () => {
+    let selectionType = 'radio';
+    let selectionValue = document.querySelector('#share-timeframe-radios input:checked')?.value;
+    const selectedDates = datepicker ? datepicker.getDates('yyyy-mm-dd') : [];
+    
+    if (selectedDates.length > 0) {
+        selectionType = 'calendar';
+        selectionValue = selectedDates;
+    }
+
+    const now = new Date();
+    const trophiesInTimeframe = wonGiveaways.filter(g => {
+        const wonDate = new Date(g.wonDate);
+        wonDate.setHours(0,0,0,0);
+        if(selectionType === 'radio') {
+            switch (selectionValue) {
+                case 'last_week': return (now - wonDate) / (1000 * 3600 * 24) <= 7;
+                case 'last_month': return (now - wonDate) / (1000 * 3600 * 24) <= 30;
+                case 'all': return true;
+                default: return false;
+            }
+        } else if (selectionType === 'calendar' && selectionValue.length > 0) {
+            const startDate = new Date(selectionValue[0]);
+            const endDate = selectionValue.length > 1 ? new Date(selectionValue[1]) : new Date(selectionValue[0]);
+            startDate.setHours(0,0,0,0);
+            endDate.setHours(0,0,0,0);
+            return wonDate >= startDate && wonDate <= endDate;
+        }
+        return false;
+    });
+    
+    populatePrizeList(trophiesInTimeframe);
+    updateSharePreview();
+};
+
+const updateSharePreview = async () => {
+    previewContainer.innerHTML = '<span class="text-gray-500 animate-pulse">Generando vista previa...</span>';
+    
+    const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
+    
+    if (selectedPrizeIds.size === 0) {
+        previewContainer.innerHTML = '<span class="text-gray-500">Selecciona al menos un trofeo para mostrar.</span>';
+        return;
+    }
+    const prizesToRender = wonGiveaways.filter(g => selectedPrizeIds.has(g.id));
+    
+    let timeframeText = 'Resumen Personalizado';
+    const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+    const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+
+    if (selectedDates.length > 0) {
+        timeframeText = selectedDates.length === 1 
+            ? `Día: ${selectedDates[0]}` 
+            : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+    } else if (radioChecked) {
+        const label = document.querySelector(`label[for="${radioChecked.id}"]`);
+        if (label) {
+            timeframeText = label.textContent;
+        }
+    }
+
+    const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+    const img = new Image();
+    img.src = canvas.toDataURL('image/png');
+    img.className = 'max-w-full max-h-full object-contain rounded-lg';
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(img);
+};
+
+// La función principal que dibuja la imagen
+const generateTrophyImage = async (prizesToRender, timeframeText) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 1000;
+    const ctx = canvas.getContext('2d');
+    const filteredTrophies = prizesToRender.sort((a, b) => new Date(b.wonDate) - new Date(a.wonDate));
+
+    // DIBUJAR FONDO Y BORDE
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#fffbef');
+    gradient.addColorStop(1, '#fef3c7');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 20;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    // DIBUJAR TÍTULOS
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#6a3805';
+    ctx.font = 'bold 50px Chewy';
+    ctx.fillText("Vitrina de Trofeos", canvas.width / 2, 80);
+    ctx.font = '30px Chewy';
+    ctx.fillStyle = '#b45309';
+    ctx.fillText(timeframeText, canvas.width / 2, 125);
+    
+    // DIBUJAR ESTADÍSTICAS
+    const totalWins = filteredTrophies.length;
+    const totalValue = filteredTrophies.reduce((sum, g) => sum + parsePrice(g.price), 0);
+    ctx.font = 'bold 32px Chewy';
+    ctx.fillStyle = '#4e342e';
+    ctx.fillText(`🏆 ${totalWins} Premios`, canvas.width * 0.28, 190);
+    ctx.fillText(`💰 ${totalValue.toFixed(0)}€`, canvas.width * 0.72, 190);
+
+    // DIBUJAR LISTA DE PREMIOS
+    ctx.textAlign = 'left';
+    ctx.font = '22px Chewy';
+    let yPos = 250;
+    filteredTrophies.slice(0, 15).forEach(g => {
+        ctx.fillStyle = '#4e342e';
+        let prizeText = g.prize;
+        if (prizeText.length > 45) prizeText = prizeText.substring(0, 45) + '...';
+        ctx.fillText(`- ${prizeText}`, 50, yPos);
+        ctx.fillStyle = '#b45309';
+        ctx.textAlign = 'right';
+        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - 50, yPos);
+        ctx.textAlign = 'left';
+        yPos += 40;
+    });
+    if (filteredTrophies.length > 15) {
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#92400e';
+        ctx.fillText(`...y ${filteredTrophies.length - 15} más!`, canvas.width / 2, yPos);
+    }
+    
+    // DIBUJAR SELLO DE AGUA
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
+    ctx.rotate(-Math.PI / 6);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(106, 56, 5, 0.08)';
+    ctx.font = 'bold 90px Chewy';
+    ctx.fillText("Misorteos.es", 0, 0);
+    ctx.restore();
+
+    // DIBUJAR PIE DE PÁGINA
+    ctx.font = '20px Chewy';
+    ctx.fillStyle = '#92400e';
+    ctx.textAlign = 'center';
+    ctx.fillText("Generado con Misorteos.es ✨", canvas.width / 2, canvas.height - 40);
+
+    return canvas;
+};
+
+// --- EVENT LISTENERS PARA EL MODAL DE COMPARTIR ---
+const radioContainerShare = document.getElementById('share-timeframe-radios');
+const prizeListContainer = document.getElementById('share-prize-list-container');
+
+if (openShareOptionsBtn) {
+    openShareOptionsBtn.addEventListener('click', openShareModal);
+}
+if (closeShareOptionsModalBtn) {
+    closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
+}
+if (shareOptionsModal) {
+    shareOptionsModal.addEventListener('click', (e) => {
+        if (e.target === shareOptionsModal) shareOptionsModal.classList.remove('is-visible');
+    });
+}
+if(radioContainerShare) {
+    radioContainerShare.addEventListener('change', () => {
+        if(datepicker) datepicker.clear();
+        handleTimeframeChange();
+    });
+}
+if (prizeListContainer) {
+    prizeListContainer.addEventListener('change', updateSharePreview);
+}
+if (generateAndDownloadBtn) {
+    generateAndDownloadBtn.addEventListener('click', async () => {
+        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+        if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
+        
+        // Obtenemos el texto del timeframe de la misma manera que en la vista previa
+        let timeframeText = 'Resumen Personalizado';
+        const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+        const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+
+        if (selectedDates.length > 0) {
+            timeframeText = selectedDates.length === 1 
+                ? `Día: ${selectedDates[0]}` 
+                : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+        } else if (radioChecked) {
+            const label = document.querySelector(`label[for="${radioChecked.id}"]`);
+            if (label) timeframeText = label.textContent;
+        }
+
+        const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+        const link = document.createElement('a');
+        link.download = `Misorteos-Vitrina.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+}
+if (shareNativeBtn) {
+    shareNativeBtn.addEventListener('click', async () => {
+        const prizesToRender = wonGiveaways.filter(g => document.getElementById(`prize-${g.id}`)?.checked);
+        if(prizesToRender.length === 0) return showNotification('Error', 'Debes seleccionar al menos un premio.');
+        
+        let timeframeText = 'Resumen Personalizado';
+        const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+        const selectedDates = datepicker ? datepicker.getDates('dd/mm/yyyy') : [];
+        if (selectedDates.length > 0) {
+            timeframeText = selectedDates.length === 1 ? `Día: ${selectedDates[0]}` : `Del ${selectedDates[0]} al ${selectedDates[selectedDates.length - 1]}`;
+        } else if (radioChecked) {
+            const label = document.querySelector(`label[for="${radioChecked.id}"]`);
+            if (label) timeframeText = label.textContent;
+        }
+
+        if (navigator.share) {
+            const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
+                try {
+                    await navigator.share({
+                        title: 'Mi Vitrina de Trofeos de Misorteos',
+                        text: `¡Mira los premios que he ganado! ✨ - Creado con Misorteos.es`,
+                        files: [file],
+                    });
+                } catch (error) { console.error('Error al compartir:', error); }
+            }, 'image/png');
+        } else {
+            showNotification('No Soportado', 'Tu navegador no permite compartir archivos. Por favor, descarga la imagen.');
+        }
+    });
+}
+// --- FIN DE LÓGICA PARA COMPARTIR ---
 </script>
 </body>
 </html>

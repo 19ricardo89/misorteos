@@ -1630,7 +1630,162 @@
             </div>
         </div>
     </div>
+<div id="help-info-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+        <div class="modal-content w-full max-w-2xl rounded-2xl shadow-2xl modal-default-bg p-6 flex-col">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <h2 id="help-info-modal-title" class="text-2xl sm:text-3xl">Centro de Ayuda</h2>
+                <button id="close-help-info-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+            </div>
 
+            <div class="modal-tabs flex-shrink-0">
+                <button class="modal-tab-btn active" data-tab="faq">Preguntas Frecuentes</button>
+                <button class="modal-tab-btn" data-tab="about">Quién Soy</button>
+                <button class="modal-tab-btn" data-tab="contact">Contacto</button>
+            </div>
+
+            <div class="mt-4 flex-grow overflow-y-auto text-left text-base p-2">
+                <div id="tab-content-faq" class="modal-tab-content active space-y-4">
+                    
+                    <h3 class="text-xl font-bold text-yellow-700">🤔 Conceptos Básicos</h3>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">1. ¿Qué es Misorteos.es?</h4>
+                        <p class="text-sm">Es tu centro de mando personal para organizar, seguir y analizar todos los sorteos en los que participas. Es tu mapa del tesoro digital para no perder ninguna oportunidad.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">2. ¿Necesito crear una cuenta para usar la web?</h4>
+                        <p class="text-sm">No. Misorteos.es funciona sin registro. Toda tu información se guarda de forma privada y segura directamente en tu navegador.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">3. ¿Los sorteos que añado son privados o públicos?</h4>
+                        <p class="text-sm">Todos los sorteos que añades son **100% privados** por defecto. Para que un sorteo aparezca en el calendario de toda la comunidad, debes enviárnoslo usando los botones "Enviar al Hechicero", que prepararán un correo automático para ti.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">4. ¿Es gratis?</h4>
+                        <p class="text-sm">Sí, el uso de la aplicación es completamente gratuito.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">5. ¿Qué significan los colores en el calendario?</h4>
+                        <p class="text-sm">Un día **dorado** tiene sorteos pendientes. El número indica cuántos. Un día **verde** significa que ya has completado todos los sorteos de esa fecha. Un día con **borde azul** significa que contiene un sorteo que ganaste.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">6. ¿Cómo añado mi primer sorteo?</h4>
+                        <p class="text-sm">Tienes dos opciones en el menú: "Añadir" para rellenar un formulario manual, o "Añadir IA" para que la inteligencia artificial lo haga por ti a partir de una captura de pantalla.</p>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-yellow-700 mt-6">⚙️ Gestión de Sorteos</h3>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">7. ¿Diferencia entre Papelera (🗑️) y Descartar (🌍)?</h4>
+                        <p class="text-sm">La **Papelera** es para sorteos que borras pero que puedes restaurar. **Descartar** es para sorteos no válidos (ej. de otro país) y añade sus cuentas a una "lista negra" para futuros filtros.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">8. ¿Puedo deshacer un sorteo completado?</h4>
+                        <p class="text-sm">¡Sí! Simplemente vuelve a abrir los sorteos de ese día y desmarca la casilla de verificación (el tick ✅) del sorteo correspondiente.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">9. ¿Qué son los VIS (Very Important Sorteos)?</h4>
+                        <p class="text-sm">Al completar un sorteo, puedes pulsar la estrella (🌟) para añadirlo a esta lista de seguimiento especial. Es ideal para esos premios que no quieres perder de vista.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">10. ¿Cómo muevo un sorteo a otra fecha?</h4>
+                        <p class="text-sm">Dentro de la vista de un día, cada sorteo tiene un botón de calendario (🗓️). Púlsalo, elige la nueva fecha y el sorteo se moverá.</p>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-yellow-700 mt-6">🤖 La Magia de la IA</h3>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">11. ¿Cómo funciona la IA para añadir sorteos?</h4>
+                        <p class="text-sm">Subes capturas de pantalla de sorteos. La IA lee la imagen, extrae toda la información (premio, cuentas, fecha, etc.) y te la presenta en una tarjeta para que la confirmes o edites antes de guardar.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">12. ¿Por qué la IA descarta a veces un sorteo?</h4>
+                        <p class="text-sm">La IA lo puede descartar por varias razones: si detecta que es un duplicado de uno que ya tienes, si la fecha ya ha pasado (caducado), o si identifica que es exclusivo para un país fuera de España (extranjero).</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">13. La IA extrajo mal un dato, ¿qué hago?</h4>
+                        <p class="text-sm">No hay problema. Antes de guardar, siempre te aparecerá una tarjeta interactiva. Pulsa "Editar" y podrás corregir cualquier campo antes de añadirlo a tu calendario.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">14. ¿Usar la IA comparte mis imágenes con alguien?</h4>
+                        <p class="text-sm">No. Tus imágenes se envían de forma segura para ser procesadas y no se almacenan ni se comparten con nadie. Tu privacidad es lo primero.</p>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-yellow-700 mt-6">🏆 Puntos y Trofeos</h3>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">15. ¿Qué son los Puntos de Sorteo (PS)?</h4>
+                        <p class="text-sm">Son una forma de medir tu progreso. Ganas PS por añadir sorteos, completarlos, ganar premios y desbloquear logros. ¡Es tu "nivel de cazador"!</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">16. ¿Qué es la Vitrina de Trofeos?</h4>
+                        <p class="text-sm">Es tu salón de la fama personal. Cuando ganas un sorteo, lo mueves a la vitrina para llevar un registro de todas tus victorias.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">17. Gané un sorteo pero se me olvidó marcarlo, ¿puedo añadirlo a la vitrina?</h4>
+                        <p class="text-sm">Sí. Añádelo manualmente en la fecha que correspondía y, una vez en el calendario, complétalo y pulsa el botón del trofeo (🏆).</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">18. ¿Cómo funciona "Compartir Vitrina"?</h4>
+                        <p class="text-sm">Esta función genera una imagen preciosa y personalizada con los trofeos que has ganado, lista para descargarla y compartirla en tus redes sociales.</p>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-yellow-700 mt-6">🔒 Datos y Seguridad</h3>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">19. ¿Dónde se guarda mi información?</h4>
+                        <p class="text-sm">**100% privada.** Todos tus datos se guardan únicamente en el almacenamiento local de tu navegador. Nadie más, ni siquiera nosotros, puede acceder a ellos.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">20. ¿Puedo ver mis sorteos en otro dispositivo?</h4>
+                        <p class="text-sm">No automáticamente. Como los datos son locales, no se sincronizan. Puedes usar la función de "Admin" para descargar una copia de seguridad y cargarla en otro dispositivo.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">21. ¿Qué pasa si borro la caché de mi navegador?</h4>
+                        <p class="text-sm">**¡Cuidado!** Borrar los "datos de sitios" de tu navegador eliminará permanentemente toda la información de Misorteos.es. Haz copias de seguridad periódicas desde el panel de "Admin".</p>
+                    </div>
+
+                     <h3 class="text-xl font-bold text-yellow-700 mt-6">🛠️ Problemas Técnicos</h3>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">22. La página no carga bien. ¿Qué hago?</h4>
+                        <p class="text-sm">Haz una "recarga forzada" para limpiar la caché. En un ordenador, es **Ctrl + Shift + R** (o **Cmd + Shift + R** en Mac). En móvil, busca en los ajustes de Chrome la opción para borrar datos de navegación (solo caché).</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-yellow-800">23. He encontrado un fallo. ¿Cómo lo reporto?</h4>
+                        <p class="text-sm">¡Tu ayuda es muy valiosa! Ve al apartado de "Contacto" en este mismo modal y envíame un correo con los detalles del problema. ¡Gracias!</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">24. La IA se ha quedado "pensando". ¿Qué hago?</h4>
+                        <p class="text-sm">Es raro, pero puede ocurrir si hay un problema de conexión. Cierra la vista de la IA con la 'X' y vuelve a empezar. No se habrá guardado nada a medias.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">25. ¿Puedo importar datos de otra app?</h4>
+                        <p class="text-sm">Actualmente no hay una función de importación directa, pero si tienes tus datos en un formato estructurado, contacta con nosotros y veremos si podemos ayudarte.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-yellow-800">26. La app va un poco lenta a veces.</h4>
+                        <p class="text-sm">Esto puede pasar si tienes una cantidad enorme de sorteos (¡más de mil!). La app está optimizada, pero un gran volumen de datos puede ralentizarla. Hacer copias de seguridad y limpiar sorteos muy antiguos puede ayudar.</p>
+                    </div>
+                </div>
+
+                <div id="tab-content-about" class="modal-tab-content hidden space-y-3">
+                    <h3 class="text-xl font-bold text-yellow-700">¡Hola, soy el Hechicero Mayor!</h3>
+                    <p class="text-sm">Me llamo Ricardo Rosello y soy el creador de Misorteos.es. Como tú, soy un apasionado cazador de sorteos que se cansó de perder oportunidades en un caos de notas, alarmas y capturas de pantalla.</p>
+                    <p class="text-sm">Decidí crear la herramienta que siempre quise: un lugar mágico y organizado para centralizar nuestra afición, optimizar la participación y, con suerte, ¡ganar más a menudo!</p>
+                    <p class="text-sm">Mi objetivo es que esta web sea tu mejor aliada en la caza de tesoros digitales. Si quieres seguir mis aventuras (y algún que otro sorteo que comparto), me puedes encontrar en Instagram como <strong>@19ricardo89</strong>.</p>
+                    <p class="text-sm font-bold text-yellow-800 mt-2">¡Mucha suerte en tu próxima caza!</p>
+                </div>
+
+                <div id="tab-content-contact" class="modal-tab-content hidden space-y-3">
+                    <h3 class="text-xl font-bold text-yellow-700">¿Hablamos?</h3>
+                    <p class="text-sm">Misorteos.es es un proyecto vivo y en constante evolución, ¡y tu feedback es la pieza clave para mejorarlo! Como creador, siempre estoy buscando maneras de hacer esta herramienta más potente y fácil de usar.</p>
+                    <p class="text-sm font-bold mt-2">Te animo a que contactes conmigo especialmente para:</p>
+                    <ul class="list-disc list-inside space-y-2 text-sm pl-4">
+                        <li><strong>Sugerencias y Nuevas Ideas:</strong> Si tienes una idea genial para una nueva función o una mejora, ¡soy todo oídos! Todas las propuestas se tienen en cuenta.</li>
+                        <li><strong>Reportar un Fallo (Bug):</strong> Si has encontrado algo que no funciona como debería, tu aviso es súper valioso para poder solucionarlo.</li>
+                        <li><strong>Colaboraciones:</strong> Si representas a una marca o tienes alguna propuesta interesante.</li>
+                    </ul>
+                    <p class="text-sm mt-2">Para cualquiera de estos puntos, la forma más directa de contactarme es a través de este correo. ¡Gracias por ayudar a construir la mejor herramienta para cazadores de sorteos!</p>
+                    <p class="font-bold text-center text-lg mt-4 text-yellow-800 bg-yellow-100/50 p-3 rounded-lg border border-yellow-300">admin@misorteos.es</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="admin-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-sm rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
             <div class="flex justify-between items-center mb-4">

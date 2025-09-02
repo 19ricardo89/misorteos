@@ -5646,7 +5646,46 @@ document.addEventListener('click', function(e) {
         }
     }
 });
-// --- [NUEVO] Lógica para el Modal de Ayuda --- const helpInfoModal = document.getElementById('help-info-modal'); const helpInfoBtn = document.getElementById('help-info-btn'); const closeHelpInfoModalBtn = document.getElementById('close-help-info-modal'); setupModal(helpInfoBtn, helpInfoModal, closeHelpInfoModalBtn); helpInfoModal.querySelector('.modal-tabs').addEventListener('click', (e) => { if (e.target.classList.contains('modal-tab-btn')) { const tabId = e.target.dataset.tab; // Ocultar todos los contenidos helpInfoModal.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active')); // Quitar clase activa de todos los botones helpInfoModal.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active')); // Mostrar el contenido y activar el botón correctos helpInfoModal.querySelector(`#tab-content-${tabId}`).classList.add('active'); e.target.classList.add('active'); } });
+// --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+
+    // [CORREGIDO] Lógica para el Modal de Ayuda y sus pestañas
+    const helpInfoModal = document.getElementById('help-info-modal');
+    const helpInfoBtn = document.getElementById('help-info-btn');
+    const closeHelpInfoModalBtn = document.getElementById('close-help-info-modal');
+    
+    // 1. Configura la apertura y cierre del modal principal
+    setupModal(helpInfoBtn, helpInfoModal, closeHelpInfoModalBtn);
+    
+    // 2. Añade la lógica para las pestañas internas
+    const helpTabsContainer = helpInfoModal.querySelector('.modal-tabs');
+    const helpTabContents = helpInfoModal.querySelectorAll('.modal-tab-content');
+    
+    helpTabsContainer.addEventListener('click', (e) => {
+        const clickedTab = e.target.closest('.modal-tab-btn');
+        if (!clickedTab) return; // Si no se hizo clic en un botón de pestaña, no hacer nada
+
+        const tabId = clickedTab.dataset.tab;
+
+        // Actualizar los botones de las pestañas
+        helpTabsContainer.querySelectorAll('.modal-tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        clickedTab.classList.add('active');
+
+        // Actualizar los paneles de contenido
+        helpTabContents.forEach(content => {
+            // Aquí está la corrección clave: gestionamos la clase 'hidden'
+            if (content.id === `tab-content-${tabId}`) {
+                content.classList.remove('hidden');
+                content.classList.add('active');
+            } else {
+                content.classList.add('hidden');
+                content.classList.remove('active');
+            }
+        });
+    });
+
+// --- FIN DEL BLOQUE A PEGAR ---
 // --- LÓGICA DEL PANEL DE ADMINISTRADOR ---
 const ADMIN_USERNAME = "Misorteos";
 const ADMIN_PASSWORD = "Saul31322";

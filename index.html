@@ -5036,26 +5036,53 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
 
     // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
 
+    // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+
     const setupModal = (button, modal, closeButton, onOpenCallback) => {
+        if (!modal) return; // Si el modal no existe, no hacemos nada
+
         const openAction = (e) => {
             e.preventDefault();
             if (navMenu.classList.contains('is-open')) {
                 toggleNavMenu();
             }
             if (onOpenCallback) onOpenCallback();
-            if (modal) modal.classList.add('is-visible');
+            modal.classList.add('is-visible');
+        };
+
+        const closeAction = () => {
+            modal.classList.remove('is-visible');
         };
 
         if (button) button.addEventListener('click', openAction);
-        if (closeButton) closeButton.addEventListener('click', () => { 
-            if (modal) modal.classList.remove('is-visible'); 
+        if (closeButton) closeButton.addEventListener('click', closeAction);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeAction();
         });
-        if (modal) modal.addEventListener('click', (e) => { 
-            if (e.target === modal) { 
-                modal.classList.remove('is-visible'); 
-            } 
-        });
+
+        // Lógica específica para las pestañas del modal de ayuda
+        if (modal.id === 'help-info-modal') {
+            const tabsContainer = modal.querySelector('.modal-tabs');
+            const tabContents = modal.querySelectorAll('.modal-tab-content');
+            
+            tabsContainer.addEventListener('click', (e) => {
+                const clickedTab = e.target.closest('.modal-tab-btn');
+                if (!clickedTab) return;
+
+                const tabId = clickedTab.dataset.tab;
+
+                tabsContainer.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+                clickedTab.classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.classList.toggle('hidden', content.id !== `tab-content-${tabId}`);
+                    content.classList.toggle('active', content.id === `tab-content-${tabId}`);
+                });
+            });
+        }
     };
+
+// --- FIN DEL BLOQUE A PEGAR ---
     
     // Configuración de todos los modales
     setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {

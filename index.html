@@ -5034,6 +5034,8 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         userTitleEl.textContent = userAchievements.title;
     }
 
+    // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+
     const setupModal = (button, modal, closeButton, onOpenCallback) => {
         const openAction = (e) => {
             e.preventDefault();
@@ -5055,6 +5057,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
         });
     };
     
+    // Configuración de todos los modales
     setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {
         calculateAndRenderStats();
         setTimeout(renderCharts, 50); 
@@ -5071,12 +5074,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin text
     setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
     setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
-    // --- INICIO DEL BLOQUE A PEGAR ---
+    setupModal(null, addGiveawayModal, closeAddGiveawayModalBtn); // <-- Corrección 1 (Añadir Sorteo)
 
-setupModal(null, addGiveawayModal, closeAddGiveawayModalBtn);
+    // Corrección 2 (Ayuda): Definimos las variables y llamamos a setupModal
+    const helpInfoModal = document.getElementById('help-info-modal');
+    const helpInfoBtn = document.getElementById('help-info-btn');
+    const closeHelpInfoModalBtn = document.getElementById('close-help-info-modal');
+    setupModal(helpInfoBtn, helpInfoModal, closeHelpInfoModalBtn);
 
 // --- FIN DEL BLOQUE A PEGAR ---
-// --- INICIO DEL BLOQUE A PEGAR --- const helpInfoModal = document.getElementById('help-info-modal'); const helpInfoBtn = document.getElementById('help-info-btn'); const closeHelpInfoModalBtn = document.getElementById('close-help-info-modal'); setupModal(helpInfoBtn, helpInfoModal, closeHelpInfoModalBtn); // --- FIN DEL BLOQUE A PEGAR ---
 
    // --- [NUEVO] Lógica para el Modal de Hoja de Ruta ---
     const roadmapModal = document.getElementById('roadmap-modal');

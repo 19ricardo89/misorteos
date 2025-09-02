@@ -2857,30 +2857,33 @@ const getCategoryInfo = (categoryPath) => {
     return defaultValue;
 };
 
-const buildModal = (dateStr) => {
+const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
     const modalBody = document.getElementById('modal-body');
     const notInterestedBody = document.getElementById('not-interested-body');
     modalBody.innerHTML = '';
     notInterestedBody.innerHTML = '';
 
-    let dayGiveaways = (giveaways[dateStr] || []);
+    // Filtramos los sorteos del día CON LOS PARÁMETROS RECIBIDOS
+    let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+        const prize = (g.prize || '').toLowerCase();
+        const searchText = modalSearchQuery.toLowerCase();
+
+        if (modalSearchQuery && !prize.includes(searchText)) {
+            return false;
+        }
+        if (modalCategoryFilter !== 'all' && g.prize_category !== modalCategoryFilter) {
+            return false;
+        }
+        return true;
+    });
     
     dayGiveaways.sort((a, b) => {
         const isACompleted = !!completedGiveaways[a.id];
         const isBCompleted = !!completedGiveaways[b.id];
-
         if (isACompleted && !isBCompleted) return 1;
         if (!isACompleted && isBCompleted) return -1;
-
-        const aHasPriorityTime = a.is_priority_time === true;
-        const bHasPriorityTime = b.is_priority_time === true;
-
-        if (aHasPriorityTime && !bHasPriorityTime) return -1;
-        if (!aHasPriorityTime && bHasPriorityTime) return 1;
-
         const priceA = parsePrice(a.price);
         const priceB = parsePrice(b.price);
-
         return priceB - priceA;
     });
 
@@ -2893,17 +2896,13 @@ const buildModal = (dateStr) => {
         
         let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
         
-        // --- AQUÍ ESTÁ LA CORRECCIÓN CLAVE ---
         const categoryInfo = getCategoryInfo(giveaway.prize_category);
-        // --- FIN DE LA CORRECCIÓN ---
 
         itemContainer.innerHTML = `
             <div class="flex items-start flex-1 overflow-hidden">
                 <div class="flex flex-col items-center mr-3 flex-shrink-0">
                     <input type="checkbox" data-giveaway-id="${giveaway.id}" class="h-6 w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500" ${isCompleted ? 'checked' : ''}>
-                    <button class="not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}" style="display: ${isCompleted ? 'none' : 'block'};">
-                        <i class="fa-solid fa-eye-slash"></i>
-                    </button>
+                    <button class="not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}" style="display: ${isCompleted ? 'none' : 'block'};"><i class="fa-solid fa-eye-slash"></i></button>
                     <div class="post-complete-actions flex flex-col items-center space-y-1 mt-1" style="display: ${isCompleted ? 'flex' : 'none'};">
                         <button class="win-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🏆</button>
                         <button class="vis-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🌟</button>
@@ -2938,15 +2937,13 @@ const buildModal = (dateStr) => {
                 <p class="text-base sm:text-lg text-gray-700 truncate">${giveaway.prize}</p>
                 <div class="text-sm text-gray-600">${accountsHTML}</div>
             </div>
-            <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">
-                <i class="fa-solid fa-eye"></i>
-            </button>
+            <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-eye"></i></button>
         `;
         notInterestedBody.appendChild(itemContainer);
     });
 
     if (dayGiveaways.length === 0) {
-        modalBody.innerHTML = '<p class="text-center text-gray-500">¡No hay sorteos aquí! Mueve alguno a este día o añade uno nuevo.</p>';
+        modalBody.innerHTML = '<p class="text-center text-gray-500">No hay sorteos que coincidan con tu filtro.</p>';
     }
     if (dayNotInterested.length === 0) {
         notInterestedBody.innerHTML = '<p class="text-center text-gray-500">No has marcado ningún sorteo como no interesante para hoy.</p>';
@@ -5592,7 +5589,6 @@ Elige la opción que prefieras dentro del formulario.`;
     document.addEventListener('DOMContentLoaded', () => {
         setupCustomCategoryFilter();
     });
-
     // --- LÓGICA PARA EL MENÚ DESPLEGABLE DE CATEGORÍAS ---
     const categoryFilterButton = document.getElementById('category-filter-button');
     const categoryFilterOptions = document.getElementById('category-filter-options');

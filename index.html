@@ -2461,77 +2461,46 @@ const populateCategoryDropdown = (selectElementId) => {
         updateFilterBanner(); // Ocultará el banner
         showNotification('Filtros Limpiados', 'Mostrando todos los sorteos.');
     };
-    const getCategoryInfo = (categoryPath) => {
-    const defaultValue = { name: 'Otros', emoji: '⭐' };
-    if (!categoryPath || typeof categoryPath !== 'string') {
-        return defaultValue;
-    }
-    if (categoryPath.includes('/')) {
-        const [mainKey, subKey] = categoryPath.split('/');
-        if (CATEGORY_TREE[mainKey] && CATEGORY_TREE[mainKey].subcategories[subKey]) {
-            return CATEGORY_TREE[mainKey].subcategories[subKey];
-        }
-    } else {
-        for (const mainKey in CATEGORY_TREE) {
-            if (CATEGORY_TREE[mainKey].subcategories[categoryPath]) {
-                return CATEGORY_TREE[mainKey].subcategories[categoryPath];
+
+    const updateFilterBanner = () => {
+        const banner = document.getElementById('filter-banner');
+        const bannerText = document.getElementById('filter-banner-text');
+        if (!banner || !bannerText) return;
+
+        let filterIsActive = false;
+        let bannerMessage = '';
+
+        // Prioridad 1: Filtro de Lote de Capturas
+        if (activeBatchFilterId) {
+            const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
+            if (activeBatch) {
+                bannerMessage = `Mostrando solo el lote: <strong>${activeBatch.name}</strong> (${activeBatch.giveawayIds.length} sorteos).`;
+                filterIsActive = true;
             }
-        }
-    }
-    return defaultValue;
-};
-
-const updateFilterBanner = () => {
-    const banner = document.getElementById('filter-banner');
-    const bannerText = document.getElementById('filter-banner-text');
-    if (!banner || !bannerText) return;
-
-    function findCategoryDetails(key) {
-        if (!key || key === 'all') return { name: 'Todas', emoji: '✨' };
-        if (key.includes('/')) {
-            const [main, sub] = key.split('/');
-            if (CATEGORY_TREE[main] && CATEGORY_TREE[main].subcategories[sub]) {
-                return CATEGORY_TREE[main].subcategories[sub];
-            }
-        }
-        if (CATEGORY_TREE[key]) {
-            return { name: CATEGORY_TREE[key].displayName, emoji: CATEGORY_TREE[key].emoji };
-        }
-        for (const mainCategory in CATEGORY_TREE) {
-            if (CATEGORY_TREE[mainCategory].subcategories[key]) {
-                return CATEGORY_TREE[mainCategory].subcategories[key];
-            }
-        }
-        return { name: 'Filtro', emoji: '❓' };
-    }
-
-    let filterIsActive = false;
-    let bannerMessage = '';
-
-    if (activeBatchFilterId) {
-        const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
-        if (activeBatch) {
-            bannerMessage = `Mostrando solo el lote: <strong>${activeBatch.name}</strong> (${activeBatch.giveawayIds.length} sorteos).`;
+        } 
+        // Prioridad 2: Filtro de Categoría Global
+        else if (currentFilter && currentFilter !== 'all') {
+            const category = CATEGORY_INFO[currentFilter];
+            bannerMessage = `Mostrando categoría: <strong>${category.emoji} ${category.name}</strong>.`;
             filterIsActive = true;
         }
-    } else if (currentFilter && currentFilter !== 'all') {
-        const category = findCategoryDetails(currentFilter);
-        bannerMessage = `Mostrando categoría: <strong>${category.emoji} ${category.name}</strong>.`;
-        filterIsActive = true;
-    } else if (searchQuery && searchQuery.trim() !== '') {
-        bannerMessage = `Buscando: "<strong>${searchQuery}</strong>".`;
-        filterIsActive = true;
-    }
+        // Prioridad 3: Búsqueda por Texto Global
+        else if (searchQuery && searchQuery.trim() !== '') {
+            bannerMessage = `Buscando: "<strong>${searchQuery}</strong>".`;
+            filterIsActive = true;
+        }
 
-    if (filterIsActive) {
-        bannerText.innerHTML = bannerMessage;
-        banner.style.display = 'block';
-    } else {
-        banner.style.display = 'none';
-    }
-};
+        if (filterIsActive) {
+            bannerText.innerHTML = bannerMessage;
+            banner.style.display = 'block';
+        } else {
+            banner.style.display = 'none';
+        }
+    };
 
-const setupCustomCategoryFilter = () => {
+    // --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE FILTRO VISUAL MEJORADA) ---
+
+function setupCustomCategoryFilter() {
     const button = document.getElementById('category-filter-button');
     const selectedText = document.getElementById('category-filter-selected-text');
     const optionsContainer = document.getElementById('category-filter-options');
@@ -2542,61 +2511,52 @@ const setupCustomCategoryFilter = () => {
     const allOptionLi = document.createElement('li');
     allOptionLi.className = 'custom-dropdown-option';
     allOptionLi.dataset.value = 'all';
-    allOptionLi.innerHTML = `<span class="category-name">✨ Todas</span><span class="category-desc">Muestra todos los sorteos del día.</span>`;
+    allOptionLi.innerHTML = `
+        <span class="category-name">✨ Todas</span>
+        <span class="category-desc">Muestra todos los sorteos del día.</span>
+    `;
     optionsContainer.appendChild(allOptionLi);
 
     for (const categoryKey in CATEGORY_TREE) {
         const category = CATEGORY_TREE[categoryKey];
-        const mainLi = document.createElement('li');
-        mainLi.className = 'custom-dropdown-option font-bold bg-yellow-100/30';
-        mainLi.dataset.value = categoryKey;
-        mainLi.innerHTML = `<span class="category-name">${category.emoji} ${category.displayName} (Todos)</span>`;
-        optionsContainer.appendChild(mainLi);
-
         for (const subcategoryKey in category.subcategories) {
             const subcategory = category.subcategories[subcategoryKey];
             const li = document.createElement('li');
             li.className = 'custom-dropdown-option';
             li.dataset.value = `${categoryKey}/${subcategoryKey}`;
-            li.innerHTML = `<span class="category-name pl-4">${subcategory.emoji} ${subcategory.name}</span><span class="category-desc pl-4">${subcategory.desc}</span>`;
+            li.innerHTML = `
+                <span class="category-name">${subcategory.emoji} ${subcategory.name}</span>
+                <span class="category-desc">${subcategory.desc}</span>
+            `;
             optionsContainer.appendChild(li);
         }
     }
-
-    button.addEventListener('click', (e) => {
-        e.stopPropagation();
-        optionsContainer.classList.toggle('hidden');
-    });
 
     optionsContainer.addEventListener('click', (e) => {
         const selectedOption = e.target.closest('.custom-dropdown-option');
         if (!selectedOption) return;
 
         const selectedValue = selectedOption.dataset.value;
+        const [mainCat, subCat] = selectedValue.split('/');
+        
         let emoji, name;
-
         if (selectedValue === 'all') {
             emoji = '✨';
             name = 'Todas';
-        } else if (selectedValue.includes('/')) {
-            const [mainCat, subCat] = selectedValue.split('/');
+        } else {
             const subcategory = CATEGORY_TREE[mainCat].subcategories[subCat];
             emoji = subcategory.emoji;
             name = subcategory.name;
-        } else {
-            const category = CATEGORY_TREE[selectedValue];
-            emoji = category.emoji;
-            name = category.displayName;
         }
 
         button.dataset.value = selectedValue;
         selectedText.textContent = `${emoji} ${name}`;
+        
         button.classList.toggle('placeholder', selectedValue === 'all');
         optionsContainer.classList.add('hidden');
         
         const dateStr = modal.dataset.date;
-        const modalSearchQuery = document.getElementById('modal-search-input').value;
-        if (dateStr) buildModal(dateStr, modalSearchQuery, selectedValue);
+        if (dateStr) buildModal(dateStr);
     });
 
     selectedText.textContent = '✨ Todas';
@@ -2604,77 +2564,297 @@ const setupCustomCategoryFilter = () => {
     button.classList.add('placeholder');
 }
 
-const renderCalendar = () => {
-    if (!calendarDaysEl || !monthYearEl) return;
-    calendarDaysEl.innerHTML = '';
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
-    monthYearEl.textContent = `${currentDate.toLocaleDateString('es-ES', { month: 'long' }).toUpperCase()}`;
-    const firstDayOfMonth = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const dayOffset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
-    let totalGiveawaysCount = 0;
-    for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+// --- FIN DEL BLOQUE A PEGAR ---
 
-        let giveawaysForDay = giveaways[dateStr] || [];
+    const resetAIView = () => {
+        // Resetear variables de estado
+        imageQueue = [];
+        isProcessing = false;
+        currentIndex = 0;
+        totalCaptures = 0;
+        giveawaysWithErrors = [];
+        analysisResults = {
+            added: [],
+            duplicate: [],
+            expired: [],
+            foreign: [],
+            no_date: [],
+            not_a_giveaway: [],
+            api_error: []
+        };
 
-        if (activeBatchFilterId) {
-            const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
-            if (activeBatch) {
-                const batchGiveawayIds = new Set(activeBatch.giveawayIds);
-                giveawaysForDay = giveawaysForDay.filter(g => batchGiveawayIds.has(g.id));
-            } else {
-                giveawaysForDay = []; 
+        // Resetear la visibilidad de las vistas
+        if (aiInitialView) aiInitialView.style.display = 'flex';
+        if (interactiveAnalysisContainer) interactiveAnalysisContainer.style.display = 'none';
+        if (aiSummaryView) aiSummaryView.style.display = 'none';
+        
+        // Resetear los elementos de la interfaz de subida
+        if (aiQueueList) aiQueueList.innerHTML = '';
+        if (aiQueueCount) aiQueueCount.textContent = '0';
+        if (aiQueueContainer) aiQueueContainer.style.display = 'none';
+        if (startAiButton) startAiButton.style.display = 'none';
+        if (retryFailedBtn) retryFailedBtn.style.display = 'none';
+        
+        // Limpiar el valor del input de archivos (muy importante)
+        if (aiImageInput) aiImageInput.value = '';
+    };
+
+    let notificationTimeout;
+    const showNotification = (title, message) => {
+        if (notificationTitle && notificationContent && notificationModal) {
+            clearTimeout(notificationTimeout);
+            notificationModal.classList.remove('show', 'hide');
+            void notificationModal.offsetWidth;
+            notificationTitle.textContent = title;
+            notificationContent.textContent = message;
+            notificationModal.classList.add('show');
+            notificationTimeout = setTimeout(() => {
+                notificationModal.classList.remove('show');
+                notificationModal.classList.add('hide');
+            }, 4000);
+        }
+    };
+
+    const saveGiveaways = () => localStorage.setItem('giveaways', JSON.stringify(giveaways));
+    const saveCompletedGiveaways = () => localStorage.setItem(`completedGiveaways`, JSON.stringify(completedGiveaways));
+    const saveNotInterestedGiveaways = () => localStorage.setItem('notInterestedGiveaways', JSON.stringify(notInterestedGiveaways));
+    const saveTrashGiveaways = () => localStorage.setItem('trashGiveaways', JSON.stringify(trashGiveaways));
+    const saveDiscardedGiveaways = () => localStorage.setItem('discardedGiveaways', JSON.stringify(discardedGiveaways));
+    const saveForeignAccounts = () => localStorage.setItem('foreignAccounts', JSON.stringify(foreignAccounts));
+    const saveWonGiveaways = () => localStorage.setItem('wonGiveaways', JSON.stringify(wonGiveaways));
+    const saveAnalysisHistory = () => localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+    const saveUserPoints = () => localStorage.setItem('userPoints', JSON.stringify(userPoints));
+    const saveUserAchievements = () => localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
+    const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
+    const saveVisGiveaways = () => localStorage.setItem('visGiveaways', JSON.stringify(visGiveaways));
+    const saveCaptureBatches = () => localStorage.setItem('captureBatches', JSON.stringify(captureBatches));
+
+    const getConfidenceEmoji = (score) => {
+        if (score === null || score === undefined) return '❔';
+        if (score >= 0.95) return '🎯'; // Muy Alta
+        if (score >= 0.8) return '👍';  // Alta
+        if (score >= 0.6) return '🤔';  // Media
+        return '❓'; // Baja
+    };
+
+    const updatePointsDisplay = () => {
+        if (totalPsCountEl) {
+            totalPsCountEl.textContent = userPoints.total;
+        }
+    };
+
+    const addPoints = (pointsToAdd, reason) => {
+        userPoints.total += pointsToAdd;
+        if (!userPoints.log) {
+            userPoints.log = [];
+        }
+        userPoints.log.push({
+            points: pointsToAdd,
+            reason: reason,
+            date: new Date().toISOString()
+        });
+        if (userPoints.log.length > 30) {
+            userPoints.log = userPoints.log.slice(-30);
+        }
+        saveUserPoints();
+        updatePointsDisplay();
+    };
+
+    const parsePrice = (priceString) => {
+        if (!priceString || typeof priceString !== 'string') return 0;
+        const cleanedString = priceString.replace(/[^0-9,.]/g, '').replace(',', '.');
+        const numericValue = parseFloat(cleanedString);
+        return isNaN(numericValue) ? 0 : numericValue;
+    };
+
+    const calculateSimilarity = (str1, str2) => {
+        const lev = (s1, s2) => {
+            const matrix = [];
+            for (let i = 0; i <= s2.length; i++) { matrix[i] = [i]; }
+            for (let j = 0; j <= s1.length; j++) { matrix[0][j] = j; }
+            for (let i = 1; i <= s2.length; i++) {
+                for (let j = 1; j <= s1.length; j++) {
+                    const cost = s1[j - 1] === s2[i - 1] ? 0 : 1;
+                    matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+                }
+            }
+            return matrix[s2.length][s1.length];
+        };
+        const longer = str1.length > str2.length ? str1 : str2;
+        const shorter = str1.length > str2.length ? str2 : str1;
+        const distance = lev(longer, shorter);
+        return (longer.length - distance) / longer.length;
+    };
+
+    const checkAchievements = (action, data = null) => {
+        const today = new Date().toISOString().slice(0, 10);
+        const counters = userAchievements.counters;
+
+        counters.totalGiveawaysAdded = Object.values(giveaways).flat().length + wonGiveaways.length;
+        counters.totalGiveawaysCompleted = Object.keys(completedGiveaways).length;
+        counters.totalGiveawaysWon = wonGiveaways.length;
+        counters.totalValueWon = wonGiveaways.reduce((sum, g) => sum + parsePrice(g.price), 0);
+
+        if (action === 'add-manual') counters.totalManualAdds = (counters.totalManualAdds || 0) + 1;
+        if (action === 'add-ai') counters.totalGiveawaysAddedAI = (counters.totalGiveawaysAddedAI || 0) + 1;
+        if (action === 'move') counters.firstMove = true;
+        if (action === 'restore') counters.restoredFromTrash = (counters.restoredFromTrash || 0) + 1;
+        if (action === 'search') counters.searchesMade = (counters.searchesMade || 0) + 1;
+        if (action === 'block-foreign') counters.foreignAccountsBlocked = (counters.foreignAccountsBlocked || 0) + 1;
+        if (action === 'merge') counters.mergedDuplicates = (counters.mergedDuplicates || 0) + 1;
+        if (action === 'complete' && data.giveawayDate === today) counters.lastMinuteCompletes = (counters.lastMinuteCompletes || 0) + 1;
+
+        if (action === 'win') {
+            const prizeValue = parsePrice(data.price);
+            if (prizeValue > 100) counters.winsOver100 = (counters.winsOver100 || 0) + 1;
+            if (prizeValue > 2000) counters.winsOver2000 = (counters.winsOver2000 || 0) + 1;
+            
+            const categoryMap = { '🥎': 'padel', '🛩️': 'viajes', '🃏': 'frikis' };
+            let prizeCategory = 'otros';
+            for (const emoji in categoryMap) {
+                if (data.prize.includes(emoji)) { prizeCategory = categoryMap[emoji]; break; }
+            }
+            counters.categoryWins[prizeCategory]++;
+            
+            counters.sameDayWins[today] = (counters.sameDayWins[today] || 0) + 1;
+
+            data.accounts.forEach(acc => {
+                counters.winsFromSameAccount[acc] = (counters.winsFromSameAccount[acc] || 0) + 1;
+            });
+
+            if(data.moved) counters.movedGiveawayWins = (counters.movedGiveawayWins || 0) + 1;
+
+            if (data.addDate) {
+                const addDate = new Date(data.addDate);
+                const winDate = new Date(data.wonDate);
+                const diffMonths = (winDate.getFullYear() - addDate.getFullYear()) * 12 + (winDate.getMonth() - addDate.getMonth());
+                if (diffMonths >= 6) counters.nostradamusWins = (counters.nostradamusWins || 0) + 1;
             }
         }
         
-        const dayGiveaways = giveawaysForDay.filter(g => {
-            const prize = (g.prize || '').toLowerCase();
-            const searchText = (searchQuery || '').toLowerCase();
-            if (searchQuery && !prize.includes(searchText)) {
-                return false;
-            }
-            if (currentFilter && currentFilter !== 'all') {
-                const categoryPath = g.prize_category || '';
-                if (!currentFilter.includes('/')) { 
-                    if (!categoryPath.startsWith(currentFilter + '/')) {
-                        return false;
-                    }
-                } else {
-                    if (categoryPath !== currentFilter) {
-                        return false;
+        const allAchievementTypes = [...achievementList.bronze, ...achievementList.silver, ...achievementList.gold, ...achievementList.platinum, ...achievementList.diamond, ...achievementList.merits, ...achievementList.prestige];
+        allAchievementTypes.forEach(ach => {
+            if (!userAchievements.unlocked.includes(ach.id)) {
+                const conditionData = action === 'win' ? data : null;
+                if (ach.condition(counters, userAchievements.unlocked, conditionData)) {
+                    userAchievements.unlocked.push(ach.id);
+                    const title = ach.title || ach.name;
+                    const isPrestige = ach.id.startsWith('t_');
+                    showNotification(isPrestige ? '🏆 Título Desbloqueado' : '🏅 Logro Desbloqueado', title);
+                    if (ach.ps) addPoints(ach.ps, `Logro: ${title}`);
+                    if (isPrestige) {
+                        userAchievements.title = ach.title;
                     }
                 }
             }
-            return true;
         });
 
-        totalGiveawaysCount += dayGiveaways.length;
-        const dayEl = document.createElement('div');
-        dayEl.className = 'calendar-day';
-        dayEl.draggable = true;
-        dayEl.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', dateStr);
-            e.dataTransfer.effectAllowed = 'move';
-        });
-        let dayNumberHTML = `<span class="day-number">${day}</span>`;
-        if (dayGiveaways.length > 0) {
-            dayEl.classList.add('has-giveaway');
-            dayEl.dataset.date = dateStr;
-            const remainingCount = dayGiveaways.filter(g => !completedGiveaways[g.id]).length;
-            if (remainingCount > 0) {
-                dayNumberHTML += `<span class="giveaway-count rounded-full">${remainingCount}</span>`;
-            } else {
-                dayEl.classList.add('all-done');
-                dayNumberHTML += `<span class="text-2xl mt-1">✨</span>`;
+        saveUserAchievements();
+        if (userTitleEl) {
+            userTitleEl.textContent = userAchievements.title;
+        }
+    };
+
+    const isDuplicateGiveaway = (newGiveaway) => {
+        const newPrize = (newGiveaway.prize || '').toLowerCase();
+        const newAccounts = (newGiveaway.accounts || []).map(acc => acc.toLowerCase().replace('@','')).sort().join(',');
+        
+        for (const date in giveaways) {
+            const existing = giveaways[date].find(g => {
+                const existingPrize = (g.prize || '').toLowerCase();
+                const existingAccounts = (g.accounts || []).map(acc => acc.toLowerCase().replace('@','')).sort().join(',');
+                const prizeSimilarity = calculateSimilarity(newPrize, existingPrize);
+                const accountsMatch = newAccounts === existingAccounts;
+                return prizeSimilarity > 0.7 && accountsMatch;
+            });
+            if (existing) {
+                return existing;
             }
         }
-        dayEl.innerHTML = dayNumberHTML;
-        calendarDaysEl.appendChild(dayEl);
+        return null;
+    };
+    const renderCalendar = () => {
+        if (!calendarDaysEl || !monthYearEl) return;
+        calendarDaysEl.innerHTML = '';
+        const month = currentDate.getMonth();
+        const year = currentDate.getFullYear();
+        monthYearEl.textContent = `${currentDate.toLocaleDateString('es-ES', { month: 'long' }).toUpperCase()}`;
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const dayOffset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+        let totalGiveawaysCount = 0;
+        for (let i = 0; i < dayOffset; i++) { calendarDaysEl.innerHTML += `<div></div>`; }
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+            // --- INICIO DE LA MODIFICACIÓN PARA FILTRADO DE LOTE ---
+            let giveawaysForDay = giveaways[dateStr] || [];
+
+            if (activeBatchFilterId) {
+                const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
+                if (activeBatch) {
+                    const batchGiveawayIds = new Set(activeBatch.giveawayIds);
+                    giveawaysForDay = giveawaysForDay.filter(g => batchGiveawayIds.has(g.id));
+                } else {
+                    // Si el lote no se encuentra por alguna razón, no mostramos nada.
+                    giveawaysForDay = []; 
+                }
+            }
+            // --- FIN DE LA MODIFICACIÓN ---
+
+            const dayGiveaways = giveawaysForDay.filter(g => { const prize = g.prize ? g.prize.toLowerCase() : ''; const searchText = searchQuery.toLowerCase(); if (searchQuery && !prize.includes(searchText)) { return false; } if (currentFilter && currentFilter !== 'all') { const [mainCat, subCat] = (g.prize_category || '').split('/'); if (!currentFilter.includes('/')) { if (mainCat !== currentFilter) { return false; } } else { if (g.prize_category !== currentFilter) { return false; } } } return true; })
+            totalGiveawaysCount += dayGiveaways.length;
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            dayEl.draggable = true;
+            dayEl.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', dateStr);
+                e.dataTransfer.effectAllowed = 'move';
+            });
+            let dayNumberHTML = `<span class="day-number">${day}</span>`;
+            if (dayGiveaways.length > 0) {
+                dayEl.classList.add('has-giveaway');
+                dayEl.dataset.date = dateStr;
+                const remainingCount = dayGiveaways.filter(g => !completedGiveaways[g.id]).length;
+                if (remainingCount > 0) {
+                    dayNumberHTML += `<span class="giveaway-count rounded-full">${remainingCount}</span>`;
+                } else {
+                    dayEl.classList.add('all-done');
+                    dayNumberHTML += `<span class="text-2xl mt-1">✨</span>`;
+                }
+            }
+            dayEl.innerHTML = dayNumberHTML;
+            calendarDaysEl.appendChild(dayEl);
+        }
+        if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
+    };
+
+    // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+
+const getCategoryInfo = (categoryPath) => {
+    // Valor por defecto si la categoría no es válida
+    const defaultValue = { name: 'Otros', emoji: '⭐' };
+
+    if (!categoryPath || typeof categoryPath !== 'string') {
+        return defaultValue;
     }
-    if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
+
+    // Si ya viene en el formato correcto
+    if (categoryPath.includes('/')) {
+        const [mainKey, subKey] = categoryPath.split('/');
+        if (CATEGORY_TREE[mainKey] && CATEGORY_TREE[mainKey].subcategories[subKey]) {
+            return CATEGORY_TREE[mainKey].subcategories[subKey];
+        }
+    } else {
+        // Búsqueda directa en todas las subcategorías
+        for (const mainKey in CATEGORY_TREE) {
+            if (CATEGORY_TREE[mainKey].subcategories[categoryPath]) {
+                return CATEGORY_TREE[mainKey].subcategories[categoryPath];
+            }
+        }
+    }
+
+    return defaultValue;
 };
 
 const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
@@ -2683,25 +2863,16 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     modalBody.innerHTML = '';
     notInterestedBody.innerHTML = '';
 
+    // Filtramos los sorteos del día CON LOS PARÁMETROS RECIBIDOS
     let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
         const prize = (g.prize || '').toLowerCase();
-        const searchText = (modalSearchQuery || '').toLowerCase();
-        const categoryPath = g.prize_category || '';
+        const searchText = modalSearchQuery.toLowerCase();
 
         if (modalSearchQuery && !prize.includes(searchText)) {
             return false;
         }
-
-        if (modalCategoryFilter !== 'all') {
-            if (!modalCategoryFilter.includes('/')) {
-                if (!categoryPath.startsWith(modalCategoryFilter + '/')) {
-                    return false;
-                }
-            } else {
-                if (categoryPath !== modalCategoryFilter) {
-                    return false;
-                }
-            }
+        if (modalCategoryFilter !== 'all' && g.prize_category !== modalCategoryFilter) {
+            return false;
         }
         return true;
     });
@@ -2780,35 +2951,56 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
 
     modal.dataset.date = dateStr;
 };
+// --- FIN DEL BLOQUE A PEGAR ---
 
-const openModal = (dateStr) => {
+    const openModal = (dateStr) => {
     if (navMenu.classList.contains('is-open')) {
         toggleNavMenu();
     }
     const modalSearchInput = document.getElementById('modal-search-input');
     if (modalSearchInput) {
-        modalSearchInput.value = '';
+        modalSearchInput.value = searchQuery;
     }
     const catButton = document.getElementById('category-filter-button');
     const catText = document.getElementById('category-filter-selected-text');
 
+    // Función auxiliar para encontrar los detalles de una categoría en el nuevo árbol
+    function findCategoryDetails(key) {
+        if (!key || key === 'all') return { name: 'Todas', emoji: '✨' };
+        
+        // Si es una ruta completa (ej: 'viajes-ocio/escapadas')
+        if (key.includes('/')) {
+            const [main, sub] = key.split('/');
+            if (CATEGORY_TREE[main] && CATEGORY_TREE[main].subcategories[sub]) {
+                return CATEGORY_TREE[main].subcategories[sub];
+            }
+        }
+        
+        // Si es una categoría principal (ej: 'tecnologia')
+        if (CATEGORY_TREE[key]) {
+             return { name: CATEGORY_TREE[key].displayName, emoji: CATEGORY_TREE[key].emoji };
+        }
+
+        // Si es una subcategoría (ej: 'padel')
+        for (const mainCategory in CATEGORY_TREE) {
+            if (CATEGORY_TREE[mainCategory].subcategories[key]) {
+                return CATEGORY_TREE[mainCategory].subcategories[key];
+            }
+        }
+        
+        return { name: 'Filtro', emoji: '❓' }; // Si no encuentra nada
+    }
+
     if (catButton && catText) {
-        catButton.dataset.value = 'all';
-        catText.textContent = `✨ Todas`;
-        catButton.classList.add('placeholder');
+        const info = findCategoryDetails(currentFilter);
+        catButton.dataset.value = currentFilter || 'all';
+        catText.textContent = `${info.emoji} ${info.name}`;
+        catButton.classList.toggle('placeholder', !currentFilter || currentFilter === 'all');
     }
 
     buildModal(dateStr);
     modal.classList.add('is-visible');
 };
-    
-const setFilterAndRender = (filter) => { 
-    currentFilter = filter; 
-    renderCalendar(); 
-    updateFilterBanner();
-    checkAchievements('search'); 
-};
-    
     const closeModal = () => { 
         modal.classList.remove('is-visible'); 
     };
@@ -2871,6 +3063,8 @@ const setFilterAndRender = (filter) => {
         }
     };
 
+    const setFilterAndRender = (filter) => { currentFilter = filter; renderCalendar(); checkAchievements('search'); }
+
     const markAsWon = (giveawayId, dateStr) => {
     if (!giveaways[dateStr]) return;
     const giveawayIndex = giveaways[dateStr].findIndex(g => g.id === giveawayId);
@@ -2878,12 +3072,14 @@ const setFilterAndRender = (filter) => {
     
     const [wonGiveaway] = giveaways[dateStr].splice(giveawayIndex, 1);
     
+    // --- [ESTA ES LA LÍNEA CLAVE] ---
+    // Guardamos la fecha original del sorteo en el objeto del trofeo.
     wonGiveaway.date = dateStr; 
+    // --------------------------------
 
     let points = 100;
     let reason = `¡Has ganado "${wonGiveaway.prize}"!`;
-    const prizeCategoryInfo = getCategoryInfo(wonGiveaway.prize_category);
-    if (['padel', 'viajes-ocio', 'aficiones'].some(c => wonGiveaway.prize_category.startsWith(c))) points += 25;
+    if (wonGiveaway.prize.includes('🥎') || wonGiveaway.prize.includes('🛩️') || wonGiveaway.prize.includes('🃏')) points += 25;
     if (parsePrice(wonGiveaway.price) > 500) points += 250;
     addPoints(points, reason);
 
@@ -3133,7 +3329,7 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
 
 --- 🏠 HOGAR (8) ---
 17. Si es un robot de cocina (Thermomix), freidora de aire, cafetera -> \`"hogar/cocina"\`
-18. Si es una lavadora, frigorífico, lavajillas -> \`"hogar/electrodomesticos"\`
+18. Si es una lavadora, frigorífico, lavavajillas -> \`"hogar/electrodomesticos"\`
 19. Si es un sofá, silla de escritorio, estantería -> \`"hogar/muebles"\`
 20. Si es un colchón, almohada o topper -> \`"hogar/descanso"\`
 21. Si es decoración, menaje, textiles (toallas, ropa de cama), velas -> \`"hogar/decoracion"\`
@@ -3342,20 +3538,25 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
             try {
                 const aiData = await callGeminiAPI(base64Data, dynamicPrompt);
                 
+                // --- [NUEVA LÓGICA DE DECISIÓN CON DOBLE FILTRO] ---
                 const accounts = (aiData.accounts || []).map(acc => `@${acc.replace('@', '')}`);
 
+                // 1. Comprobamos tu cortafuegos manual primero
                 const manuallyBlocked = accounts.some(acc => foreignAccounts.includes(acc));
 
+                // 2. Tomamos la decisión final
                 if (aiData.status === 'not_a_giveaway') {
                      resultData = { prize: 'No es un sorteo', status: 'not_a_giveaway', originalFile: file };
                 
                 } else if (aiData.is_spanish === false || manuallyBlocked) {
+                    // Si la IA dice que no es válido O si una cuenta está en tu lista negra, se descarta.
                     resultData = { ...aiData, accounts, status: 'foreign', originalFile: file };
                 
                 } else if (!aiData.date) {
                     resultData = { ...aiData, status: 'no_date', originalFile: file };
                 
                 } else {
+                    // Si pasa ambos filtros, el sorteo es VÁLIDO. Procedemos con las comprobaciones de siempre.
                     const giveawayDate = new Date(aiData.date);
                     const isExpired = giveawayDate < new Date(new Date().toDateString());
                     const existingGiveaway = isDuplicateGiveaway({ ...aiData, accounts });
@@ -3397,15 +3598,16 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
         const date = resultData.date || '';
         const accounts = (resultData.accounts || []).join(', ');
         const price = resultData.price || 'No encontrado';
-        
-        const categoryOptionsHTML = Object.keys(CATEGORY_TREE).flatMap(mainKey => 
-            Object.keys(CATEGORY_TREE[mainKey].subcategories).map(subKey => {
-                const subCat = CATEGORY_TREE[mainKey].subcategories[subKey];
-                const value = `${mainKey}/${subKey}`;
-                const isSelected = value === resultData.prize_category ? 'selected' : '';
-                return `<option value="${value}" ${isSelected}>${subCat.emoji} ${subCat.name}</option>`;
+
+        const categoryOptionsHTML = Object.keys(CATEGORY_INFO)
+            .filter(key => key !== 'all') // Excluimos la opción "Todas"
+            .map(key => {
+                const category = CATEGORY_INFO[key];
+                // Marcamos como seleccionada la categoría que ha devuelto la IA
+                const isSelected = key === resultData.prize_category ? 'selected' : '';
+                return `<option value="${key}" ${isSelected}>${category.emoji} ${category.name}</option>`;
             })
-        ).join('');
+            .join('');
 
         const formHTML = `
             <div class="interactive-card-form space-y-2">
@@ -3574,7 +3776,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
             case 'save':
             case 'add-new':
                 const newGiveaway = { 
-                    id: Date.now().toString(),
+                    id: Date.now().toString(), // Generamos el ID aquí
                     date: editedData.date, 
                     prize: editedData.prize, 
                     accounts: editedData.accounts, 
@@ -3586,12 +3788,16 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
                     prize_category: editedData.prize_category
                 };
                 
+                // VALIDACIÓN
                 if (!newGiveaway.date || !newGiveaway.prize) {
                     showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
-                    return;
+                    return; // Detenemos la ejecución aquí
                 }
                 
+                // Guardamos el sorteo con su nuevo ID en el array de resultados
                 analysisResults.added.push(newGiveaway);
+
+                // Y añadimos ESE MISMO sorteo al calendario
                 addGiveaway(newGiveaway);
 
                 addPoints(5, `Sorteo añadido con IA`);
@@ -3662,6 +3868,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
         analysisHistory = analysisHistory.slice(-20);
         saveAnalysisHistory();
         
+        // --- INICIO DE MODIFICACIÓN PARA GUARDAR LOTE DE CAPTURA ---
         if (analysisResults.added.length > 0) {
             const now = new Date();
             const newBatch = {
@@ -3670,14 +3877,16 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
                 giveawayIds: analysisResults.added.map(g => g.id)
             };
 
-            captureBatches.push(newBatch);
+            captureBatches.push(newBatch); // <-- CORREGIDO
             
-            if (captureBatches.length > 30) {
-                captureBatches = captureBatches.slice(-30);
+            // Limitamos el historial a los últimos 30 lotes para no sobrecargar
+            if (captureBatches.length > 30) { // <-- CORREGIDO
+                captureBatches = captureBatches.slice(-30); // <-- CORREGIDO
             }
             
-            saveCaptureBatches();
+            saveCaptureBatches(); // Guardamos el nuevo estado de los lotes
         }
+        // --- FIN DE MODIFICACIÓN ---
 
         let summaryHTML = `
             <div class="space-y-4 text-yellow-300 w-full">
@@ -3703,18 +3912,23 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
         
         renderCalendar();
         
+        // --- INICIO DE MODIFICACIÓN PARA ENVÍO SEMI-AUTOMÁTICO DE LOTE ---
         if (totalAdded > 0) {
+            // Retrasamos ligeramente el mensaje para que el usuario vea primero el resumen.
             setTimeout(() => {
                 const confirmationMessage = `🔮 ¡El Oráculo ha Hablado! 🔮\n\n¡Análisis completado! Has añadido con éxito ${totalAdded} nuevo(s) tesoro(s) a tu mapa privado.\n\nTienes en tus manos un valioso botín. ¿Quieres compartirlo con la comunidad de cazadores?\n\nSi pulsas 'Aceptar', se abrirá tu correo para enviar este lote al Hechicero Mayor (admin) y que pueda hacerlo público para todos. Si no, seguirá siendo tu secreto.\n\n¿Enviamos el informe al torreón del Hechicero?`;
                 
                 if (confirm(confirmationMessage)) {
                     const subject = 'Sugerencia de Nuevo Lote de Sorteos';
+                    // Usamos JSON.stringify con indentación para que el correo sea legible
                     const body = `Hola, aquí tienes un nuevo lote de sorteos para añadir a la base de datos pública:\n\n${JSON.stringify(analysisResults.added, null, 2)}`;
                     
+                    // Creamos y abrimos el enlace mailto:
                     window.location.href = `mailto:admin@misorteos.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                 }
-            }, 500);
+            }, 500); // 500ms de retraso
         }
+        // --- FIN DE MODIFICACIÓN ---
     }
     
     const generateErrorCardHTML = (errorData) => {
@@ -3812,9 +4026,15 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
             numericValue = parseFloat(String(data.value).replace(/[^0-9,.]/g, '').replace(',', '.'));
         }
         
-        const categoryInfo = getCategoryInfo(aiData.prize_category);
-        if(categoryInfo.emoji !== '⭐') { // No añadir emoji por defecto
-            prizeWithEmoji += ` ${categoryInfo.emoji}`;
+        const categoryMap = {
+            'padel': '🥎', 'viajes': '🛩️', 'frikis': '🃏', 'moda': '👠', 
+            'belleza': '💄', 'hogar': '🏠', 'tecnologia': '💻', 'comida': '🍔',
+            'ocio': '🎟️', 'deporte': '💪', 'infantil': '🧸', 'mascotas': '🐾',
+            'dinero': '💰', 'libros': '📚', 'motor': '🚗'
+        };
+
+        if(categoryMap[aiData.prize_category]) {
+            prizeWithEmoji += ` ${categoryMap[aiData.prize_category]}`;
         }
 
         if (!isNaN(numericValue) && numericValue > 500) {
@@ -4067,12 +4287,12 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
         const prizesWithValues = wonGiveaways.filter(g => parsePrice(g.price) > 0);
         const mostValuableWin = prizesWithValues.length ? prizesWithValues.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max) : null;
         const leastValuableWin = prizesWithValues.length ? prizesWithValues.reduce((min, g) => parsePrice(g.price) < parsePrice(min.price) ? g : min) : null;
-        
         const categoryWins = wonGiveaways.reduce((acc, g) => {
-            const catPath = g.prize_category || 'dinero-otros/otros';
-            const [mainCat] = catPath.split('/');
-            const displayName = CATEGORY_TREE[mainCat]?.displayName || 'Otros';
-            acc[displayName] = (acc[displayName] || 0) + 1;
+            const prize = g.prize || '';
+            if (prize.includes('🥎')) acc['Pádel 🥎'] = (acc['Pádel 🥎'] || 0) + 1;
+            else if (prize.includes('🛩️')) acc['Viajes 🛩️'] = (acc['Viajes 🛩️'] || 0) + 1;
+            else if (prize.includes('🃏')) acc['Frikis 🃏'] = (acc['Frikis 🃏'] || 0) + 1;
+            else acc['Otros'] = (acc['Otros'] || 0) + 1;
             return acc;
         }, {});
 
@@ -4233,10 +4453,8 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
 
         const categoryCtx = document.getElementById('category-pie-chart').getContext('2d');
         const categoryWins = wonGiveaways.reduce((acc, g) => {
-            const catPath = g.prize_category || 'dinero-otros/otros';
-            const [mainCat] = catPath.split('/');
-            const displayName = CATEGORY_TREE[mainCat]?.displayName || 'Otros';
-            acc[displayName] = (acc[displayName] || 0) + 1;
+            const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
+            acc[category] = (acc[category] || 0) + 1;
             return acc;
         }, {});
         categoryPieChart = new Chart(categoryCtx, {
@@ -4245,7 +4463,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
                 labels: Object.keys(categoryWins),
                 datasets: [{
                     data: Object.values(categoryWins),
-                    backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#6b7280', '#10b981', '#ef4444', '#f97316'],
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#6b7280'],
                     borderColor: '#fffbef',
                 }]
             },
@@ -4932,8 +5150,12 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
         userTitleEl.textContent = userAchievements.title;
     }
 
+    // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+
+    // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+
     const setupModal = (button, modal, closeButton, onOpenCallback) => {
-        if (!modal) return; 
+        if (!modal) return; // Si el modal no existe, no hacemos nada
 
         const openAction = (e) => {
             e.preventDefault();
@@ -4953,36 +5175,64 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeAction();
         });
+
+        // Lógica específica para las pestañas del modal de ayuda
+        if (modal.id === 'help-info-modal') {
+            const tabsContainer = modal.querySelector('.modal-tabs');
+            const tabContents = modal.querySelectorAll('.modal-tab-content');
+            
+            tabsContainer.addEventListener('click', (e) => {
+                const clickedTab = e.target.closest('.modal-tab-btn');
+                if (!clickedTab) return;
+
+                const tabId = clickedTab.dataset.tab;
+
+                tabsContainer.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+                clickedTab.classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.classList.toggle('hidden', content.id !== `tab-content-${tabId}`);
+                    content.classList.toggle('active', content.id === `tab-content-${tabId}`);
+                });
+            });
+        }
     };
+
+// --- FIN DEL BLOQUE A PEGAR ---
     
     // Configuración de todos los modales
-    setupModal(statsBtn, statsModal, document.getElementById('close-stats-modal'), () => {
+    setupModal(statsBtn, statsModal, closeStatsModalBtn, () => {
         calculateAndRenderStats();
         setTimeout(renderCharts, 50); 
     });
-    setupModal(historyBtn, historyModal, document.getElementById('close-history-modal'), renderHistoryModal);
-    setupModal(trophyBtn, trophyModal, document.getElementById('close-trophy-modal'), renderTrophyModal);
-    setupModal(achievementsBtn, achievementsModal, document.getElementById('close-achievements-modal'), () => renderAchievementsModal('logros'));
+    setupModal(historyBtn, historyModal, closeHistoryModalBtn, renderHistoryModal);
+    setupModal(trophyBtn, trophyModal, closeTrophyModalBtn, renderTrophyModal);
+    setupModal(achievementsBtn, achievementsModal, closeAchievementsModalBtn, () => renderAchievementsModal('logros'));
     setupModal(null, searchModal, closeSearchModalBtn);
     setupModal(trashBtn, trashModal, closeTrashModalBtn, renderTrashModal);
     setupModal(discardedBtn, discardedModal, closeDiscardedModalBtn, renderDiscardedModal);
     setupModal(manageForeignAccountsBtn, foreignAccountsModal, closeForeignAccountsModalBtn, renderForeignAccountsModal);
     setupModal(null, duplicateComparisonModal, closeDuplicateComparisonModalBtn);
-    setupModal(null, psSummaryModal, document.getElementById('close-ps-summary-modal'));
-    setupModal(null, recentAddsModal, document.getElementById('close-recent-adds-modal'));
+    setupModal(null, psSummaryModal, closePsSummaryModalBtn);
+    setupModal(null, recentAddsModal, closeRecentAddsModalBtn);
     setupModal(visReviewBtn, visModal, closeVisModalBtn, renderVisModal);
     setupModal(newAdditionsBtn, newAdditionsModal, closeNewAdditionsModalBtn, renderNewAdditionsModal);
-    setupModal(null, addGiveawayModal, closeAddGiveawayModalBtn);
+    setupModal(null, addGiveawayModal, closeAddGiveawayModalBtn); // <-- Corrección 1 (Añadir Sorteo)
 
+    // Corrección 2 (Ayuda): Definimos las variables y llamamos a setupModal
     const helpInfoModal = document.getElementById('help-info-modal');
     const helpInfoBtn = document.getElementById('help-info-btn');
     const closeHelpInfoModalBtn = document.getElementById('close-help-info-modal');
     setupModal(helpInfoBtn, helpInfoModal, closeHelpInfoModalBtn);
 
+// --- FIN DEL BLOQUE A PEGAR ---
+
+   // --- [NUEVO] Lógica para el Modal de Hoja de Ruta ---
     const roadmapModal = document.getElementById('roadmap-modal');
     const roadmapBtn = document.getElementById('roadmap-btn');
     const closeRoadmapModalBtn = document.getElementById('close-roadmap-modal');
-    setupModal(roadmapBtn, roadmapModal, closeRoadmapModalBtn);
+    
+    setupModal(roadmapBtn, roadmapModal, closeRoadmapModalBtn); 
     addManualBtn.addEventListener('click', (e) => {
         e.preventDefault();
         const confirmationMessage = `✨ ¡Añade tu Nuevo Tesoro al Mapa! ✨
@@ -5061,12 +5311,12 @@ Elige la opción que prefieras dentro del formulario.`;
             if (checkbox.checked) {
                 completedGiveaways[giveawayId] = true;
                 animateShootingStar(itemContainer, () => {
-                    buildModal(dateStr, document.getElementById('modal-search-input').value, document.getElementById('category-filter-button').dataset.value);
+                    buildModal(dateStr);
                     renderCalendar();
                 });
             } else {
                 delete completedGiveaways[giveawayId];
-                buildModal(dateStr, document.getElementById('modal-search-input').value, document.getElementById('category-filter-button').dataset.value);
+                buildModal(dateStr);
                 renderCalendar();
             }
             saveCompletedGiveaways();
@@ -5329,8 +5579,8 @@ Elige la opción que prefieras dentro del formulario.`;
 
             activeBatchFilterId = Number(batchItem.dataset.batchId);
             renderCalendar();
-            updateFilterBanner();
-            document.getElementById('close-new-additions-modal').click();
+            updateFilterBanner(); // <-- Llamada clave para mostrar el banner
+            document.getElementById('close-new-additions-modal').click(); // Cerramos el modal
         }
     });
 
@@ -5339,38 +5589,51 @@ Elige la opción que prefieras dentro del formulario.`;
     document.addEventListener('DOMContentLoaded', () => {
         setupCustomCategoryFilter();
     });
-
+    // --- LÓGICA PARA EL MENÚ DESPLEGABLE DE CATEGORÍAS ---
     const categoryFilterButton = document.getElementById('category-filter-button');
     const categoryFilterOptions = document.getElementById('category-filter-options');
 
     if (categoryFilterButton && categoryFilterOptions) {
-        document.addEventListener('click', (e) => {
-            if (!categoryFilterButton.contains(e.target) && !categoryFilterOptions.contains(e.target)) {
+        // Muestra u oculta el menú al hacer clic en el botón
+        categoryFilterButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            categoryFilterOptions.classList.toggle('hidden');
+        });
+
+        // Cierra el menú si se hace clic en cualquier otro lugar
+        document.addEventListener('click', () => {
+            if (!categoryFilterOptions.classList.contains('hidden')) {
                 categoryFilterOptions.classList.add('hidden');
             }
         });
     }
 
+    // [NUEVO] LÓGICA PARA EL AVISO DE ACTUALIZACIÓN
     const refreshOverlay = document.getElementById('refreshOverlay');
 
     function showRefreshOverlay() {
         if (refreshOverlay) {
             const headlines = document.querySelectorAll('.dynamic-headline');
             
+            // 1. Reiniciamos las frases a su estado inicial para que la animación pueda repetirse
             headlines.forEach(headline => {
                 headline.style.animation = 'none';
                 headline.style.opacity = '0';
             });
             
+            // 2. Forzamos al navegador a "ver" los cambios antes de volver a animar
             void refreshOverlay.offsetWidth;
 
+            // 3. Aplicamos la animación a cada frase con un retraso escalonado
             headlines.forEach((headline, index) => {
-                headline.style.animation = '';
-                headline.style.animationDelay = `${index * 0.4}s`;
+                headline.style.animation = ''; // Limpiamos para que se aplique la regla de CSS
+                headline.style.animationDelay = `${index * 0.4}s`; // 0.4s de retraso entre cada frase
             });
 
+            // Muestra el contenedor principal del aviso
             refreshOverlay.classList.add('is-visible');
             
+            // Reinicia la animación de la estrella fugaz
             const shootingStarRefresh = document.getElementById('shootingStarRefresh');
             if (shootingStarRefresh) {
                 shootingStarRefresh.style.animation = 'none';
@@ -5384,6 +5647,7 @@ Elige la opción que prefieras dentro del formulario.`;
         if (refreshOverlay) {
             refreshOverlay.classList.remove('is-visible');
         }
+        // Esperamos a que la transición de 1 segundo termine antes de recargar
         setTimeout(() => {
             location.reload();
         }, 1000);
@@ -5393,7 +5657,9 @@ Elige la opción que prefieras dentro del formulario.`;
         refreshOverlay.addEventListener('click', hideOverlayAndRefresh);
     }
     
+    // Función para comprobar si hay una nueva versión de los sorteos
     function checkForUpdates() {
+        // El "?v=" + new Date().getTime() es un truco para evitar que el navegador use una versión antigua del archivo cacheada
         fetch('/version.json?v=' + new Date().getTime())
             .then(response => {
                 if (!response.ok) {
@@ -5418,59 +5684,80 @@ Elige la opción que prefieras dentro del formulario.`;
             });
     }
 
+    // --- CÓDIGO PARA ACTIVAR LA COMPROBACIÓN ---
+
+    // 1. Ejecuta la comprobación EN CUANTO la página carga.
     checkForUpdates();
+
+    // 2. Además, establece un temporizador para que se repita cada HORA.
+    // (60 minutos * 60 segundos * 1000 milisegundos = 3600000)
     setInterval(checkForUpdates, 3600000);
+    // --- [NUEVO] LÓGICA PARA LOS FILTROS GLOBALES ---
 
 const globalSearchInput = document.getElementById('global-search-input');
 const globalCategoryFilter = document.getElementById('global-category-filter');
+
+// 1. Función para rellenar el desplegable de categorías
+// --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE FILTRO MEJORADA) ---
 
 function populateGlobalCategoryFilter() {
     if (!globalCategoryFilter) return;
     
     globalCategoryFilter.innerHTML = '';
 
+    // Opción para mostrar todo
     const allOption = document.createElement('option');
     allOption.value = 'all';
     allOption.textContent = '✨ Todas las Categorías';
     globalCategoryFilter.appendChild(allOption);
 
+    // Recorremos el árbol para crear las opciones
     for (const categoryKey in CATEGORY_TREE) {
         const category = CATEGORY_TREE[categoryKey];
         
+        // Opción para la categoría principal
         const mainOption = document.createElement('option');
         mainOption.value = categoryKey;
         mainOption.textContent = `${category.emoji} ${category.displayName} (todos)`;
         mainOption.style.fontWeight = 'bold';
         globalCategoryFilter.appendChild(mainOption);
 
+        // Opciones para las subcategorías
         for (const subcategoryKey in category.subcategories) {
             const subcategory = category.subcategories[subcategoryKey];
             const subOption = document.createElement('option');
             subOption.value = `${categoryKey}/${subcategoryKey}`;
+            // Usamos un espacio para indentar y que se vea la jerarquía
             subOption.textContent = `  ${subcategory.emoji} ${subcategory.name}`;
             globalCategoryFilter.appendChild(subOption);
         }
     }
 }
 
+// --- FIN DEL BLOQUE A PEGAR ---
+
+// 2. Evento para el buscador de texto
 if (globalSearchInput) {
     globalSearchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value;
-        renderCalendar();
+        searchQuery = e.target.value; // Actualizamos la variable global de búsqueda
+        renderCalendar(); // Redibujamos el calendario con el filtro aplicado
         updateFilterBanner();
     });
 }
 
+// 3. Evento para el filtro de categoría
 if (globalCategoryFilter) {
     globalCategoryFilter.addEventListener('change', (e) => {
         setFilterAndRender(e.target.value);
         updateFilterBanner();
-        toggleNavMenu();
+        toggleNavMenu(); // Cerramos el menú para ver el resultado
     });
 }
 
+// 4. Llamamos a la función para que el filtro se cree al cargar la página
 populateGlobalCategoryFilter();
 
+// [NUEVO] LÓGICA PARA LOS BOTONES DE AYUDA
 const HELP_CONTENT = {
     'modal': {
         title: '🌟 Guía del Cazador de Sorteos',
@@ -5478,7 +5765,7 @@ const HELP_CONTENT = {
     },
     'add-giveaway-modal': {
         title: '✍️ ¡Añade tu Tesoro!',
-        content: 'Registra un nuevo sorteo manualmente.\n\n- Fecha: El día que finaliza el sorteo.\n- Premio: Sé descriptivo y usa los emojis para categorizar.\n- Cuentas: Escribe las cuentas de Instagram separadas por comas (ej: @cuenta1,@cuenta2).\n- Valor: El precio aproximado del premio.'
+        content: 'Registra un nuevo sorteo manualmente.\n\n- Fecha: El día que finaliza el sorteo.\n- Premio: Sé descriptivo y usa los emojis para categorizar (🥎, 🛩️, 🃏, 💲).\n- Cuentas: Escribe las cuentas de Instagram separadas por comas (ej: @cuenta1,@cuenta2).\n- Valor: El precio aproximado del premio.'
     },
     'ai-fullscreen-view': {
         title: '🤖 El Asistente Mágico de IA',
@@ -5524,6 +5811,8 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+// [NUEVO] Lógica para el Modal de Ayuda --- const helpInfoModal = document.getElementById('help-info-modal'); const helpInfoBtn = document.getElementById('help-info-btn'); const closeHelpInfoModalBtn = document.getElementById('close-help-info-modal'); setupModal(helpInfoBtn, helpInfoModal, closeHelpInfoModalBtn); helpInfoModal.querySelector('.modal-tabs').addEventListener('click', (e) => { if (e.target.classList.contains('modal-tab-btn')) { const tabId = e.target.dataset.tab; // Ocultar todos los contenidos helpInfoModal.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active')); // Quitar clase activa de todos los botones helpInfoModal.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active')); // Mostrar el contenido y activar el botón correctos helpInfoModal.querySelector(`#tab-content-${tabId}`).classList.add('active'); e.target.classList.add('active'); } });
+// --- LÓGICA DEL PANEL DE ADMINISTRADOR ---
 const ADMIN_USERNAME = "Misorteos";
 const ADMIN_PASSWORD = "Saul31322";
 
@@ -5536,6 +5825,333 @@ const adminActionsView = document.getElementById('admin-actions-view');
 const adminUploadBtn = document.getElementById('admin-upload-btn');
 const adminDownloadBtn = document.getElementById('admin-download-btn');
 const zipUploadInput = document.getElementById('zip-upload');
+
+
+setupModal(adminPanelBtn, adminModal, closeAdminModalBtn, () => {
+    adminLoginView.style.display = 'block';
+    adminActionsView.style.display = 'none';
+    adminLoginForm.reset();
+});
+
+adminLoginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const usernameInput = document.getElementById('admin-username').value;
+    const passwordInput = document.getElementById('admin-password').value;
+
+    if (usernameInput === ADMIN_USERNAME && passwordInput === ADMIN_PASSWORD) {
+        adminLoginView.style.display = 'none';
+        adminActionsView.style.display = 'block';
+        showNotification('Acceso Concedido', 'Bienvenido, Hechicero Mayor.');
+    } else {
+        showNotification('Acceso Denegado', 'Las credenciales no son correctas.');
+        adminLoginForm.reset();
+    }
+});
+
+adminUploadBtn.addEventListener('click', (e) => { e.preventDefault(); zipUploadInput.click(); });
+adminDownloadBtn.addEventListener('click', (e) => { e.preventDefault(); downloadSourceCode(); });
+zipUploadInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { restoreFromBackup(file); } });
+// --- LÓGICA PARA ENVIAR SORTEO AL ADMIN ---
+const addGiveawayModalEl = document.getElementById('add-giveaway-modal');
+if (addGiveawayModalEl) {
+    addGiveawayModalEl.addEventListener('click', (e) => {
+        if (e.target.id === 'send-to-admin-btn') {
+            e.preventDefault();
+            const date = document.getElementById('giveaway-date').value;
+            const prize = document.getElementById('giveaway-prize').value;
+            const accounts = document.getElementById('giveaway-accounts').value;
+            const price = document.getElementById('giveaway-price').value;
+            const categorySelect = document.getElementById('giveaway-category');
+            const category = categorySelect.options[categorySelect.selectedIndex].text;
+
+            if (!date || !prize) {
+                showNotification('Faltan Datos', 'Por favor, completa al menos la fecha y el premio.');
+                return;
+            }
+
+            const emailAdmin = 'admin@misorteos.es';
+            const subject = `Nuevo Sorteo Sugerido: ${prize.substring(0, 30)}...`;
+            const body = `¡Hola, Hechicero Mayor! 🧙‍♂️\n\nUn cazador de sorteos ha compartido un nuevo tesoro para el calendario público. Aquí están los detalles:\n\n- Fecha Finalización: ${date}\n- Premio: ${prize}\n- Cuentas: ${accounts || 'No especificadas'}\n- Valor Aprox.: ${price || 'No especificado'}\n- Categoría: ${category || 'No especificada'}\n\n¡Gracias por tu magia!`;
+
+            const mailtoLink = `mailto:${emailAdmin}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            showNotification('¡Enviado!', 'Se ha abierto tu app de correo para enviar el sorteo. ¡Gracias por compartir!');
+            
+            setTimeout(() => {
+                document.getElementById('add-giveaway-form').reset();
+                closeAddGiveawayModal();
+            }, 500);
+        }
+    });
+}
+// --- INICIO: LÓGICA PARA COMPARTIR (VERSIÓN 9 - DISEÑO PLACA CELESTIAL INTEGRADO) ---
+
+const openShareOptionsBtn = document.getElementById('open-share-options-btn');
+const shareOptionsModal = document.getElementById('share-options-modal');
+const closeShareOptionsModalBtn = document.getElementById('close-share-options-modal');
+const generateAndDownloadBtn = document.getElementById('generate-and-download-btn');
+const shareNativeBtn = document.getElementById('share-native-btn');
+const previewContainer = document.getElementById('share-preview-container');
+
+// Función principal que se llama al hacer clic en "Compartir"
+const openShareModal = () => {
+    shareOptionsModal.classList.add('is-visible');
+    
+    // Conectar todos los listeners
+    document.querySelector('#share-timeframe-radios').onchange = handleShareUIUpdate;
+    document.getElementById('share-start-date').onchange = handleShareUIUpdate;
+    document.getElementById('share-end-date').onchange = handleShareUIUpdate;
+    document.getElementById('share-prize-list-container').onchange = updateSharePreview;
+    generateAndDownloadBtn.onclick = downloadShareImage;
+    shareNativeBtn.onclick = shareImageNatively;
+
+    // Carga inicial
+    document.querySelector('input[name="timeframe_selection"][value="last_month"]').checked = true;
+    document.getElementById('share-start-date').value = '';
+    document.getElementById('share-end-date').value = '';
+    handleShareUIUpdate();
+};
+
+// Actualiza la lista de trofeos disponibles según el rango de fechas
+const handleShareUIUpdate = () => {
+    const startDateInput = document.getElementById('share-start-date');
+    const endDateInput = document.getElementById('share-end-date');
+    const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+
+    if (event && (event.target.type === 'date')) {
+        if (radioChecked) radioChecked.checked = false;
+    }
+    if (event && (event.target.type === 'radio')) {
+        startDateInput.value = '';
+        endDateInput.value = '';
+    }
+
+    const validWonGiveaways = wonGiveaways.filter(g => g && g.id && g.date);
+    let trophiesInTimeframe = [];
+
+    if (radioChecked) { // Filtro por Radio Buttons
+        const timeframe = radioChecked.value;
+        const now = new Date();
+        trophiesInTimeframe = validWonGiveaways.filter(g => {
+            if (!g.wonDate) return false;
+            const wonDate = new Date(g.wonDate);
+            if (timeframe === 'all') return true;
+            const daysAgo = (now - wonDate) / (1000 * 3600 * 24);
+            if (timeframe === 'last_week') return daysAgo <= 7;
+            if (timeframe === 'last_month') return daysAgo <= 30;
+            return false;
+        });
+    } else if (startDateInput.value) { // Filtro por Rango de Fechas
+        const startDate = new Date(startDateInput.value + 'T00:00:00');
+        const endDate = endDateInput.value ? new Date(endDateInput.value + 'T23:59:59') : new Date();
+
+        trophiesInTimeframe = validWonGiveaways.filter(g => {
+            const giveawayDate = new Date(g.date);
+            return giveawayDate >= startDate && giveawayDate <= endDate;
+        });
+    }
+
+    populatePrizeList(trophiesInTimeframe);
+    updateSharePreview();
+};
+
+// Pinta la lista de trofeos con checkboxes
+const populatePrizeList = (trophies) => {
+    const prizeListDiv = document.getElementById('share-prize-list-container');
+    prizeListDiv.innerHTML = '';
+    if (trophies.length > 0) {
+        trophies.forEach(g => {
+            prizeListDiv.innerHTML += `
+                <div class="flex items-center">
+                    <input type="checkbox" id="prize-${g.id}" data-prize-id="${g.id}" class="h-4 w-4" checked>
+                    <label for="prize-${g.id}" class="ml-2 block text-sm truncate">${g.prize}</label>
+                </div>`;
+        });
+    } else {
+        prizeListDiv.innerHTML = '<p class="text-gray-500 text-center">No hay trofeos en este periodo.</p>';
+    }
+};
+
+// Actualiza la vista previa de la imagen
+const updateSharePreview = async () => {
+    previewContainer.innerHTML = '<span class="animate-pulse">Generando vista previa...</span>';
+    const selectedPrizeIds = new Set(Array.from(document.querySelectorAll('#share-prize-list-container input:checked')).map(cb => cb.dataset.prizeId));
+    
+    const prizesToRender = wonGiveaways.filter(g => g && g.id && selectedPrizeIds.has(g.id));
+    if (prizesToRender.length === 0) {
+        previewContainer.innerHTML = '<span>Selecciona al menos un trofeo.</span>';
+        return;
+    }
+
+    let timeframeText = 'Resumen Personalizado';
+    const radioChecked = document.querySelector('#share-timeframe-radios input:checked');
+    if (radioChecked) {
+        timeframeText = radioChecked.parentElement.textContent.trim();
+    } else if (document.getElementById('share-start-date').value) {
+        const start = new Date(document.getElementById('share-start-date').value).toLocaleDateString('es-ES');
+        const end = document.getElementById('share-end-date').value ? new Date(document.getElementById('share-end-date').value).toLocaleDateString('es-ES') : 'Hoy';
+        timeframeText = `Del ${start} al ${end}`;
+    }
+
+    const canvas = await generateTrophyImage(prizesToRender, timeframeText);
+    previewContainer.innerHTML = '';
+    canvas.className = 'max-w-full max-h-full object-contain rounded-lg';
+    previewContainer.appendChild(canvas);
+};
+
+// [VERSIÓN FINAL CON IMAGEN DE BORDE DE ESTRELLAS]
+const generateTrophyImage = async (prizesToRender, timeframeText) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 1000;
+
+    // --- Cargar imágenes ---
+    const backgroundImage = new Image();
+    backgroundImage.src = 'Assets/img/fondo.jpg'; 
+    const borderStarsImage = new Image();
+    borderStarsImage.src = 'Assets/img/borde.png'; // TU IMAGEN DE ESTRELLAS
+
+    // Esperamos a que todas las imágenes se carguen
+    await Promise.all([
+        new Promise(resolve => { backgroundImage.onload = resolve; backgroundImage.onerror = resolve; }),
+        new Promise(resolve => { borderStarsImage.onload = resolve; borderStarsImage.onerror = resolve; })
+    ]);
+
+    // 1. Dibujar Fondo Estrellado
+    if (backgroundImage.complete && backgroundImage.naturalHeight !== 0) {
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    } else {
+        const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        bgGradient.addColorStop(0, '#0f0c29');
+        bgGradient.addColorStop(1, '#24243e');
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // --- Dibujar la Placa Central (sin borde rectangular ni esquinas) ---
+    const plaqueMargin = 50;
+    const plaqueWidth = canvas.width - plaqueMargin * 2;
+    const plaqueHeight = canvas.height - plaqueMargin * 2;
+
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetY = 10;
+    ctx.shadowOffsetX = 0;
+
+    ctx.fillStyle = 'rgba(20, 20, 40, 0.7)'; 
+    ctx.fillRect(plaqueMargin, plaqueMargin, plaqueWidth, plaqueHeight);
+    
+    ctx.shadowColor = 'transparent'; // Reset shadow
+
+    // --- [NUEVO] Dibujar la imagen de estrellas doradas como borde ---
+    if (borderStarsImage.complete && borderStarsImage.naturalHeight !== 0) {
+        // Escalar la imagen de borde para que se ajuste al tamaño del canvas
+        ctx.drawImage(borderStarsImage, 0, 0, canvas.width, canvas.height);
+    }
+    
+    // --- Contenido de la placa ---
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#f7d468';
+    ctx.font = `bold 60px 'Chewy', cursive`;
+    ctx.fillText('VITRINA DE TROFEOS', canvas.width / 2, 150);
+
+    ctx.fillStyle = '#f0e6d2';
+    ctx.font = `30px 'Chewy', cursive`;
+    ctx.fillText(timeframeText.toUpperCase(), canvas.width / 2, 200);
+
+    const totalWins = prizesToRender.length;
+    const totalValue = prizesToRender.reduce((sum, g) => sum + parsePrice(g.price), 0);
+    ctx.font = `bold 32px 'Chewy', cursive`;
+    ctx.textAlign = 'left';
+    ctx.fillText(`Total Premios: ${totalWins}`, plaqueMargin + 40, 270);
+    ctx.textAlign = 'right';
+    ctx.fillText(`Valor Total: ${totalValue.toFixed(0)}€`, canvas.width - plaqueMargin - 40, 270);
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#f0e6d2';
+    ctx.font = `24px 'Arial', sans-serif`;
+    let yPos = 340;
+    const maxTextWidth = plaqueWidth - 180;
+
+    prizesToRender.slice(0, 12).forEach(g => {
+        let prizeText = g.prize;
+        if (ctx.measureText(prizeText).width > maxTextWidth) {
+            while (ctx.measureText(prizeText + '...').width > maxTextWidth) {
+                prizeText = prizeText.slice(0, -1);
+            }
+            prizeText += '...';
+        }
+        ctx.fillText(`- ${prizeText}`, plaqueMargin + 40, yPos);
+        
+        ctx.textAlign = 'right';
+        ctx.fillText(`${g.price || 'N/A'}`, canvas.width - plaqueMargin - 40, yPos);
+        ctx.textAlign = 'left';
+        yPos += 40;
+    });
+
+    if (prizesToRender.length > 12) {
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#aaa';
+        ctx.font = `20px 'Arial', sans-serif`;
+        ctx.fillText(`...y ${prizesToRender.length - 12} más!`, canvas.width / 2, yPos);
+    }
+
+    ctx.textAlign = 'center';
+    ctx.font = `20px 'Chewy', cursive`;
+    ctx.fillStyle = '#f7d468';
+    ctx.fillText('Generado con Misorteos.es ✨', canvas.width / 2, canvas.height - 80);
+
+    return canvas;
+};
+
+// Función para el botón de descargar
+const downloadShareImage = async () => {
+    const canvas = previewContainer.querySelector('canvas');
+    if (canvas) {
+        const link = document.createElement('a');
+        link.download = `Misorteos-Vitrina-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        showNotification('Error', 'No se pudo encontrar la imagen para descargar.');
+    }
+};
+
+// Función para el botón de compartir nativo
+const shareImageNatively = async () => {
+    const canvas = previewContainer.querySelector('canvas');
+    if (!canvas) {
+        showNotification('Error', 'No se pudo encontrar la imagen para compartir.');
+        return;
+    }
+    if (navigator.share) {
+        canvas.toBlob(async (blob) => {
+            const file = new File([blob], `Misorteos-Vitrina.png`, { type: 'image/png' });
+            try {
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        title: 'Mi Vitrina de Trofeos',
+                        text: `¡Mira los premios que he ganado con la app Misorteos! ✨`,
+                        files: [file],
+                    });
+                } else {
+                     showNotification('Error', 'Tu navegador no puede compartir esta imagen.');
+                }
+            } catch (error) { console.error('Error al compartir:', error); }
+        }, 'image/png');
+    } else {
+        showNotification('No Soportado', 'Tu navegador no permite compartir archivos. Usa la descarga.');
+    }
+};
+
+// Event Listeners principales
+if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShareModal);
+if (closeShareOptionsModalBtn) closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
+
+// --- FIN DE LÓGICA PARA COMPARTIR (VERSIÓN NATIVA Y ESTABLE) ---
 </script>
 </body>
 </html>

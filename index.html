@@ -2856,6 +2856,7 @@ const getCategoryInfo = (categoryPath) => {
 
     return defaultValue;
 };
+
 const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
     const modalBody = document.getElementById('modal-body');
     const notInterestedBody = document.getElementById('not-interested-body');
@@ -2866,33 +2867,16 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
         const prize = (g.prize || '').toLowerCase();
         const searchText = modalSearchQuery.toLowerCase();
-        const categoryPath = g.prize_category || '';
 
-        // Filtro por texto de búsqueda
         if (modalSearchQuery && !prize.includes(searchText)) {
             return false;
         }
-
-        // Filtro por categoría (lógica corregida para el árbol)
-        if (modalCategoryFilter !== 'all') {
-            // Si el filtro es una categoría principal (ej: 'tecnologia')
-            if (!modalCategoryFilter.includes('/')) {
-                if (!categoryPath.startsWith(modalCategoryFilter + '/')) {
-                    return false;
-                }
-            } 
-            // Si el filtro es una subcategoría (ej: 'tecnologia/gaming')
-            else {
-                if (categoryPath !== modalCategoryFilter) {
-                    return false;
-                }
-            }
+        if (modalCategoryFilter !== 'all' && g.prize_category !== modalCategoryFilter) {
+            return false;
         }
-        
         return true;
     });
     
-    // El resto de la función para ordenar y mostrar los sorteos
     dayGiveaways.sort((a, b) => {
         const isACompleted = !!completedGiveaways[a.id];
         const isBCompleted = !!completedGiveaways[b.id];
@@ -2967,7 +2951,6 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
 
     modal.dataset.date = dateStr;
 };
-
 // --- FIN DEL BLOQUE A PEGAR ---
 
     const openModal = (dateStr) => {
@@ -2976,7 +2959,7 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     }
     const modalSearchInput = document.getElementById('modal-search-input');
     if (modalSearchInput) {
-        modalSearchInput.value = ''; // Siempre reseteamos la búsqueda al abrir
+        modalSearchInput.value = searchQuery;
     }
     const catButton = document.getElementById('category-filter-button');
     const catText = document.getElementById('category-filter-selected-text');
@@ -3009,17 +2992,15 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     }
 
     if (catButton && catText) {
-         // Siempre reseteamos el filtro al abrir
-        const info = findCategoryDetails('all');
-        catButton.dataset.value = 'all';
+        const info = findCategoryDetails(currentFilter);
+        catButton.dataset.value = currentFilter || 'all';
         catText.textContent = `${info.emoji} ${info.name}`;
-        catButton.classList.add('placeholder');
+        catButton.classList.toggle('placeholder', !currentFilter || currentFilter === 'all');
     }
 
     buildModal(dateStr);
     modal.classList.add('is-visible');
 };
-    
     const closeModal = () => { 
         modal.classList.remove('is-visible'); 
     };
@@ -3348,7 +3329,7 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
 
 --- 🏠 HOGAR (8) ---
 17. Si es un robot de cocina (Thermomix), freidora de aire, cafetera -> \`"hogar/cocina"\`
-18. Si es una lavadora, frigorífico, lavajillas -> \`"hogar/electrodomesticos"\`
+18. Si es una lavadora, frigorífico, lavavajillas -> \`"hogar/electrodomesticos"\`
 19. Si es un sofá, silla de escritorio, estantería -> \`"hogar/muebles"\`
 20. Si es un colchón, almohada o topper -> \`"hogar/descanso"\`
 21. Si es decoración, menaje, textiles (toallas, ropa de cama), velas -> \`"hogar/decoracion"\`
@@ -5608,7 +5589,6 @@ Elige la opción que prefieras dentro del formulario.`;
     document.addEventListener('DOMContentLoaded', () => {
         setupCustomCategoryFilter();
     });
-
     // --- LÓGICA PARA EL MENÚ DESPLEGABLE DE CATEGORÍAS ---
     const categoryFilterButton = document.getElementById('category-filter-button');
     const categoryFilterOptions = document.getElementById('category-filter-options');
@@ -5845,6 +5825,8 @@ const adminActionsView = document.getElementById('admin-actions-view');
 const adminUploadBtn = document.getElementById('admin-upload-btn');
 const adminDownloadBtn = document.getElementById('admin-download-btn');
 const zipUploadInput = document.getElementById('zip-upload');
+
+
 setupModal(adminPanelBtn, adminModal, closeAdminModalBtn, () => {
     adminLoginView.style.display = 'block';
     adminActionsView.style.display = 'none';
@@ -6170,36 +6152,6 @@ if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShare
 if (closeShareOptionsModalBtn) closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
 
 // --- FIN DE LÓGICA PARA COMPARTIR (VERSIÓN NATIVA Y ESTABLE) ---
-
-// --- INICIO: LÓGICA PARA FILTROS DEL MODAL ---
-    const modalSearchInput = document.getElementById('modal-search-input');
-    const categoryFilterOptions = document.getElementById('category-filter-options');
-
-    if (modalSearchInput) {
-        modalSearchInput.addEventListener('input', (e) => {
-            const dateStr = modal.dataset.date;
-            if (dateStr) {
-                // Llamamos a buildModal con el nuevo texto de búsqueda
-                buildModal(dateStr, e.target.value, document.getElementById('category-filter-button').dataset.value);
-            }
-        });
-    }
-
-    if (categoryFilterOptions) {
-        categoryFilterOptions.addEventListener('click', (e) => {
-            const selectedOption = e.target.closest('.custom-dropdown-option');
-            if (!selectedOption) return;
-        
-            const selectedValue = selectedOption.dataset.value;
-            const dateStr = modal.dataset.date;
-
-            if (dateStr) {
-                 // Llamamos a buildModal con la nueva categoría seleccionada
-                buildModal(dateStr, modalSearchInput.value, selectedValue);
-            }
-        });
-    }
-    // --- FIN: LÓGICA PARA FILTROS DEL MODAL ---
 </script>
 </body>
 </html>

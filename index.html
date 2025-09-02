@@ -2058,106 +2058,43 @@
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
     let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
 
-    // --- INICIO DEL BLOQUE A PEGAR (NUEVA ESTRUCTURA DE CATEGORÍAS) ---
-
-const CATEGORY_TREE = {
-    'viajes-ocio': {
-        displayName: 'Viajes y Ocio',
-        emoji: '✈️',
-        subcategories: {
-            'viajes-internacionales': { name: 'Viajes Internacionales', emoji: '🌍', desc: 'Vuelos, cruceros y estancias largas fuera de España.' },
-            'viajes-nacionales': { name: 'Viajes Nacionales', emoji: '🇪🇸', desc: 'Estancias de varias noches en hoteles, apartamentos o casas rurales.' },
-            'escapadas': { name: 'Escapadas y Hoteles', emoji: '🏨', desc: 'Estancias cortas (1-2 noches), cajas de experiencias (Smartbox).' },
-            'restauracion': { name: 'Restauración', emoji: '🍴', desc: 'Cenas, comidas, menús degustación o brunchs.' },
-            'entradas-conciertos': { name: 'Entradas a Conciertos', emoji: '🎤', desc: 'Tickets para música, festivales y conciertos.' },
-            'entradas-eventos': { name: 'Entradas a Eventos', emoji: '🎟️', desc: 'Tickets para cine, teatro, partidos y otros eventos.' },
-            'parques-tematicos': { name: 'Parques Temáticos', emoji: '🎢', desc: 'Entradas para parques de atracciones o acuáticos.' },
-            'actividades': { name: 'Actividades y Talleres', emoji: '🧗‍♀️', desc: 'Paseos en barco, catas de vino, cursos presenciales.' }
-        }
-    },
-    'tecnologia': {
-        displayName: 'Tecnología',
-        emoji: '💻',
-        subcategories: {
-            'telefonia': { name: 'Telefonía y Wearables', emoji: '📱', desc: 'Smartphones, tablets, smartwatches y pulseras.' },
-            'gaming': { name: 'Gaming y Consolas', emoji: '🎮', desc: 'Consolas, videojuegos, sillas gamer, periféricos.' },
-            'informatica': { name: 'Informática', emoji: '💻', desc: 'Portátiles, PCs, monitores, teclados, impresoras.' },
-            'sonido': { name: 'Sonido', emoji: '🎧', desc: 'Auriculares, altavoces y equipos de música.' },
-            'imagen': { name: 'Imagen y Fotografía', emoji: '📸', desc: 'TVs, cámaras, drones y proyectores.' },
-            'software': { name: 'Software y Suscripciones', emoji: '🔁', desc: 'Licencias y suscripciones a servicios (Netflix, etc.).' },
-            'componentes': { name: 'Componentes y Accesorios', emoji: '⚙️', desc: 'Discos duros, powerbanks, cables.' }
-        }
-    },
-    'hogar': {
-        displayName: 'Hogar',
-        emoji: '🏠',
-        subcategories: {
-            'cocina': { name: 'Pequeño Electrodoméstico', emoji: '🍳', desc: 'Freidoras de aire, robots de cocina, cafeteras.' },
-            'electrodomesticos': { name: 'Grandes Electrodomésticos', emoji: '🧊', desc: 'Lavadoras, frigoríficos, lavavajillas.' },
-            'muebles': { name: 'Muebles y Descanso', emoji: '🛋️', desc: 'Sofás, colchones, sillas de escritorio.' },
-            'decoracion': { name: 'Decoración y Menaje', emoji: '🖼️', desc: 'Decoración, vajillas, textiles, velas.' },
-            'limpieza': { name: 'Limpieza', emoji: '🧼', desc: 'Lotes de productos, aspiradoras, robots.' },
-            'bricolaje': { name: 'Bricolaje y Jardín', emoji: '🛠️', desc: 'Herramientas y artículos de jardinería.' }
-        }
-    },
-    'moda': {
-        displayName: 'Moda y Belleza',
-        emoji: '👕',
-        subcategories: {
-            'moda-femenina': { name: 'Moda Femenina', emoji: '👗', desc: 'Ropa y looks para mujer.' },
-            'moda-masculina': { name: 'Moda Masculina', emoji: '👔', desc: 'Ropa y looks para hombre.' },
-            'calzado-moda': { name: 'Calzado de Moda', emoji: '👟', desc: 'Sneakers, zapatos, sandalias, botas.' },
-            'calzado-deportivo': { name: 'Calzado Deportivo', emoji: '🏃‍♀️', desc: 'Zapatillas para running, fútbol, etc.' },
-            'bolsos-equipaje': { name: 'Bolsos y Equipaje', emoji: '👜', desc: 'Bolsos, mochilas, maletas, neceseres.' },
-            'joyeria-relojes': { name: 'Joyería y Relojes', emoji: '💍', desc: 'Relojes, pulseras, collares, anillos.' },
-            'gafas-accesorios': { name: 'Gafas y Accesorios', emoji: '🕶️', desc: 'Gafas de sol y otros pequeños complementos.' },
-            'maquillaje': { name: 'Maquillaje y Perfumería', emoji: '💄', desc: 'Maquillaje, perfumes y cosmética de color.' },
-            'cuidado-personal': { name: 'Cuidado Personal', emoji: '🧴', desc: 'Cremas, cuidado capilar y productos de farmacia.' }
-        }
-    },
-    'alimentacion': {
-        displayName: 'Alimentación',
-        emoji: '🛒',
-        subcategories: {
-            'gourmet': { name: 'Gourmet y Jamonería', emoji: '🥓', desc: 'Jamón, queso, aceite, vino y productos delicatessen.' },
-            'supermercado': { name: 'Supermercado y Dulces', emoji: '🛒', desc: 'Cestas de la compra, lotes de productos, chocolates.' },
-            'bebidas': { name: 'Bebidas', emoji: '🍷', desc: 'Lotes de vino, cerveza, refrescos o licores.' }
-        }
-    },
-    'aficiones': {
-        displayName: 'Aficiones y Cultura',
-        emoji: '🎯',
-        subcategories: {
-            'padel': { name: 'Pádel', emoji: '🥎', desc: 'Palas, paleteros y material específico de pádel.' },
-            'futbol': { name: 'Fútbol', emoji: '⚽', desc: 'Camisetas oficiales, balones y merchandising.' },
-            'fitness': { name: 'Fitness y Gym', emoji: '🏋️‍♂️', desc: 'Equipamiento, suplementación y ropa de gimnasio.' },
-            'deportes-varios': { name: 'Otros Deportes', emoji: '🚴‍♀️', desc: 'Ciclismo, running, baloncesto, etc.' },
-            'frikis': { name: 'Cultura Friki y Coleccionismo', emoji: '🤓', desc: 'Funkos, figuras, LEGOs, merchandising.' },
-            'juegos-mesa': { name: 'Juegos de Mesa y Cartas', emoji: '🎲', desc: 'Juegos de mesa, de cartas y rol.' },
-            'libros-comics': { name: 'Libros y Cómics', emoji: '📚', desc: 'Libros, novelas gráficas y cómics.' },
-            'papeleria': { name: 'Papelería y Manualidades', emoji: '🎨', desc: 'Agendas, material de oficina y para manualidades.' }
-        }
-    },
-    'familia': {
-        displayName: 'Familia',
-        emoji: '👨‍👩‍👧‍👦',
-        subcategories: {
-            'moda-infantil': { name: 'Moda y Calzado Infantil', emoji: '🧒', desc: 'Ropa y zapatos para niños y bebés.' },
-            'juguetes': { name: 'Juguetes y Material Escolar', emoji: '🧸', desc: 'Juguetes para todas las edades y material escolar.' },
-            'bebes': { name: 'Bebés y Puericultura', emoji: '👶', desc: 'Cochecitos, pañales, y artículos para recién nacidos.' },
-            'mascotas': { name: 'Mascotas', emoji: '🐾', desc: 'Comida, juguetes y accesorios para mascotas.' }
-        }
-    },
-    'dinero-otros': {
-        displayName: 'Dinero y Otros',
-        emoji: '⭐',
-        subcategories: {
-            'vales-regalo': { name: 'Vales y Tarjetas Regalo', emoji: '💳', desc: 'Tarjetas regalo de tiendas, cheques de compra.' },
-            'otros': { name: 'Otros', emoji: '⭐', desc: 'Para todo aquello que desafía la clasificación.' }
-        }
-    }
-};
-// --- FIN DEL BLOQUE A PEGAR ---
+    const CATEGORY_INFO = {
+        'all': { name: 'Todas', emoji: '✨', desc: 'Muestra todos los sorteos.' },
+        'padel': { name: 'Pádel', emoji: '🥎', desc: 'Palas, ropa y accesorios de pádel.' },
+        'motor': { name: 'Motor', emoji: '🏎️', desc: 'Coches, motos, F1, MotoGP.' },
+        'mascotas': { name: 'Mascotas', emoji: '🐾', desc: 'Productos para animales.' },
+        'bebes': { name: 'Bebés', emoji: '👶', desc: 'Sillas, pañales, productos infantiles.' },
+        'bodas': { name: 'Bodas', emoji: '💍', desc: 'Relacionado con bodas y novios.' },
+        'dinero': { name: 'Dinero y Vales', emoji: '💰', desc: 'Tarjetas regalo, cupones, efectivo.' },
+        'viajes': { name: 'Viajes', emoji: '✈️', desc: 'Estancias, vuelos, hoteles, escapadas.' },
+        'ocio': { name: 'Ocio', emoji: '🎟️', desc: 'Entradas, cine, teatro, parques, cenas.' },
+        'aventura': { name: 'Aventura', emoji: '🧗', desc: 'Experiencias de adrenalina.' },
+        'suscripciones': { name: 'Suscripciones', emoji: '🔑', desc: 'Servicios digitales, Netflix, cursos online.' }, // <-- EMOJI CAMBIADO
+        'gaming': { name: 'Gaming', emoji: '🎮', desc: 'Consolas, videojuegos, accesorios.' },
+        'tecnologia': { name: 'Tecnología', emoji: '💻', desc: 'PCs, portátiles, componentes.' }, // <-- NUEVA
+        'moviles': { name: 'Móviles', emoji: '📱', desc: 'Smartphones y accesorios.' }, // <-- NUEVA
+        'foto': { name: 'Fotografía', emoji: '📸', desc: 'Cámaras, drones, objetivos.' },
+        'musica': { name: 'Música', emoji: '🎵', desc: 'Auriculares, altavoces, instrumentos.' },
+        'deporte': { name: 'Deporte', emoji: '💪', desc: 'Equipamiento y ropa deportiva general.' },
+        'libros': { name: 'Libros', emoji: '📚', desc: 'Libros, cómics y material de lectura.' },
+        'frikis': { name: 'Frikis', emoji: '🃏', desc: 'Funkos, juegos de mesa, merchandising.' },
+        'joyeria': { name: 'Joyería', emoji: '💎', desc: 'Relojes, pulseras, collares, gafas de sol.' },
+        'accesorios': { name: 'Accesorios', emoji: '👜', desc: 'Bolsos, mochilas, maletas, neceseres.' },
+        'moda': { name: 'Moda', emoji: '👠', desc: 'Ropa y calzado de uso casual.' },
+        'belleza': { name: 'Belleza', emoji: '💄', desc: 'Cosmética, maquillaje, perfumes.' },
+        'salud': { name: 'Salud', emoji: '🌿', desc: 'Farmacia, cuidado personal, bienestar.' },
+        'electrodomesticos': { name: 'Electrodomésticos', emoji: '📺', desc: 'TV, robots, lavadoras, etc.' },
+        'cocina': { name: 'Cocina', emoji: '🍳', desc: 'Pequeños electrodomésticos y menaje.' },
+        'bricolaje': { name: 'Bricolaje', emoji: '🛠️', desc: 'Herramientas y material de bricolaje.' },
+        'jardineria': { name: 'Jardinería', emoji: '🌱', desc: 'Plantas, macetas y herramientas.' },
+        'papeleria': { name: 'Papelería', emoji: '✏️', desc: 'Agendas, cuadernos, material de oficina.' },
+        'arte': { name: 'Arte', emoji: '🎨', desc: 'Materiales para pintura, manualidades.' },
+        'eco': { name: 'Sostenible', emoji: '♻️', desc: 'Productos ecológicos o sostenibles.' },
+        'gourmet': { name: 'Gourmet', emoji: '🍷', desc: 'Jamón, vinos, aceites premium.' },
+        'comida': { name: 'Comida', emoji: '🍔', desc: 'Alimentación general no gourmet.' },
+        'hogar': { name: 'Hogar', emoji: '🏠', desc: 'Decoración y textiles para el hogar.' },
+        'otros': { name: 'Otros', emoji: '⭐', desc: 'Sorteos que no encajan en otra categoría.' }
+    };
     const achievementList = {
         bronze: [
             { id: 'b_add_1', name: 'El Primer Paso', icon: '🌱', desc: 'Añade tu primer sorteo manualmente.', ps: 5, condition: (c) => c.totalManualAdds >= 1 },
@@ -2419,31 +2356,24 @@ const CATEGORY_TREE = {
     let datepicker = null;
     // --- FUNCIONES DE LA APLICACIÓN ---
     
-    // --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE DROPDOWN MEJORADA) ---
+    const populateCategoryDropdown = (selectElementId) => {
+        const selectElement = document.getElementById(selectElementId);
+        if (!selectElement) return;
+        
+        // Limpiamos opciones existentes y añadimos una por defecto
+        selectElement.innerHTML = '<option value="" disabled selected>-- Selecciona una categoría --</option>';
 
-const populateCategoryDropdown = (selectElementId) => {
-    const selectElement = document.getElementById(selectElementId);
-    if (!selectElement) return;
-
-    selectElement.innerHTML = '<option value="" disabled selected>-- Elige una subcategoría --</option>';
-
-    for (const categoryKey in CATEGORY_TREE) {
-        const category = CATEGORY_TREE[categoryKey];
-        const optgroup = document.createElement('optgroup');
-        optgroup.label = `${category.emoji} ${category.displayName}`;
-
-        for (const subcategoryKey in category.subcategories) {
-            const subcategory = category.subcategories[subcategoryKey];
+        for (const key in CATEGORY_INFO) {
+            if (key === 'all') continue; // No incluimos la opción "Todas"
+            
+            const category = CATEGORY_INFO[key];
             const option = document.createElement('option');
-            option.value = `${categoryKey}/${subcategoryKey}`;
-            option.textContent = `${subcategory.emoji} ${subcategory.name}`;
-            optgroup.appendChild(option);
+            option.value = key;
+            option.textContent = `${category.emoji} ${category.name}`;
+            selectElement.appendChild(option);
         }
-        selectElement.appendChild(optgroup);
-    }
-};
-
-// --- FIN DEL BLOQUE A PEGAR ---
+    };
+    
     const clearAllFilters = () => {
         activeBatchFilterId = null;
         searchQuery = '';
@@ -2498,73 +2428,61 @@ const populateCategoryDropdown = (selectElementId) => {
         }
     };
 
-    // --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE FILTRO VISUAL MEJORADA) ---
+    function setupCustomCategoryFilter() {
+        const button = document.getElementById('category-filter-button');
+        const selectedText = document.getElementById('category-filter-selected-text');
+        const optionsContainer = document.getElementById('category-filter-options');
+        if (!button || !selectedText || !optionsContainer) return;
 
-function setupCustomCategoryFilter() {
-    const button = document.getElementById('category-filter-button');
-    const selectedText = document.getElementById('category-filter-selected-text');
-    const optionsContainer = document.getElementById('category-filter-options');
-    if (!button || !selectedText || !optionsContainer) return;
+        // Limpiar opciones existentes
+        optionsContainer.innerHTML = '';
 
-    optionsContainer.innerHTML = '';
-
-    const allOptionLi = document.createElement('li');
-    allOptionLi.className = 'custom-dropdown-option';
-    allOptionLi.dataset.value = 'all';
-    allOptionLi.innerHTML = `
-        <span class="category-name">✨ Todas</span>
-        <span class="category-desc">Muestra todos los sorteos del día.</span>
-    `;
-    optionsContainer.appendChild(allOptionLi);
-
-    for (const categoryKey in CATEGORY_TREE) {
-        const category = CATEGORY_TREE[categoryKey];
-        for (const subcategoryKey in category.subcategories) {
-            const subcategory = category.subcategories[subcategoryKey];
+        // Llenar con las categorías
+        Object.keys(CATEGORY_INFO).forEach(key => {
+            const category = CATEGORY_INFO[key];
             const li = document.createElement('li');
             li.className = 'custom-dropdown-option';
-            li.dataset.value = `${categoryKey}/${subcategoryKey}`;
+            li.dataset.value = key;
             li.innerHTML = `
-                <span class="category-name">${subcategory.emoji} ${subcategory.name}</span>
-                <span class="category-desc">${subcategory.desc}</span>
+                <span class="category-name">${category.emoji} ${category.name}</span>
+                <span class="category-desc">${category.desc}</span>
             `;
             optionsContainer.appendChild(li);
-        }
+        });
+
+        // Añadir el manejador de eventos al contenedor de opciones (más eficiente)
+        optionsContainer.addEventListener('click', (e) => {
+            const selectedOption = e.target.closest('.custom-dropdown-option');
+            if (!selectedOption) return;
+
+            const selectedValue = selectedOption.dataset.value;
+            const category = CATEGORY_INFO[selectedValue];
+            
+            button.dataset.value = selectedValue;
+            selectedText.textContent = `${category.emoji} ${category.name}`;
+            
+            if (selectedValue === 'all') {
+                button.classList.add('placeholder');
+            } else {
+                button.classList.remove('placeholder');
+            }
+
+            // Ocultar el menú desplegable
+            optionsContainer.classList.add('hidden');
+            
+            // Volver a renderizar el modal con el filtro aplicado
+            const dateStr = modal.dataset.date;
+            if (dateStr) {
+                buildModal(dateStr);
+            }
+        });
+
+        // Establecer el estado inicial del botón
+        const initialCategory = CATEGORY_INFO['all'];
+        selectedText.textContent = `${initialCategory.emoji} ${initialCategory.name}`;
+        button.dataset.value = 'all';
+        button.classList.add('placeholder');
     }
-
-    optionsContainer.addEventListener('click', (e) => {
-        const selectedOption = e.target.closest('.custom-dropdown-option');
-        if (!selectedOption) return;
-
-        const selectedValue = selectedOption.dataset.value;
-        const [mainCat, subCat] = selectedValue.split('/');
-        
-        let emoji, name;
-        if (selectedValue === 'all') {
-            emoji = '✨';
-            name = 'Todas';
-        } else {
-            const subcategory = CATEGORY_TREE[mainCat].subcategories[subCat];
-            emoji = subcategory.emoji;
-            name = subcategory.name;
-        }
-
-        button.dataset.value = selectedValue;
-        selectedText.textContent = `${emoji} ${name}`;
-        
-        button.classList.toggle('placeholder', selectedValue === 'all');
-        optionsContainer.classList.add('hidden');
-        
-        const dateStr = modal.dataset.date;
-        if (dateStr) buildModal(dateStr);
-    });
-
-    selectedText.textContent = '✨ Todas';
-    button.dataset.value = 'all';
-    button.classList.add('placeholder');
-}
-
-// --- FIN DEL BLOQUE A PEGAR ---
 
     const resetAIView = () => {
         // Resetear variables de estado
@@ -2802,7 +2720,30 @@ function setupCustomCategoryFilter() {
             }
             // --- FIN DE LA MODIFICACIÓN ---
 
-            const dayGiveaways = giveawaysForDay.filter(g => { const prize = g.prize ? g.prize.toLowerCase() : ''; const searchText = searchQuery.toLowerCase(); if (searchQuery && !prize.includes(searchText)) { return false; } if (currentFilter && currentFilter !== 'all') { const [mainCat, subCat] = (g.prize_category || '').split('/'); if (!currentFilter.includes('/')) { if (mainCat !== currentFilter) { return false; } } else { if (g.prize_category !== currentFilter) { return false; } } } return true; })
+            const dayGiveaways = giveawaysForDay.filter(g => { // <-- MODIFICADO para usar la variable filtrada
+                const prize = g.prize ? g.prize.toLowerCase() : '';
+                const searchText = searchQuery.toLowerCase();
+
+                let matchesSearch = !searchQuery || prize.includes(searchText);
+                if (!matchesSearch) {
+                    return false;
+                }
+
+                if (currentFilter === 'all') {
+                    return true;
+                }
+                
+                // Lógica de categoría
+                let prizeCategory = 'otros';
+                for (const [key, value] of Object.entries(CATEGORY_INFO)) {
+                    if (g.prize_category === key) {
+                        prizeCategory = key;
+                        break;
+                    }
+                }
+                
+                return currentFilter === prizeCategory;
+            });
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
             dayEl.className = 'calendar-day';
@@ -2829,35 +2770,11 @@ function setupCustomCategoryFilter() {
         if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
     };
 
-    // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+    const getCategoryInfo = (categoryKey) => {
+        return CATEGORY_INFO[categoryKey] || CATEGORY_INFO['otros'];
+    };
 
-const getCategoryInfo = (categoryPath) => {
-    // Valor por defecto si la categoría no es válida
-    const defaultValue = { name: 'Otros', emoji: '⭐' };
-
-    if (!categoryPath || typeof categoryPath !== 'string') {
-        return defaultValue;
-    }
-
-    // Si ya viene en el formato correcto
-    if (categoryPath.includes('/')) {
-        const [mainKey, subKey] = categoryPath.split('/');
-        if (CATEGORY_TREE[mainKey] && CATEGORY_TREE[mainKey].subcategories[subKey]) {
-            return CATEGORY_TREE[mainKey].subcategories[subKey];
-        }
-    } else {
-        // Búsqueda directa en todas las subcategorías
-        for (const mainKey in CATEGORY_TREE) {
-            if (CATEGORY_TREE[mainKey].subcategories[categoryPath]) {
-                return CATEGORY_TREE[mainKey].subcategories[categoryPath];
-            }
-        }
-    }
-
-    return defaultValue;
-};
-
-const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
+    const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
     const modalBody = document.getElementById('modal-body');
     const notInterestedBody = document.getElementById('not-interested-body');
     modalBody.innerHTML = '';
@@ -2867,16 +2784,33 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
         const prize = (g.prize || '').toLowerCase();
         const searchText = modalSearchQuery.toLowerCase();
+        const categoryPath = g.prize_category || '';
 
+        // Filtro por texto de búsqueda
         if (modalSearchQuery && !prize.includes(searchText)) {
             return false;
         }
-        if (modalCategoryFilter !== 'all' && g.prize_category !== modalCategoryFilter) {
-            return false;
+
+        // Filtro por categoría (lógica corregida para el árbol)
+        if (modalCategoryFilter !== 'all') {
+            // Si el filtro es una categoría principal (ej: 'tecnologia')
+            if (!modalCategoryFilter.includes('/')) {
+                if (!categoryPath.startsWith(modalCategoryFilter + '/')) {
+                    return false;
+                }
+            } 
+            // Si el filtro es una subcategoría (ej: 'tecnologia/gaming')
+            else {
+                if (categoryPath !== modalCategoryFilter) {
+                    return false;
+                }
+            }
         }
+        
         return true;
     });
     
+    // El resto de la función para ordenar y mostrar los sorteos
     dayGiveaways.sort((a, b) => {
         const isACompleted = !!completedGiveaways[a.id];
         const isBCompleted = !!completedGiveaways[b.id];
@@ -2951,56 +2885,37 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
 
     modal.dataset.date = dateStr;
 };
-// --- FIN DEL BLOQUE A PEGAR ---
 
-    const openModal = (dateStr) => {
-    if (navMenu.classList.contains('is-open')) {
-        toggleNavMenu();
-    }
-    const modalSearchInput = document.getElementById('modal-search-input');
-    if (modalSearchInput) {
-        modalSearchInput.value = searchQuery;
-    }
-    const catButton = document.getElementById('category-filter-button');
-    const catText = document.getElementById('category-filter-selected-text');
-
-    // Función auxiliar para encontrar los detalles de una categoría en el nuevo árbol
-    function findCategoryDetails(key) {
-        if (!key || key === 'all') return { name: 'Todas', emoji: '✨' };
+    const openModal = (dateStr) => { 
+        if (navMenu.classList.contains('is-open')) {
+            toggleNavMenu();
+        }
         
-        // Si es una ruta completa (ej: 'viajes-ocio/escapadas')
-        if (key.includes('/')) {
-            const [main, sub] = key.split('/');
-            if (CATEGORY_TREE[main] && CATEGORY_TREE[main].subcategories[sub]) {
-                return CATEGORY_TREE[main].subcategories[sub];
+        const modalSearchInput = document.getElementById('modal-search-input');
+        if (modalSearchInput) {
+            modalSearchInput.value = searchQuery;
+        }
+
+        const catButton = document.getElementById('category-filter-button');
+        const catText = document.getElementById('category-filter-selected-text');
+        if (catButton && catText) {
+            if (currentFilter && currentFilter !== 'all') {
+                catButton.dataset.value = currentFilter;
+                const info = CATEGORY_INFO[currentFilter];
+                catText.textContent = `${info.emoji} ${info.name}`;
+                catButton.classList.remove('placeholder');
+            } else {
+                catButton.dataset.value = 'all';
+                const info = CATEGORY_INFO['all'];
+                catText.textContent = `${info.emoji} ${info.name}`;
+                catButton.classList.add('placeholder');
             }
         }
         
-        // Si es una categoría principal (ej: 'tecnologia')
-        if (CATEGORY_TREE[key]) {
-             return { name: CATEGORY_TREE[key].displayName, emoji: CATEGORY_TREE[key].emoji };
-        }
-
-        // Si es una subcategoría (ej: 'padel')
-        for (const mainCategory in CATEGORY_TREE) {
-            if (CATEGORY_TREE[mainCategory].subcategories[key]) {
-                return CATEGORY_TREE[mainCategory].subcategories[key];
-            }
-        }
-        
-        return { name: 'Filtro', emoji: '❓' }; // Si no encuentra nada
-    }
-
-    if (catButton && catText) {
-        const info = findCategoryDetails(currentFilter);
-        catButton.dataset.value = currentFilter || 'all';
-        catText.textContent = `${info.emoji} ${info.name}`;
-        catButton.classList.toggle('placeholder', !currentFilter || currentFilter === 'all');
-    }
-
-    buildModal(dateStr);
-    modal.classList.add('is-visible');
-};
+        buildModal(dateStr); 
+        modal.classList.add('is-visible'); 
+    };
+    
     const closeModal = () => { 
         modal.classList.remove('is-visible'); 
     };
@@ -3304,77 +3219,54 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
         -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* \`prize\` debe ser "Estancia de fin de semana en hotel de lujo para dos".
 
 - **Precio:** Si ves un valor monetario explícito en la imagen (ej: "valorado en 150€", "premio de 500€"), extráelo. Si no, déjalo como \`null\`.
-<REGLAS_DE_CATEGORIZACION_JERARQUICAS_V8_AI_Final>
-**Instrucción: Evalúa en orden descendente. La primera regla que coincida define la categoría y finaliza el proceso. El formato de salida DEBE SER "categoria/subcategoria".**
+- **Categoría (Reglas Jerárquicas V3):** Debes seguir estas reglas en orden estricto. La primera regla que se cumpla define la categoría y finaliza el proceso.
 
---- ✈️ VIAJES Y OCIO (8) ---
-1.  Si el premio es un viaje largo, vuelo o crucero -> \`"viajes-ocio/viajes-internacionales"\`
-2.  Si es una estancia de varias noches en hotel, apartamento o casa rural -> \`"viajes-ocio/viajes-nacionales"\`
-3.  Si es una estancia corta (1-2 noches) o una caja de experiencias (Smartbox) -> \`"viajes-ocio/escapadas"\`
-4.  Si es una cena, comida o menú degustación en un restaurante -> \`"viajes-ocio/restauracion"\`
-5.  Si son entradas para conciertos o festivales de música -> \`"viajes-ocio/entradas-conciertos"\`
-6.  Si son entradas para cine, teatro, partidos de fútbol o eventos culturales -> \`"viajes-ocio/entradas-eventos"\`
-7.  Si son entradas para parques de atracciones o acuáticos -> \`"viajes-ocio/parques-tematicos"\`
-8.  Si es una experiencia como una cata de vino, paseo en barco o un taller -> \`"viajes-ocio/actividades"\`
+    **--- NIVEL 1: NICHOS MUY ESPECÍFICOS ---**
+    1.  **Regla de Pádel:** Si el premio es específico de pádel (palas, paleteros, pelotas, ropa de pádel), clasifícalo como 'padel'.
+    2.  **Regla de Motor:** Si está relacionado con coches o motos (accesorios, merchandising F1/MotoGP, experiencias en circuito), clasifícalo como 'motor'.
+    3.  **Regla de Mascotas:** Si es para animales (comida, juguetes, accesorios), clasifícalo como 'mascotas'.
+    4.  **Regla de Bebés y Maternidad:** Si es para bebés (sillas de paseo, pañales, leche de fórmula, productos NUK), clasifícalo como 'bebes'.
+    5.  **Regla de Bodas:** Si es específico para bodas (vestidos, fotógrafo, invitaciones), clasifícalo como 'bodas'.
 
---- 💻 TECNOLOGÍA (8) ---
-9.  Si es una consola (PS5, Switch), videojuego o silla gamer -> \`"tecnologia/gaming"\`
-10. Si es un smartphone (iPhone, Samsung) o una tablet -> \`"tecnologia/telefonia"\`
-11. Si es un smartwatch (Apple Watch) o pulsera de actividad -> \`"tecnologia/wearables"\`
-12. Si es un portátil, PC, monitor, teclado, ratón o impresora -> \`"tecnologia/informatica"\`
-13. Si son auriculares (incluidos **AirPods**), altavoces o equipos de música -> \`"tecnologia/sonido"\`
-14. Si es un televisor (TV), cámara de fotos (Instax) o un dron -> \`"tecnologia/imagen"\`
-15. Si es una licencia de software o suscripción a servicios (Netflix) -> \`"tecnologia/software"\`
-16. Si es un componente (disco duro, RAM) o accesorio (powerbank) -> \`"tecnologia/componentes"\`
+    **--- NIVEL 2: NATURALEZA DEL PREMIO (NO FÍSICO) ---**
+    6.  **Regla de Dinero y Vales:** Si es dinero, una tarjeta regalo, cupón o vale de compra, clasifícalo como 'dinero'.
+    7.  **Regla de Viajes vs. Ocio (Desempate):**
+        * Si implica pernoctación o un vuelo/tren (estancia en hotel, fin de semana, crucero), es 'viajes'.
+        * Si es una experiencia local (entradas a conciertos, cine, teatro, parques temáticos, cena), es 'ocio'.
+    8.  **Regla de Aventura y Adrenalina:** Si es una experiencia de 'Ocio' que implica riesgo o adrenalina (salto paracaídas, puenting, conducción en circuito), clasifícalo como 'aventura'.
+    9.  **Regla de Suscripciones y Servicios:** Si es un servicio digital (Netflix, Spotify, software, cursos online), clasifícalo como 'suscripciones'.
 
---- 🏠 HOGAR (8) ---
-17. Si es un robot de cocina (Thermomix), freidora de aire, cafetera -> \`"hogar/cocina"\`
-18. Si es una lavadora, frigorífico, lavavajillas -> \`"hogar/electrodomesticos"\`
-19. Si es un sofá, silla de escritorio, estantería -> \`"hogar/muebles"\`
-20. Si es un colchón, almohada o topper -> \`"hogar/descanso"\`
-21. Si es decoración, menaje, textiles (toallas, ropa de cama), velas -> \`"hogar/decoracion"\`
-22. Si es una aspiradora, robot aspirador o lote de productos de limpieza -> \`"hogar/limpieza"\`
-23. Si son herramientas o artículos de jardinería -> \`"hogar/bricolaje"\`
+    **--- NIVEL 3: HOBBIES Y ARTÍCULOS PERSONALES ---**
+    10. **Regla de Gaming:** Si son consolas (PS5, Nintendo Switch), videojuegos o accesorios gaming (sillas, teclados), clasifícalo como 'gaming'.
+    // [NUEVA REGLA]
+    11. **Regla de Móviles:** Si el premio principal es un smartphone (iPhone, Samsung Galaxy, Xiaomi, etc.) o accesorios directos como fundas o cargadores específicos, clasifícalo como 'moviles'.
+    // [NUEVA REGLA]
+    12. **Regla de Tecnología (General):** Si es un producto tecnológico que no encaja en las categorías más específicas de arriba (portátiles, tablets, monitores, PCs), clasifícalo como 'tecnologia'.
+    13. **Regla de Fotografía y Vídeo:** Si son cámaras (Instax), drones, objetivos o trípodes, clasifícalo como 'foto'.
+    14. **Regla de Música y Sonido:** Si son auriculares, altavoces o instrumentos musicales, clasifícalo como 'musica'.
+    15. **Regla de Deporte (General):** Si es equipamiento o ropa para un deporte (que no sea pádel), clasifícalo como 'deporte'.
+    16. **Regla de Libros y Formación:** Si el premio principal es un libro o un curso (que no sea online), clasifícalo como 'libros'.
+    17. **Regla de Frikis:** Si son figuras coleccionables (Funko), juegos de mesa, cómics o merchandising de cultura pop, clasifícalo como 'frikis'.
+    18. **Regla de Joyería y Relojes:** Si son relojes, pulseras, collares o gafas de sol, clasifícalo como 'joyeria'.
+    19. **Regla de Bolsos y Accesorios:** Si son bolsos, mochilas, maletas o neceseres, clasifícalo como 'accesorios'.
+    20. **Regla de Moda:** Si es ropa o calzado de uso casual, clasifícalo como 'moda'.
+    21. **Regla de Belleza:** Si son productos de cosmética, maquillaje o perfumes, clasifícalo como 'belleza'.
+    22. **Regla de Salud y Cuidado Personal:** Si son productos de farmacia, cuidado dental, vitaminas o servicios de bienestar (spa, masaje), clasifícalo como 'salud'.
 
---- 👕 MODA Y BELLEZA (10) ---
-24. Si es ropa de mujer (vestidos, blusas) -> \`"moda/moda-femenina"\`
-25. Si es ropa de hombre (camisas, pantalones) -> \`"moda/moda-masculina"\`
-26. Si son zapatillas casual (sneakers), zapatos o sandalias -> \`"moda/calzado-moda"\`
-27. Si son zapatillas específicas para deporte (running, fútbol) -> \`"moda/calzado-deportivo"\`
-28. Si son bolsos o mochilas -> \`"moda/bolsos-mochilas"\`
-29. Si son maletas o neceseres de viaje -> \`"moda/equipaje-viaje"\`
-30. Si son relojes, pulseras, anillos o collares -> \`"moda/joyeria-relojes"\`
-31. Si son gafas de sol u otros pequeños complementos -> \`"moda/gafas-accesorios"\`
-32. Si es maquillaje (paletas, labiales) o perfumes -> \`"moda/maquillaje-perfumeria"\`
-33. Si son cremas, sérums o productos para la piel -> \`"moda/cuidado-personal"\`
-34. Si son productos para el pelo, secadores o planchas -> \`"moda/cuidado-capilar"\`
+    **--- NIVEL 4: ARTÍCULOS PARA EL HOGAR Y OTROS ---**
+    23. **Regla de Electrodomésticos:** Si es un electrodoméstico grande (TV, lavadora, frigorífico, robot aspirador), clasifícalo como 'electrodomesticos'.
+    24. **Regla de Cocina y Menaje:** Si es un pequeño electrodoméstico (freidora de aire, cafetera) o menaje, clasifícalo como 'cocina'.
+    25. **Regla de Bricolaje y Herramientas:** Si son herramientas o material de bricolaje, clasifícalo como 'bricolaje'.
+    26. **Regla de Jardinería y Plantas:** Si son plantas, macetas o herramientas de jardín, clasifícalo como 'jardineria'.
+    27. **Regla de Papelería y Oficina:** Si son agendas, cuadernos, bolígrafos o material de oficina, clasifícalo como 'papeleria'.
+    28. **Regla de Arte y Manualidades:** Si son materiales para hobbies creativos (pintura, arcilla, kits), clasifícalo como 'arte'.
+    29. **Regla de Sostenible y Eco:** Si el principal atractivo del producto es que es ecológico o sostenible, clasifícalo como 'eco'.
+    30. **Regla de Gourmet y Vinos:** Si son productos de alimentación de alta gama (jamón ibérico, vinos, aceites premium), clasifícalo como 'gourmet'.
+    31. **Regla de Comida:** Si son productos de alimentación general no gourmet, clasifícalo como 'comida'.
+    32. **Regla de Hogar:** Si son objetos de decoración o textiles para el hogar no incluidos antes, clasifícalo como 'hogar'.
 
---- 🍽️ ALIMENTACIÓN (4) ---
-35. Si es jamón, queso, aceite premium o vino -> \`"alimentacion/gourmet"\`
-36. Si es una cesta de la compra o lote de productos de supermercado -> \`"alimentacion/supermercado"\`
-37. Si son chocolates, golosinas, tartas o snacks -> \`"alimentacion/dulces-snacks"\`
-38. Si es un lote de bebidas (cerveza, refrescos, licores) -> \`"alimentacion/bebidas"\`
-
---- ⚽ AFICIONES Y CULTURA (8) ---
-39. Si es una pala, paletero o material de pádel -> \`"aficiones/padel"\`
-40. Si es una camiseta oficial de un equipo de fútbol -> \`"aficiones/futbol"\`
-41. Si es equipamiento de gimnasio o suplementación deportiva -> \`"aficiones/fitness"\`
-42. Si es material de otro deporte (ciclismo, running, etc.) -> \`"aficiones/deportes-varios"\`
-43. Si es una figura Funko Pop, LEGO, o merchandising de sagas -> \`"aficiones/frikis"\`
-44. Si es un juego de mesa, de cartas o de rol -> \`"aficiones/juegos-mesa"\`
-45. Si es un libro o cómic -> \`"aficiones/libros-comics"\`
-46. Si es material de papelería (agendas) o para manualidades -> \`"aficiones/papeleria"\`
-
---- 👨‍👩‍👧‍👦 FAMILIA (4) ---
-47. Si es ropa o calzado para niños -> \`"familia/moda-infantil"\`
-48. Si son juguetes o material escolar -> \`"familia/juguetes"\`
-49. Si son cochecitos, pañales o artículos para bebés -> \`"familia/bebes"\`
-50. Si es comida, juguetes o accesorios para mascotas -> \`"familia/mascotas"\`
-
---- 💰 DINERO Y OTROS (2) ---
-51. Si es una tarjeta regalo o un vale de compra -> \`"dinero-otros/vales-regalo"\`
-52. Si es cualquier otro tipo de premio -> \`"dinero-otros/otros"\`
-</REGLAS_DE_CATEGORIZACION_JERARQUICAS_V8_AI_Final>
+    **--- NIVEL 5: CATEGORÍA POR DEFECTO ---**
+    33. **Regla Final:** Si ninguna de las reglas anteriores aplica, clasifícalo como 'otros'.
 - **Confianza:** Evalúa tu certeza sobre la extracción de la FECHA (0.0 a 1.0). Si la fecha es explícita y clara, usa 1.0. Si es deducida o ambigua, usa un valor inferior.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 
@@ -3517,18 +3409,18 @@ A continuación se presentan ejemplos de análisis para calibrar tu lógica y as
 </EJEMPLOS_GUIADOS_DE_ALTA_PRECISION>
 
 <FORMATO_DE_SALIDA_ESTRICTO>
-Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
+Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON, sin texto adicional ni formato Markdown.
 {
-  "prize": "string conciso",
-  "accounts": ["@usuario1"],
+  "prize": "string | null",
+  "accounts": ["string"],
   "date": "string ('YYYY-MM-DD') | null",
   "price": "string | null",
   "ends_at_time": "string | null",
   "is_priority_time": boolean,
   "is_spanish": boolean,
   "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
-  "prize_category": "string ('categoria/subcategoria')",
-  "winner_count": 1,
+  "prize_category": "string ('padel', 'motor', 'mascotas', 'bebes', 'bodas', 'dinero', 'viajes', 'ocio', 'aventura', 'suscripciones', 'gaming', 'tecnologia', 'moviles', 'foto', 'musica', 'deporte', 'libros', 'frikis', 'joyeria', 'accesorios', 'moda', 'belleza', 'salud', 'electrodomesticos', 'cocina', 'bricolaje', 'jardineria', 'papeleria', 'arte', 'eco', 'gourmet', 'comida', 'hogar', 'otros')",
+  "winner_count": integer (por defecto 1),
   "confidence_score": float
 }
 </FORMATO_DE_SALIDA_ESTRICTO>
@@ -5589,6 +5481,7 @@ Elige la opción que prefieras dentro del formulario.`;
     document.addEventListener('DOMContentLoaded', () => {
         setupCustomCategoryFilter();
     });
+
     // --- LÓGICA PARA EL MENÚ DESPLEGABLE DE CATEGORÍAS ---
     const categoryFilterButton = document.getElementById('category-filter-button');
     const categoryFilterOptions = document.getElementById('category-filter-options');
@@ -5698,43 +5591,20 @@ const globalSearchInput = document.getElementById('global-search-input');
 const globalCategoryFilter = document.getElementById('global-category-filter');
 
 // 1. Función para rellenar el desplegable de categorías
-// --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE FILTRO MEJORADA) ---
-
 function populateGlobalCategoryFilter() {
     if (!globalCategoryFilter) return;
     
+    // Limpiamos por si acaso y añadimos la opción por defecto
     globalCategoryFilter.innerHTML = '';
 
-    // Opción para mostrar todo
-    const allOption = document.createElement('option');
-    allOption.value = 'all';
-    allOption.textContent = '✨ Todas las Categorías';
-    globalCategoryFilter.appendChild(allOption);
-
-    // Recorremos el árbol para crear las opciones
-    for (const categoryKey in CATEGORY_TREE) {
-        const category = CATEGORY_TREE[categoryKey];
-        
-        // Opción para la categoría principal
-        const mainOption = document.createElement('option');
-        mainOption.value = categoryKey;
-        mainOption.textContent = `${category.emoji} ${category.displayName} (todos)`;
-        mainOption.style.fontWeight = 'bold';
-        globalCategoryFilter.appendChild(mainOption);
-
-        // Opciones para las subcategorías
-        for (const subcategoryKey in category.subcategories) {
-            const subcategory = category.subcategories[subcategoryKey];
-            const subOption = document.createElement('option');
-            subOption.value = `${categoryKey}/${subcategoryKey}`;
-            // Usamos un espacio para indentar y que se vea la jerarquía
-            subOption.textContent = `  ${subcategory.emoji} ${subcategory.name}`;
-            globalCategoryFilter.appendChild(subOption);
-        }
+    // Usamos el objeto CATEGORY_INFO que ya tienes
+    for (const key in CATEGORY_INFO) {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = `${CATEGORY_INFO[key].emoji} ${CATEGORY_INFO[key].name}`;
+        globalCategoryFilter.appendChild(option);
     }
 }
-
-// --- FIN DEL BLOQUE A PEGAR ---
 
 // 2. Evento para el buscador de texto
 if (globalSearchInput) {
@@ -6152,6 +6022,35 @@ if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShare
 if (closeShareOptionsModalBtn) closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
 
 // --- FIN DE LÓGICA PARA COMPARTIR (VERSIÓN NATIVA Y ESTABLE) ---
+// --- INICIO: LÓGICA PARA FILTROS DEL MODAL ---
+    const modalSearchInput = document.getElementById('modal-search-input');
+    const categoryFilterOptions = document.getElementById('category-filter-options');
+
+    if (modalSearchInput) {
+        modalSearchInput.addEventListener('input', (e) => {
+            const dateStr = modal.dataset.date;
+            if (dateStr) {
+                // Llamamos a buildModal con el nuevo texto de búsqueda
+                buildModal(dateStr, e.target.value, document.getElementById('category-filter-button').dataset.value);
+            }
+        });
+    }
+
+    if (categoryFilterOptions) {
+        categoryFilterOptions.addEventListener('click', (e) => {
+            const selectedOption = e.target.closest('.custom-dropdown-option');
+            if (!selectedOption) return;
+        
+            const selectedValue = selectedOption.dataset.value;
+            const dateStr = modal.dataset.date;
+
+            if (dateStr) {
+                 // Llamamos a buildModal con la nueva categoría seleccionada
+                buildModal(dateStr, modalSearchInput.value, selectedValue);
+            }
+        });
+    }
+    // --- FIN: LÓGICA PARA FILTROS DEL MODAL ---
 </script>
 </body>
 </html>

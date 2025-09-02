@@ -2467,40 +2467,25 @@ const populateCategoryDropdown = (selectElementId) => {
         const bannerText = document.getElementById('filter-banner-text');
         if (!banner || !bannerText) return;
 
-        // Función auxiliar para encontrar los detalles de una categoría en el nuevo árbol
-        function findCategoryDetails(key) {
-            if (!key || key === 'all') return { name: 'Todas', emoji: '✨' };
-            if (key.includes('/')) {
-                const [main, sub] = key.split('/');
-                if (CATEGORY_TREE[main] && CATEGORY_TREE[main].subcategories[sub]) {
-                    return CATEGORY_TREE[main].subcategories[sub];
-                }
-            }
-            if (CATEGORY_TREE[key]) {
-                return { name: CATEGORY_TREE[key].displayName, emoji: CATEGORY_TREE[key].emoji };
-            }
-            for (const mainCategory in CATEGORY_TREE) {
-                if (CATEGORY_TREE[mainCategory].subcategories[key]) {
-                    return CATEGORY_TREE[mainCategory].subcategories[key];
-                }
-            }
-            return { name: 'Filtro', emoji: '❓' }; // Si no encuentra nada
-        }
-
         let filterIsActive = false;
         let bannerMessage = '';
 
+        // Prioridad 1: Filtro de Lote de Capturas
         if (activeBatchFilterId) {
             const activeBatch = (captureBatches || []).find(b => b.id === activeBatchFilterId);
             if (activeBatch) {
                 bannerMessage = `Mostrando solo el lote: <strong>${activeBatch.name}</strong> (${activeBatch.giveawayIds.length} sorteos).`;
                 filterIsActive = true;
             }
-        } else if (currentFilter && currentFilter !== 'all') {
-            const category = findCategoryDetails(currentFilter);
+        } 
+        // Prioridad 2: Filtro de Categoría Global
+        else if (currentFilter && currentFilter !== 'all') {
+            const category = CATEGORY_INFO[currentFilter];
             bannerMessage = `Mostrando categoría: <strong>${category.emoji} ${category.name}</strong>.`;
             filterIsActive = true;
-        } else if (searchQuery && searchQuery.trim() !== '') {
+        }
+        // Prioridad 3: Búsqueda por Texto Global
+        else if (searchQuery && searchQuery.trim() !== '') {
             bannerMessage = `Buscando: "<strong>${searchQuery}</strong>".`;
             filterIsActive = true;
         }
@@ -2843,7 +2828,36 @@ function setupCustomCategoryFilter() {
         }
         if (totalGiveawaysEl) totalGiveawaysEl.textContent = totalGiveawaysCount;
     };
-    const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
+
+    // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
+
+const getCategoryInfo = (categoryPath) => {
+    // Valor por defecto si la categoría no es válida
+    const defaultValue = { name: 'Otros', emoji: '⭐' };
+
+    if (!categoryPath || typeof categoryPath !== 'string') {
+        return defaultValue;
+    }
+
+    // Si ya viene en el formato correcto
+    if (categoryPath.includes('/')) {
+        const [mainKey, subKey] = categoryPath.split('/');
+        if (CATEGORY_TREE[mainKey] && CATEGORY_TREE[mainKey].subcategories[subKey]) {
+            return CATEGORY_TREE[mainKey].subcategories[subKey];
+        }
+    } else {
+        // Búsqueda directa en todas las subcategorías
+        for (const mainKey in CATEGORY_TREE) {
+            if (CATEGORY_TREE[mainKey].subcategories[categoryPath]) {
+                return CATEGORY_TREE[mainKey].subcategories[categoryPath];
+            }
+        }
+    }
+
+    return defaultValue;
+};
+
+const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
     const modalBody = document.getElementById('modal-body');
     const notInterestedBody = document.getElementById('not-interested-body');
     modalBody.innerHTML = '';
@@ -2853,33 +2867,16 @@ function setupCustomCategoryFilter() {
     let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
         const prize = (g.prize || '').toLowerCase();
         const searchText = modalSearchQuery.toLowerCase();
-        const categoryPath = g.prize_category || '';
 
-        // Filtro por texto de búsqueda
         if (modalSearchQuery && !prize.includes(searchText)) {
             return false;
         }
-
-        // Filtro por categoría (lógica corregida para el árbol)
-        if (modalCategoryFilter !== 'all') {
-            // Si el filtro es una categoría principal (ej: 'tecnologia')
-            if (!modalCategoryFilter.includes('/')) {
-                if (!categoryPath.startsWith(modalCategoryFilter + '/')) {
-                    return false;
-                }
-            } 
-            // Si el filtro es una subcategoría (ej: 'tecnologia/gaming')
-            else {
-                if (categoryPath !== modalCategoryFilter) {
-                    return false;
-                }
-            }
+        if (modalCategoryFilter !== 'all' && g.prize_category !== modalCategoryFilter) {
+            return false;
         }
-        
         return true;
     });
     
-    // El resto de la función para ordenar y mostrar los sorteos
     dayGiveaways.sort((a, b) => {
         const isACompleted = !!completedGiveaways[a.id];
         const isBCompleted = !!completedGiveaways[b.id];
@@ -2954,56 +2951,56 @@ function setupCustomCategoryFilter() {
 
     modal.dataset.date = dateStr;
 };
+// --- FIN DEL BLOQUE A PEGAR ---
 
-const openModal = (dateStr) => {
+    const openModal = (dateStr) => {
     if (navMenu.classList.contains('is-open')) {
         toggleNavMenu();
     }
     const modalSearchInput = document.getElementById('modal-search-input');
     if (modalSearchInput) {
-        modalSearchInput.value = ''; // Siempre reseteamos la búsqueda al abrir
+        modalSearchInput.value = searchQuery;
     }
     const catButton = document.getElementById('category-filter-button');
     const catText = document.getElementById('category-filter-selected-text');
-    
+
+    // Función auxiliar para encontrar los detalles de una categoría en el nuevo árbol
     function findCategoryDetails(key) {
         if (!key || key === 'all') return { name: 'Todas', emoji: '✨' };
+        
+        // Si es una ruta completa (ej: 'viajes-ocio/escapadas')
         if (key.includes('/')) {
             const [main, sub] = key.split('/');
             if (CATEGORY_TREE[main] && CATEGORY_TREE[main].subcategories[sub]) {
                 return CATEGORY_TREE[main].subcategories[sub];
             }
         }
+        
+        // Si es una categoría principal (ej: 'tecnologia')
         if (CATEGORY_TREE[key]) {
              return { name: CATEGORY_TREE[key].displayName, emoji: CATEGORY_TREE[key].emoji };
         }
+
+        // Si es una subcategoría (ej: 'padel')
         for (const mainCategory in CATEGORY_TREE) {
             if (CATEGORY_TREE[mainCategory].subcategories[key]) {
                 return CATEGORY_TREE[mainCategory].subcategories[key];
             }
         }
-        return { name: 'Filtro', emoji: '❓' };
+        
+        return { name: 'Filtro', emoji: '❓' }; // Si no encuentra nada
     }
 
     if (catButton && catText) {
-        const info = findCategoryDetails('all');
-        catButton.dataset.value = 'all';
+        const info = findCategoryDetails(currentFilter);
+        catButton.dataset.value = currentFilter || 'all';
         catText.textContent = `${info.emoji} ${info.name}`;
-        catButton.classList.add('placeholder');
+        catButton.classList.toggle('placeholder', !currentFilter || currentFilter === 'all');
     }
 
     buildModal(dateStr);
     modal.classList.add('is-visible');
 };
-
-const setFilterAndRender = (filter) => { 
-    currentFilter = filter; 
-    renderCalendar(); 
-    updateFilterBanner();
-    checkAchievements('search'); 
-};
-// --- FIN DEL BLOQUE A PEGAR ---
-    
     const closeModal = () => { 
         modal.classList.remove('is-visible'); 
     };
@@ -3065,6 +3062,8 @@ const setFilterAndRender = (filter) => {
             }
         }
     };
+
+    const setFilterAndRender = (filter) => { currentFilter = filter; renderCalendar(); checkAchievements('search'); }
 
     const markAsWon = (giveawayId, dateStr) => {
     if (!giveaways[dateStr]) return;
@@ -3330,7 +3329,7 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
 
 --- 🏠 HOGAR (8) ---
 17. Si es un robot de cocina (Thermomix), freidora de aire, cafetera -> \`"hogar/cocina"\`
-18. Si es una lavadora, frigorífico, lavajillas -> \`"hogar/electrodomesticos"\`
+18. Si es una lavadora, frigorífico, lavavajillas -> \`"hogar/electrodomesticos"\`
 19. Si es un sofá, silla de escritorio, estantería -> \`"hogar/muebles"\`
 20. Si es un colchón, almohada o topper -> \`"hogar/descanso"\`
 21. Si es decoración, menaje, textiles (toallas, ropa de cama), velas -> \`"hogar/decoracion"\`
@@ -5590,7 +5589,6 @@ Elige la opción que prefieras dentro del formulario.`;
     document.addEventListener('DOMContentLoaded', () => {
         setupCustomCategoryFilter();
     });
-
     // --- LÓGICA PARA EL MENÚ DESPLEGABLE DE CATEGORÍAS ---
     const categoryFilterButton = document.getElementById('category-filter-button');
     const categoryFilterOptions = document.getElementById('category-filter-options');
@@ -5827,6 +5825,8 @@ const adminActionsView = document.getElementById('admin-actions-view');
 const adminUploadBtn = document.getElementById('admin-upload-btn');
 const adminDownloadBtn = document.getElementById('admin-download-btn');
 const zipUploadInput = document.getElementById('zip-upload');
+
+
 setupModal(adminPanelBtn, adminModal, closeAdminModalBtn, () => {
     adminLoginView.style.display = 'block';
     adminActionsView.style.display = 'none';
@@ -6152,36 +6152,6 @@ if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShare
 if (closeShareOptionsModalBtn) closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
 
 // --- FIN DE LÓGICA PARA COMPARTIR (VERSIÓN NATIVA Y ESTABLE) ---
-
-// --- INICIO: LÓGICA PARA FILTROS DEL MODAL ---
-    const modalSearchInput = document.getElementById('modal-search-input');
-    const categoryFilterOptions = document.getElementById('category-filter-options');
-
-    if (modalSearchInput) {
-        modalSearchInput.addEventListener('input', (e) => {
-            const dateStr = modal.dataset.date;
-            if (dateStr) {
-                // Llamamos a buildModal con el nuevo texto de búsqueda
-                buildModal(dateStr, e.target.value, document.getElementById('category-filter-button').dataset.value);
-            }
-        });
-    }
-
-    if (categoryFilterOptions) {
-        categoryFilterOptions.addEventListener('click', (e) => {
-            const selectedOption = e.target.closest('.custom-dropdown-option');
-            if (!selectedOption) return;
-        
-            const selectedValue = selectedOption.dataset.value;
-            const dateStr = modal.dataset.date;
-
-            if (dateStr) {
-                 // Llamamos a buildModal con la nueva categoría seleccionada
-                buildModal(dateStr, modalSearchInput.value, selectedValue);
-            }
-        });
-    }
-    // --- FIN: LÓGICA PARA FILTROS DEL MODAL ---
 </script>
 </body>
 </html>

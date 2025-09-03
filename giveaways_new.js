@@ -17893,8 +17893,6 @@ window.giveaways = {
             "prize_category": "juguetes"
         }
     ],
-    window.giveaways = {
-    // ... (rest of the file)
     "2025-09-22": [
         {
             "id": "sorteo206",

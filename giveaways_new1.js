@@ -6801,7 +6801,7 @@ window.giveaways = {
             ],
             "price": "100€",
             "url": null,
-            "addDate": "2025-08-29
+            "addDate": "2025-08-29",
             "prize_category": "vales-regalo"
         },
         {

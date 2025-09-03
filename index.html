@@ -2058,61 +2058,106 @@
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
     let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
 
-   const CATEGORY_INFO = {
-        'all': { name: 'Todas las Categorías', emoji: '✨', desc: 'Muestra todos los sorteos del día.' },
-        'viajes-internacionales': { name: 'Viajes Internacionales', emoji: '🌍', desc: 'Vuelos, cruceros y estancias largas fuera de España.' },
-        'viajes-nacionales': { name: 'Viajes Nacionales', emoji: '🇪🇸', desc: 'Estancias de varias noches en hoteles, apartamentos o casas rurales.' },
-        'escapadas': { name: 'Escapadas y Hoteles', emoji: '🏨', desc: 'Estancias cortas (1-2 noches), cajas de experiencias (Smartbox).' },
-        'restauracion': { name: 'Restauración', emoji: '🍴', desc: 'Cenas, comidas, menús degustación o brunchs.' },
-        'entradas-conciertos': { name: 'Entradas a Conciertos', emoji: '🎤', desc: 'Tickets para música, festivales y conciertos.' },
-        'entradas-eventos': { name: 'Entradas a Eventos', emoji: '🎟️', desc: 'Tickets para cine, teatro, partidos y otros eventos.' },
-        'parques-tematicos': { name: 'Parques Temáticos', emoji: '🎢', desc: 'Entradas para parques de atracciones o acuáticos.' },
-        'actividades': { name: 'Actividades y Talleres', emoji: '🧗‍♀️', desc: 'Paseos en barco, catas de vino, cursos presenciales.' },
-        'telefonia': { name: 'Telefonía', emoji: '📱', desc: 'Smartphones y tablets.' },
-        'wearables': { name: 'Wearables', emoji: '⌚', desc: 'Smartwatches y pulseras de actividad.' },
-        'gaming': { name: 'Gaming y Consolas', emoji: '🎮', desc: 'Consolas, videojuegos, sillas gamer, periféricos.' },
-        'informatica': { name: 'Informática', emoji: '💻', desc: 'Portátiles, PCs, monitores, teclados, impresoras.' },
-        'sonido': { name: 'Sonido', emoji: '🎧', desc: 'Auriculares, altavoces y equipos de música.' },
-        'imagen': { name: 'Imagen y Fotografía', emoji: '📸', desc: 'TVs, cámaras, drones y proyectores.' },
-        'software': { name: 'Software y Suscripciones', emoji: '🔁', desc: 'Licencias y suscripciones a servicios (Netflix, etc.).' },
-        'componentes': { name: 'Componentes y Accesorios', emoji: '⚙️', desc: 'Discos duros, powerbanks, cables.' },
-        'cocina': { name: 'Pequeño Electrodoméstico', emoji: '🍳', desc: 'Freidoras de aire, robots de cocina, cafeteras.' },
-        'electrodomesticos': { name: 'Grandes Electrodomésticos', emoji: '🧊', desc: 'Lavadoras, frigoríficos, lavavajillas.' },
-        'muebles': { name: 'Muebles', emoji: '🛋️', desc: 'Sofás, sillas de escritorio, estanterías.' },
-        'descanso': { name: 'Descanso', emoji: '🛌', desc: 'Colchones, almohadas y toppers.' },
-        'decoracion': { name: 'Decoración y Menaje', emoji: '🖼️', desc: 'Decoración, vajillas, textiles, velas.' },
-        'limpieza': { name: 'Limpieza', emoji: '🧼', desc: 'Lotes de productos, aspiradoras, robots.' },
-        'bricolaje': { name: 'Bricolaje y Jardín', emoji: '🛠️', desc: 'Herramientas y artículos de jardinería.' },
-        'moda-femenina': { name: 'Moda Femenina', emoji: '👗', desc: 'Ropa y looks para mujer.' },
-        'moda-masculina': { name: 'Moda Masculina', emoji: '👔', desc: 'Ropa y looks para hombre.' },
-        'calzado-moda': { name: 'Calzado de Moda', emoji: '👟', desc: 'Sneakers, zapatos, sandalias, botas.' },
-        'calzado-deportivo': { name: 'Calzado Deportivo', emoji: '🏃‍♀️', desc: 'Zapatillas para running, fútbol, etc.' },
-        'bolsos-mochilas': { name: 'Bolsos y Mochilas', emoji: '👜', desc: 'Bolsos y mochilas de todo tipo.' },
-        'equipaje-viaje': { name: 'Equipaje de Viaje', emoji: '🧳', desc: 'Maletas y neceseres de viaje.' },
-        'joyeria-relojes': { name: 'Joyería y Relojes', emoji: '💍', desc: 'Relojes, pulseras, collares, anillos.' },
-        'gafas-accesorios': { name: 'Gafas y Accesorios', emoji: '🕶️', desc: 'Gafas de sol y otros pequeños complementos.' },
-        'maquillaje-perfumeria': { name: 'Maquillaje y Perfumería', emoji: '💄', desc: 'Maquillaje, perfumes y cosmética de color.' },
-        'cuidado-personal': { name: 'Cuidado Personal', emoji: '🧴', desc: 'Cremas, sérums y productos para la piel.' },
-        'cuidado-capilar': { name: 'Cuidado Capilar', emoji: '💇‍♀️', desc: 'Productos para el pelo, secadores y planchas.' },
-        'gourmet': { name: 'Gourmet y Jamonería', emoji: '🥓', desc: 'Jamón, queso, aceite premium y vino.' },
-        'supermercado': { name: 'Supermercado', emoji: '🛒', desc: 'Cestas de la compra y lotes de productos.' },
-        'dulces-snacks': { name: 'Dulces y Snacks', emoji: '🍫', desc: 'Chocolates, golosinas, tartas y snacks.' },
-        'bebidas': { name: 'Bebidas', emoji: '🍷', desc: 'Lotes de vino, cerveza, refrescos o licores.' },
-        'padel': { name: 'Pádel', emoji: '🥎', desc: 'Palas, paleteros y material específico de pádel.' },
-        'futbol': { name: 'Fútbol', emoji: '⚽', desc: 'Camisetas oficiales, balones y merchandising.' },
-        'fitness': { name: 'Fitness y Gym', emoji: '🏋️‍♂️', desc: 'Equipamiento, suplementación y ropa de gimnasio.' },
-        'deportes-varios': { name: 'Otros Deportes', emoji: '🚴‍♀️', desc: 'Ciclismo, running, baloncesto, etc.' },
-        'frikis': { name: 'Cultura Friki', emoji: '🤓', desc: 'Funkos, figuras, LEGOs, merchandising de sagas.' },
-        'juegos-mesa': { name: 'Juegos de Mesa', emoji: '🎲', desc: 'Juegos de mesa, de cartas y rol.' },
-        'libros-comics': { name: 'Libros y Cómics', emoji: '📚', desc: 'Libros, novelas gráficas y cómics.' },
-        'papeleria': { name: 'Papelería y Manualidades', emoji: '🎨', desc: 'Agendas, material de oficina y para manualidades.' },
-        'moda-infantil': { name: 'Moda Infantil', emoji: '🧒', desc: 'Ropa y zapatos para niños y bebés.' },
-        'juguetes': { name: 'Juguetes', emoji: '🧸', desc: 'Juguetes para todas las edades y material escolar.' },
-        'bebes': { name: 'Bebés y Puericultura', emoji: '👶', desc: 'Cochecitos, pañales, y artículos para recién nacidos.' },
-        'mascotas': { name: 'Mascotas', emoji: '🐾', desc: 'Comida, juguetes y accesorios para mascotas.' },
-        'vales-regalo': { name: 'Vales y Tarjetas Regalo', emoji: '💳', desc: 'Tarjetas regalo de tiendas, cheques de compra.' },
-        'otros': { name: 'Otros', emoji: '⭐', desc: 'Para todo aquello que desafía la clasificación.' }
-    };
+    // --- INICIO DEL BLOQUE A PEGAR (NUEVA ESTRUCTURA DE CATEGORÍAS) ---
+
+const CATEGORY_TREE = {
+    'viajes-ocio': {
+        displayName: 'Viajes y Ocio',
+        emoji: '✈️',
+        subcategories: {
+            'viajes-internacionales': { name: 'Viajes Internacionales', emoji: '🌍', desc: 'Vuelos, cruceros y estancias largas fuera de España.' },
+            'viajes-nacionales': { name: 'Viajes Nacionales', emoji: '🇪🇸', desc: 'Estancias de varias noches en hoteles, apartamentos o casas rurales.' },
+            'escapadas': { name: 'Escapadas y Hoteles', emoji: '🏨', desc: 'Estancias cortas (1-2 noches), cajas de experiencias (Smartbox).' },
+            'restauracion': { name: 'Restauración', emoji: '🍴', desc: 'Cenas, comidas, menús degustación o brunchs.' },
+            'entradas-conciertos': { name: 'Entradas a Conciertos', emoji: '🎤', desc: 'Tickets para música, festivales y conciertos.' },
+            'entradas-eventos': { name: 'Entradas a Eventos', emoji: '🎟️', desc: 'Tickets para cine, teatro, partidos y otros eventos.' },
+            'parques-tematicos': { name: 'Parques Temáticos', emoji: '🎢', desc: 'Entradas para parques de atracciones o acuáticos.' },
+            'actividades': { name: 'Actividades y Talleres', emoji: '🧗‍♀️', desc: 'Paseos en barco, catas de vino, cursos presenciales.' }
+        }
+    },
+    'tecnologia': {
+        displayName: 'Tecnología',
+        emoji: '💻',
+        subcategories: {
+            'telefonia': { name: 'Telefonía y Wearables', emoji: '📱', desc: 'Smartphones, tablets, smartwatches y pulseras.' },
+            'gaming': { name: 'Gaming y Consolas', emoji: '🎮', desc: 'Consolas, videojuegos, sillas gamer, periféricos.' },
+            'informatica': { name: 'Informática', emoji: '💻', desc: 'Portátiles, PCs, monitores, teclados, impresoras.' },
+            'sonido': { name: 'Sonido', emoji: '🎧', desc: 'Auriculares, altavoces y equipos de música.' },
+            'imagen': { name: 'Imagen y Fotografía', emoji: '📸', desc: 'TVs, cámaras, drones y proyectores.' },
+            'software': { name: 'Software y Suscripciones', emoji: '🔁', desc: 'Licencias y suscripciones a servicios (Netflix, etc.).' },
+            'componentes': { name: 'Componentes y Accesorios', emoji: '⚙️', desc: 'Discos duros, powerbanks, cables.' }
+        }
+    },
+    'hogar': {
+        displayName: 'Hogar',
+        emoji: '🏠',
+        subcategories: {
+            'cocina': { name: 'Pequeño Electrodoméstico', emoji: '🍳', desc: 'Freidoras de aire, robots de cocina, cafeteras.' },
+            'electrodomesticos': { name: 'Grandes Electrodomésticos', emoji: '🧊', desc: 'Lavadoras, frigoríficos, lavavajillas.' },
+            'muebles': { name: 'Muebles y Descanso', emoji: '🛋️', desc: 'Sofás, colchones, sillas de escritorio.' },
+            'decoracion': { name: 'Decoración y Menaje', emoji: '🖼️', desc: 'Decoración, vajillas, textiles, velas.' },
+            'limpieza': { name: 'Limpieza', emoji: '🧼', desc: 'Lotes de productos, aspiradoras, robots.' },
+            'bricolaje': { name: 'Bricolaje y Jardín', emoji: '🛠️', desc: 'Herramientas y artículos de jardinería.' }
+        }
+    },
+    'moda': {
+        displayName: 'Moda y Belleza',
+        emoji: '👕',
+        subcategories: {
+            'moda-femenina': { name: 'Moda Femenina', emoji: '👗', desc: 'Ropa y looks para mujer.' },
+            'moda-masculina': { name: 'Moda Masculina', emoji: '👔', desc: 'Ropa y looks para hombre.' },
+            'calzado-moda': { name: 'Calzado de Moda', emoji: '👟', desc: 'Sneakers, zapatos, sandalias, botas.' },
+            'calzado-deportivo': { name: 'Calzado Deportivo', emoji: '🏃‍♀️', desc: 'Zapatillas para running, fútbol, etc.' },
+            'bolsos-equipaje': { name: 'Bolsos y Equipaje', emoji: '👜', desc: 'Bolsos, mochilas, maletas, neceseres.' },
+            'joyeria-relojes': { name: 'Joyería y Relojes', emoji: '💍', desc: 'Relojes, pulseras, collares, anillos.' },
+            'gafas-accesorios': { name: 'Gafas y Accesorios', emoji: '🕶️', desc: 'Gafas de sol y otros pequeños complementos.' },
+            'maquillaje': { name: 'Maquillaje y Perfumería', emoji: '💄', desc: 'Maquillaje, perfumes y cosmética de color.' },
+            'cuidado-personal': { name: 'Cuidado Personal', emoji: '🧴', desc: 'Cremas, cuidado capilar y productos de farmacia.' }
+        }
+    },
+    'alimentacion': {
+        displayName: 'Alimentación',
+        emoji: '🛒',
+        subcategories: {
+            'gourmet': { name: 'Gourmet y Jamonería', emoji: '🥓', desc: 'Jamón, queso, aceite, vino y productos delicatessen.' },
+            'supermercado': { name: 'Supermercado y Dulces', emoji: '🛒', desc: 'Cestas de la compra, lotes de productos, chocolates.' },
+            'bebidas': { name: 'Bebidas', emoji: '🍷', desc: 'Lotes de vino, cerveza, refrescos o licores.' }
+        }
+    },
+    'aficiones': {
+        displayName: 'Aficiones y Cultura',
+        emoji: '🎯',
+        subcategories: {
+            'padel': { name: 'Pádel', emoji: '🥎', desc: 'Palas, paleteros y material específico de pádel.' },
+            'futbol': { name: 'Fútbol', emoji: '⚽', desc: 'Camisetas oficiales, balones y merchandising.' },
+            'fitness': { name: 'Fitness y Gym', emoji: '🏋️‍♂️', desc: 'Equipamiento, suplementación y ropa de gimnasio.' },
+            'deportes-varios': { name: 'Otros Deportes', emoji: '🚴‍♀️', desc: 'Ciclismo, running, baloncesto, etc.' },
+            'frikis': { name: 'Cultura Friki y Coleccionismo', emoji: '🤓', desc: 'Funkos, figuras, LEGOs, merchandising.' },
+            'juegos-mesa': { name: 'Juegos de Mesa y Cartas', emoji: '🎲', desc: 'Juegos de mesa, de cartas y rol.' },
+            'libros-comics': { name: 'Libros y Cómics', emoji: '📚', desc: 'Libros, novelas gráficas y cómics.' },
+            'papeleria': { name: 'Papelería y Manualidades', emoji: '🎨', desc: 'Agendas, material de oficina y para manualidades.' }
+        }
+    },
+    'familia': {
+        displayName: 'Familia',
+        emoji: '👨‍👩‍👧‍👦',
+        subcategories: {
+            'moda-infantil': { name: 'Moda y Calzado Infantil', emoji: '🧒', desc: 'Ropa y zapatos para niños y bebés.' },
+            'juguetes': { name: 'Juguetes y Material Escolar', emoji: '🧸', desc: 'Juguetes para todas las edades y material escolar.' },
+            'bebes': { name: 'Bebés y Puericultura', emoji: '👶', desc: 'Cochecitos, pañales, y artículos para recién nacidos.' },
+            'mascotas': { name: 'Mascotas', emoji: '🐾', desc: 'Comida, juguetes y accesorios para mascotas.' }
+        }
+    },
+    'dinero-otros': {
+        displayName: 'Dinero y Otros',
+        emoji: '⭐',
+        subcategories: {
+            'vales-regalo': { name: 'Vales y Tarjetas Regalo', emoji: '💳', desc: 'Tarjetas regalo de tiendas, cheques de compra.' },
+            'otros': { name: 'Otros', emoji: '⭐', desc: 'Para todo aquello que desafía la clasificación.' }
+        }
+    }
+};
+// --- FIN DEL BLOQUE A PEGAR ---
     const achievementList = {
         bronze: [
             { id: 'b_add_1', name: 'El Primer Paso', icon: '🌱', desc: 'Añade tu primer sorteo manualmente.', ps: 5, condition: (c) => c.totalManualAdds >= 1 },
@@ -2377,20 +2422,26 @@
     // --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE DROPDOWN MEJORADA) ---
 
 const populateCategoryDropdown = (selectElementId) => {
-        const selectElement = document.getElementById(selectElementId);
-        if (!selectElement) return;
+    const selectElement = document.getElementById(selectElementId);
+    if (!selectElement) return;
 
-        selectElement.innerHTML = '<option value="" disabled selected>-- Elige una categoría --</option>';
+    selectElement.innerHTML = '<option value="" disabled selected>-- Elige una subcategoría --</option>';
 
-        for (const categoryKey in CATEGORY_INFO) {
-            if (categoryKey === 'all') continue; // No queremos "Todas" en este menú
-            const category = CATEGORY_INFO[categoryKey];
+    for (const categoryKey in CATEGORY_TREE) {
+        const category = CATEGORY_TREE[categoryKey];
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = `${category.emoji} ${category.displayName}`;
+
+        for (const subcategoryKey in category.subcategories) {
+            const subcategory = category.subcategories[subcategoryKey];
             const option = document.createElement('option');
-            option.value = categoryKey;
-            option.textContent = `${category.emoji} ${category.name}`;
-            selectElement.appendChild(option);
+            option.value = `${categoryKey}/${subcategoryKey}`;
+            option.textContent = `${subcategory.emoji} ${subcategory.name}`;
+            optgroup.appendChild(option);
         }
-    };
+        selectElement.appendChild(optgroup);
+    }
+};
 
 // --- FIN DEL BLOQUE A PEGAR ---
     const clearAllFilters = () => {
@@ -2447,53 +2498,73 @@ const populateCategoryDropdown = (selectElementId) => {
         }
     };
 
+    // --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE FILTRO VISUAL MEJORADA) ---
+
 function setupCustomCategoryFilter() {
-        const button = document.getElementById('category-filter-button');
-        const selectedText = document.getElementById('category-filter-selected-text');
-        const optionsContainer = document.getElementById('category-filter-options');
-        if (!button || !selectedText || !optionsContainer) return;
+    const button = document.getElementById('category-filter-button');
+    const selectedText = document.getElementById('category-filter-selected-text');
+    const optionsContainer = document.getElementById('category-filter-options');
+    if (!button || !selectedText || !optionsContainer) return;
 
-        optionsContainer.innerHTML = ''; // Limpiamos por si acaso
+    optionsContainer.innerHTML = '';
 
-        for (const categoryKey in CATEGORY_INFO) {
-            const category = CATEGORY_INFO[categoryKey];
+    const allOptionLi = document.createElement('li');
+    allOptionLi.className = 'custom-dropdown-option';
+    allOptionLi.dataset.value = 'all';
+    allOptionLi.innerHTML = `
+        <span class="category-name">✨ Todas</span>
+        <span class="category-desc">Muestra todos los sorteos del día.</span>
+    `;
+    optionsContainer.appendChild(allOptionLi);
+
+    for (const categoryKey in CATEGORY_TREE) {
+        const category = CATEGORY_TREE[categoryKey];
+        for (const subcategoryKey in category.subcategories) {
+            const subcategory = category.subcategories[subcategoryKey];
             const li = document.createElement('li');
             li.className = 'custom-dropdown-option';
-            li.dataset.value = categoryKey;
+            li.dataset.value = `${categoryKey}/${subcategoryKey}`;
             li.innerHTML = `
-                <span class="category-name">${category.emoji} ${category.name}</span>
-                <span class="category-desc">${category.desc}</span>
+                <span class="category-name">${subcategory.emoji} ${subcategory.name}</span>
+                <span class="category-desc">${subcategory.desc}</span>
             `;
             optionsContainer.appendChild(li);
         }
-
-        optionsContainer.addEventListener('click', (e) => {
-            const selectedOption = e.target.closest('.custom-dropdown-option');
-            if (!selectedOption) return;
-
-            const selectedValue = selectedOption.dataset.value;
-            const category = CATEGORY_INFO[selectedValue];
-            
-            button.dataset.value = selectedValue;
-            selectedText.textContent = `${category.emoji} ${category.name}`;
-            
-            button.classList.toggle('placeholder', selectedValue === 'all');
-            optionsContainer.classList.add('hidden');
-            
-            const dateStr = modal.dataset.date;
-            if (dateStr) {
-                // Obtenemos el valor actual del input de búsqueda para pasarlo al construir el modal
-                const modalSearchQuery = document.getElementById('modal-search-input').value;
-                buildModal(dateStr, modalSearchQuery, selectedValue);
-            }
-        });
-
-        // Estado inicial
-        const initialCategory = CATEGORY_INFO['all'];
-        selectedText.textContent = `${initialCategory.emoji} ${initialCategory.name}`;
-        button.dataset.value = 'all';
-        button.classList.add('placeholder');
     }
+
+    optionsContainer.addEventListener('click', (e) => {
+        const selectedOption = e.target.closest('.custom-dropdown-option');
+        if (!selectedOption) return;
+
+        const selectedValue = selectedOption.dataset.value;
+        const [mainCat, subCat] = selectedValue.split('/');
+        
+        let emoji, name;
+        if (selectedValue === 'all') {
+            emoji = '✨';
+            name = 'Todas';
+        } else {
+            const subcategory = CATEGORY_TREE[mainCat].subcategories[subCat];
+            emoji = subcategory.emoji;
+            name = subcategory.name;
+        }
+
+        button.dataset.value = selectedValue;
+        selectedText.textContent = `${emoji} ${name}`;
+        
+        button.classList.toggle('placeholder', selectedValue === 'all');
+        optionsContainer.classList.add('hidden');
+        
+        const dateStr = modal.dataset.date;
+        if (dateStr) buildModal(dateStr);
+    });
+
+    selectedText.textContent = '✨ Todas';
+    button.dataset.value = 'all';
+    button.classList.add('placeholder');
+}
+
+// --- FIN DEL BLOQUE A PEGAR ---
 
     const resetAIView = () => {
         // Resetear variables de estado
@@ -2638,27 +2709,12 @@ function setupCustomCategoryFilter() {
             if (prizeValue > 100) counters.winsOver100 = (counters.winsOver100 || 0) + 1;
             if (prizeValue > 2000) counters.winsOver2000 = (counters.winsOver2000 || 0) + 1;
             
-            // Inicializamos las categorías si no existen
-        if (!counters.categoryWins) counters.categoryWins = {};
-        for (const catKey in CATEGORY_INFO) {
-            if (catKey !== 'all' && !counters.categoryWins[catKey]) {
-                counters.categoryWins[catKey] = 0;
+            const categoryMap = { '🥎': 'padel', '🛩️': 'viajes', '🃏': 'frikis' };
+            let prizeCategory = 'otros';
+            for (const emoji in categoryMap) {
+                if (data.prize.includes(emoji)) { prizeCategory = categoryMap[emoji]; break; }
             }
-        }
-
-        // Recalculamos las victorias por categoría desde cero para asegurar consistencia
-        // Primero reseteamos a cero
-        for (const catKey in counters.categoryWins) {
-            counters.categoryWins[catKey] = 0;
-        }
-        // Luego contamos de nuevo
-        wonGiveaways.forEach(g => {
-            if (g.prize_category && counters.categoryWins.hasOwnProperty(g.prize_category)) {
-                counters.categoryWins[g.prize_category]++;
-            } else {
-                 counters.categoryWins['otros']++; // Si la categoría no existe, la contamos como "otros"
-            }
-        });
+            counters.categoryWins[prizeCategory]++;
             
             counters.sameDayWins[today] = (counters.sameDayWins[today] || 0) + 1;
 
@@ -2746,19 +2802,7 @@ function setupCustomCategoryFilter() {
             }
             // --- FIN DE LA MODIFICACIÓN ---
 
-            const dayGiveaways = giveawaysForDay.filter(g => {
-                const prize = g.prize ? g.prize.toLowerCase() : '';
-                const searchText = searchQuery.toLowerCase();
-                if (searchQuery && !prize.includes(searchText)) {
-                    return false;
-                }
-                if (currentFilter && currentFilter !== 'all') {
-                    if (g.prize_category !== currentFilter) {
-                        return false;
-                    }
-                }
-                return true;
-            });
+            const dayGiveaways = giveawaysForDay.filter(g => { const prize = g.prize ? g.prize.toLowerCase() : ''; const searchText = searchQuery.toLowerCase(); if (searchQuery && !prize.includes(searchText)) { return false; } if (currentFilter && currentFilter !== 'all') { const [mainCat, subCat] = (g.prize_category || '').split('/'); if (!currentFilter.includes('/')) { if (mainCat !== currentFilter) { return false; } } else { if (g.prize_category !== currentFilter) { return false; } } } return true; })
             totalGiveawaysCount += dayGiveaways.length;
             const dayEl = document.createElement('div');
             dayEl.className = 'calendar-day';
@@ -2787,104 +2831,127 @@ function setupCustomCategoryFilter() {
 
     // --- INICIO DEL BLOQUE A PEGAR (REEMPLAZO COMPLETO) ---
 
-const getCategoryInfo = (categoryKey) => {
-        return CATEGORY_INFO[categoryKey] || { name: 'Otros', emoji: '⭐' };
-    };
+const getCategoryInfo = (categoryPath) => {
+    // Valor por defecto si la categoría no es válida
+    const defaultValue = { name: 'Otros', emoji: '⭐' };
+
+    if (!categoryPath || typeof categoryPath !== 'string') {
+        return defaultValue;
+    }
+
+    // Si ya viene en el formato correcto
+    if (categoryPath.includes('/')) {
+        const [mainKey, subKey] = categoryPath.split('/');
+        if (CATEGORY_TREE[mainKey] && CATEGORY_TREE[mainKey].subcategories[subKey]) {
+            return CATEGORY_TREE[mainKey].subcategories[subKey];
+        }
+    } else {
+        // Búsqueda directa en todas las subcategorías
+        for (const mainKey in CATEGORY_TREE) {
+            if (CATEGORY_TREE[mainKey].subcategories[categoryPath]) {
+                return CATEGORY_TREE[mainKey].subcategories[categoryPath];
+            }
+        }
+    }
+
+    return defaultValue;
+};
 
 const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
-        const modalBody = document.getElementById('modal-body');
-        const notInterestedBody = document.getElementById('not-interested-body');
-        modalBody.innerHTML = '';
-        notInterestedBody.innerHTML = '';
+    const modalBody = document.getElementById('modal-body');
+    const notInterestedBody = document.getElementById('not-interested-body');
+    modalBody.innerHTML = '';
+    notInterestedBody.innerHTML = '';
 
-        // Filtramos los sorteos del día CON LOS PARÁMETROS RECIBIDOS
-        let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
-            const prize = (g.prize || '').toLowerCase();
-            const searchText = modalSearchQuery.toLowerCase();
+    // Filtramos los sorteos del día CON LOS PARÁMETROS RECIBIDOS
+    let dayGiveaways = (giveaways[dateStr] || []).filter(g => {
+        const prize = (g.prize || '').toLowerCase();
+        const searchText = modalSearchQuery.toLowerCase();
 
-            if (modalSearchQuery && !prize.includes(searchText)) {
-                return false;
-            }
-            if (modalCategoryFilter !== 'all' && g.prize_category !== modalCategoryFilter) {
-                return false;
-            }
-            return true;
-        });
+        if (modalSearchQuery && !prize.includes(searchText)) {
+            return false;
+        }
+        if (modalCategoryFilter !== 'all' && g.prize_category !== modalCategoryFilter) {
+            return false;
+        }
+        return true;
+    });
+    
+    dayGiveaways.sort((a, b) => {
+        const isACompleted = !!completedGiveaways[a.id];
+        const isBCompleted = !!completedGiveaways[b.id];
+        if (isACompleted && !isBCompleted) return 1;
+        if (!isACompleted && isBCompleted) return -1;
+        const priceA = parsePrice(a.price);
+        const priceB = parsePrice(b.price);
+        return priceB - priceA;
+    });
+
+    const dayNotInterested = notInterestedGiveaways[dateStr] || [];
+
+    dayGiveaways.forEach(giveaway => {
+        const isCompleted = !!completedGiveaways[giveaway.id];
+        const itemContainer = document.createElement('div');
+        itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${isCompleted ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
         
-        dayGiveaways.sort((a, b) => {
-            const isACompleted = !!completedGiveaways[a.id];
-            const isBCompleted = !!completedGiveaways[b.id];
-            if (isACompleted && !isBCompleted) return 1;
-            if (!isACompleted && isBCompleted) return -1;
-            const priceA = parsePrice(a.price);
-            const priceB = parsePrice(b.price);
-            return priceB - priceA;
-        });
+        let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
+        
+        const categoryInfo = getCategoryInfo(giveaway.prize_category);
 
-        const dayNotInterested = notInterestedGiveaways[dateStr] || [];
-
-        dayGiveaways.forEach(giveaway => {
-            const isCompleted = !!completedGiveaways[giveaway.id];
-            const itemContainer = document.createElement('div');
-            itemContainer.className = `giveaway-item p-3 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20 relative ${isCompleted ? 'bg-green-100/30' : 'bg-yellow-100/50'}`;
-            
-            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
-            
-            const categoryInfo = getCategoryInfo(giveaway.prize_category);
-
-            itemContainer.innerHTML = `
-                <div class="flex items-start flex-1 overflow-hidden">
-                    <div class="flex flex-col items-center mr-3 flex-shrink-0">
-                        <input type="checkbox" data-giveaway-id="${giveaway.id}" class="h-6 w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500" ${isCompleted ? 'checked' : ''}>
-                        <button class="not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}" style="display: ${isCompleted ? 'none' : 'block'};"><i class="fa-solid fa-eye-slash"></i></button>
-                        <div class="post-complete-actions flex flex-col items-center space-y-1 mt-1" style="display: ${isCompleted ? 'flex' : 'none'};">
-                            <button class="win-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🏆</button>
-                            <button class="vis-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🌟</button>
-                        </div>
-                    </div>
-                    <div class="overflow-hidden">
-                        <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
-                        <div class="text-sm">${accountsHTML}</div>
-                        <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji}</span>
+        itemContainer.innerHTML = `
+            <div class="flex items-start flex-1 overflow-hidden">
+                <div class="flex flex-col items-center mr-3 flex-shrink-0">
+                    <input type="checkbox" data-giveaway-id="${giveaway.id}" class="h-6 w-6 rounded-md border-2 border-yellow-600 text-yellow-500 focus:ring-yellow-500" ${isCompleted ? 'checked' : ''}>
+                    <button class="not-interested-btn p-1 rounded-full text-lg mt-1 text-gray-400 hover:text-red-500" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}" style="display: ${isCompleted ? 'none' : 'block'};"><i class="fa-solid fa-eye-slash"></i></button>
+                    <div class="post-complete-actions flex flex-col items-center space-y-1 mt-1" style="display: ${isCompleted ? 'flex' : 'none'};">
+                        <button class="win-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🏆</button>
+                        <button class="vis-giveaway-btn p-1 rounded-full text-lg" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}">🌟</button>
                     </div>
                 </div>
-                <div class="flex items-center">
-                    <div class="text-right flex-shrink-0 ml-2">
-                        ${giveaway.price ? `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>` : ''}
-                    </div>
-                    <div class="flex flex-col items-center ml-2 space-y-1">
-                        <button class="move-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-calendar-days"></i></button>
-                        <button class="delete-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-trash-can"></i></button>
-                        <button class="delete-giveaway-foreign-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-globe"></i></button>
-                    </div>
+                <div class="overflow-hidden">
+                    <p class="text-base sm:text-lg text-yellow-900 truncate">${giveaway.prize}</p>
+                    <div class="text-sm">${accountsHTML}</div>
+                    <span class="text-xl mt-1 inline-block" title="Categoría: ${categoryInfo.name}">${categoryInfo.emoji}</span>
                 </div>
-            `;
-            modalBody.appendChild(itemContainer);
-        });
-
-        dayNotInterested.forEach(giveaway => {
-            const itemContainer = document.createElement('div');
-            itemContainer.className = 'giveaway-item not-interested p-3 rounded-lg shadow-inner flex justify-between items-center border border-gray-400/20 bg-gray-100/30';
-            let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
-            itemContainer.innerHTML = `
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-base sm:text-lg text-gray-700 truncate">${giveaway.prize}</p>
-                    <div class="text-sm text-gray-600">${accountsHTML}</div>
+            </div>
+            <div class="flex items-center">
+                <div class="text-right flex-shrink-0 ml-2">
+                    ${giveaway.price ? `<a href="https://www.google.com/search?q=${encodeURIComponent(giveaway.prize)}" target="_blank" class="block font-bold">${giveaway.price}</a><span class="text-xs">Valor aprox.</span>` : ''}
                 </div>
-                <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-eye"></i></button>
-            `;
-            notInterestedBody.appendChild(itemContainer);
-        });
+                <div class="flex flex-col items-center ml-2 space-y-1">
+                    <button class="move-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-calendar-days"></i></button>
+                    <button class="delete-giveaway-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-trash-can"></i></button>
+                    <button class="delete-giveaway-foreign-btn p-1 rounded-full text-sm" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-globe"></i></button>
+                </div>
+            </div>
+        `;
+        modalBody.appendChild(itemContainer);
+    });
 
-        if (dayGiveaways.length === 0) {
-            modalBody.innerHTML = '<p class="text-center text-gray-500">No hay sorteos que coincidan con tu filtro.</p>';
-        }
-        if (dayNotInterested.length === 0) {
-            notInterestedBody.innerHTML = '<p class="text-center text-gray-500">No has marcado ningún sorteo como no interesante para hoy.</p>';
-        }
+    dayNotInterested.forEach(giveaway => {
+        const itemContainer = document.createElement('div');
+        itemContainer.className = 'giveaway-item not-interested p-3 rounded-lg shadow-inner flex justify-between items-center border border-gray-400/20 bg-gray-100/30';
+        let accountsHTML = (giveaway.accounts || []).map(acc => `<div><a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="underline">${acc}</a></div>`).join('');
+        itemContainer.innerHTML = `
+            <div class="flex-1 overflow-hidden">
+                <p class="text-base sm:text-lg text-gray-700 truncate">${giveaway.prize}</p>
+                <div class="text-sm text-gray-600">${accountsHTML}</div>
+            </div>
+            <button class="restore-not-interested-btn p-2 rounded-full text-lg text-green-600 hover:bg-green-200" data-giveaway-id="${giveaway.id}" data-giveaway-date="${dateStr}"><i class="fa-solid fa-eye"></i></button>
+        `;
+        notInterestedBody.appendChild(itemContainer);
+    });
 
-        modal.dataset.date = dateStr;
-    };
+    if (dayGiveaways.length === 0) {
+        modalBody.innerHTML = '<p class="text-center text-gray-500">No hay sorteos que coincidan con tu filtro.</p>';
+    }
+    if (dayNotInterested.length === 0) {
+        notInterestedBody.innerHTML = '<p class="text-center text-gray-500">No has marcado ningún sorteo como no interesante para hoy.</p>';
+    }
+
+    modal.dataset.date = dateStr;
+};
+// --- FIN DEL BLOQUE A PEGAR ---
 
     const openModal = (dateStr) => {
     if (navMenu.classList.contains('is-open')) {
@@ -3237,62 +3304,77 @@ Tu primera tarea es determinar si el sorteo es válido para un usuario en Españ
         -   *Si el texto dice "Un fin de semana con todos los gastos pagados en el maravilloso Hotel Palace de la Costa Brava para dos personas con acceso completo al spa y desayuno incluido":* \`prize\` debe ser "Estancia de fin de semana en hotel de lujo para dos".
 
 - **Precio:** Si ves un valor monetario explícito en la imagen (ej: "valorado en 150€", "premio de 500€"), extráelo. Si no, déjalo como \`null\`.
-<REGLAS_DE_CATEGORIZACION_V9_PLANA>
-**Instrucción: Evalúa en orden descendente. La primera regla que coincida define la categoría y finaliza el proceso.**
+<REGLAS_DE_CATEGORIZACION_JERARQUICAS_V8_AI_Final>
+**Instrucción: Evalúa en orden descendente. La primera regla que coincida define la categoría y finaliza el proceso. El formato de salida DEBE SER "categoria/subcategoria".**
 
-1.  Si es una pala, paletero o material de pádel -> `"padel"`
-2.  Si es un viaje largo, vuelo o crucero -> `"viajes-internacionales"`
-3.  Si es una estancia de varias noches en hotel, apartamento o casa rural -> `"viajes-nacionales"`
-4.  Si es una estancia corta (1-2 noches) o una caja de experiencias (Smartbox) -> `"escapadas"`
-5.  Si es una cena, comida o menú degustación en un restaurante -> `"restauracion"`
-6.  Si son entradas para conciertos o festivales de música -> `"entradas-conciertos"`
-7.  Si son entradas para cine, teatro, partidos de fútbol o eventos culturales -> `"entradas-eventos"`
-8.  Si son entradas para parques de atracciones o acuáticos -> `"parques-tematicos"`
-9.  Si es una experiencia como una cata de vino, paseo en barco o un taller -> `"actividades"`
-10. Si es una consola (PS5, Switch), videojuego o silla gamer -> `"gaming"`
-11. Si es un smartphone (iPhone, Samsung) o una tablet -> `"telefonia"`
-12. Si es un smartwatch (Apple Watch) o pulsera de actividad -> `"wearables"`
-13. Si es un portátil, PC, monitor, teclado, ratón o impresora -> `"informatica"`
-14. Si son auriculares (incluidos **AirPods**), altavoces o equipos de música -> `"sonido"`
-15. Si es un televisor (TV), cámara de fotos (Instax) o un dron -> `"imagen"`
-16. Si es una licencia de software o suscripción a servicios (Netflix) -> `"software"`
-17. Si es un componente (disco duro, RAM) o accesorio (powerbank) -> `"componentes"`
-18. Si es un robot de cocina (Thermomix), freidora de aire, cafetera -> `"cocina"`
-19. Si es una lavadora, frigorífico, lavavajillas -> `"electrodomesticos"`
-20. Si es un sofá, silla de escritorio, estantería -> `"muebles"`
-21. Si es un colchón, almohada o topper -> `"descanso"`
-22. Si es decoración, menaje, textiles (toallas, ropa de cama), velas -> `"decoracion"`
-23. Si es una aspiradora, robot aspirador o lote de productos de limpieza -> `"limpieza"`
-24. Si son herramientas o artículos de jardinería -> `"bricolaje"`
-25. Si es ropa de mujer (vestidos, blusas) -> `"moda-femenina"`
-26. Si es ropa de hombre (camisas, pantalones) -> `"moda-masculina"`
-27. Si son zapatillas casual (sneakers), zapatos o sandalias -> `"calzado-moda"`
-28. Si son zapatillas específicas para deporte (running, fútbol) -> `"calzado-deportivo"`
-29. Si son bolsos o mochilas -> `"bolsos-mochilas"`
-30. Si son maletas o neceseres de viaje -> `"equipaje-viaje"`
-31. Si son relojes, pulseras, anillos o collares -> `"joyeria-relojes"`
-32. Si son gafas de sol u otros pequeños complementos -> `"gafas-accesorios"`
-33. Si es maquillaje (paletas, labiales) o perfumes -> `"maquillaje-perfumeria"`
-34. Si son cremas, sérums o productos para la piel -> `"cuidado-personal"`
-35. Si son productos para el pelo, secadores o planchas -> `"cuidado-capilar"`
-36. Si es jamón, queso, aceite premium o vino -> `"gourmet"`
-37. Si es una cesta de la compra o lote de productos de supermercado -> `"supermercado"`
-38. Si son chocolates, golosinas, tartas o snacks -> `"dulces-snacks"`
-39. Si es un lote de bebidas (cerveza, refrescos, licores) -> `"bebidas"`
-40. Si es una camiseta oficial de un equipo de fútbol -> `"futbol"`
-41. Si es equipamiento de gimnasio o suplementación deportiva -> `"fitness"`
-42. Si es material de otro deporte (ciclismo, running, etc.) -> `"deportes-varios"`
-43. Si es una figura Funko Pop, LEGO, o merchandising de sagas -> `"frikis"`
-44. Si es un juego de mesa, de cartas o de rol -> `"juegos-mesa"`
-45. Si es un libro o cómic -> `"libros-comics"`
-46. Si es material de papelería (agendas) o para manualidades -> `"papeleria"`
-47. Si es ropa o calzado para niños -> `"moda-infantil"`
-48. Si son juguetes o material escolar -> `"juguetes"`
-49. Si son cochecitos, pañales o artículos para bebés -> `"bebes"`
-50. Si es comida, juguetes o accesorios para mascotas -> `"mascotas"`
-51. Si es una tarjeta regalo o un vale de compra -> `"vales-regalo"`
-52. Si es cualquier otro tipo de premio -> `"otros"`
-</REGLAS_DE_CATEGORIZACION_V9_PLANA>
+--- ✈️ VIAJES Y OCIO (8) ---
+1.  Si el premio es un viaje largo, vuelo o crucero -> \`"viajes-ocio/viajes-internacionales"\`
+2.  Si es una estancia de varias noches en hotel, apartamento o casa rural -> \`"viajes-ocio/viajes-nacionales"\`
+3.  Si es una estancia corta (1-2 noches) o una caja de experiencias (Smartbox) -> \`"viajes-ocio/escapadas"\`
+4.  Si es una cena, comida o menú degustación en un restaurante -> \`"viajes-ocio/restauracion"\`
+5.  Si son entradas para conciertos o festivales de música -> \`"viajes-ocio/entradas-conciertos"\`
+6.  Si son entradas para cine, teatro, partidos de fútbol o eventos culturales -> \`"viajes-ocio/entradas-eventos"\`
+7.  Si son entradas para parques de atracciones o acuáticos -> \`"viajes-ocio/parques-tematicos"\`
+8.  Si es una experiencia como una cata de vino, paseo en barco o un taller -> \`"viajes-ocio/actividades"\`
+
+--- 💻 TECNOLOGÍA (8) ---
+9.  Si es una consola (PS5, Switch), videojuego o silla gamer -> \`"tecnologia/gaming"\`
+10. Si es un smartphone (iPhone, Samsung) o una tablet -> \`"tecnologia/telefonia"\`
+11. Si es un smartwatch (Apple Watch) o pulsera de actividad -> \`"tecnologia/wearables"\`
+12. Si es un portátil, PC, monitor, teclado, ratón o impresora -> \`"tecnologia/informatica"\`
+13. Si son auriculares (incluidos **AirPods**), altavoces o equipos de música -> \`"tecnologia/sonido"\`
+14. Si es un televisor (TV), cámara de fotos (Instax) o un dron -> \`"tecnologia/imagen"\`
+15. Si es una licencia de software o suscripción a servicios (Netflix) -> \`"tecnologia/software"\`
+16. Si es un componente (disco duro, RAM) o accesorio (powerbank) -> \`"tecnologia/componentes"\`
+
+--- 🏠 HOGAR (8) ---
+17. Si es un robot de cocina (Thermomix), freidora de aire, cafetera -> \`"hogar/cocina"\`
+18. Si es una lavadora, frigorífico, lavavajillas -> \`"hogar/electrodomesticos"\`
+19. Si es un sofá, silla de escritorio, estantería -> \`"hogar/muebles"\`
+20. Si es un colchón, almohada o topper -> \`"hogar/descanso"\`
+21. Si es decoración, menaje, textiles (toallas, ropa de cama), velas -> \`"hogar/decoracion"\`
+22. Si es una aspiradora, robot aspirador o lote de productos de limpieza -> \`"hogar/limpieza"\`
+23. Si son herramientas o artículos de jardinería -> \`"hogar/bricolaje"\`
+
+--- 👕 MODA Y BELLEZA (10) ---
+24. Si es ropa de mujer (vestidos, blusas) -> \`"moda/moda-femenina"\`
+25. Si es ropa de hombre (camisas, pantalones) -> \`"moda/moda-masculina"\`
+26. Si son zapatillas casual (sneakers), zapatos o sandalias -> \`"moda/calzado-moda"\`
+27. Si son zapatillas específicas para deporte (running, fútbol) -> \`"moda/calzado-deportivo"\`
+28. Si son bolsos o mochilas -> \`"moda/bolsos-mochilas"\`
+29. Si son maletas o neceseres de viaje -> \`"moda/equipaje-viaje"\`
+30. Si son relojes, pulseras, anillos o collares -> \`"moda/joyeria-relojes"\`
+31. Si son gafas de sol u otros pequeños complementos -> \`"moda/gafas-accesorios"\`
+32. Si es maquillaje (paletas, labiales) o perfumes -> \`"moda/maquillaje-perfumeria"\`
+33. Si son cremas, sérums o productos para la piel -> \`"moda/cuidado-personal"\`
+34. Si son productos para el pelo, secadores o planchas -> \`"moda/cuidado-capilar"\`
+
+--- 🍽️ ALIMENTACIÓN (4) ---
+35. Si es jamón, queso, aceite premium o vino -> \`"alimentacion/gourmet"\`
+36. Si es una cesta de la compra o lote de productos de supermercado -> \`"alimentacion/supermercado"\`
+37. Si son chocolates, golosinas, tartas o snacks -> \`"alimentacion/dulces-snacks"\`
+38. Si es un lote de bebidas (cerveza, refrescos, licores) -> \`"alimentacion/bebidas"\`
+
+--- ⚽ AFICIONES Y CULTURA (8) ---
+39. Si es una pala, paletero o material de pádel -> \`"aficiones/padel"\`
+40. Si es una camiseta oficial de un equipo de fútbol -> \`"aficiones/futbol"\`
+41. Si es equipamiento de gimnasio o suplementación deportiva -> \`"aficiones/fitness"\`
+42. Si es material de otro deporte (ciclismo, running, etc.) -> \`"aficiones/deportes-varios"\`
+43. Si es una figura Funko Pop, LEGO, o merchandising de sagas -> \`"aficiones/frikis"\`
+44. Si es un juego de mesa, de cartas o de rol -> \`"aficiones/juegos-mesa"\`
+45. Si es un libro o cómic -> \`"aficiones/libros-comics"\`
+46. Si es material de papelería (agendas) o para manualidades -> \`"aficiones/papeleria"\`
+
+--- 👨‍👩‍👧‍👦 FAMILIA (4) ---
+47. Si es ropa o calzado para niños -> \`"familia/moda-infantil"\`
+48. Si son juguetes o material escolar -> \`"familia/juguetes"\`
+49. Si son cochecitos, pañales o artículos para bebés -> \`"familia/bebes"\`
+50. Si es comida, juguetes o accesorios para mascotas -> \`"familia/mascotas"\`
+
+--- 💰 DINERO Y OTROS (2) ---
+51. Si es una tarjeta regalo o un vale de compra -> \`"dinero-otros/vales-regalo"\`
+52. Si es cualquier otro tipo de premio -> \`"dinero-otros/otros"\`
+</REGLAS_DE_CATEGORIZACION_JERARQUICAS_V8_AI_Final>
 - **Confianza:** Evalúa tu certeza sobre la extracción de la FECHA (0.0 a 1.0). Si la fecha es explícita y clara, usa 1.0. Si es deducida o ambigua, usa un valor inferior.
 </REGLAS_ADICIONALES_DE_EXTRACCION>
 
@@ -3445,7 +3527,7 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
   "is_priority_time": boolean,
   "is_spanish": boolean,
   "status": "string ('valid', 'expired', 'no_date', 'not_a_giveaway')",
-  "prize_category": "string ('categoria')",
+  "prize_category": "string ('categoria/subcategoria')",
   "winner_count": 1,
   "confidence_score": float
 }
@@ -4206,13 +4288,13 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
         const mostValuableWin = prizesWithValues.length ? prizesWithValues.reduce((max, g) => parsePrice(g.price) > parsePrice(max.price) ? g : max) : null;
         const leastValuableWin = prizesWithValues.length ? prizesWithValues.reduce((min, g) => parsePrice(g.price) < parsePrice(min.price) ? g : min) : null;
         const categoryWins = wonGiveaways.reduce((acc, g) => {
-        const categoryKey = g.prize_category || 'otros';
-        const categoryName = (CATEGORY_INFO[categoryKey] && CATEGORY_INFO[categoryKey].name) || 'Otros';
-        const categoryEmoji = (CATEGORY_INFO[categoryKey] && CATEGORY_INFO[categoryKey].emoji) || '⭐';
-        const label = `${categoryName} ${categoryEmoji}`;
-        acc[label] = (acc[label] || 0) + 1;
-        return acc;
-    }, {});
+            const prize = g.prize || '';
+            if (prize.includes('🥎')) acc['Pádel 🥎'] = (acc['Pádel 🥎'] || 0) + 1;
+            else if (prize.includes('🛩️')) acc['Viajes 🛩️'] = (acc['Viajes 🛩️'] || 0) + 1;
+            else if (prize.includes('🃏')) acc['Frikis 🃏'] = (acc['Frikis 🃏'] || 0) + 1;
+            else acc['Otros'] = (acc['Otros'] || 0) + 1;
+            return acc;
+        }, {});
 
         const eficienciaParticipacion = totalWon > 0 ? (totalCompleted / totalWon).toFixed(1) : '∞';
         const valorPorParticipacion = totalCompleted > 0 ? (totalValueWon / totalCompleted).toFixed(2) : 0;
@@ -4371,11 +4453,10 @@ Tu respuesta debe ser única y exclusivamente el siguiente objeto JSON:
 
         const categoryCtx = document.getElementById('category-pie-chart').getContext('2d');
         const categoryWins = wonGiveaways.reduce((acc, g) => {
-        const categoryKey = g.prize_category || 'otros';
-        const categoryName = (CATEGORY_INFO[categoryKey] && CATEGORY_INFO[categoryKey].name) || 'Otros';
-        acc[categoryName] = (acc[categoryName] || 0) + 1;
-        return acc;
-    }, {});
+            const category = g.prize.includes('🥎') ? 'Pádel' : g.prize.includes('🛩️') ? 'Viajes' : g.prize.includes('🃏') ? 'Frikis' : 'Otros';
+            acc[category] = (acc[category] || 0) + 1;
+            return acc;
+        }, {});
         categoryPieChart = new Chart(categoryCtx, {
             type: 'pie',
             data: {
@@ -5620,23 +5701,38 @@ const globalCategoryFilter = document.getElementById('global-category-filter');
 // --- INICIO DEL BLOQUE A PEGAR (FUNCIÓN DE FILTRO MEJORADA) ---
 
 function populateGlobalCategoryFilter() {
-        if (!globalCategoryFilter) return;
-        
-        globalCategoryFilter.innerHTML = '';
-        const allOption = document.createElement('option');
-        allOption.value = 'all';
-        allOption.textContent = '✨ Todas las Categorías';
-        globalCategoryFilter.appendChild(allOption);
+    if (!globalCategoryFilter) return;
+    
+    globalCategoryFilter.innerHTML = '';
 
-        for (const categoryKey in CATEGORY_INFO) {
-            if (categoryKey === 'all') continue;
-            const category = CATEGORY_INFO[categoryKey];
-            const option = document.createElement('option');
-            option.value = categoryKey;
-            option.textContent = `${category.emoji} ${category.name}`;
-            globalCategoryFilter.appendChild(option);
+    // Opción para mostrar todo
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = '✨ Todas las Categorías';
+    globalCategoryFilter.appendChild(allOption);
+
+    // Recorremos el árbol para crear las opciones
+    for (const categoryKey in CATEGORY_TREE) {
+        const category = CATEGORY_TREE[categoryKey];
+        
+        // Opción para la categoría principal
+        const mainOption = document.createElement('option');
+        mainOption.value = categoryKey;
+        mainOption.textContent = `${category.emoji} ${category.displayName} (todos)`;
+        mainOption.style.fontWeight = 'bold';
+        globalCategoryFilter.appendChild(mainOption);
+
+        // Opciones para las subcategorías
+        for (const subcategoryKey in category.subcategories) {
+            const subcategory = category.subcategories[subcategoryKey];
+            const subOption = document.createElement('option');
+            subOption.value = `${categoryKey}/${subcategoryKey}`;
+            // Usamos un espacio para indentar y que se vea la jerarquía
+            subOption.textContent = `  ${subcategory.emoji} ${subcategory.name}`;
+            globalCategoryFilter.appendChild(subOption);
         }
     }
+}
 
 // --- FIN DEL BLOQUE A PEGAR ---
 

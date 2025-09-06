@@ -15,5 +15,8 @@ window.foreignAccounts = [
     "@babolat.arg",
     "@thermomixeras",
     "@marimarsrl",
-    "@calubags"
+    "@calubags",
+    "@qdrperfumeria",
+    "@credimueblesslm",
+    "@sanvipadel.shop"
 ];

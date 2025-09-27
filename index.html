@@ -3493,86 +3493,107 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
 
     
     function handleUserDecisionAndProceed(action, data) {
-        const card = document.getElementById('current-interactive-card');
-        let editedData = { ...data };
-        if (card && card.querySelector('.interactive-card-form')) {
-            editedData.prize = document.getElementById('interactive-prize').value;
-            editedData.date = document.getElementById('interactive-date').value;
-            editedData.accounts = document.getElementById('interactive-accounts').value.split(',').map(acc => acc.trim()).filter(Boolean);
-            editedData.price = document.getElementById('interactive-price').value;
-            editedData.prize_category = document.getElementById('interactive-category').value;
-        }
-        
-        switch(action){
-            case 'save':
-            case 'add-new':
-                const newGiveaway = { 
-                    id: Date.now().toString(), // Generamos el ID aquí
-                    date: editedData.date, 
-                    prize: editedData.prize, 
-                    accounts: editedData.accounts, 
-                    price: editedData.price, 
-                    url: editedData.url, 
-                    addDate: new Date().toISOString().slice(0, 10),
-                    ends_at_time: editedData.ends_at_time,
-                    is_priority_time: editedData.is_priority_time,
-                    prize_category: editedData.prize_category
-                };
-                
-                // VALIDACIÓN
-                if (!newGiveaway.date || !newGiveaway.prize) {
-                    showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
-                    return; // Detenemos la ejecución aquí
-                }
-                
-                // Guardamos el sorteo con su nuevo ID en el array de resultados
-                analysisResults.added.push(newGiveaway);
-
-                // Y añadimos ESE MISMO sorteo al calendario
-                addGiveaway(newGiveaway);
-
-                addPoints(5, `Sorteo añadido con IA`);
-                checkAchievements('add-ai');
-                break;
-            case 'trash':
-                trashGiveaways.push({ ...editedData, id: Date.now().toString(), originalDate: editedData.date });
-                analysisResults.expired.push(editedData);
-                saveTrashGiveaways();
-                break;
-            case 'mark-foreign':
-                discardedGiveaways.push({ ...editedData, id: Date.now().toString(), status: 'foreign' });
-                analysisResults.foreign.push(editedData);
-                editedData.accounts.forEach(acc => { if (acc && !foreignAccounts.includes(acc)) foreignAccounts.push(acc) });
-                saveDiscardedGiveaways();
-                saveForeignAccounts();
-                checkAchievements('block-foreign');
-                break;
-            case 'merge':
-                const original = Object.values(giveaways).flat().find(g => g.id === data.originalGiveaway.id);
-                if (original) {
-                    if (!original.price && editedData.price) original.price = editedData.price;
-                    if (editedData.prize.length > original.prize.length) original.prize = editedData.prize;
-                    saveGiveaways();
-                    showNotification('Fusión completada', 'Se han actualizado los datos del sorteo original.');
-                    checkAchievements('merge');
-                }
-                analysisResults.duplicate.push(editedData);
-                break;
-            case 'discard':
-                if (data.status === 'no_date' || data.status === 'not_a_giveaway' || data.status === 'duplicate') {
-                     discardedGiveaways.push({ ...data, id: Date.now().toString() });
-                     analysisResults[data.status].push(editedData);
-                     saveDiscardedGiveaways();
-                } else if (data.status === 'api_error') {
-                    analysisResults.api_error.push(editedData);
-                }
-                break;
-        }
-        
-        updateAnalysisLegend();
-        currentIndex++;
-        processNextImage();
+    const card = document.getElementById('current-interactive-card');
+    let editedData = { ...data };
+    if (card && card.querySelector('.interactive-card-form')) {
+        editedData.prize = document.getElementById('interactive-prize').value;
+        editedData.date = document.getElementById('interactive-date').value;
+        editedData.accounts = document.getElementById('interactive-accounts').value.split(',').map(acc => acc.trim()).filter(Boolean);
+        editedData.price = document.getElementById('interactive-price').value;
+        editedData.prize_category = document.getElementById('interactive-category').value;
     }
+    
+    switch(action){
+        case 'save':
+        case 'add-new':
+            // =================================================================
+            // ¡NUEVA LÓGICA PARA VERIFICAR FECHAS CADUCADAS!
+            // =================================================================
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalizamos la fecha de hoy para comparar solo días
+            
+            const giveawayDate = new Date(editedData.date + 'T00:00:00');
+
+            if (giveawayDate < today) {
+                // Si la fecha ya pasó, lo descartamos automáticamente
+                discardedGiveaways.push({ ...editedData, id: Date.now().toString(), status: 'expired' });
+                analysisResults.expired.push(editedData);
+                saveDiscardedGiveaways();
+                showNotification('Sorteo Caducado', 'Se ha movido automáticamente a descartados.');
+                
+                // Procedemos al siguiente sin guardarlo en el calendario
+                updateAnalysisLegend();
+                currentIndex++;
+                processNextImage();
+                return; // Detenemos la ejecución aquí
+            }
+            // =================================================================
+            // FIN DE LA NUEVA LÓGICA
+            // =================================================================
+
+            const newGiveaway = { 
+                id: Date.now().toString(),
+                date: editedData.date, 
+                prize: editedData.prize, 
+                accounts: editedData.accounts, 
+                price: editedData.price, 
+                url: editedData.url, 
+                addDate: new Date().toISOString().slice(0, 10),
+                ends_at_time: editedData.ends_at_time,
+                is_priority_time: editedData.is_priority_time,
+                prize_category: editedData.prize_category
+            };
+            
+            if (!newGiveaway.date || !newGiveaway.prize) {
+                showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
+                return;
+            }
+            
+            analysisResults.added.push(newGiveaway);
+            addGiveaway(newGiveaway);
+            addPoints(5, `Sorteo añadido con IA`);
+            checkAchievements('add-ai');
+            break;
+        case 'trash':
+            trashGiveaways.push({ ...editedData, id: Date.now().toString(), originalDate: editedData.date });
+            analysisResults.expired.push(editedData);
+            saveTrashGiveaways();
+            break;
+        case 'mark-foreign':
+            discardedGiveaways.push({ ...editedData, id: Date.now().toString(), status: 'foreign' });
+            analysisResults.foreign.push(editedData);
+            editedData.accounts.forEach(acc => { if (acc && !foreignAccounts.includes(acc)) foreignAccounts.push(acc) });
+            saveDiscardedGiveaways();
+            saveForeignAccounts();
+            checkAchievements('block-foreign');
+            break;
+        case 'merge':
+            const original = Object.values(giveaways).flat().find(g => g.id === data.originalGiveaway.id);
+            if (original) {
+                if (!original.price && editedData.price) original.price = editedData.price;
+                if (editedData.prize.length > original.prize.length) original.prize = editedData.prize;
+                saveGiveaways();
+                showNotification('Fusión completada', 'Se han actualizado los datos del sorteo original.');
+                checkAchievements('merge');
+            }
+            analysisResults.duplicate.push(editedData);
+            break;
+        case 'discard':
+            if (data.status === 'no_date' || data.status === 'not_a_giveaway' || data.status === 'duplicate') {
+                 discardedGiveaways.push({ ...data, id: Date.now().toString() });
+                 analysisResults[data.status].push(editedData);
+                 saveDiscardedGiveaways();
+            } else if (data.status === 'api_error') {
+                analysisResults.api_error.push(editedData);
+            }
+            break;
+    }
+    
+    updateAnalysisLegend();
+    currentIndex++;
+    processNextImage();
+}
+
     
     function showAISummary() {
         interactiveAnalysisContainer.style.display = 'none';

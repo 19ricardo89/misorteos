@@ -13,14 +13,15 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (AHORA MÁS FLEXIBLE) ---
+// --- Función para llamar a la API de Gemini (con la URL CORREGIDA) ---
 const callGeminiAPI = async (prompt, model = 'gemini-1.5-flash-latest', base64Data = null) => {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
         throw new Error("La clave de API de Gemini no está configurada.");
     }
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+    // AQUÍ ESTÁ EL CAMBIO: de v1beta a v1
+    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
     const payload = {
         contents: [{ role: "user", parts: base64Data ? [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }] : [{ text: prompt }] }],

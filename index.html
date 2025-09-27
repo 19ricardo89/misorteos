@@ -2064,7 +2064,6 @@
     } else {
         giveaways = window.giveaways || {};
     }
-let autoSaveTimer = null;
 
     let completedGiveaways = JSON.parse(localStorage.getItem(`completedGiveaways`)) || {};
     let notInterestedGiveaways = JSON.parse(localStorage.getItem('notInterestedGiveaways')) || {};
@@ -3321,173 +3320,183 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
             if (file) giveawaysWithErrors.push(file);
         }
         
-        // REEMPLAZA TU FUNCIÓN renderInteractiveCard CON ESTA VERSIÓN
-function renderInteractiveCard(resultData) {
-    liveResultsContainer.innerHTML = '';
+        renderInteractiveCard(resultData);
+    };
+    reader.readAsDataURL(file);
+}
+    function renderInteractiveCard(resultData) {
+        liveResultsContainer.innerHTML = '';
+        let cardHTML = '';
+        let title = '';
+        let cardStatusClass = '';
+        let buttonsHTML = '';
 
-    if (autoSaveTimer) {
-        clearInterval(autoSaveTimer);
-    }
+        const prize = resultData.prize || '';
+        const date = resultData.date || '';
+        const accounts = (resultData.accounts || []).join(', ');
+        const price = resultData.price || 'No encontrado';
 
-    let cardHTML = '';
-    let title = '';
-    let cardStatusClass = '';
-    let buttonsHTML = '';
+        const categoryOptionsHTML = Object.keys(CATEGORY_INFO)
+            .filter(key => key !== 'all') // Excluimos la opción "Todas"
+            .map(key => {
+                const category = CATEGORY_INFO[key];
+                // Marcamos como seleccionada la categoría que ha devuelto la IA
+                const isSelected = key === resultData.prize_category ? 'selected' : '';
+                return `<option value="${key}" ${isSelected}>${category.emoji} ${category.name}</option>`;
+            })
+            .join('');
 
-    const prize = resultData.prize || '';
-    const date = resultData.date || '';
-    const accounts = (resultData.accounts || []).join(', ');
-    const price = resultData.price || 'No encontrado';
-    const confidenceEmoji = getConfidenceEmoji(resultData.confidence_score);
-
-    const categoryOptionsHTML = Object.keys(CATEGORY_INFO)
-        .filter(key => key !== 'all')
-        .map(key => {
-            const category = CATEGORY_INFO[key];
-            const isSelected = key === resultData.prize_category ? 'selected' : '';
-            return `<option value="${key}" ${isSelected}>${category.emoji} ${category.name}</option>`;
-        })
-        .join('');
-
-    const formHTML = `
-        <div class="interactive-card-form space-y-2">
-            <div>
-                <label for="interactive-prize">Premio:</label>
-                <input type="text" id="interactive-prize" value="${prize}">
-            </div>
-            <div class="grid grid-cols-2 gap-2">
+        const formHTML = `
+            <div class="interactive-card-form space-y-2">
                 <div>
-                    <label for="interactive-date">Fecha:</label>
-                    <input type="date" id="interactive-date" value="${date}">
+                    <label for="interactive-prize">Premio:</label>
+                    <input type="text" id="interactive-prize" value="${prize}" disabled>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="interactive-date">Fecha:</label>
+                        <input type="date" id="interactive-date" value="${date}" disabled>
+                    </div>
+                    <div>
+                        <label for="interactive-price">Valor:</label>
+                        <input type="text" id="interactive-price" value="${price}" disabled>
+                    </div>
                 </div>
                 <div>
-                    <label for="interactive-price">Valor:</label>
-                    <input type="text" id="interactive-price" value="${price}">
+                    <label for="interactive-category">Categoría:</label>
+                    <select id="interactive-category" class="w-full p-2 rounded-lg bg-white border border-yellow-400" disabled>
+                        ${categoryOptionsHTML}
+                    </select>
+                </div>
+                <div>
+                    <label for="interactive-accounts">Cuentas:</label>
+                    <textarea id="interactive-accounts" rows="2" disabled>${accounts}</textarea>
                 </div>
             </div>
-            <div>
-                <label for="interactive-category">Categoría:</label>
-                <select id="interactive-category" class="w-full p-2 rounded-lg bg-white border border-yellow-400">
-                    ${categoryOptionsHTML}
-                </select>
-            </div>
-            <div>
-                <label for="interactive-accounts">Cuentas:</label>
-                <textarea id="interactive-accounts" rows="2">${accounts}</textarea>
-            </div>
-        </div>
-    `;
-
-    switch(resultData.status) {
-        case 'valid':
-            title = `✅ Sorteo Válido ${confidenceEmoji}`;
-            cardStatusClass = 'card-status-valid';
-            buttonsHTML = `
-                <div id="countdown-timer" class="text-center font-bold text-gray-600"></div>
-                <button id="btn-save" class="btn-save">Guardar Manualmente</button>
-            `;
-            cardHTML = `
-            <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                <h3 class="card-title">${title}</h3>
-                ${formHTML}
-                <div class="interactive-card-actions">
-                    ${buttonsHTML}
-                </div>
-            </div>`;
-            break;
-        case 'duplicate':
-            title = 'Comparar Sorteos Duplicados';
-            cardStatusClass = 'card-status-duplicate';
-            buttonsHTML = `<button id="btn-merge" class="btn-merge">Fusionar</button><button id="btn-add-new" class="btn-save">Añadir como Nuevo</button><button id="btn-discard" class="btn-discard">Descartar</button>`;
-
-            const analyzedGiveawayHTML = generateGiveawayDetailsHTML(resultData, "Sorteo Analizado (Nuevo)");
-            const originalGiveawayHTML = generateGiveawayDetailsHTML(resultData.originalGiveaway, "Sorteo Original (Existente)");
-
-            cardHTML = `
+        `;
+        
+        switch(resultData.status) {
+            case 'valid':
+                const confidenceEmoji = getConfidenceEmoji(resultData.confidence_score);
+                title = `✅ Sorteo Válido ${confidenceEmoji}`;
+                cardStatusClass = 'card-status-valid';
+                buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-save" class="btn-save">Guardar</button>`;
+                cardHTML = `
                 <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
                     <h3 class="card-title">${title}</h3>
-                    <div class="space-y-4 mb-4">
-                        ${analyzedGiveawayHTML}
-                        ${originalGiveawayHTML}
-                    </div>
+                    ${formHTML}
                     <div class="interactive-card-actions">
                         ${buttonsHTML}
                     </div>
                 </div>
             `;
-            break;
-        default:
-            title = `❌ ${resultData.status === 'not_a_giveaway' ? 'No es un Sorteo' : resultData.status === 'no_date' ? 'Sin Fecha Válida' : 'Error de Análisis'}`;
-            cardStatusClass = 'card-status-error';
-            buttonsHTML = `<button id="btn-discard" class="btn-discard w-full">Descartar y Continuar</button>`;
-            cardHTML = `
-            <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                <h3 class="card-title">${title}</h3>
-                <p class="text-center p-4">${resultData.prize}</p>
-                <div class="interactive-card-actions">
-                    ${buttonsHTML}
+                break;
+            case 'duplicate':
+                title = 'Comparar Sorteos Duplicados';
+                cardStatusClass = 'card-status-duplicate';
+                buttonsHTML = `<button id="btn-merge" class="btn-merge">Fusionar</button><button id="btn-add-new" class="btn-save">Añadir como Nuevo</button><button id="btn-discard" class="btn-discard">Descartar</button>`;
+                
+                const analyzedGiveawayHTML = generateGiveawayDetailsHTML(resultData, "Sorteo Analizado (Nuevo)");
+                const originalGiveawayHTML = generateGiveawayDetailsHTML(resultData.originalGiveaway, "Sorteo Original (Existente)");
+
+                cardHTML = `
+                    <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
+                        <h3 class="card-title">${title}</h3>
+                        <div class="space-y-4 mb-4">
+                            ${analyzedGiveawayHTML}
+                            ${originalGiveawayHTML}
+                        </div>
+                        <div class="interactive-card-actions">
+                            ${buttonsHTML}
+                        </div>
+                    </div>
+                `;
+                break;
+            case 'expired':
+                const confidenceEmojiExpired = getConfidenceEmoji(resultData.confidence_score);
+                title = `⏳ Sorteo Caducado ${confidenceEmojiExpired}`;
+                cardStatusClass = 'card-status-expired';
+                buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar Fecha</button><button id="btn-trash" class="btn-trash">A la Papelera</button>`;
+                cardHTML = `
+                <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
+                    <h3 class="card-title">${title}</h3>
+                    ${formHTML}
+                    <div class="interactive-card-actions">
+                        ${buttonsHTML}
+                    </div>
                 </div>
-            </div>`;
-            break;
+            `;
+                break;
+            case 'foreign':
+                const confidenceEmojiForeign = getConfidenceEmoji(resultData.confidence_score);
+                title = `👽 Sorteo Extranjero ${confidenceEmojiForeign}`;
+                cardStatusClass = 'card-status-foreign';
+                buttonsHTML = `<button id="btn-edit" class="btn-edit">Editar</button><button id="btn-mark-foreign" class="btn-foreign">Marcar como Extranjero</button>`;
+                cardHTML = `
+                <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
+                    <h3 class="card-title">${title}</h3>
+                    ${formHTML}
+                    <div class="interactive-card-actions">
+                        ${buttonsHTML}
+                    </div>
+                </div>
+            `;
+                break;
+            default:
+                title = `❌ ${resultData.status === 'not_a_giveaway' ? 'No es un Sorteo' : resultData.status === 'no_date' ? 'Sin Fecha Válida' : 'Error de Análisis'}`;
+                cardStatusClass = 'card-status-error';
+                buttonsHTML = `<button id="btn-discard" class="btn-discard w-full">Descartar y Continuar</button>`;
+                cardHTML = `
+                <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
+                    <h3 class="card-title">${title}</h3>
+                    <p class="text-center p-4">${resultData.prize}</p>
+                    <div class="interactive-card-actions">
+                        ${buttonsHTML}
+                    </div>
+                </div>
+            `;
+                break;
+        }
+
+        liveResultsContainer.innerHTML = cardHTML;
+        
+        if (resultData.status !== 'not_a_giveaway' && resultData.status !== 'api_error' && resultData.status !== 'duplicate') {
+            typewriterEffect(document.getElementById('interactive-prize'), prize);
+            typewriterEffect(document.getElementById('interactive-accounts'), accounts);
+        }
+
+        const actionsContainer = liveResultsContainer.querySelector('.interactive-card-actions');
+        if (actionsContainer) {
+            actionsContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (!button) return;
+
+                if (button.id === 'btn-edit') {
+                    const card = button.closest('.interactive-card');
+                    const inputs = card.querySelectorAll('input, textarea, select');
+                    inputs.forEach(input => input.disabled = false);
+                    button.textContent = 'Guardar Cambios';
+                    button.id = 'btn-save';
+                    button.classList.remove('btn-edit');
+                    button.classList.add('btn-save');
+                    return; 
+                }
+
+                let action = '';
+                switch(button.id) {
+                    case 'btn-save': action = 'save'; break;
+                    case 'btn-merge': action = 'merge'; break;
+                    case 'btn-add-new': action = 'add-new'; break;
+                    case 'btn-discard': action = 'discard'; break;
+                    case 'btn-trash': action = 'trash'; break;
+                    case 'btn-mark-foreign': action = 'mark-foreign'; break;
+                }
+                if (action) {
+                    handleUserDecisionAndProceed(action, resultData);
+                }
+            });
+        }
     }
-
-    liveResultsContainer.innerHTML = cardHTML;
-
-    if (resultData.status === 'valid') {
-        const countdownElement = document.getElementById('countdown-timer');
-        const formInputs = document.querySelectorAll('#current-interactive-card .interactive-card-form input, #current-interactive-card .interactive-card-form textarea, #current-interactive-card .interactive-card-form select');
-        let countdown = 5;
-
-        const stopTimer = () => {
-            if (autoSaveTimer) {
-                clearInterval(autoSaveTimer);
-                autoSaveTimer = null;
-                countdownElement.textContent = "Autoguardado cancelado. Guarda manualmente.";
-                formInputs.forEach(input => input.removeEventListener('input', stopTimer));
-            }
-        };
-
-        formInputs.forEach(input => input.addEventListener('input', stopTimer));
-
-        countdownElement.textContent = `Guardando en ${countdown}...`;
-        autoSaveTimer = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                countdownElement.textContent = `Guardando en ${countdown}...`;
-            } else {
-                clearInterval(autoSaveTimer);
-                autoSaveTimer = null;
-                countdownElement.textContent = "¡Guardado! Pasando al siguiente...";
-                handleUserDecisionAndProceed('save', resultData);
-            }
-        }, 1000);
-    }
-
-    const actionsContainer = liveResultsContainer.querySelector('.interactive-card-actions');
-    if (actionsContainer) {
-        actionsContainer.addEventListener('click', (e) => {
-            const button = e.target.closest('button');
-            if (!button) return;
-
-            if (autoSaveTimer) {
-                 clearInterval(autoSaveTimer);
-                 autoSaveTimer = null;
-            }
-
-            let action = '';
-            switch(button.id) {
-                case 'btn-save': action = 'save'; break;
-                case 'btn-merge': action = 'merge'; break;
-                case 'btn-add-new': action = 'add-new'; break;
-                case 'btn-discard': action = 'discard'; break;
-            }
-            if (action) {
-                handleUserDecisionAndProceed(action, resultData);
-            }
-        });
-    }
-}
-
     
     function handleUserDecisionAndProceed(action, data) {
         const card = document.getElementById('current-interactive-card');

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// --- Función Auxiliar para leer los prompts de forma segura ---
+// --- Función Auxiliar para leer los prompts (se mantiene igual) ---
 const readPromptFromFile = (fileName) => {
     const promptDirectory = path.resolve(__dirname, '..', 'Prompt');
     const filePath = path.join(promptDirectory, fileName);
@@ -13,65 +13,61 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (con NOMBRES DE MODELO CORREGIDOS) ---
-const callGeminiAPI = async (prompt, model = 'gemini-1.5-flash', base64Data = null) => {
+// --- NUEVA FUNCIÓN para llamar a la API de OpenAI (ChatGPT) ---
+const callOpenAIAPI = async (prompt, model = 'gpt-4o', base64Data = null) => {
     const fetch = (await import('node-fetch')).default;
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-    if (!GEMINI_API_KEY) {
-        throw new Error("La clave de API de Gemini no está configurada.");
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Usaremos la nueva variable de entorno
+    if (!OPENAI_API_KEY) {
+        throw new Error("La clave de API de OpenAI no está configurada.");
     }
-    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+    // La estructura del mensaje es diferente para OpenAI, especialmente para imágenes
+    const messageContent = [{ type: 'text', text: prompt }];
+    if (base64Data) {
+        messageContent.push({
+            type: 'image_url',
+            image_url: { url: base64Data }
+        });
+    }
 
     const payload = {
-        contents: [{ role: "user", parts: base64Data ? [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }] : [{ text: prompt }] }],
-        safetySettings: [
-            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
-            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
-        ]
+        model: model,
+        messages: [{
+            role: "user",
+            content: messageContent
+        }],
+        max_tokens: 1500,
+        response_format: { "type": "json_object" } // Aseguramos que la respuesta sea JSON
     };
 
     try {
         const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${OPENAI_API_KEY}` // El método de autorización cambia
+            },
             body: JSON.stringify(payload)
         });
 
         const data = await response.json();
 
-        if (!response.ok || !data.candidates || data.candidates.length === 0) {
-            const blockReason = data.promptFeedback?.blockReason;
-            if (blockReason) throw new Error(`Llamada a la API bloqueada por seguridad: ${blockReason}`);
-            console.error("Respuesta de error de Gemini:", JSON.stringify(data));
-            throw new Error(`Error de la API de Gemini: ${data.error?.message || 'Respuesta inválida.'}`);
+        if (!response.ok) {
+            console.error("Respuesta de error de OpenAI:", JSON.stringify(data));
+            throw new Error(`Error de la API de OpenAI: ${data.error?.message || 'Respuesta inválida.'}`);
         }
         
-        const candidate = data.candidates[0];
-        if (candidate.finishReason && candidate.finishReason !== "STOP") {
-             throw new Error(`La IA finalizó por una razón inesperada: ${candidate.finishReason}.`);
-        }
-        if (!candidate.content?.parts?.[0]?.text) {
-            console.error("La respuesta de la IA no tiene el formato de texto esperado:", JSON.stringify(candidate));
-            throw new Error("La IA devolvió una respuesta vacía o con un formato incorrecto.");
-        }
-
-        const text = candidate.content.parts[0].text;
-        try {
-            return JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
-        } catch (parseError) {
-            console.error("Error al parsear el JSON de la IA. Texto recibido:", text);
-            throw new Error("La respuesta de la IA no es un JSON válido.");
-        }
+        const text = data.choices[0].message.content;
+        return JSON.parse(text.trim());
 
     } catch (error) {
-        console.error("Error detallado en callGeminiAPI:", error);
+        console.error("Error detallado en callOpenAIAPI:", error);
         throw error;
     }
 };
 
-// --- Handler Principal de la Función de Netlify ---
+// --- Handler Principal (ahora usa la nueva función callOpenAIAPI) ---
 exports.handler = async function (event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -83,22 +79,23 @@ exports.handler = async function (event, context) {
             return { statusCode: 400, body: JSON.stringify({ error: 'No se proporcionó la imagen en formato base64.' }) };
         }
 
-        // === PASO 1: EXTRACCIÓN INICIAL (INDISPENSABLE) ===
+        // === PASO 1: EXTRACCIÓN INICIAL (con gpt-4o) ===
         const extractorPrompt = readPromptFromFile('data_extractor.txt');
-        const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-1.5-flash', base64Data);
+        const extractedData = await callOpenAIAPI(extractorPrompt, 'gpt-4o', base64Data);
         const { raw_text, visual_description } = extractedData;
 
-        // === PASO 2: PREPARACIÓN Y EJECUCIÓN PARALELA DE TODOS LOS EXPERTOS ===
+        // === PASO 2: EJECUCIÓN PARALELA DE EXPERTOS (con gpt-4o) ===
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         
         const dateInputText = `${readPromptFromFile('date_expert.txt').replace('${fechaFormateada}', fechaFormateada)}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         const prizeInputText = `${readPromptFromFile('prize_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}\n\n# DESCRIPCIÓN VISUAL A CONSIDERAR:\n${visual_description}`;
         const accountsInputText = `${readPromptFromFile('accounts_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         
-        const datePromise = callGeminiAPI(dateInputText, 'gemini-1.5-flash');
-        const prizePromise = callGeminiAPI(prizeInputText, 'gemini-1.5-flash');
-        const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-1.5-flash');
+        const datePromise = callOpenAIAPI(dateInputText, 'gpt-4o');
+        const prizePromise = callOpenAIAPI(prizeInputText, 'gpt-4o');
+        const accountsPromise = callOpenAIAPI(accountsInputText, 'gpt-4o');
 
+        // La lógica del tasador se mantiene, pero ahora llamará a OpenAI
         const priceRegex = /(\d{1,5}(?:[.,]\d{1,2})?)\s*€/;
         const priceMatch = raw_text.match(priceRegex);
         let pricePromise;
@@ -113,7 +110,7 @@ exports.handler = async function (event, context) {
                 let appraiserPrompt = readPromptFromFile('price_appraiser.txt');
                 appraiserPrompt = appraiserPrompt.replace('${prize_name}', prizeResult.prize);
                 appraiserPrompt = appraiserPrompt.replace('${accounts_list}', (prizeResult.accounts || []).join(', '));
-                return callGeminiAPI(appraiserPrompt, 'gemini-1.5-flash');
+                return callOpenAIAPI(appraiserPrompt, 'gpt-4o');
             });
         }
 
@@ -124,28 +121,15 @@ exports.handler = async function (event, context) {
             pricePromise
         ]);
 
-        // === PASO 3: ENSAMBLAJE PRELIMINAR ===
-        const preliminaryResult = { 
+        // === PASO 3: ENSAMBLAJE FINAL ===
+        // Con GPT-4o, el "supervisor" ya no es necesario, su capacidad de seguir instrucciones es muy alta.
+        const finalResult = { 
             ...dateResult, 
             ...prizeResult, 
             ...accountsResult, 
             ...priceResult 
         };
 
-        // =================================================================
-        // ¡NUEVO! PASO 4: LLAMADA AL SUPERVISOR CON GEMINI 1.5 PRO
-        // =================================================================
-        let supervisorPrompt = readPromptFromFile('supervisor_expert.txt');
-        supervisorPrompt = supervisorPrompt.replace('${raw_text}', raw_text);
-        supervisorPrompt = supervisorPrompt.replace('${json_data}', JSON.stringify(preliminaryResult, null, 2));
-        supervisorPrompt = supervisorPrompt.replace('${fechaFormateada}', fechaFormateada);
-
-        // Llamamos al supervisor con el modelo Pro
-        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-1.5-pro');
-
-        // =================================================================
-        // PASO 5: DEVOLVER EL RESULTADO FINAL (VALIDADO)
-        // =================================================================
         return {
             statusCode: 200,
             body: JSON.stringify(finalResult)

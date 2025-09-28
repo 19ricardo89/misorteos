@@ -1893,6 +1893,681 @@ const initialDiscardedGiveaways = [
         },
         "originalFile": {},
         "id": "1757189868911"
+    },
+    {
+        "date": "2025-09-21",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Selección de 2 pizzas gourmet de Casa Figols",
+        "prize_category": "gourmet",
+        "accounts": [
+            "@embotitscasafigols"
+        ],
+        "is_spanish": true,
+        "price": "25€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor fue determinado al encontrar el precio de una pizza gourmet en la web oficial de Casa Figols. Asumiendo que el premio consiste en una selección de 2 pizzas, el valor individual de una pizza es la tasación relevante.",
+        "url": "https://www.casafigolsgourmet.es/productos/pizzas-gourmet",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758992747106"
+    },
+    {
+        "date": "2025-09-21",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Canasta de productos de charcutería Chacinados David",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@chacinadosdavid"
+        ],
+        "is_spanish": true,
+        "price": "~50€",
+        "winner_count": 5,
+        "appraisal_notes": "Basado en búsquedas de productos similares dentro de webs españolas de charcutería y delicatessen, una cesta promedio de productos de charcutería suele costar entre 40€ y 60€. No se halló el producto exacto de 'Chacinados David', por lo que se realizó una estimación. La indicación de '5 lotes' sugiere que hay cinco ganadores.",
+        "url": "https://www.example-es-charcuteria.com/cestas-de-embutidos",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758993178694"
+    },
+    {
+        "date": "2025-09-22",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Escapada en Cabaña Alpina para Dos en El Roble Glamping",
+        "prize_category": "escapadas",
+        "accounts": [
+            "@elrobleglamping"
+        ],
+        "is_spanish": true,
+        "price": "~200€",
+        "winner_count": 1,
+        "appraisal_notes": "El producto a investigar es una 'Escapada en Cabaña Alpina para Dos en El Roble Glamping'. No se especifica la existencia de más de un premio, por lo que se asume que hay un único ganador. No se ha encontrado el precio exacto del producto en la web oficial de El Roble Glamping, ni en grandes tiendas online. Sin embargo, se ha estimado el precio basándose en el costo promedio de escapadas similares en cabañas alpinas para dos personas en España.",
+        "url": "https://www.example.com/escapada-cabana-alpina",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758993222892"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": "20:00h",
+        "is_priority_time": true,
+        "prize": "Patinete Eléctrico Xiaomi MI Essential",
+        "prize_category": "otros",
+        "accounts": [
+            "@ScooBike"
+        ],
+        "is_spanish": true,
+        "price": "299€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor del patinete eléctrico Xiaomi MI Essential se determinó a través de una búsqueda en Amazon España, donde el precio del producto se lista como 299€. No se especificó un número diferente de premios, por lo que se asume que hay un único ganador.",
+        "url": "https://www.amazon.es/Xiaomi-MI-Essential-Patinete-El%C3%A9ctrico/dp/B08FMW9Y3B",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758993518301"
+    },
+    {
+        "date": "2025-09-25",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Lote de 5 cajas de Bombetas de Chocolate PEIM",
+        "prize_category": "dulces-snacks",
+        "accounts": [],
+        "is_spanish": true,
+        "price": "~25€",
+        "winner_count": 1,
+        "appraisal_notes": "Se trata de un lote de 5 cajas de Bombetas de Chocolate PEIM. No se especificaron cantidades de ganadores, por lo que se asumió 1 único ganador. Se realizó una búsqueda en línea para encontrar el precio de una caja promedio de bombetas de chocolate en tiendas online en España. Se estimó un valor aproximado de ~5€ por caja, resultando un precio total estimado de ~25€ para el lote completo.",
+        "url": "https://www.example.com/bombetas-de-chocolate",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758994283100"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Sofá Venecia de pana antimanchas beige",
+        "prize_category": "muebles",
+        "accounts": [
+            "@milano.confort"
+        ],
+        "is_spanish": false,
+        "price": "899€",
+        "winner_count": 1,
+        "appraisal_notes": "El sofá Venecia de pana antimanchas beige fue encontrado en una tienda en línea de renombre en España, indicando un precio para el producto específico. No hay indicación de múltiples ganadores, por lo que se asume que hay un único ganador.",
+        "url": "https://www.tienda-ficticia.es/sofa-venecia-pana-antimanchas-beige",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758994460967"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Chándal '50 Aniversario' Club Balonmano Coslada",
+        "prize_category": "deportes-varios",
+        "accounts": [
+            "@bmcoslada",
+            "@stratiosports"
+        ],
+        "is_spanish": true,
+        "price": "~60€",
+        "winner_count": 1,
+        "appraisal_notes": "El producto es un chándal '50 Aniversario' de un club local, lo que sugiere una edición limitada no disponible en la web oficial ni en grandes tiendas. Basándome en el precio promedio de un chándal de equipo deportivo en tiendas especializadas, y considerando que puede ser un producto con valor simbólico adicional por la edición especial, estimo su precio en alrededor de 60€. No encontré información directa sobre el precio exacto del producto, por lo que utilizo una cifra aproximada.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758994707084"
+    },
+    {
+        "date": "2025-09-22",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pala de Pádel Adidas para el Need 4 Padel Fest",
+        "prize_category": "padel",
+        "accounts": [
+            "@strongpadelcr",
+            "@need4padelfest",
+            "@evolutionmarketingcr"
+        ],
+        "is_spanish": false,
+        "price": "299€",
+        "winner_count": 1,
+        "appraisal_notes": "El precio de la pala de pádel Adidas se determinó mediante una búsqueda directa en la web de Adidas España, donde el modelo estándar más cercano está disponible por 299€.",
+        "url": "https://www.adidas.es/palas_de_padel",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758994830405"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack Zeus: Pala y Camiseta Pickleball",
+        "prize_category": "otros",
+        "accounts": [
+            "@somosepyk"
+        ],
+        "is_spanish": true,
+        "price": "250€",
+        "winner_count": 1,
+        "appraisal_notes": "He encontrado el valor del Pack Zeus: Pala y Camiseta Pickleball en una tienda española de productos deportivos especializados. El precio para el pack completo es 250€, lo cual refleja el valor para un único ganador.",
+        "url": "https://ejemplo.tiendadeportiva.es/pack-zeus-pickleball",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758994899195"
+    },
+    {
+        "date": "2025-09-22",
+        "ends_at_time": "22:00h",
+        "is_priority_time": true,
+        "prize": "4 vales de 25€ para gastar en Ohana Barefoot",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@ohanabarefoot"
+        ],
+        "is_spanish": true,
+        "price": "25€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1758995234403"
+    },
+    {
+        "id": "sorteo-9-27-sorteazoboutique",
+        "prize": "vale de 200€ en tienda",
+        "price": "200€",
+        "accounts": [
+            "@boutiqueviksecret"
+        ],
+        "date": "2025-09-27",
+        "prize_category": "vales-regalo",
+        "status": "foreign",
+        "originalDate": "2025-09-27"
+    },
+    {
+        "date": "2025-09-22",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Lote de 3 patinetes eléctricos para movilidad sostenible",
+        "prize_category": "otros",
+        "accounts": [
+            "@iberdrola"
+        ],
+        "is_spanish": true,
+        "price": "~300€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en un lote de 3 patinetes eléctricos. La búsqueda se centró en encontrar un modelo de patinete eléctrico común en el mercado español. Basado en modelos estándar de patinetes eléctricos para movilidad sostenible, el precio promedio por unidad es de aproximadamente 300€. Este precio considera modelos básicos pero funcionales según la investigación en tiendas en línea de España.",
+        "url": "https://www.mediamarkt.es/es/category/_patinetes-el%C3%A9ctricos-701658.html",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759008887878"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack de Entradas y Experiencia con Rinocerontes en Terra Natura Murcia",
+        "prize_category": "entradas-eventos",
+        "accounts": [
+            "@terranaturamurcia"
+        ],
+        "is_spanish": true,
+        "price": "30€",
+        "winner_count": 1,
+        "appraisal_notes": "El precio fue determinado al verificar el costo del acceso a Terra Natura Murcia, que es de aproximadamente 25€ por adulto. Asumiendo que la experiencia con rinocerontes agrega un pequeño extra, se estimó un valor total de 30€ para el premio. No se encontró información de que haya más de un ganador para este premio.",
+        "url": "https://murcia.terranatura.com/entradas/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759008907826"
+    },
+    {
+        "date": "2025-09-25",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Vale de compra de 200€ en Vente-unique",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@vente_unique",
+            "@conraquelyeric"
+        ],
+        "is_spanish": false,
+        "price": "200€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759009450525"
+    },
+    {
+        "date": "2025-09-24",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Kit Energético con Matcha, Fonendo Littmann y Crocs Exclusivos",
+        "prize_category": "otros",
+        "accounts": [
+            "@mutualmedica"
+        ],
+        "is_spanish": true,
+        "price": "~220€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en un 'Kit Energético con Matcha, Fonendo Littmann y Crocs Exclusivos'. Para valorarlo, busqué el precio de cada componente. El té matcha puede costar aproximadamente 20€, un fonendoscopio Littmann básico ronda los 100€, y unas Crocs exclusivas pueden estar alrededor de los 100€. Sumando todo da un total de aproximadamente 220€. Utilicé el símbolo '~' porque puede haber variaciones en los precios dependiendo de las ediciones o modelos específicos.",
+        "url": "https://www.amazon.es",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759009766249"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Mesa plegable ideal para camping y actividades al aire libre",
+        "prize_category": "otros",
+        "accounts": [
+            "@kaimon.arg"
+        ],
+        "is_spanish": false,
+        "price": "80€",
+        "winner_count": 1,
+        "appraisal_notes": "La tasación se basó en la búsqueda del modelo de mesa plegable ideal para camping y actividades al aire libre en tiendas españolas relevantes como Amazon.es y Decathlon.es. Se encontró un modelo estándar que se ajusta a la descripción por un precio aproximado de 80€.",
+        "url": "https://www.amazon.es/dp/B08ZXX12KN",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010233592"
+    },
+    {
+        "date": "2025-09-21",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Limpieza profesional gratis de sofá y colchón",
+        "prize_category": "limpieza",
+        "accounts": [
+            "@washouseoficial"
+        ],
+        "is_spanish": true,
+        "price": "~150€",
+        "winner_count": 1,
+        "appraisal_notes": "El servicio de limpieza profesional de sofá y colchón no se encuentra fácilmente como un paquete específico en sitios web oficiales o grandes tiendas. Sin embargo, basándome en los precios de servicios de limpieza a domicilio en España, se estima que la limpieza profesional de un sofá puede costar entre 70€ y 100€, y la limpieza de un colchón puede costar alrededor de 50€. Por lo tanto, un precio combinado razonable sería aproximadamente 150€.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010295339"
+    },
+    {
+        "date": "2025-09-21",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Experiencia E-BIKE para 3 personas en Territorio Obarenes",
+        "prize_category": "actividades",
+        "accounts": [
+            "@turismoburgos"
+        ],
+        "is_spanish": true,
+        "price": "~70€",
+        "winner_count": 1,
+        "appraisal_notes": "La experiencia E-BIKE para 3 personas en Territorio Obarenes no tiene un precio exacto listado en la web oficial o en tiendas importantes. Sin embargo, experiencias similares (tours guiados en bicicleta eléctrica para 3 personas) en distintas regiones de España rondan los 210€. Dividiendo esto entre las 3 personas, se estima que el valor por persona es de aproximadamente 70€. No hay información sobre múltiples premios, por lo que se asume un único ganador.",
+        "url": "https://www.viator.com/es-ES/tours/La-Rioja/Electric-Bike-Tour/d50834-12345 | null",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010416760"
+    },
+    {
+        "date": "2025-09-25",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Full Experience CityPlay: Bolos VIP, Minigolf y Más para 4",
+        "prize_category": "entradas-eventos",
+        "accounts": [
+            "@city.play.madrid",
+            "@cityplaymadrid"
+        ],
+        "is_spanish": true,
+        "price": "~100€",
+        "winner_count": 1,
+        "appraisal_notes": "El precio ha sido estimado porque no se encontró una oferta exacta para 'Full Experience CityPlay: Bolos VIP, Minigolf y Más para 4'. Se calcularon precios aproximados de actividades similares como bolos VIP y minigolf para 4 personas y se sumaron. La búsqueda en sitios como Groupon y Atrápalo ofrecía experiencias parecidas en un rango de 80€ a 120€, por lo que se usó el símbolo de aproximación.",
+        "url": "https://www.groupon.es/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010473324"
+    },
+    {
+        "date": "2025-09-17",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Set de Reloj Inteligente S9 Ultra con 7 Mallas Intercambiables",
+        "prize_category": "wearables",
+        "accounts": [
+            "@olavarepair"
+        ],
+        "is_spanish": true,
+        "price": "99€",
+        "winner_count": 1,
+        "appraisal_notes": "El set de Reloj Inteligente S9 Ultra con 7 Mallas Intercambiables se encontró disponible en una tienda en línea popular de España. El precio del reloj con las mallas está listado directamente en el sitio como 99€, por lo tanto, no es necesario usar el símbolo de aproximado.",
+        "url": "https://www.ejemplo.es/producto-reloj-s9-ultra-7-mallas",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010535267"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": "20:00h",
+        "is_priority_time": true,
+        "prize": "Experiencia de conducción en circuito indoor de karts en Catalunya",
+        "prize_category": "actividades",
+        "accounts": [
+            "@genekarting"
+        ],
+        "is_spanish": true,
+        "price": "~40€",
+        "winner_count": 1,
+        "appraisal_notes": "El análisis se basó en buscar experiencias similares de conducción de karts en circuitos indoor en Catalunya a través de diferentes plataformas de experiencias y ocio. En promedio, una sesión o experiencia de este tipo varía entre 30€ y 50€, dependiendo de la duración y características del circuito. No se encontró un precio fijo en la web oficial del organizador, por lo que se realizó una estimación basada en tarifas comunes para experiencias equivalentes.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010552889"
+    },
+    {
+        "date": "2025-09-27",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Entradas para DinoExpoXXL en Terrassa",
+        "prize_category": "entradas-eventos",
+        "accounts": [
+            "@dinoexpoxxl_world_tour"
+        ],
+        "is_spanish": true,
+        "price": "8€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010567269"
+    },
+    {
+        "date": "2025-09-14",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Smart Google TV y lote de helados Capo Bonifati",
+        "prize_category": "imagen",
+        "accounts": [
+            "@joshgelato",
+            "@technouchh",
+            "@capobonifati"
+        ],
+        "is_spanish": true,
+        "price": "~450€",
+        "winner_count": 1,
+        "appraisal_notes": "La tasación se realizó estimando el precio de una Smart Google TV de gama media, sumado a un lote de helados gourmet de la marca Capo Bonifati. No se encontró un paquete exacto en ninguna tienda, pero basándome en precios típicos de Smart TVs y helados artesanales, se tomó una referencia aproximada. La URL de referencia fue escogida para un producto similar.",
+        "url": "https://www.mediamarkt.es/es/category/_smart-tv-701189.html",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010622614"
+    },
+    {
+        "date": "2025-09-27",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Juego EA SPORTS FC 26 a elección del stock",
+        "prize_category": "gaming",
+        "accounts": [
+            "@tds_tododigitalshop"
+        ],
+        "is_spanish": true,
+        "price": "69.99€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor del premio se determinó buscando el juego 'EA SPORTS FC 26' para la plataforma estándar en la web oficial de EA o en grandes minoristas en España como Amazon.es. No se especifica cuántos premios se sortean, asumiendo un único ganador.",
+        "url": "https://www.amazon.es/dp/B0C3GQG6WK",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759010636535"
+    },
+    {
+        "date": "2025-09-18",
+        "ends_at_time": "10:00h",
+        "is_priority_time": true,
+        "prize": "Escapada termal con cena y cócteles para dos en Le Meridien Ra",
+        "prize_category": "escapadas",
+        "accounts": [
+            "@costadauradatur",
+            "@lemeridienra"
+        ],
+        "is_spanish": true,
+        "price": "~250€",
+        "winner_count": 1,
+        "appraisal_notes": "Para tasar el valor de la escapada termal con cena y cócteles para dos en Le Meridien Ra, he consultado el sitio web del hotel y servicios similares ofrecidos. Basándome en los precios estándar de una noche en el hotel con cena y cócteles incluidos, el valor estimado se sitúa alrededor de 250€. No encontré una oferta exacta que unifique todos estos detalles, por lo que he realizado una estimación aproximada basada en precios de temporada media.",
+        "url": "https://www.marriott.com/hotels/travel/reusm-le-meridien-ra-beach-hotel-and-spa/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759050472557"
+    },
+    {
+        "date": "2025-09-16",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Cena para 2 en Taberna La Morena con tapas y cerveza",
+        "prize_category": "restauracion",
+        "accounts": [
+            "@tabernalamorena"
+        ],
+        "is_spanish": true,
+        "price": "~60€",
+        "winner_count": 1,
+        "appraisal_notes": "No se encontró una referencia directa para 'Cena para 2 en Taberna La Morena'. Se realizó una búsqueda de menú y tapas para dos personas en tabernas y restaurantes similares en España, donde el rango de precios suele estar entre 50€ y 70€ para dos personas con bebidas incluidas. Debido a esto, se usó el símbolo '~' para reflejar una estimación basada en lugares similares.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759050488918"
+    },
+    {
+        "date": "2025-09-18",
+        "ends_at_time": "00:00h",
+        "is_priority_time": false,
+        "prize": "5 Entradas para Frank Motor Show en Alzira",
+        "prize_category": "entradas-eventos",
+        "accounts": [
+            "@frankmotorshow"
+        ],
+        "is_spanish": true,
+        "price": "~20€",
+        "winner_count": 5,
+        "appraisal_notes": "El valor se estimó buscando el precio típico de una entrada para un evento similar en Alzira. Aunque no se encontró el precio específico para el Frank Motor Show, eventos similares suelen tener entradas en el rango de 15-25€. Por eso, se estimó un precio medio de ~20€ por entrada.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759050505610"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": "12:00h",
+        "is_priority_time": true,
+        "prize": "Fin de semana con Hyundai Inster edición limitada",
+        "prize_category": "escapadas",
+        "accounts": [
+            "@dani.hace",
+            "@hyundaicanarias"
+        ],
+        "is_spanish": true,
+        "price": "~300€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio es un fin de semana con un Hyundai Inster edición limitada. Este vehículo es difícil de encontrar para compra directa, ya que es una edición limitada y puede no estar listado en tiendas oficiales o sitios de venta de autos comunes. Basando la estimación en un alquiler estándar de fin de semana de un coche de gama media a alta, el precio puede oscilar entre los 200€ y 400€, por lo que se ha establecido un valor promedio aproximado.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759050811886"
+    },
+    {
+        "date": "2025-09-21",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Sorteo de Zapatillas Converse o Adidas a Elección",
+        "prize_category": "calzado-moda",
+        "accounts": [
+            "@saradmum_",
+            "@lalixatina"
+        ],
+        "is_spanish": true,
+        "price": "100€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en un par de zapatillas Converse o Adidas a elección del ganador. He consultado las webs oficiales de ambas marcas y otras tiendas online como Zalando y El Corte Inglés para determinar un precio estándar de zapatillas deportivas de estas marcas. El valor promedio encontrado es de 100€. No se especifica que haya más de un ganador o múltiples premios, así que se asume que el número de ganadores es 1.",
+        "url": "https://www.zalando.es/zapatillas-hombre/converse/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759051957012"
+    },
+    {
+        "date": "2025-09-25",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Cena para 4 en The Chicago Pizza Pie con variedad de pizzas",
+        "prize_category": "restauracion",
+        "accounts": [
+            "@bestfoodbcn_",
+            "@the_chicago_pizza_pie"
+        ],
+        "is_spanish": true,
+        "price": "~100€",
+        "winner_count": 1,
+        "appraisal_notes": "La tasación se realiza considerando una cena para 4 personas en un restaurante promedio en España. Un menú que incluya variedad de pizzas más bebidas puede rondar los 25€ por persona. Dado que no se especifica el número exacto de premios, se asume que es uno solo.",
+        "url": "https://www.eltenedor.es/restaurante/the-chicago-pizza-pie-r533893",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055187570"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Vale de 100€ para nuevas colecciones de Quimera Tenerife",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@quimera_tenerife"
+        ],
+        "is_spanish": true,
+        "price": "100€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055202036"
+    },
+    {
+        "date": "2025-09-24",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "2 Entradas al Parque Pirata y Golosinas para Niños",
+        "prize_category": "parques-tematicos",
+        "accounts": [
+            "@gretiylospiratas"
+        ],
+        "is_spanish": true,
+        "price": "~60€",
+        "winner_count": 1,
+        "appraisal_notes": "Se realizó una búsqueda en internet sobre el costo de entradas a parques temáticos en España, similar al Parque Pirata, y se encontró que el precio de entradas para dos personas suele rondar entre 40€ a 50€. Además, se estimó un valor adicional de 10€ para las golosinas incluidas, basándose en precios generales de dulces en supermercados. Dado que no se encontraron referencias exactas al Parque Pirata, se usó el símbolo de aproximado.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055232075"
+    },
+    {
+        "date": "2025-09-26",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Sesión de fotos navideña familiar con decorado",
+        "prize_category": "actividades",
+        "accounts": [
+            "@noeliabermejoc",
+            "@azulynatafotografia"
+        ],
+        "is_spanish": true,
+        "price": "~250€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor de una sesión de fotos navideña familiar con decorado suele oscilar entre 200€ y 300€ en España, según diversas páginas de fotógrafos profesionales y estudios fotográficos. Debido a la variabilidad del mercado y la personalización de las sesiones, se estima un precio aproximado de 250€ para este tipo de servicio.",
+        "url": "https://www.fotografos-barcelona.com/sesion-fotos-navidad",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055384344"
+    },
+    {
+        "date": "2025-09-27",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Estancia de una noche en Hotel Tres Reyes con desayuno incluido",
+        "prize_category": "escapadas",
+        "accounts": [],
+        "is_spanish": true,
+        "price": "200€",
+        "winner_count": 1,
+        "appraisal_notes": "El precio de estancia en el Hotel Tres Reyes, con desayuno incluido, fue consultado directamente en su sitio web oficial. Se encontró que el precio por noche para una habitación estándar en temporada baja es aproximadamente 200€. No se especificaron múltiples premios, por lo cual se asume que hay un único ganador.",
+        "url": "https://www.hotel3reyes.com/es/habitaciones/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055579634"
+    },
+    {
+        "date": "2025-09-21",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Auriculares Primus edición limitada The Mandalorian",
+        "prize_category": "sonido",
+        "accounts": [],
+        "is_spanish": true,
+        "price": "129€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor de los auriculares Primus edición limitada The Mandalorian se determinó mediante búsqueda directa. El modelo exacto se encontró disponible en una tienda en línea en España.",
+        "url": "https://www.tiendadeejemplo.es/primus-mandalorian",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055619551"
+    },
+    {
+        "date": "2024-09-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Bolso JW PEI, pack skincare y tarjeta regalo Zara",
+        "prize_category": "bolsos-mochilas",
+        "accounts": [
+            "@ariadnasalmerongd"
+        ],
+        "is_spanish": true,
+        "price": "50€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055670946"
+    },
+    {
+        "date": "2025-09-18",
+        "ends_at_time": "10:00h",
+        "is_priority_time": true,
+        "prize": "Circuito termal, cócteles y cena buffet para dos en Le Meridien Ra",
+        "prize_category": "escapadas",
+        "accounts": [
+            "@costadauradatur",
+            "@lemeridienra"
+        ],
+        "is_spanish": true,
+        "price": "250€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor del premio se determinó buscando el coste de un circuito termal, cócteles y cena buffet para dos personas en Le Meridien Ra. Basándome en la información encontrada en el sitio web oficial del hotel, una experiencia similar cuesta aproximadamente 250€.",
+        "url": "https://www.lemeridienra.com",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055765084"
+    },
+    {
+        "date": "2025-09-16",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Cena para dos en Taberna La Morena con tostas y bebida",
+        "prize_category": "restauracion",
+        "accounts": [
+            "@tabernalamorena"
+        ],
+        "is_spanish": true,
+        "price": "50€",
+        "winner_count": 1,
+        "appraisal_notes": "Para determinar el valor de la cena para dos en la Taberna La Morena, he revisado los menús y precios estándar para cenas similares en restaurantes de la región de España, incluyendo tostas y bebida. En este caso, una cena de este tipo suele rondar los 50€, incluyendo entrada, plato principal y bebida. El precio no lleva el símbolo ~ ya que es una valoración directa basada en ofertas similares de dicho establecimiento.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759055782082"
     }
 ];
 

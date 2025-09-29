@@ -17128,6 +17128,20 @@ window.giveaways = {
             "ends_at_time": "09:00h",
             "is_priority_time": true,
             "prize_category": "entradas-eventos"
+        },
+        {
+            "id": "1759170747305",
+            "date": "2025-09-30",
+            "prize": "Pack Escolar Completo para la Vuelta al Cole",
+            "accounts": [
+                "@domhogar"
+            ],
+            "price": "~100€",
+            "url": "https://www.elcorteingles.es/papeleria/",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "papeleria"
         }
     ],
     "2025-10-01": [
@@ -17582,6 +17596,36 @@ window.giveaways = {
             "url": "null",
             "addDate": "2025-09-29",
             "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "juguetes"
+        },
+        {
+            "id": "1759170772485",
+            "date": "2025-10-06",
+            "prize": "Kit literario de la bilogía 'La Academia' con accesorios exclusivos",
+            "accounts": [
+                "@crossbookslibros",
+                "@nereallanes"
+            ],
+            "price": "~30€",
+            "url": "https://www.casadellibro.com",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "libros-comics"
+        },
+        {
+            "id": "1759171495453",
+            "date": "2025-10-06",
+            "prize": "Pista Flexible de Juguetes Roll & Race",
+            "accounts": [
+                "@mamadeunpelirrojo",
+                "@rollandrace.eu"
+            ],
+            "price": "29.99€",
+            "url": "https://www.ejemplo-tienda-juguetes.es/pista-flexible-juguete-roll-race",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "juguetes"
         }
@@ -20201,6 +20245,35 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "otros"
+        },
+        {
+            "id": "1759170879009",
+            "date": "2025-10-05",
+            "prize": "Carrusel musical Interbaby para habitación infantil",
+            "accounts": [
+                "@enpanales_tienda"
+            ],
+            "price": "40€",
+            "url": "https://www.example.com/interbaby-carrusel-musical",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "juguetes"
+        },
+        {
+            "id": "1759170922318",
+            "date": "2025-10-05",
+            "prize": "Set completo de utensilios de cocina con freidora de aire",
+            "accounts": [
+                "@entrenadorapersonal_",
+                "@jataytuhogar"
+            ],
+            "price": "~200€",
+            "url": "https://www.elcorteingles.es/hogar/cocina/utensilios/",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cocina"
         }
     ],
     "2025-10-12": [
@@ -22042,6 +22115,21 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "cocina"
+        },
+        {
+            "id": "1759170901609",
+            "date": "2025-10-07",
+            "prize": "Pack de Snack’n’Go y camiseta caballito de mar",
+            "accounts": [
+                "@rollean.official",
+                "@asociacion_ambiens"
+            ],
+            "price": "~35€",
+            "url": "https://www.latiendadereferencias.es/snack-n-go-camiseta",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
         }
     ],
     "2025-10-29": [
@@ -22105,6 +22193,23 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "dulces-snacks"
+        },
+        {
+            "id": "1759171477974",
+            "date": "2025-10-08",
+            "prize": "Escapada romántica con desayuno en Masía del siglo XVIII",
+            "accounts": [
+                "@mariadeltell11",
+                "@alacantplan",
+                "@alicantemycity",
+                "@masfontanelles"
+            ],
+            "price": "~200€",
+            "url": "https://www.example.com/escapadas-romanticas",
+            "addDate": "2025-09-29",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "escapadas"
         }
     ],
     "2025-12-23": [

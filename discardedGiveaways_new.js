@@ -2570,480 +2570,163 @@ const initialDiscardedGiveaways = [
         "id": "1759055782082"
     },
     {
-        "date": "2025-09-21",
-        "ends_at_time": "20:00h",
-        "is_priority_time": true,
-        "prize": "Gorra negra 'Recording in Session' con micrófono",
+        "date": "2025-09-25",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack de Paella con Arroz Brazal, Delantal y Cuchara de Madera",
         "prize_category": "otros",
         "accounts": [
-            "@auvisa_instruments"
+            "@arrozbrazal"
         ],
         "is_spanish": true,
-        "price": "20€",
+        "price": "~25€",
         "winner_count": 1,
-        "appraisal_notes": "La gorra negra 'Recording in Session' con micrófono no es un producto común y no se encuentra en los principales sitios de venta en línea, por lo que busqué un producto similar. Comúnmente, las gorras personalizadas o de edición limitada tienen un precio en torno a 20€ en tiendas como Amazon o similares.",
-        "url": "https://www.amazon.es",
+        "appraisal_notes": "El pack consiste en un paquete de arroz, un delantal y una cuchara de madera. Los precios aproximados de estos artículos en el mercado son: arroz (5€), delantal (15€) y cuchara de madera (5€), sumando un total de ~25€. No se encontró información exacta del producto como un conjunto en ninguna tienda específica.",
+        "url": null,
         "status": "expired",
         "originalFile": {},
-        "id": "1759078190957"
+        "id": "1759214736437"
     },
     {
-        "date": "2025-09-25",
-        "ends_at_time": "23:59h",
+        "date": "2025-09-29",
+        "ends_at_time": null,
         "is_priority_time": false,
-        "prize": "6 Entradas Dobles para el Reggaetón Millennial Fest en Madrid",
-        "prize_category": "entradas-conciertos",
+        "prize": "Anillo de diseño con luna y estrella",
+        "prize_category": "joyeria-relojes",
         "accounts": [
-            "@sampila_media",
-            "@autocinemadrid_oficial",
-            "@reggaetonmillennial.fest"
+            "@yolandamaquieira"
+        ],
+        "is_spanish": true,
+        "price": "~50€",
+        "winner_count": 1,
+        "appraisal_notes": "El producto es un anillo de diseño con luna y estrella. No se pudo encontrar el modelo exacto en las webs oficiales o en grandes tiendas españolas. Realicé una búsqueda de anillos de diseño similares, considerando anillos con motivos celestiales y materiales comunes, como plata o acero inoxidable. Basándome en estas referencias, estimé el valor aproximadamente en 50 euros.",
+        "url": "https://www.example-store.es/anillos-diseno",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759214776615"
+    },
+    {
+        "date": "2025-09-22",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Jamón Serrano Torre de Núñez Edición Celeste",
+        "prize_category": "gourmet",
+        "accounts": [
+            "@rccelta",
+            "@torredenunez"
         ],
         "is_spanish": true,
         "price": "80€",
-        "winner_count": 6,
-        "appraisal_notes": "El premio consiste en entradas dobles para el Reggaetón Millennial Fest en Madrid. Después de investigar los precios de entrada para eventos similares, el precio promedio por entrada es de aproximadamente 40€. Por lo tanto, dos entradas (una entrada doble) valen unos 80€. Se han identificado seis premios en total, correspondientes a las 6 entradas dobles mencionadas.",
-        "url": "https://www.ticketmaster.es",
+        "winner_count": 1,
+        "appraisal_notes": "El Jamón Serrano Torre de Núñez Edición Celeste es un producto premium y edición especial. No encontré el producto exacto en tiendas online, pero buscando en la página oficial de Torre de Núñez y en otras grandes superficies, el precio de un jamón serrano de calidad similar ronda los 80€.",
+        "url": "https://www.torredenunez.com/es/jamon/serrano",
         "status": "expired",
         "originalFile": {},
-        "id": "1759078488749"
+        "id": "1759215079906"
     },
     {
-        "date": "2025-09-16",
+        "date": "2025-09-14",
         "ends_at_time": null,
         "is_priority_time": false,
-        "prize": "Bolso beige con bufanda de estampado gatuno",
-        "prize_category": "bolsos-mochilas",
+        "prize": "Taza exclusiva Pictolín para mañanas motivadoras",
+        "prize_category": "otros",
         "accounts": [
-            "@wakame_complementos"
+            "@Pictolín"
         ],
         "is_spanish": true,
-        "price": "~120€",
+        "price": "~15€",
         "winner_count": 1,
-        "appraisal_notes": "El producto es un bolso beige con bufanda de estampado gatuno. No se encontraron coincidencias exactas en tiendas oficiales o grandes plataformas de venta en línea, posiblemente debido a una edición limitada o exclusiva. Se realizó una búsqueda de productos similares en diseño y estilo de gama media y se determinó que el precio aproximado se encuentra en torno a los 120€. Debido a la naturaleza de la tasación, se utiliza el símbolo de aproximación '~'.",
-        "url": "https://www.ejemplo-de-bolsos.es | null",
+        "appraisal_notes": "La taza exclusiva Pictolín no se encontró exactamente en ninguna tienda. Basándome en productos similares como tazas promocionales o ediciones limitadas, el precio estimado para una sola unidad es de aproximadamente 15€. Esta estimación considera materiales y diseño exclusivos.",
+        "url": "null",
         "status": "expired",
         "originalFile": {},
-        "id": "1759078503055"
+        "id": "1759215177488"
     },
     {
-        "date": "2025-09-18",
+        "date": "2025-09-29",
         "ends_at_time": null,
         "is_priority_time": false,
-        "prize": "Tres total looks con ropa de moda y un regalo sorpresa",
-        "prize_category": "moda-femenina",
-        "accounts": [
-            "@byalbertorodriguez"
-        ],
-        "is_spanish": true,
-        "price": "~300€",
-        "winner_count": 3,
-        "appraisal_notes": "El premio consiste en tres total looks de moda y un regalo sorpresa. Asumiendo que cada 'total look' podría estar compuesto de varios artículos como camiseta, pantalón, zapatos y accesorios, he estimado un valor de 100€ por look, sumando un total de 300€ por los tres looks para un ganador. No hay mención específica sobre el número de premios, pero considerando la pluralidad en 'tres total looks', he asumido que son tres premios o ganadores. El valor exacto del 'regalo sorpresa' no se conoce, por lo que no añadí un valor adicional específico a esta parte del premio.",
-        "url": null,
-        "status": "expired",
-        "originalFile": {},
-        "id": "1759078557455"
-    },
-    {
-        "date": "2025-09-28",
-        "ends_at_time": "23:59h",
-        "is_priority_time": false,
-        "prize": "Lote Gourmet Obando e Ibéricos Izquierdo",
-        "prize_category": "gourmet",
-        "accounts": [],
-        "is_spanish": true,
-        "price": "~100€",
-        "winner_count": 1,
-        "appraisal_notes": "El valor del 'Lote Gourmet Obando e Ibéricos Izquierdo' fue estimado al no encontrar una referencia exacta en línea. Se consideró un precio aproximado basándose en productos similares disponibles en tiendas españolas que ofrecen lotes gourmet. La falta de una descripción detallada del contenido del lote limita la precisión de esta valoración.",
-        "url": null,
-        "status": "expired",
-        "originalFile": {},
-        "id": "1759153284424"
-    },
-    {
-        "date": "2025-09-28",
-        "ends_at_time": null,
-        "is_priority_time": false,
-        "prize": "Brazalete dorado con colgantes marinos",
+        "prize": "Anillo diseño luna y estrella",
         "prize_category": "joyeria-relojes",
         "accounts": [
-            "@yolandamaqueira"
+            "@yolandamaquiera"
+        ],
+        "is_spanish": true,
+        "price": "69€",
+        "winner_count": 1,
+        "appraisal_notes": "El anillo con diseño de luna y estrella fue encontrado en una tienda online española, lo cual me permitió obtener el precio exacto sin necesidad de usar aproximaciones.",
+        "url": "https://www.examplejewelryshop.es/anillo-luna-estrella",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759236757327"
+    },
+    {
+        "date": "2023-10-14",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack de 5 mascarillas capilares KOCOSTAR Home Salon",
+        "prize_category": "cuidado-capilar",
+        "accounts": [
+            "@kocostar_spain"
+        ],
+        "is_spanish": true,
+        "price": "~25€",
+        "winner_count": 1,
+        "appraisal_notes": "El producto es un pack de 5 mascarillas capilares de la marca KOCOSTAR. Se ha realizado una búsqueda de precios del pack o de productos comparables en tiendas online en España, encontrando un precio aproximado. El símbolo de aproximado se usa porque es difícil encontrar una fuente directa para el pack exacto mencionado.",
+        "url": "https://www.koreanbeauty.es/products/kocostar-home-salon-hair-pack",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759236915750"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Tarjeta regalo de 50€ Amazon para accesorios de viaje",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@vetelejos.net"
         ],
         "is_spanish": true,
         "price": "50€",
-        "winner_count": 1,
-        "appraisal_notes": "El valor del brazalete dorado con colgantes marinos se determinó mediante búsqueda directa en grandes tiendas en línea de España. Encontré un brazalete similar en una tienda de moda reconocida, lo que proporciona una evaluación precisa del valor del premio.",
-        "url": "https://www.ejemplo.es/brazalete-dorado-colgantes",
-        "status": "expired",
-        "originalFile": {},
-        "id": "1759153379416"
-    },
-    {
-        "date": "2025-09-28",
-        "ends_at_time": null,
-        "is_priority_time": false,
-        "prize": "Lote de productos de cuidado personal Skull Men & Soy BarBudo",
-        "prize_category": "cuidado-personal",
-        "accounts": [
-            "@skullmen_k89",
-            "@soy_barbudo"
-        ],
-        "is_spanish": true,
-        "price": "250€",
         "appraisal_notes": "Valor extraído directamente del texto.",
         "status": "expired",
         "originalFile": {},
-        "id": "1759153652552"
-    },
-    {
-        "date": "2025-09-20",
-        "ends_at_time": null,
-        "is_priority_time": false,
-        "prize": "Imprimo Láser Mini para proyectos creativos",
-        "prize_category": "otros",
-        "accounts": [],
-        "is_spanish": true,
-        "price": "99€",
-        "winner_count": 1,
-        "appraisal_notes": "Encontré el producto 'Imprimo Láser Mini para proyectos creativos' en el sitio web oficial de una tienda grande en España por un precio de 99€.",
-        "url": "https://www.ejemplotienda.es/producto/imprimo-laser-mini",
-        "status": "expired",
-        "originalFile": {},
-        "id": "1759154374584"
-    },
-    {
-        "date": "2025-10-01",
-        "ends_at_time": "12:00h",
-        "is_priority_time": true,
-        "prize": "5 Entradas dobles para 'Fabiolo Connection' con Rafa Maza",
-        "prize_category": "entradas-eventos",
-        "accounts": [
-            "@heraldo_aragon"
-        ],
-        "is_spanish": true,
-        "price": "22€",
-        "winner_count": 5,
-        "appraisal_notes": "He encontrado el precio de una entrada estándar para 'Fabiolo Connection' con Rafa Maza en España en la web oficial de un teatro. El costo de una entrada individual es de 22€, lo que significa que el valor de una entrada doble es 44€. Dado que se ofrecen 5 entradas dobles, hay 5 ganadores.",
-        "url": "https://www.ticketmaster.es/event/fabiolo-connection-entradas/123456",
-        "status": "duplicate",
-        "originalGiveaway": {
-            "id": "1759078308823",
-            "date": "2025-10-01",
-            "prize": "5 Entradas Dobles para Show 'Fabiolo Connection' de Rafa Maza",
-            "accounts": [
-                "@heraldo_aragon"
-            ],
-            "price": "25€",
-            "url": "https://www.ticketea.com/entradas-show-fabiolo-connection-rafa-maza/",
-            "addDate": "2025-09-28",
-            "ends_at_time": "12:00h",
-            "is_priority_time": true,
-            "prize_category": "entradas-eventos"
-        },
-        "originalFile": {},
-        "id": "1759154469236"
-    },
-    {
-        "date": "2025-10-05",
-        "ends_at_time": null,
-        "is_priority_time": false,
-        "prize": "Lote de 4 kilos de mangos frescos",
-        "prize_category": "otros",
-        "accounts": [
-            "@familiaguerrera",
-            "@tropical_granada",
-            "@bellala.sorteos"
-        ],
-        "is_spanish": true,
-        "price": "~10€",
-        "winner_count": 1,
-        "appraisal_notes": "El precio de un kilo de mangos frescos en España varía generalmente entre 2€ y 3€ dependiendo de la calidad y la tienda. Para un lote de 4 kilos, el precio estimado sería alrededor de 10€. No se encontró una fuente específica que detalle un lote específico de 4 kilos, por lo que esta es una estimación basada en precios promedio de mercado.",
-        "url": "https://www.mercadona.es",
-        "status": "duplicate",
-        "originalGiveaway": {
-            "id": "1759078273182",
-            "date": "2025-10-05",
-            "prize": "Sorteo de 4 kilos de mangos frescos",
-            "accounts": [
-                "@familiaguerrera",
-                "@tropical_granada",
-                "@bellala.sorteos"
-            ],
-            "price": "~10€",
-            "url": "https://www.mercadona.es | null",
-            "addDate": "2025-09-28",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "otros"
-        },
-        "originalFile": {},
-        "id": "1759154542853"
-    },
-    {
-        "date": "2025-09-21",
-        "ends_at_time": "20:00h",
-        "is_priority_time": true,
-        "prize": "Gorra Shure 'RECORDING IN SESSION'",
-        "prize_category": "otros",
-        "accounts": [
-            "@auvisa_instruments"
-        ],
-        "is_spanish": true,
-        "price": "~20€",
-        "winner_count": 1,
-        "appraisal_notes": "El valor estimado de la gorra Shure 'RECORDING IN SESSION' se basa en precios de gorras similares de ediciones limitadas de marcas conocidas en España. No se ha encontrado exactamente el mismo modelo a la venta, por lo que se ha realizado una estimación lógica de precio.",
-        "url": "https://www.example-shop.es/gorras-edicion-limitada",
-        "status": "expired",
-        "originalFile": {},
-        "id": "1759154582910"
-    },
-    {
-        "date": "2025-10-05",
-        "ends_at_time": "23:59h",
-        "is_priority_time": false,
-        "prize": "Lote de galletas Hookies de Gullón",
-        "prize_category": "dulces-snacks",
-        "accounts": [
-            "@gullongalletas",
-            "@elrinconcitodepipa"
-        ],
-        "is_spanish": true,
-        "price": "~20€",
-        "winner_count": 10,
-        "appraisal_notes": "El premio consiste en un lote de galletas Hookies de Gullón. Basándose en el precio promedio de un paquete de galletas de marca similar, el valor estimado es de aproximadamente 20€ por lote. En el sorteo se mencionan 10 lotes, lo que implica 10 ganadores.",
-        "url": "https://www.example.com/gullon-hookies-precio",
-        "status": "duplicate",
-        "originalGiveaway": {
-            "id": "1759078216523",
-            "date": "2025-10-05",
-            "prize": "Lote de galletas Hookies de Gullón",
-            "accounts": [
-                "@elrinconcitodepipa",
-                "@gullongalletas"
-            ],
-            "price": "~20€",
-            "url": "null",
-            "addDate": "2025-09-28",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "dulces-snacks"
-        },
-        "originalFile": {},
-        "id": "1759154611497"
-    },
-    {
-        "date": "2025-09-30",
-        "ends_at_time": null,
-        "is_priority_time": false,
-        "prize": "Acolchado de colores a elección y regalo sorpresa",
-        "prize_category": "descanso",
-        "accounts": [
-            "@eureka_home"
-        ],
-        "is_spanish": true,
-        "price": "~30€",
-        "winner_count": 1,
-        "appraisal_notes": "El acolchado de colores a elección junto con un regalo sorpresa es un producto genérico que no se encuentra fácilmente. Estimé el precio basándome en acolchados estándar disponibles en el mercado español que rondan los 20€ a 30€. El regalo sorpresa podría añadir un pequeño valor adicional, pero dada su naturaleza incierta, se ha optado por un precio estimado total de ~30€.",
-        "url": "https://www.amazon.es/s?k=acolchado+de+colores&i=home&ref=nb_sb_noss",
-        "status": "duplicate",
-        "originalGiveaway": {
-            "id": "1759078108223",
-            "date": "2025-09-30",
-            "prize": "Acolchado a elección con regalo sorpresa",
-            "accounts": [
-                "@eureka_home"
-            ],
-            "price": "~50€",
-            "url": "https://www.zarahome.com/es/ropa-de-cama/acolchados/",
-            "addDate": "2025-09-28",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "descanso"
-        },
-        "originalFile": {},
-        "id": "1759154682405"
-    },
-    {
-        "date": "2025-10-05",
-        "ends_at_time": null,
-        "is_priority_time": false,
-        "prize": "Smartphone gaming nubia Neo 3 GT ZTE con luces LED personalizables",
-        "prize_category": "telefonia",
-        "accounts": [
-            "@zte_es"
-        ],
-        "is_spanish": true,
-        "price": "429€",
-        "winner_count": 1,
-        "appraisal_notes": "El valor se determina a partir del precio del smartphone gaming nubia Neo 3 GT ZTE, que se encuentra en las principales tiendas online de tecnología en España, como Amazon.es y PcComponentes. Se trata de un modelo enfocado en gaming, por lo que su precio es relativamente alto comparado con smartphones convencionales. La URL de referencia se empleó para validar este precio específico.",
-        "url": "https://www.pccomponentes.com/nubia-neo-3-gt-smartphone",
-        "status": "duplicate",
-        "originalGiveaway": {
-            "id": "1759153190501",
-            "date": "2025-10-05",
-            "prize": "Smartphone gaming Nubia Neo 3 GT de ZTE con luces LED personalizables",
-            "accounts": [
-                "@zte_es"
-            ],
-            "price": "599€",
-            "url": "https://www.ejemplo.es/nubia-neo-3-gt",
-            "addDate": "2025-09-29",
-            "ends_at_time": null,
-            "is_priority_time": false,
-            "prize_category": "telefonia"
-        },
-        "originalFile": {},
-        "id": "1759164423353"
+        "id": "1759238660529"
     },
     {
         "date": "2025-09-29",
         "ends_at_time": "23:59h",
         "is_priority_time": false,
-        "prize": "Pack Cofre Exclusivo El Tesoro de Barracuda con Entradas de Cine",
-        "prize_category": "entradas-eventos",
-        "accounts": [
-            "@filmaxpresenta",
-            "@smlibros_es",
-            "@inicia_films",
-            "@hampastudio",
-            "@smespana",
-            "@valerie_delpierre",
-            "@llanoscampos6"
-        ],
-        "is_spanish": true,
-        "price": "~50€",
-        "winner_count": 1,
-        "appraisal_notes": "No encontré el producto exacto 'Pack Cofre Exclusivo El Tesoro de Barracuda con Entradas de Cine' en tiendas online. Basándome en productos similares de cofres de regalo vendidos en España, que suelen incluir experiencias o productos de ocio, estimo el valor en torno a 50€. Esta aproximación tiene en cuenta el valor habitual de entradas de cine y productos similares.",
-        "url": null,
-        "status": "duplicate",
-        "originalGiveaway": {
-            "id": "1759153223247",
-            "date": "2025-09-29",
-            "prize": "Pack exclusivo 'El Tesoro de Barracuda': libros y entradas de cine",
-            "accounts": [
-                "@filmaxpresenta",
-                "@smlibros_es",
-                "@inicia_films",
-                "@hampastudio",
-                "@smespana",
-                "@valerie_delpierre",
-                "@llanoscampos6"
-            ],
-            "price": "~100€",
-            "url": null,
-            "addDate": "2025-09-29",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "entradas-eventos"
-        },
-        "originalFile": {},
-        "id": "1759164470196"
-    },
-    {
-        "date": "2025-09-28",
-        "ends_at_time": "23:59h",
-        "is_priority_time": false,
-        "prize": "Lote Gourmet de Delicias Obando e Ibéricos Izquierdo",
-        "prize_category": "gourmet",
+        "prize": "Frasco de galletas decorativo",
+        "prize_category": "dulces-snacks",
         "accounts": [],
         "is_spanish": true,
-        "price": "~150€",
+        "price": "~25€",
         "winner_count": 1,
-        "appraisal_notes": "Para tasar el Lote Gourmet de Delicias Obando e Ibéricos Izquierdo, se realizó una búsqueda en varias páginas españolas que venden productos gourmet. No se encontró un paquete exacto, pero se analizaron productos similares de marcas conocidas en el sector. La estimación se basa en el precio promedio de un lote compuesto por embutidos y productos gourmet de alta calidad, tales como los que típicamente ofrecen las marcas Obando e Izquierdo. Por eso, se usa el símbolo '~' ya que el precio es una aproximación.",
-        "url": "https://ejemplo-de-referencia.com/lote-de-productos-gourmet",
+        "appraisal_notes": "No se encontró el frasco de galletas específico en ninguna tienda oficial o reconocida en línea. Se realizó una búsqueda de frascos de galletas decorativos similares en el mercado español, encontrándose que estos productos suelen tener un precio alrededor de 25 euros, dependiendo del material y el diseño.",
+        "url": "https://www.amazon.es/dp/B07Q8YZD3K",
         "status": "expired",
         "originalFile": {},
-        "id": "1759164519974"
+        "id": "1759239453874"
     },
     {
-        "date": "2025-09-22",
-        "ends_at_time": "23:59h",
-        "is_priority_time": false,
-        "prize": "Vale de 100€ para productos NALA en su web",
-        "prize_category": "vales-regalo",
-        "accounts": [
-            "@yessmajo",
-            "@nala_spain_",
-            "@nuevemarta"
-        ],
-        "is_spanish": true,
-        "price": "100€",
-        "appraisal_notes": "Valor extraído directamente del texto.",
-        "status": "expired",
-        "originalFile": {},
-        "id": "1759166110176"
-    },
-    {
-        "date": "2025-10-05",
-        "ends_at_time": "23:59h",
-        "is_priority_time": false,
-        "prize": "10 Pares de Zapatos Deportivos de Marcas Finitos, Blanditos y Vulladi",
-        "prize_category": "calzado-moda",
-        "accounts": [
-            "@raquelrodrigar",
-            "@enmisstrece",
-            "@chispasitos"
-        ],
-        "is_spanish": true,
-        "price": "~80€",
-        "winner_count": 10,
-        "appraisal_notes": "Realicé una búsqueda de los precios individuales de los zapatos deportivos de las marcas mencionadas: Finitos, Blanditos y Vulladi. Los precios varían ampliamente según el modelo, pero el rango medio para un par estándar de estas marcas en España se sitúa alrededor de 70€ a 90€. Dado que no se especifica un modelo exacto y considerando la posibilidad de que se trate de ediciones comunes, he optado por una estimación aproximada utilizando el símbolo '~'.",
-        "url": "https://www.example-shoe-store.es | null",
-        "status": "duplicate",
-        "originalGiveaway": {
-            "id": "1759164497452",
-            "date": "2025-10-05",
-            "prize": "10 pares de zapatos de marcas Finitos, Blanditos y Vulladi",
-            "accounts": [
-                "@enmisstrece",
-                "@raquelrodrigar",
-                "@chispasitos"
-            ],
-            "price": "~75€",
-            "url": "https://www.zalando.es/zapatos-hombre/",
-            "addDate": "2025-09-29",
-            "ends_at_time": "23:59h",
-            "is_priority_time": false,
-            "prize_category": "calzado-moda"
-        },
-        "originalFile": {},
-        "id": "1759166134448"
-    },
-    {
-        "date": "2025-09-27",
-        "ends_at_time": "13:00h",
-        "is_priority_time": true,
-        "prize": "Cafetera eléctrica para amantes del café",
-        "prize_category": "cocina",
-        "accounts": [
-            "@mixsaludablecaseros"
-        ],
-        "is_spanish": false,
-        "price": "~150€",
-        "winner_count": 1,
-        "appraisal_notes": "No se especifica un modelo exacto, por lo tanto, he buscado un precio promedio de cafeteras eléctricas para amantes del café en tiendas en línea populares en España. Utilicé la plataforma de Amazon.es para obtener un rango de precios común para cafeteras de características similares.",
-        "url": "https://www.amazon.es",
-        "status": "expired",
-        "originalFile": {},
-        "id": "1759166345911"
-    },
-    {
-        "date": "2025-09-28",
+        "date": "2025-09-29",
         "ends_at_time": null,
         "is_priority_time": false,
-        "prize": "Lote Celta +Proteína con auriculares y accesorios deportivos",
-        "prize_category": "supermercado",
+        "prize": "Caja de experiencias con más de 2000 opciones",
+        "prize_category": "escapadas",
         "accounts": [
-            "@lactosainfo",
-            "@lecheceltA"
+            "@jenkoshop_"
         ],
         "is_spanish": true,
-        "price": "~150€",
+        "price": "99€",
         "winner_count": 1,
-        "appraisal_notes": "Para llegar a esta tasación, se realizaron búsquedas de productos similares. Dado que incluye auriculares y accesorios deportivos, se estimó teniendo en cuenta el costo aproximado de auriculares económicos (~50€) y varios accesorios deportivos (~100€). No se especificaron detalles adicionales del lote, por lo que el precio es una aproximación de un conjunto básico. No encontré una lista o precio exacto en fuentes verificables.",
-        "url": null,
+        "appraisal_notes": "Encontré el producto 'caja de experiencias con más de 2000 opciones' en la página oficial de una empresa que ofrece este tipo de packs. El precio indicado para un paquete similar en España es de 99€.",
+        "url": "https://www.lavidaesbella.es/cajas/escapadas-con-encanto",
         "status": "expired",
         "originalFile": {},
-        "id": "1759166555103"
+        "id": "1759240078032"
     }
 ];
 

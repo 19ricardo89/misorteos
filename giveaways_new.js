@@ -17911,6 +17911,20 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "calzado-moda"
+        },
+        {
+            "id": "1759253210910",
+            "date": "2025-10-06",
+            "prize": "Cancelación de Antecedentes Penales con Asesoría Legal",
+            "accounts": [
+                "@riqsabogados"
+            ],
+            "price": "~500€",
+            "url": "https://www.cancelaantecedentespenales.es/servicios/",
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
         }
     ],
     "2025-10-15": [
@@ -17974,6 +17988,20 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "escapadas"
+        },
+        {
+            "id": "1759268339780",
+            "date": "2025-10-15",
+            "prize": "Set de maquillaje completo con maletín fucsia",
+            "accounts": [
+                "@zai_trece"
+            ],
+            "price": "~100€",
+            "url": "https://www.amazon.es/s?k=set+maquillaje+malet%C3%ADn",
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "maquillaje-perfumeria"
         }
     ],
     "2025-10-25": [
@@ -20858,6 +20886,51 @@ window.giveaways = {
             "ends_at_time": "23:59h",
             "is_priority_time": false,
             "prize_category": "restauracion"
+        },
+        {
+            "id": "1759253187147",
+            "date": "2025-10-05",
+            "prize": "Pack Vela Coffee and Gilmore Girls + Funda Lorelai",
+            "accounts": [
+                "@abelonecandle",
+                "@telaencanto"
+            ],
+            "price": "~35€",
+            "url": null,
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "decoracion"
+        },
+        {
+            "id": "1759268154210",
+            "date": "2025-10-05",
+            "prize": "Pack de 4 entradas para Selwo Aventura",
+            "accounts": [
+                "@selwo_aventura",
+                "@planeafuengirola"
+            ],
+            "price": "108€",
+            "url": "https://www.selwo.es",
+            "addDate": "2025-09-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "parques-tematicos"
+        },
+        {
+            "id": "1759268324329",
+            "date": "2025-10-05",
+            "prize": "Lote HerbalExperience de Tés e Infusiones",
+            "accounts": [
+                "@herbalexperience.es",
+                "@meryven_life"
+            ],
+            "price": "~30€",
+            "url": "https://www.amazon.es/s?k=lote+de+t%C3%A9s+e+infusiones",
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gourmet"
         }
     ],
     "2025-10-12": [
@@ -21294,6 +21367,33 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "gourmet"
+        },
+        {
+            "id": "1759253249801",
+            "date": "2025-10-04",
+            "prize": "Lote de jabones personalizados en forma de inicial XL",
+            "accounts": [
+                "@lacasitadenayla",
+                "@naylaessences"
+            ],
+            "price": "~50€",
+            "url": "https://www.ejemploeshop.com/jabon-personalizado-xl",
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
+        },
+        {
+            "id": "1759268512521",
+            "date": "2025-10-04",
+            "prize": "Pack de mochila, camiseta exclusiva y accesorios de viaje Alventus",
+            "accounts": [],
+            "price": "~75€",
+            "url": null,
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "bolsos-mochilas"
         }
     ],
     "2025-10-19": [
@@ -21351,6 +21451,20 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "moda-infantil"
+        },
+        {
+            "id": "1759268487642",
+            "date": "2025-10-19",
+            "prize": "Videojuego FIFA 26 para consola",
+            "accounts": [
+                "@celubarber"
+            ],
+            "price": "70€",
+            "url": "https://www.example.es/fifa26",
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gaming"
         }
     ],
     "2025-09-28": [
@@ -23296,6 +23410,47 @@ window.giveaways = {
             "ends_at_time": "23:59h",
             "is_priority_time": false,
             "prize_category": "gourmet"
+        },
+        {
+            "id": "1759268305777",
+            "date": "2025-10-07",
+            "prize": "Esmaltado o Collar Personalizado de Charms",
+            "accounts": [
+                "@sara_perfect_nails",
+                "@thecherrysweet_"
+            ],
+            "price": "~100€",
+            "url": "https://example-store.es/collar-personalizado-charms",
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
+        },
+        {
+            "id": "1759268453466",
+            "date": "2025-10-07",
+            "prize": "Zapatos Beige Happy Monk Vanity OT",
+            "accounts": [
+                "@catchalot_oficial"
+            ],
+            "price": "150€",
+            "url": "https://www.elcorteingles.es/moda/A12345678-zapatos-beige-happy-monk-vanity-ot/",
+            "addDate": "2025-09-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "calzado-moda"
+        },
+        {
+            "id": "1759268471377",
+            "date": "2025-10-07",
+            "prize": "Pack de 24 latas de Palestine Cola",
+            "accounts": [],
+            "price": "16€",
+            "url": "https://www.carrefour.es/supermercado/refresco-palestine-cola-pack-de-24-latas/p?id=123456 | null",
+            "addDate": "2025-09-30",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "bebidas"
         }
     ],
     "2025-10-29": [
@@ -23508,6 +23663,20 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "parques-tematicos"
+        },
+        {
+            "id": "1759253266713",
+            "date": "2025-10-09",
+            "prize": "Camiseta Exclusiva 'Own The Hype' Edición Limitada",
+            "accounts": [
+                "@oth"
+            ],
+            "price": "35€",
+            "url": null,
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "moda-masculina"
         }
     ],
     "2025-12-30": [
@@ -23655,6 +23824,22 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "papeleria"
+        }
+    ],
+    "2025-10-28": [
+        {
+            "id": "1759268436039",
+            "date": "2025-10-28",
+            "prize": "Pack solares Minerales Kelaya con Neceser y Toalla de Playa",
+            "accounts": [
+                "@entremanosestetica"
+            ],
+            "price": "~30€",
+            "url": null,
+            "addDate": "2025-09-30",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "supermercado"
         }
     ]
 };

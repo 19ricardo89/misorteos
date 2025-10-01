@@ -13,14 +13,13 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (VOLVEMOS A v1beta) ---
-const callGeminiAPI = async (prompt, model = 'gemini-1.5-flash-latest', base64Data = null) => {
+// --- Función para llamar a la API de Gemini ---
+const callGeminiAPI = async (prompt, model = 'gemini-1.5-flash', base64Data = null) => { // <-- CAMBIO 1: quitado '-latest' del modelo por defecto
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
         throw new Error("La clave de API de Gemini no está configurada.");
     }
-    // ¡CAMBIO CLAVE! Volvemos a la URL v1beta que funcionaba
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
     const payload = {
@@ -84,9 +83,9 @@ exports.handler = async function (event, context) {
             return { statusCode: 400, body: JSON.stringify({ error: 'No se proporcionó la imagen en formato base64.' }) };
         }
 
-        // === PASO 1: EXTRACCIÓN INICIAL (con 1.5-flash-latest) ===
+        // === PASO 1: EXTRACCIÓN INICIAL ===
         const extractorPrompt = readPromptFromFile('data_extractor.txt');
-        const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-1.5-flash-latest', base64Data);
+        const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-1.5-flash', base64Data);
         const { raw_text, visual_description } = extractedData;
 
         // === PASO 2: PREPARACIÓN Y EJECUCIÓN PARALELA DE TODOS LOS EXPERTOS ===
@@ -96,9 +95,9 @@ exports.handler = async function (event, context) {
         const prizeInputText = `${readPromptFromFile('prize_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}\n\n# DESCRIPCIÓN VISUAL A CONSIDERAR:\n${visual_description}`;
         const accountsInputText = `${readPromptFromFile('accounts_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         
-        const datePromise = callGeminiAPI(dateInputText, 'gemini-1.5-flash-latest');
-        const prizePromise = callGeminiAPI(prizeInputText, 'gemini-1.5-flash-latest');
-        const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-1.5-flash-latest');
+        const datePromise = callGeminiAPI(dateInputText, 'gemini-1.5-flash');
+        const prizePromise = callGeminiAPI(prizeInputText, 'gemini-1.5-flash');
+        const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-1.5-flash');
 
         const priceRegex = /(\d{1,5}(?:[.,]\d{1,2})?)\s*€/;
         const priceMatch = raw_text.match(priceRegex);
@@ -114,7 +113,7 @@ exports.handler = async function (event, context) {
                 let appraiserPrompt = readPromptFromFile('price_appraiser.txt');
                 appraiserPrompt = appraiserPrompt.replace('${prize_name}', prizeResult.prize);
                 appraiserPrompt = appraiserPrompt.replace('${accounts_list}', (prizeResult.accounts || []).join(', '));
-                return callGeminiAPI(appraiserPrompt, 'gemini-1.5-flash-latest');
+                return callGeminiAPI(appraiserPrompt, 'gemini-1.5-flash');
             });
         }
 
@@ -134,14 +133,14 @@ exports.handler = async function (event, context) {
         };
 
         // =================================================================
-        // PASO 4: LLAMADA AL SUPERVISOR (con 1.5-pro-latest)
+        // PASO 4: LLAMADA AL SUPERVISOR
         // =================================================================
         let supervisorPrompt = readPromptFromFile('supervisor_expert.txt');
         supervisorPrompt = supervisorPrompt.replace('${raw_text}', raw_text);
         supervisorPrompt = supervisorPrompt.replace('${json_data}', JSON.stringify(preliminaryResult, null, 2));
         supervisorPrompt = supervisorPrompt.replace('${fechaFormateada}', fechaFormateada);
 
-        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-1.5-pro-latest');
+        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-1.5-pro'); // <-- CAMBIO 2: quitado '-latest' del modelo Pro
 
         // =================================================================
         // PASO 5: DEVOLVER EL RESULTADO FINAL (VALIDADO)

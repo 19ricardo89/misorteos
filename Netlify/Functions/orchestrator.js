@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// --- Función Auxiliar para leer los prompts de forma segura ---
+// --- Función Auxiliar para leer los prompts ---
 const readPromptFromFile = (fileName) => {
     const promptDirectory = path.resolve(__dirname, '..', 'Prompt');
     const filePath = path.join(promptDirectory, fileName);
@@ -13,8 +13,8 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (actualizada para 2.5 Flash por defecto) ---
-const callGeminiAPI = async (prompt, model = 'gemini-2.5-flash', base64Data = null) => {
+// --- Función para llamar a la API de Gemini ---
+const callGeminiAPI = async (prompt, model = 'gemini-2.5-pro', base64Data = null) => {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
@@ -23,7 +23,7 @@ const callGeminiAPI = async (prompt, model = 'gemini-2.5-flash', base64Data = nu
     const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
     const payload = {
-        contents: [{ role: "user", parts: base64Data ? [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }] : [{ text: prompt }] }],
+        contents: [{ role: "user", parts: [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }] }],
         safetySettings: [
             { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
             { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
@@ -71,7 +71,7 @@ const callGeminiAPI = async (prompt, model = 'gemini-2.5-flash', base64Data = nu
     }
 };
 
-// --- Handler Principal de la Función de Netlify ---
+// --- Handler Principal (SIMPLIFICADO AL MÁXIMO) ---
 exports.handler = async function (event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -83,70 +83,13 @@ exports.handler = async function (event, context) {
             return { statusCode: 400, body: JSON.stringify({ error: 'No se proporcionó la imagen en formato base64.' }) };
         }
 
-        // === PASO 1: EXTRACCIÓN INICIAL (con 2.5 Flash) ===
-        // Usamos el modelo con visión, que es el 'flash' en este caso según la documentación.
-        const extractorPrompt = readPromptFromFile('data_extractor.txt');
-        const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-2.5-flash', base64Data);
-        const { raw_text, visual_description } = extractedData;
-
-        // === PASO 2: EJECUCIÓN PARALELA DE EXPERTOS (con 2.5 Flash) ===
+        // === UNA ÚNICA LLAMADA CON EL PROMPT MAESTRO ===
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        let masterPrompt = readPromptFromFile('maestro_expert.txt'); // <--- ¡AQUÍ USAMOS EL NUEVO PROMPT!
+        masterPrompt = masterPrompt.replace('${fechaFormateada}', fechaFormateada);
         
-        const dateInputText = `${readPromptFromFile('date_expert.txt').replace('${fechaFormateada}', fechaFormateada)}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
-        const prizeInputText = `${readPromptFromFile('prize_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}\n\n# DESCRIPCIÓN VISUAL A CONSIDERAR:\n${visual_description}`;
-        const accountsInputText = `${readPromptFromFile('accounts_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
-        
-        const datePromise = callGeminiAPI(dateInputText, 'gemini-2.5-flash');
-        const prizePromise = callGeminiAPI(prizeInputText, 'gemini-2.5-flash');
-        const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-2.5-flash');
+        const finalResult = await callGeminiAPI(masterPrompt, 'gemini-2.5-pro', base64Data);
 
-        const priceRegex = /(\d{1,5}(?:[.,]\d{1,2})?)\s*€/;
-        const priceMatch = raw_text.match(priceRegex);
-        let pricePromise;
-
-        if (priceMatch) {
-            pricePromise = Promise.resolve({ 
-                price: priceMatch[1].replace(',', '.') + '€',
-                appraisal_notes: "Valor extraído directamente del texto." 
-            });
-        } else {
-            pricePromise = prizePromise.then(prizeResult => {
-                let appraiserPrompt = readPromptFromFile('price_appraiser.txt');
-                appraiserPrompt = appraiserPrompt.replace('${prize_name}', prizeResult.prize);
-                appraiserPrompt = appraiserPrompt.replace('${accounts_list}', (prizeResult.accounts || []).join(', '));
-                return callGeminiAPI(appraiserPrompt, 'gemini-2.5-flash');
-            });
-        }
-
-        const [dateResult, prizeResult, accountsResult, priceResult] = await Promise.all([
-            datePromise,
-            prizePromise,
-            accountsPromise,
-            pricePromise
-        ]);
-
-        // === PASO 3: ENSAMBLAJE PRELIMINAR ===
-        const preliminaryResult = { 
-            ...dateResult, 
-            ...prizeResult, 
-            ...accountsResult, 
-            ...priceResult 
-        };
-
-        // =================================================================
-        // PASO 4: LLAMADA AL SUPERVISOR CON GEMINI 2.5 PRO
-        // =================================================================
-        let supervisorPrompt = readPromptFromFile('supervisor_expert.txt');
-        supervisorPrompt = supervisorPrompt.replace('${raw_text}', raw_text);
-        supervisorPrompt = supervisorPrompt.replace('${json_data}', JSON.stringify(preliminaryResult, null, 2));
-        supervisorPrompt = supervisorPrompt.replace('${fechaFormateada}', fechaFormateada);
-
-        // Llamamos al supervisor con el modelo Pro más reciente
-        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-2.5-pro');
-
-        // =================================================================
-        // PASO 5: DEVOLVER EL RESULTADO FINAL (VALIDADO)
-        // =================================================================
         return {
             statusCode: 200,
             body: JSON.stringify(finalResult)

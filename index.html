@@ -1088,6 +1088,10 @@
             <span class="text-xl sm:text-2xl">🌟</span>
             <span>Revisión VIS</span>
         </a>
+        <a href="#" id="dateless-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
+    <span class="text-xl sm:text-2xl"> limbo</span>
+    <span>El Limbo (Sin Fecha)</span>
+</a>
         <a href="#" id="achievements-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
             <span class="text-xl sm:text-2xl">🏅</span>
             <span>Logros</span>
@@ -1635,6 +1639,18 @@
             </div>
         </div>
     </div>
+    <div id="dateless-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+    <div class="modal-content w-full max-w-lg rounded-2xl shadow-2xl modal-default-bg p-6 text-center">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl sm:text-3xl"> limbo El Limbo de los Sorteos</h2>
+            <button id="close-dateless-modal" class="text-yellow-600 hover:text-yellow-800 text-4xl">&times;</button>
+        </div>
+        <p class="text-sm text-yellow-800 bg-yellow-100/50 p-3 rounded-lg border border-yellow-300 mb-4">
+            Aquí están los sorteos que la IA ha detectado sin una fecha clara. Puedes añadirles una fecha para moverlos a tu calendario o eliminarlos.
+        </p>
+        <div id="dateless-modal-body" class="space-y-4 max-h-[60vh] text-left"></div>
+    </div>
+</div>
 <div id="help-info-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
         <div class="modal-content w-full max-w-2xl rounded-2xl shadow-2xl modal-default-bg p-6 flex-col">
             <div class="flex justify-between items-center mb-4 flex-shrink-0">
@@ -2071,6 +2087,9 @@
     let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
     let userPoints = JSON.parse(localStorage.getItem('userPoints')) || { total: 0, log: [] };
 let autoSaveTimer = null;
+let datelessGiveaways = JSON.parse(localStorage.getItem('datelessGiveaways')) || [];
+
+
 
    const CATEGORY_INFO = {
         'all': { name: 'Todas las Categorías', emoji: '✨', desc: 'Muestra todos los sorteos del día.' },
@@ -2571,12 +2590,13 @@ function setupCustomCategoryFilter() {
     const saveBlockHistory = () => localStorage.setItem('blockHistory', JSON.stringify(blockHistory));
     const saveVisGiveaways = () => localStorage.setItem('visGiveaways', JSON.stringify(visGiveaways));
     const saveCaptureBatches = () => localStorage.setItem('captureBatches', JSON.stringify(captureBatches));
+const saveDatelessGiveaways = () => localStorage.setItem('datelessGiveaways', JSON.stringify(datelessGiveaways));
 // --- [NUEVO] FUNCIONES PARA LA REVISIÓN DE DUPLICADOS DEL ADMIN ---
     const findDuplicateGiveaways = () => {
         const allGiveaways = Object.entries(giveaways).flatMap(([date, list]) => 
             list.map(g => ({ ...g, date })) // Aplanamos y añadimos la fecha a cada sorteo
         );
-        
+             
         const duplicates = [];
         const checkedIds = new Set();
 
@@ -3325,17 +3345,19 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     };
     reader.readAsDataURL(file);
 }
-    function renderInteractiveCard(resultData) {
+function renderInteractiveCard(resultData) {
     liveResultsContainer.innerHTML = '';
 
     if (autoSaveTimer) {
         clearInterval(autoSaveTimer);
+        autoSaveTimer = null;
     }
 
     let cardHTML = '';
     let title = '';
     let cardStatusClass = '';
     let buttonsHTML = '';
+    let isAutomatic = false; // Flag para saber si debe continuar solo
 
     const prize = resultData.prize || '';
     const date = resultData.date || '';
@@ -3343,41 +3365,21 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     const price = resultData.price || 'No encontrado';
     const confidenceEmoji = getConfidenceEmoji(resultData.confidence_score);
 
-    const categoryOptionsHTML = Object.keys(CATEGORY_INFO)
-        .filter(key => key !== 'all')
-        .map(key => {
-            const category = CATEGORY_INFO[key];
-            const isSelected = key === resultData.prize_category ? 'selected' : '';
-            return `<option value="${key}" ${isSelected}>${category.emoji} ${category.name}</option>`;
-        })
-        .join('');
+    const categoryOptionsHTML = Object.keys(CATEGORY_INFO).filter(key => key !== 'all').map(key => {
+        const category = CATEGORY_INFO[key];
+        const isSelected = key === resultData.prize_category ? 'selected' : '';
+        return `<option value="${key}" ${isSelected}>${category.emoji} ${category.name}</option>`;
+    }).join('');
 
     const formHTML = `
         <div class="interactive-card-form space-y-2">
-            <div>
-                <label for="interactive-prize">Premio:</label>
-                <input type="text" id="interactive-prize" value="${prize}">
-            </div>
+            <div><label for="interactive-prize">Premio:</label><input type="text" id="interactive-prize" value="${prize}"></div>
             <div class="grid grid-cols-2 gap-2">
-                <div>
-                    <label for="interactive-date">Fecha:</label>
-                    <input type="date" id="interactive-date" value="${date}">
-                </div>
-                <div>
-                    <label for="interactive-price">Valor:</label>
-                    <input type="text" id="interactive-price" value="${price}">
-                </div>
+                <div><label for="interactive-date">Fecha:</label><input type="date" id="interactive-date" value="${date}"></div>
+                <div><label for="interactive-price">Valor:</label><input type="text" id="interactive-price" value="${price}"></div>
             </div>
-            <div>
-                <label for="interactive-category">Categoría:</label>
-                <select id="interactive-category" class="w-full p-2 rounded-lg bg-white border border-yellow-400">
-                    ${categoryOptionsHTML}
-                </select>
-            </div>
-            <div>
-                <label for="interactive-accounts">Cuentas:</label>
-                <textarea id="interactive-accounts" rows="2">${accounts}</textarea>
-            </div>
+            <div><label for="interactive-category">Categoría:</label><select id="interactive-category" class="w-full p-2 rounded-lg bg-white border border-yellow-400">${categoryOptionsHTML}</select></div>
+            <div><label for="interactive-accounts">Cuentas:</label><textarea id="interactive-accounts" rows="2">${accounts}</textarea></div>
         </div>
     `;
 
@@ -3385,18 +3387,8 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
         case 'valid':
             title = `✅ Sorteo Válido ${confidenceEmoji}`;
             cardStatusClass = 'card-status-valid';
-            buttonsHTML = `
-                <div id="countdown-timer" class="text-center font-bold text-gray-600"></div>
-                <button id="btn-save" class="btn-save">Guardar Manualmente</button>
-            `;
-            cardHTML = `
-            <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
-                <h3 class="card-title">${title}</h3>
-                ${formHTML}
-                <div class="interactive-card-actions">
-                    ${buttonsHTML}
-                </div>
-            </div>`;
+            buttonsHTML = `<div id="countdown-timer" class="text-center font-bold text-gray-600"></div><button id="btn-save" class="btn-save">Guardar Manualmente</button>`;
+            cardHTML = `<div id="current-interactive-card" class="interactive-card ${cardStatusClass}"><h3 class="card-title">${title}</h3>${formHTML}<div class="interactive-card-actions">${buttonsHTML}</div></div>`;
             break;
         case 'duplicate':
             title = 'Comparar Sorteos Duplicados';
@@ -3419,51 +3411,78 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
                 </div>
             `;
             break;
+        case 'no_date':
+            isAutomatic = true;
+            title = ` limbo Sorteo Sin Fecha`;
+            cardStatusClass = 'card-status-error';
+            cardHTML = `
+            <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
+                <h3 class="card-title">${title}</h3>
+                <p class="text-center p-4">Este sorteo no tiene una fecha clara. Se moverá automáticamente a "El Limbo" para que lo revises más tarde.</p>
+                <div id="countdown-timer" class="text-center font-bold text-gray-600 mt-4"></div>
+            </div>`;
+            break;
+        case 'api_error':
+        case 'not_a_giveaway':
+            isAutomatic = true;
+            title = `❌ Error de Análisis`;
+            cardStatusClass = 'card-status-error';
+            cardHTML = `
+            <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
+                <h3 class="card-title">${title}</h3>
+                <p class="text-center p-4">${resultData.prize}</p>
+                <div id="countdown-timer" class="text-center font-bold text-gray-600 mt-4"></div>
+            </div>`;
+            break;
         default:
-            title = `❌ ${resultData.status === 'not_a_giveaway' ? 'No es un Sorteo' : resultData.status === 'no_date' ? 'Sin Fecha Válida' : 'Error de Análisis'}`;
+             title = `❌ Error Inesperado`;
             cardStatusClass = 'card-status-error';
             buttonsHTML = `<button id="btn-discard" class="btn-discard w-full">Descartar y Continuar</button>`;
             cardHTML = `
             <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
                 <h3 class="card-title">${title}</h3>
-                <p class="text-center p-4">${resultData.prize}</p>
-                <div class="interactive-card-actions">
-                    ${buttonsHTML}
-                </div>
+                <p class="text-center p-4">${resultData.prize || 'No se pudo procesar la respuesta.'}</p>
+                <div class="interactive-card-actions">${buttonsHTML}</div>
             </div>`;
             break;
     }
 
     liveResultsContainer.innerHTML = cardHTML;
 
-    if (resultData.status === 'valid') {
+    if (resultData.status === 'valid' || isAutomatic) {
         const countdownElement = document.getElementById('countdown-timer');
-        const formInputs = document.querySelectorAll('#current-interactive-card .interactive-card-form input, #current-interactive-card .interactive-card-form textarea, #current-interactive-card .interactive-card-form select');
         let countdown = 5;
 
-        const stopTimer = () => {
-            if (autoSaveTimer) {
-                clearInterval(autoSaveTimer);
-                autoSaveTimer = null;
-                countdownElement.textContent = "Autoguardado cancelado. Guarda manualmente.";
-                formInputs.forEach(input => input.removeEventListener('input', stopTimer));
-            }
+        const startAutoProceedTimer = (action) => {
+            countdownElement.textContent = `Continuando en ${countdown}...`;
+            autoSaveTimer = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    countdownElement.textContent = `Continuando en ${countdown}...`;
+                } else {
+                    clearInterval(autoSaveTimer);
+                    autoSaveTimer = null;
+                    countdownElement.textContent = "¡Continuando!";
+                    handleUserDecisionAndProceed(action, resultData);
+                }
+            }, 1000);
         };
 
-        formInputs.forEach(input => input.addEventListener('input', stopTimer));
-
-        countdownElement.textContent = `Guardando en ${countdown}...`;
-        autoSaveTimer = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                countdownElement.textContent = `Guardando en ${countdown}...`;
-            } else {
-                clearInterval(autoSaveTimer);
-                autoSaveTimer = null;
-                countdownElement.textContent = "¡Guardado! Pasando al siguiente...";
-                handleUserDecisionAndProceed('save', resultData);
-            }
-        }, 1000);
+        if (resultData.status === 'valid') {
+            const formInputs = document.querySelectorAll('#current-interactive-card .interactive-card-form input, #current-interactive-card .interactive-card-form textarea, #current-interactive-card .interactive-card-form select');
+            const stopTimer = () => {
+                if (autoSaveTimer) {
+                    clearInterval(autoSaveTimer);
+                    autoSaveTimer = null;
+                    countdownElement.textContent = "Autoguardado cancelado. Guarda manualmente.";
+                    formInputs.forEach(input => input.removeEventListener('input', stopTimer));
+                }
+            };
+            formInputs.forEach(input => input.addEventListener('input', stopTimer));
+            startAutoProceedTimer('save');
+        } else if (isAutomatic) {
+            startAutoProceedTimer('discard');
+        }
     }
 
     const actionsContainer = liveResultsContainer.querySelector('.interactive-card-actions');
@@ -3490,8 +3509,6 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
         });
     }
 }
-
-    
     function handleUserDecisionAndProceed(action, data) {
     const card = document.getElementById('current-interactive-card');
     let editedData = { ...data };
@@ -3578,15 +3595,20 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
             }
             analysisResults.duplicate.push(editedData);
             break;
-        case 'discard':
-            if (data.status === 'no_date' || data.status === 'not_a_giveaway' || data.status === 'duplicate') {
-                 discardedGiveaways.push({ ...data, id: Date.now().toString() });
-                 analysisResults[data.status].push(editedData);
-                 saveDiscardedGiveaways();
-            } else if (data.status === 'api_error') {
-                analysisResults.api_error.push(editedData);
-            }
-            break;
+        // ... dentro de la función handleUserDecisionAndProceed ...
+case 'discard':
+    if (data.status === 'no_date') { // ¡NUEVA CONDICIÓN!
+        datelessGiveaways.push({ ...data, id: Date.now().toString() });
+        analysisResults[data.status].push(editedData);
+        saveDatelessGiveaways();
+    } else if (data.status === 'not_a_giveaway' || data.status === 'duplicate') {
+         discardedGiveaways.push({ ...data, id: Date.now().toString() });
+         analysisResults[data.status].push(editedData);
+         saveDiscardedGiveaways();
+    } else if (data.status === 'api_error') {
+        analysisResults.api_error.push(editedData);
+    }
+    break;
     }
     
     updateAnalysisLegend();
@@ -3829,6 +3851,29 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     };
 
     const renderTrashModal = () => { trashModalBody.innerHTML = ''; if (trashGiveaways.length === 0) { trashModalBody.innerHTML = '<p>No hay sorteos en la papelera.</p>'; return; } trashGiveaways.forEach(giveaway => { const itemContainer = document.createElement('div'); itemContainer.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20'; itemContainer.innerHTML = `<div class="w-full"><p class="text-base sm:text-lg">${giveaway.prize}</p><p class="text-sm">Fecha original: ${giveaway.originalDate}</p></div><button class="restore-btn ml-4 bg-yellow-500 text-yellow-900 p-2 rounded-full hover:bg-yellow-400" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-rotate-left"></i></button>`; trashModalBody.appendChild(itemContainer); }); };
+    const renderDatelessModal = () => {
+    const modalBody = document.getElementById('dateless-modal-body');
+    modalBody.innerHTML = '';
+    if (datelessGiveaways.length === 0) {
+        modalBody.innerHTML = '<p class="text-center">¡El Limbo está vacío! No hay sorteos sin fecha.</p>';
+        return;
+    }
+
+    [...datelessGiveaways].reverse().forEach(giveaway => {
+        const itemContainer = document.createElement('div');
+        itemContainer.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 text-left';
+        itemContainer.innerHTML = `
+            <p class="font-bold text-yellow-900">${giveaway.prize}</p>
+            <p class="text-sm">${(giveaway.accounts || []).join(', ')}</p>
+            <div class="mt-2 flex gap-2">
+                <input type="date" class="dateless-date-input w-full p-1 rounded border border-yellow-400" data-giveaway-id="${giveaway.id}">
+                <button class="add-date-btn bg-green-500 text-white py-1 px-3 rounded-lg font-bold hover:bg-green-600" data-giveaway-id="${giveaway.id}">Añadir</button>
+                <button class="delete-dateless-btn bg-red-500 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-600" data-giveaway-id="${giveaway.id}">Borrar</button>
+            </div>
+        `;
+        modalBody.appendChild(itemContainer);
+    });
+};
     const restoreGiveawayFromTrash = (giveawayId) => { const giveawayToRestore = trashGiveaways.find(g => g.id === giveawayId); if (giveawayToRestore) { trashGiveaways = trashGiveaways.filter(g => g.id !== giveawayId); openAddGiveawayModal({ date: giveawayToRestore.originalDate, prize: giveawayToRestore.prize, accounts: giveawayToRestore.accounts.join(', '), price: giveawayToRestore.price }); saveTrashGiveaways(); renderTrashModal(); checkAchievements('restore'); } };
     const deleteAllTrash = () => { if(confirm("¿Estás seguro de que quieres vaciar la papelera? Esta acción no se puede deshacer.")) { trashGiveaways = []; saveTrashGiveaways(); renderTrashModal(); showNotification('Papelera vaciada', 'Se han eliminado todos los sorteos de la papelera.'); } }
     const deleteAllDiscarded = () => { if(confirm("¿Estás seguro de que quieres eliminar todos los sorteos descartados?")) { discardedGiveaways = []; saveDiscardedGiveaways(); renderDiscardedModal(); showNotification('Sorteos descartados eliminados', 'Se han eliminado todos los sorteos de la lista de descartados.'); } }
@@ -5914,6 +5959,51 @@ if (openShareOptionsBtn) openShareOptionsBtn.addEventListener('click', openShare
 if (closeShareOptionsModalBtn) closeShareOptionsModalBtn.addEventListener('click', () => shareOptionsModal.classList.remove('is-visible'));
 
 // --- FIN DE LÓGICA PARA COMPARTIR (VERSIÓN NATIVA Y ESTABLE) ---
+
+// --- [NUEVO] LÓGICA PARA EL MODAL DE SORTEOS SIN FECHA ---
+const datelessModal = document.getElementById('dateless-modal');
+const closeDatelessModalBtn = document.getElementById('close-dateless-modal');
+const datelessBtn = document.getElementById('dateless-btn');
+
+setupModal(datelessBtn, datelessModal, closeDatelessModalBtn, renderDatelessModal);
+
+// Listener para los botones dentro del modal del limbo
+document.getElementById('dateless-modal-body').addEventListener('click', (e) => {
+    const giveawayId = e.target.dataset.giveawayId;
+    if (!giveawayId) return;
+
+    const giveawayIndex = datelessGiveaways.findIndex(g => g.id === giveawayId);
+    if (giveawayIndex === -1) return;
+
+    if (e.target.classList.contains('delete-dateless-btn')) {
+        datelessGiveaways.splice(giveawayIndex, 1);
+        saveDatelessGiveaways();
+        renderDatelessModal();
+    }
+
+    if (e.target.classList.contains('add-date-btn')) {
+        const dateInput = e.target.previousElementSibling;
+        const newDate = dateInput.value;
+        if (!newDate) {
+            showNotification('Error', 'Por favor, selecciona una fecha.');
+            return;
+        }
+
+        const [giveawayToMove] = datelessGiveaways.splice(giveawayIndex, 1);
+        giveawayToMove.date = newDate;
+
+        if (!giveaways[newDate]) {
+            giveaways[newDate] = [];
+        }
+        giveaways[newDate].push(giveawayToMove);
+
+        saveDatelessGiveaways();
+        saveGiveaways();
+        renderDatelessModal();
+        renderCalendar();
+        showNotification('¡Movido!', 'El sorteo se ha añadido a tu calendario.');
+    }
+});
 </script>
 </body>
 </html>

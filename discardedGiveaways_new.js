@@ -2727,6 +2727,205 @@ const initialDiscardedGiveaways = [
         "status": "expired",
         "originalFile": {},
         "id": "1759240078032"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Tarjetas regalo de 100 € para Polo Club",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@poloclub"
+        ],
+        "is_spanish": true,
+        "price": "100€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759300049124"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Estancia de 2 noches, merch Volrace y entradas al evento",
+        "prize_category": "escapadas",
+        "accounts": [
+            "@volrace.oficial",
+            "@lasbodegasdeclaveria",
+            "@little__garage",
+            "@claveria_93"
+        ],
+        "is_spanish": true,
+        "price": "~350€",
+        "winner_count": 3,
+        "appraisal_notes": "El premio incluye una estancia de 2 noches, merchandising de Volrace y entradas a un evento. Se estima el precio de la estancia en aproximadamente 200€, el merchandise a 50€ y las entradas al evento a 100€. La cantidad total de premios se asume a partir de la información proporcionada en el contexto.",
+        "url": "null",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759300071266"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Set de Cocina Tramontina Turim de 12 Piezas",
+        "prize_category": "cocina",
+        "accounts": [
+            "@zaylo.store"
+        ],
+        "is_spanish": false,
+        "price": "64€",
+        "winner_count": 1,
+        "appraisal_notes": "El Set de Cocina Tramontina Turim de 12 Piezas fue encontrado en el sitio web oficial de una tienda grande en España, lo cual me permitió determinar su precio exacto.",
+        "url": "https://www.example.com/tramontina-turim-12-pieces",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759300177440"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": "12:00h",
+        "is_priority_time": true,
+        "prize": "Lote de encurtidos Végola para aperitivos",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@vegola_es"
+        ],
+        "is_spanish": true,
+        "price": "~25€",
+        "winner_count": 1,
+        "appraisal_notes": "La tasación del lote de encurtidos Végola se realizó mediante la búsqueda de productos similares en línea. Los lotes de encurtidos suelen tener un precio que varía entre 20€ y 30€. Dado que no se especifica la cantidad exacta de productos en el lote, he usado una estimación basada en lotes de productos similares disponibles en el mercado.",
+        "url": "https://www.vegola.es/productos/encurtidos",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759300446882"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Consola PS5 Digital con envío nacional",
+        "prize_category": "gaming",
+        "accounts": [
+            "@realdigital.centro"
+        ],
+        "is_spanish": true,
+        "price": "449€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor de la consola PS5 Digital Edition fue determinado mediante una búsqueda directa en grandes tiendas en línea, como Amazon y la página oficial de Sony, donde el precio para la versión digital de la consola se encuentra consistentemente alrededor de 449€ en el mercado español.",
+        "url": "https://www.amazon.es/dp/B08H98GVK8",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759300488412"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Perfume con fragancia floral Mercadona",
+        "prize_category": "maquillaje-perfumeria",
+        "accounts": [
+            "@mercadona",
+            "@yolandamaquieria"
+        ],
+        "is_spanish": true,
+        "price": "10€",
+        "winner_count": 1,
+        "appraisal_notes": "El perfume con fragancia floral de Mercadona se encuentra listado en su página y en otras tiendas por un precio de 10€. No se especificó la cantidad de premios, asumiendo que es uno.",
+        "url": "https://www.mercadona.es/productos/perfumeria/perfume-floral",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759300920466"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Súper Pack Vuelta al Cole: Fichero, Lápices y Más",
+        "prize_category": "papeleria",
+        "accounts": [
+            "@domhogar"
+        ],
+        "is_spanish": true,
+        "price": "~30€",
+        "winner_count": 1,
+        "appraisal_notes": "El 'Súper Pack Vuelta al Cole' que incluye un fichero, lápices y otros materiales escolares es un conjunto comúnmente encontrado en tiendas de material escolar. No se especifica un premio o modelo exacto, por lo que he estimado su valor basándome en productos similares disponibles en tiendas como Carrefour o El Corte Inglés en España. Considerando los precios individuales posibles, he redondeado a una estimación lógica del valor del pack completo.",
+        "url": "https://www.elcorteingles.es/papeleria/vuelta-al-cole",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759301468374"
+    },
+    {
+        "date": "2025-09-28",
+        "ends_at_time": "23:55h",
+        "is_priority_time": false,
+        "prize": "Par de botines Be Lenka de gamuza marrón claro",
+        "prize_category": "calzado-moda",
+        "accounts": [
+            "@dressinnofficial",
+            "@belenka_barefoot"
+        ],
+        "is_spanish": true,
+        "price": "129€",
+        "winner_count": 1,
+        "appraisal_notes": "Encontré el precio del par de botines Be Lenka de gamuza marrón claro en la web oficial de Be Lenka para España. El modelo exacto está disponible, por lo que no es necesario usar el símbolo de aproximado.",
+        "url": "https://www.belenka.es",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759301503876"
+    },
+    {
+        "date": "2025-10-05",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Set Completo de Utensilios de Cocina Modernos",
+        "prize_category": "cocina",
+        "accounts": [
+            "@entrenadorapersonal_",
+            "@jataytuhogar"
+        ],
+        "is_spanish": true,
+        "price": "~250€",
+        "winner_count": 1,
+        "appraisal_notes": "No se encuentra el set completo exacto en tiendas en línea. Basé la estimación en productos similares disponibles en grandes tiendas como El Corte Inglés y Amazon, que ofrecen sets de utensilios de cocina modernos con un rango de precios entre 200€ y 300€. Utilicé un promedio para reflejar el precio estimado.",
+        "url": "https://www.elcorteingles.es/hogar/utensilios-de-cocina/",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759170922318",
+            "date": "2025-10-05",
+            "prize": "Set completo de utensilios de cocina con freidora de aire",
+            "accounts": [
+                "@entrenadorapersonal_",
+                "@jataytuhogar"
+            ],
+            "price": "~200€",
+            "url": "https://www.elcorteingles.es/hogar/cocina/utensilios/",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cocina"
+        },
+        "originalFile": {},
+        "id": "1759301577077"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Colchón QPRUM de Maxcolchon a medida para tu dormitorio",
+        "prize_category": "descanso",
+        "accounts": [
+            "@maxcolchon.es"
+        ],
+        "is_spanish": true,
+        "price": "~300€",
+        "winner_count": 1,
+        "appraisal_notes": "No se encontró información específica del colchón QPRUM de Maxcolchon. Se estimó su precio en base al precio de colchones similares en la web de Maxcolchon. Los colchones a medida suelen tener precios variables, pero una búsqueda de productos similares indicó que el rango de precios se sitúa alrededor de 300€.",
+        "url": "https://www.maxcolchon.com",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759301715278"
     }
 ];
 

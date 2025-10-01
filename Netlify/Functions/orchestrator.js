@@ -13,14 +13,15 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini ---
-const callGeminiAPI = async (prompt, model = 'gemini-1.5-flash', base64Data = null) => { // <-- CAMBIO 1: quitado '-latest' del modelo por defecto
+// --- Función para llamar a la API de Gemini (VERSIÓN ORIGINAL) ---
+const callGeminiAPI = async (prompt, base64Data = null) => {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
         throw new Error("La clave de API de Gemini no está configurada.");
     }
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+    // Usamos la URL original con v1beta y el modelo gemini-1.5-flash-latest
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
     const payload = {
         contents: [{ role: "user", parts: base64Data ? [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data.split(',')[1] } }] : [{ text: prompt }] }],
@@ -71,7 +72,7 @@ const callGeminiAPI = async (prompt, model = 'gemini-1.5-flash', base64Data = nu
     }
 };
 
-// --- Handler Principal de la Función de Netlify ---
+// --- Handler Principal de la Función de Netlify (VERSIÓN ORIGINAL) ---
 exports.handler = async function (event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -83,22 +84,25 @@ exports.handler = async function (event, context) {
             return { statusCode: 400, body: JSON.stringify({ error: 'No se proporcionó la imagen en formato base64.' }) };
         }
 
-        // === PASO 1: EXTRACCIÓN INICIAL ===
+        // === PASO 1: EXTRACCIÓN INICIAL (INDISPENSABLE) ===
         const extractorPrompt = readPromptFromFile('data_extractor.txt');
-        const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-1.5-flash', base64Data);
+        const extractedData = await callGeminiAPI(extractorPrompt, base64Data);
         const { raw_text, visual_description } = extractedData;
 
         // === PASO 2: PREPARACIÓN Y EJECUCIÓN PARALELA DE TODOS LOS EXPERTOS ===
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         
+        // Preparamos los prompts para cada experto
         const dateInputText = `${readPromptFromFile('date_expert.txt').replace('${fechaFormateada}', fechaFormateada)}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         const prizeInputText = `${readPromptFromFile('prize_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}\n\n# DESCRIPCIÓN VISUAL A CONSIDERAR:\n${visual_description}`;
         const accountsInputText = `${readPromptFromFile('accounts_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         
-        const datePromise = callGeminiAPI(dateInputText, 'gemini-1.5-flash');
-        const prizePromise = callGeminiAPI(prizeInputText, 'gemini-1.5-flash');
-        const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-1.5-flash');
+        // Creamos las promesas para las llamadas a la API
+        const datePromise = callGeminiAPI(dateInputText);
+        const prizePromise = callGeminiAPI(prizeInputText);
+        const accountsPromise = callGeminiAPI(accountsInputText);
 
+        // --- LÓGICA DEL TASADOR ---
         const priceRegex = /(\d{1,5}(?:[.,]\d{1,2})?)\s*€/;
         const priceMatch = raw_text.match(priceRegex);
         let pricePromise;
@@ -113,10 +117,11 @@ exports.handler = async function (event, context) {
                 let appraiserPrompt = readPromptFromFile('price_appraiser.txt');
                 appraiserPrompt = appraiserPrompt.replace('${prize_name}', prizeResult.prize);
                 appraiserPrompt = appraiserPrompt.replace('${accounts_list}', (prizeResult.accounts || []).join(', '));
-                return callGeminiAPI(appraiserPrompt, 'gemini-1.5-flash');
+                return callGeminiAPI(appraiserPrompt);
             });
         }
 
+        // Ejecutamos TODAS las promesas en paralelo.
         const [dateResult, prizeResult, accountsResult, priceResult] = await Promise.all([
             datePromise,
             prizePromise,
@@ -124,27 +129,14 @@ exports.handler = async function (event, context) {
             pricePromise
         ]);
 
-        // === PASO 3: ENSAMBLAJE PRELIMINAR ===
-        const preliminaryResult = { 
+        // === PASO 3: ENSAMBLAJE FINAL ===
+        const finalResult = { 
             ...dateResult, 
             ...prizeResult, 
             ...accountsResult, 
             ...priceResult 
         };
 
-        // =================================================================
-        // PASO 4: LLAMADA AL SUPERVISOR
-        // =================================================================
-        let supervisorPrompt = readPromptFromFile('supervisor_expert.txt');
-        supervisorPrompt = supervisorPrompt.replace('${raw_text}', raw_text);
-        supervisorPrompt = supervisorPrompt.replace('${json_data}', JSON.stringify(preliminaryResult, null, 2));
-        supervisorPrompt = supervisorPrompt.replace('${fechaFormateada}', fechaFormateada);
-
-        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-1.5-pro'); // <-- CAMBIO 2: quitado '-latest' del modelo Pro
-
-        // =================================================================
-        // PASO 5: DEVOLVER EL RESULTADO FINAL (VALIDADO)
-        // =================================================================
         return {
             statusCode: 200,
             body: JSON.stringify(finalResult)

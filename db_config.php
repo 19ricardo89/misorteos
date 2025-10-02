@@ -3,7 +3,7 @@
 $host = 'db5018730203.hosting-data.io';
 $db   = 'dbs14818859';
 $user = 'dbu3705396';
-$pass = 'TU_CONTRASEÑA_AQUÍ';
+$pass = 'SaulRE31322.';
 
 // 📡 Conexión PDO
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";

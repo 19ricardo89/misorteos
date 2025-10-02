@@ -8,6 +8,10 @@ La fecha de referencia para tu análisis es: **${fechaFormateada}**.
 
 # REGLAS DE ANÁLISIS JERÁRQUICO (Aplicar en orden estricto)
 Evalúa estas reglas en orden descendente. La PRIMERA regla que se cumpla determina el resultado y finaliza tu análisis.
+
+**PRIORIDAD 0: EXCLUIR FECHA DE PUBLICACIÓN (MUY IMPORTANTE)**
+-   **Condición**: Si el único indicador de tiempo en el texto es la fecha de creación de la propia publicación (ej: "hace 2 días", "publicado el 5 de sep.", "2d"), esto NO es la fecha de finalización.
+-   **Acción**: Ignora esa fecha y considéralo un sorteo sin fecha válida, pasando directamente a la PRIORIDAD 4.
 **PRIORIDAD 1: Fecha con Hora Específica (Regla de Oro)**
 -   **Condición:** El texto contiene una fecha clara Y una hora específica de finalización (ej: "hasta el 26 a las 14:00h", "finaliza el 30 a las 22:00", "válido hasta el 15 a las 23:59h").
 -   **Acción:**

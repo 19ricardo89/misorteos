@@ -1088,8 +1088,8 @@
             <span class="text-xl sm:text-2xl">🌟</span>
             <span>Revisión VIS</span>
         </a>
-        <a href="#" id="dateless-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
-    <span class="text-xl sm:text-2xl"> limbo</span>
+<a href="#" id="dateless-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
+    <span class="text-xl sm:text-2xl">⏳</span>
     <span>El Limbo (Sin Fecha)</span>
 </a>
         <a href="#" id="achievements-btn" class="w-full px-3 py-1 sm:px-4 sm:py-2 nav-btn flex items-center justify-start gap-2">
@@ -3268,21 +3268,24 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     };
     
     const updateAnalysisLegend = () => {
-        const legendData = [
-            { id: 'valid', color: '#22c55e', count: analysisResults.added.length },
-            { id: 'duplicate', color: '#6b7280', count: analysisResults.duplicate.length },
-            { id: 'expired', color: '#d4af37', count: analysisResults.expired.length },
-            { id: 'foreign', color: '#3b82f6', count: analysisResults.foreign.length },
-            { id: 'error', color: '#ef4444', count: analysisResults.api_error.length + analysisResults.no_date.length + analysisResults.not_a_giveaway.length }
-        ];
+    const legendData = [
+        { id: 'valid', color: '#22c55e', count: analysisResults.added.length },
+        { id: 'duplicate', color: '#6b7280', count: analysisResults.duplicate.length },
+        { id: 'expired', color: '#d4af37', count: analysisResults.expired.length },
+        { id: 'foreign', color: '#3b82f6', count: analysisResults.foreign.length },
+        // --- INICIO DE LA MODIFICACIÓN ---
+        { id: 'no_date', color: '#a855f7', count: analysisResults.no_date.length }, // Color morado para el Limbo
+        // --- FIN DE LA MODIFICACIÓN ---
+        { id: 'error', color: '#ef4444', count: analysisResults.api_error.length + analysisResults.not_a_giveaway.length }
+    ];
 
-        analysisLegendContainer.innerHTML = legendData.map(item => `
-            <div class="legend-item text-yellow-300">
-                <div class="color-dot" style="background-color: ${item.color};"></div>
-                <span id="legend-count-${item.id}">${item.count}</span>
-            </div>
-        `).join('');
-    };
+    analysisLegendContainer.innerHTML = legendData.map(item => `
+        <div class="legend-item text-yellow-300">
+            <div class="color-dot" style="background-color: ${item.color};"></div>
+            <span id="legend-count-${item.id}">${item.count}</span>
+        </div>
+    `).join('');
+};
 
     function startAnalysis(filesToProcess = imageQueue) {
         if (filesToProcess.length === 0 || isProcessing) return;
@@ -3885,7 +3888,9 @@ function handleUserDecisionAndProceed(action, data) {
     };
 
     const renderTrashModal = () => { trashModalBody.innerHTML = ''; if (trashGiveaways.length === 0) { trashModalBody.innerHTML = '<p>No hay sorteos en la papelera.</p>'; return; } trashGiveaways.forEach(giveaway => { const itemContainer = document.createElement('div'); itemContainer.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner flex justify-between items-center border border-yellow-600/20'; itemContainer.innerHTML = `<div class="w-full"><p class="text-base sm:text-lg">${giveaway.prize}</p><p class="text-sm">Fecha original: ${giveaway.originalDate}</p></div><button class="restore-btn ml-4 bg-yellow-500 text-yellow-900 p-2 rounded-full hover:bg-yellow-400" data-giveaway-id="${giveaway.id}"><i class="fa-solid fa-rotate-left"></i></button>`; trashModalBody.appendChild(itemContainer); }); };
-    const renderDatelessModal = () => {
+    // REEMPLAZA ESTA FUNCIÓN EN TU index.html
+
+const renderDatelessModal = () => {
     const modalBody = document.getElementById('dateless-modal-body');
     modalBody.innerHTML = '';
     if (datelessGiveaways.length === 0) {
@@ -3894,11 +3899,17 @@ function handleUserDecisionAndProceed(action, data) {
     }
 
     [...datelessGiveaways].reverse().forEach(giveaway => {
+        // --- INICIO DE LA MODIFICACIÓN ---
+        const accountsHTML = (giveaway.accounts || [])
+            .map(acc => `<a href="https://instagram.com/${acc.replace('@','')}" target="_blank" class="hover:underline">${acc}</a>`)
+            .join(', ');
+        // --- FIN DE LA MODIFICACIÓN ---
+
         const itemContainer = document.createElement('div');
         itemContainer.className = 'p-3 bg-yellow-100/50 rounded-lg shadow-inner border border-yellow-600/20 text-left';
         itemContainer.innerHTML = `
             <p class="font-bold text-yellow-900">${giveaway.prize}</p>
-            <p class="text-sm">${(giveaway.accounts || []).join(', ')}</p>
+            <p class="text-sm">${accountsHTML}</p>
             <div class="mt-2 flex gap-2">
                 <input type="date" class="dateless-date-input w-full p-1 rounded border border-yellow-400" data-giveaway-id="${giveaway.id}">
                 <button class="add-date-btn bg-green-500 text-white py-1 px-3 rounded-lg font-bold hover:bg-green-600" data-giveaway-id="${giveaway.id}">Añadir</button>

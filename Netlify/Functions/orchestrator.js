@@ -13,8 +13,8 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (con el modelo MÁS RÁPIDO) ---
-const callGeminiAPI = async (prompt, model = 'gemini-2.5-flash-lite', base64Data = null) => {
+// --- Función para llamar a la API de Gemini ---
+const callGeminiAPI = async (prompt, model, base64Data = null) => {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
@@ -71,7 +71,7 @@ const callGeminiAPI = async (prompt, model = 'gemini-2.5-flash-lite', base64Data
     }
 };
 
-// --- Handler Principal (Arquitectura de 5 especialistas con 2.5 Flash-Lite) ---
+// --- Handler Principal (Arquitectura Flash + Supervisor Pro) ---
 exports.handler = async function (event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -83,7 +83,7 @@ exports.handler = async function (event, context) {
             return { statusCode: 400, body: JSON.stringify({ error: 'No se proporcionó la imagen en formato base64.' }) };
         }
 
-        // === PASO 1: EXTRACCIÓN INICIAL (con 2.5 Flash-Lite) ===
+        // === PASO 1: EXTRACCIÓN RÁPIDA (con 2.5 Flash-Lite) ===
         const extractorPrompt = readPromptFromFile('data_extractor.txt');
         const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-2.5-flash-lite', base64Data);
         const { raw_text, visual_description } = extractedData;
@@ -124,14 +124,27 @@ exports.handler = async function (event, context) {
             pricePromise
         ]);
 
-        // === PASO 3: ENSAMBLAJE FINAL (SIN SUPERVISOR) ===
-        const finalResult = { 
+        // === PASO 3: ENSAMBLAJE PRELIMINAR ===
+        const preliminaryResult = { 
             ...dateResult, 
             ...prizeResult, 
             ...accountsResult, 
             ...priceResult 
         };
 
+        // =================================================================
+        // PASO 4: LLAMADA AL SUPERVISOR (con 2.5 Pro)
+        // =================================================================
+        let supervisorPrompt = readPromptFromFile('supervisor_expert.txt');
+        supervisorPrompt = supervisorPrompt.replace('${raw_text}', raw_text);
+        supervisorPrompt = supervisorPrompt.replace('${json_data}', JSON.stringify(preliminaryResult, null, 2));
+        supervisorPrompt = supervisorPrompt.replace('${fechaFormateada}', fechaFormateada);
+
+        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-2.5-pro');
+
+        // =================================================================
+        // PASO 5: DEVOLVER EL RESULTADO FINAL (VALIDADO)
+        // =================================================================
         return {
             statusCode: 200,
             body: JSON.stringify(finalResult)

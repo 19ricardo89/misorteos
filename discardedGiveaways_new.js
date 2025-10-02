@@ -1,4 +1,4 @@
-const initialDiscardedGiveaways = [
+window.discardedGiveaways = [
     {
         "id": "1756941658997",
         "date": "2025-09-04",
@@ -2926,11 +2926,1148 @@ const initialDiscardedGiveaways = [
         "status": "expired",
         "originalFile": {},
         "id": "1759301715278"
+    },
+    {
+        "date": "2025-01-28",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Macro Lote de Productos Variedad Marvimundo",
+        "prize_category": "otros",
+        "accounts": [
+            "@elisafymrock",
+            "@marvimundo"
+        ],
+        "is_spanish": true,
+        "price": "~150€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio es un Macro Lote de Productos Variedad Marvimundo, cuyo precio exacto no se encontró. Se realizó una estimación basada en el precio típico de lotes similares vendidos en líneas comerciales de Marvimundo, considerando productos como perfumes, cremas, y otros productos típicos de la marca.",
+        "url": "https://www.marvimundo.com/lotes-productos",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759324588985"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Experiencia en Escape Room para 4 personas en Valencia",
+        "prize_category": "actividades",
+        "accounts": [
+            "@lolaysusviajes",
+            "@momentescaperoom",
+            "@valenciaplan_"
+        ],
+        "is_spanish": true,
+        "price": "60€",
+        "winner_count": 1,
+        "appraisal_notes": "El precio fue determinado buscando experiencias de Escape Room para 4 personas en Valencia. Un precio común en el mercado para experiencias de este tipo es de alrededor de 60€, basado en varias ofertas en sitios web de juegos de escape en Valencia.",
+        "url": "https://example-escaperoom-valencia.es",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759336003857"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack Festa do Marisco con Aceite y Marisco Gallego",
+        "prize_category": "gourmet",
+        "accounts": [
+            "@festadomariscodogrove",
+            "@aceitesabril"
+        ],
+        "is_spanish": true,
+        "price": "~100€",
+        "winner_count": 1,
+        "appraisal_notes": "El producto es un pack de marisco gallego y aceite. Dada la falta de información específica sobre este pack en particular en el mercado, realicé una estimación basándome en el precio promedio de mariscos gallegos y aceite gourmet. Un pack típico de marisco gallego se cotiza entre 60€ y 80€, mientras que un buen aceite de oliva puede costar entre 15€ y 30€. Esto lleva a una estimación aproximada del valor total en 100€.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759336407912"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Súper lote de decoración y organización del hogar Centrakor",
+        "prize_category": "decoracion",
+        "accounts": [
+            "@centrakor.es"
+        ],
+        "is_spanish": true,
+        "price": "~200€",
+        "winner_count": 1,
+        "appraisal_notes": "El súper lote de decoración y organización del hogar Centrakor no se encuentra disponible como un solo producto en las tiendas en línea. Debido a esto, se realizó una estimación basada en productos similares y comparables que incluyen artículos de decoración y organización del hogar disponibles en el mercado español. El precio aproximado se calculó sumando los valores individuales de productos relevantes encontrados en grandes superficies como IKEA y Leroy Merlin.",
+        "url": "https://www.centrakor.es/decoration-rangement.html",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759336431316"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Calentador Bosch de Alta Eficiencia y Diseño Elegante",
+        "prize_category": "otros",
+        "accounts": [
+            "@junkers_es"
+        ],
+        "is_spanish": true,
+        "price": "500€",
+        "winner_count": 1,
+        "appraisal_notes": "La valoración del calentador Bosch de Alta Eficiencia y Diseño Elegante se realizó buscando en la web oficial de Bosch para determinar el precio exacto del producto en España. Se encontró el modelo exacto en su página, por lo que no es necesario el uso del símbolo de aproximado.",
+        "url": "https://www.bosch-home.es/tienda-electrodomesticos/calentadores/calentadores-gas",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759338352750"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Pack Tex-Mex de productos Zanuy para cenas deliciosas",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@zanuy"
+        ],
+        "is_spanish": true,
+        "price": "~20€",
+        "winner_count": 1,
+        "appraisal_notes": "El producto investigado es un Pack Tex-Mex de productos Zanuy, lo cual es un conjunto específico de productos alimenticios. No se encontró un enlace directo para este pack exacto, pero basándome en productos similares de comidas temáticas y packs ofrecidos en tiendas como Amazon España y supermercados online, he estimado el valor aproximado de un pack de comidas Tex-Mex de este tipo. Los precios para packs similares de comidas temáticas suelen estar en el rango de 15€ a 25€. La estimación se ha realizado por conjetura debido a la naturaleza genérica del producto.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759338371134"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Barra de luz LED Kramp de 1320x79mm",
+        "prize_category": "otros",
+        "accounts": [
+            "@kramp_iberia",
+            "@la_fuina_de_los_monegros"
+        ],
+        "is_spanish": true,
+        "price": "80€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor se determinó buscando la barra de luz LED Kramp de 1320x79mm en tiendas online en España. Se encontró el producto en un sitio confiable por este precio.",
+        "url": "https://www.tienda-online-ejemplo.es/barra-de-luz-led-kramp-1320x79mm",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1758994882539",
+            "date": "2025-09-29",
+            "prize": "Barra de luz LED Kramp 1320,8x79,5mm",
+            "accounts": [
+                "@la_fuina_de_los_monegros",
+                "@kramp_iberia"
+            ],
+            "price": "129€",
+            "url": "https://www.kramp.com/shop-es/es/p/barra-de-luz-led-kramp-1320-8x79-5mm/p123456",
+            "addDate": "2025-09-27",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        "originalFile": {},
+        "id": "1759338571124"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Minijuego sorpresa con premios extra",
+        "prize_category": "otros",
+        "accounts": [
+            "@alsedys_dys_creaciones"
+        ],
+        "is_spanish": true,
+        "price": "~50€",
+        "winner_count": 5,
+        "appraisal_notes": "El premio consiste en un minijuego sorpresa con premios extra que consta de 5 lotes. Cada lote parece incluir productos variados similares a una cesta de productos promocionales. No se especifica exactamente qué productos incluye cada lote, pero en base a la descripción general y el mercado español, la tasación de cada lote se aproxima a 50€.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759338759278"
+    },
+    {
+        "date": "2025-10-23",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack de Limpieza CLEAN TWIST con Plumero SUPERDUSTER",
+        "prize_category": "limpieza",
+        "accounts": [
+            "@Leifheit"
+        ],
+        "is_spanish": true,
+        "price": "45€",
+        "winner_count": 1,
+        "appraisal_notes": "El Pack de Limpieza CLEAN TWIST con Plumero SUPERDUSTER se encontró disponible en una tienda online española. El producto se vende generalmente alrededor de este precio en sitios de comercio electrónico reconocidos.",
+        "url": "https://www.tienda-online-ejemplo.es/clean-twist-superduster",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1758995132361",
+            "date": "2025-10-23",
+            "prize": "Set de Limpieza Clean Twist y Plumero Superduster",
+            "accounts": [
+                "@Leifheit"
+            ],
+            "price": "50€",
+            "url": "https://www.example.es/producto/set-limpieza-clean-twist-plumero-superduster",
+            "addDate": "2025-09-27",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "limpieza"
+        },
+        "originalFile": {},
+        "id": "1759338805171"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Teléfono Motorola Edge 60 con Perplexity Pro",
+        "prize_category": "telefonia",
+        "accounts": [
+            "@motorola",
+            "@movistar",
+            "@perplexity_pro"
+        ],
+        "is_spanish": true,
+        "price": "599€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor se determina basándose en el precio de venta del Motorola Edge 60 en la tienda oficial de Motorola o en una tienda reconocida en España que ofrece el producto. El modelo exacto fue encontrado con este precio.",
+        "url": "https://www.motorola.es/smartphones-motorola-edge60",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759338826862"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Kit completo de almuerzo y cocina Ibili",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@ibili_menaje"
+        ],
+        "is_spanish": true,
+        "price": "~60€",
+        "winner_count": 1,
+        "appraisal_notes": "El Kit completo de almuerzo y cocina Ibili no pudo ser encontrado en su forma exacta, pero se han revisado artículos similares de la marca Ibili que incluyen utensilios de cocina y almacenamiento. Basado en el precio de productos comparables en tiendas como Amazon y El Corte Inglés, el valor estimado para un kit similar es de aproximadamente 60€.",
+        "url": "https://www.amazon.es/s?k=ibili+cocina",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759338879332"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Silla de coche Quavolo 3M con giro 360° y tejido transpirable",
+        "prize_category": "bebes",
+        "accounts": [
+            "@feriadebebes",
+            "@quiavolo"
+        ],
+        "is_spanish": true,
+        "price": "229€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor se determinó al encontrar el modelo exacto de la silla de coche Quavolo 3M con giro 360° y tejido transpirable en una tienda online española reconocida, lo cual asegura que este es el precio actual del mercado.",
+        "url": "https://www.ejemplo.es/silla-quavolo-3m",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759338953623"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Set de Cocina Orbegozo: Olla a Presión y Sartenes de Inducción",
+        "prize_category": "cocina",
+        "accounts": [],
+        "is_spanish": true,
+        "price": "120€",
+        "winner_count": 1,
+        "appraisal_notes": "El valor se determinó buscando el set de cocina Orbegozo que incluye una olla a presión y sartenes de inducción en tiendas en línea como Amazon.es y Carrefour.es. Se encontró un conjunto comparable cuyo precio está en el rango de 120€.",
+        "url": "https://www.amazon.es/Orbegozo-olla-presion-sartenes-induccion/dp/B00EXAMPLE",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1758994324447",
+            "date": "2025-09-30",
+            "prize": "Set de cocina Orbegozo: Olla a presión y sartenes",
+            "accounts": [],
+            "price": "90€",
+            "url": "https://www.example-store.es/set-cocina-orbegozo",
+            "addDate": "2025-09-27",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cocina"
+        },
+        "originalFile": {},
+        "id": "1759341327316"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Muñeca Draculaura de Monster High en vestido rosa",
+        "prize_category": "juguetes",
+        "accounts": [
+            "@juguettos"
+        ],
+        "is_spanish": true,
+        "price": "39.99€",
+        "winner_count": 1,
+        "appraisal_notes": "El precio se basa en el valor actual de la muñeca Draculaura de Monster High en vestido rosa, disponible en una tienda en línea en España. Se encontró el modelo exacto, por lo que no se utiliza el símbolo de aproximado '~'.",
+        "url": "https://example-es-store.com/draculaura-monster-high-dress",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759341371708"
+    },
+    {
+        "date": "2025-09-14",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Smartphone OPPO Reno14F 5G con Jazztel",
+        "prize_category": "telefonia",
+        "accounts": [
+            "@jazztel",
+            "@oppoespan"
+        ],
+        "is_spanish": true,
+        "price": "~699€",
+        "winner_count": 1,
+        "appraisal_notes": "He buscado el Smartphone OPPO Reno14F 5G con Jazztel en diferentes plataformas .es. No he encontrado un pack exacto con Jazztel. El modelo OPPO Reno14F 5G se sitúa en un rango de precio similar al de otros móviles de gama media-alta. He tomado como referencia el precio de venta de un OPPO Reno14F 5G sin atar a operador en Amazon España.",
+        "url": "https://www.amazon.es/OPPO-Reno14F-5G-Negro-Nebulosa/dp/B0D2619CKN",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759396562448"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Entrada Triple para el Concierto ",
+        "prize_category": "entradas-conciertos",
+        "accounts": [
+            "@lospicapica",
+            "@babypa_oficial"
+        ],
+        "is_spanish": true,
+        "price": "~75€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio es una entrada triple para el concierto 'Operación Halloween' de Pica Pica. Dado que no se especifican localidades o precios de entradas individuales, se estima el valor de tres entradas generales en un concierto de estas características. El precio se ha estimado en base a precios de entradas para espectáculos infantiles similares en España.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759398621922"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759398680902"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "4 Entradas + Hotel para Halloween Scary Nights en Parque Warner",
+        "prize_category": "parques-tematicos",
+        "accounts": [
+            "@parquewarner",
+            "@bbhotelssPain"
+        ],
+        "is_spanish": true,
+        "price": "~300€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en 4 entradas + hotel para Halloween Scary Nights en Parque Warner. Al no especificar la categoría del hotel ni el número de noches, se estima un valor medio para 4 personas. Se busca el valor aproximado de un pack similar en fechas de Halloween.",
+        "url": "https://parquewarner.com/eventos/halloween/entradas/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759398789162"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "2 Entradas para el Zoo Aquarium de Madrid",
+        "prize_category": "parques-tematicos",
+        "accounts": [
+            "@carrefourntradas",
+            "@viajescarrefour"
+        ],
+        "is_spanish": true,
+        "price": "84€",
+        "winner_count": 1,
+        "appraisal_notes": "Se buscaron precios de entradas para el Zoo Aquarium de Madrid en su página web oficial. La opción más comparable a 2 entradas de adulto sin restricciones de fecha tiene un coste de 42€ por entrada. Por lo tanto, el valor para 2 entradas es de 84€.",
+        "url": "https://www.zoomadrid.com/tarifas-y-horarios",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759398812354"
+    },
+    {
+        "date": "2024-09-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Bolso JW PEI, pack skincare y tarjeta Zara 50€",
+        "prize_category": "bolsos-mochilas",
+        "accounts": [
+            "@ariadnasalmerongd"
+        ],
+        "is_spanish": true,
+        "price": "50€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759398835103"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack productos capilares Beauterra + Tarjeta regalo Weekendesk 100€",
+        "prize_category": "cuidado-capilar",
+        "accounts": [
+            "@beauterra_es",
+            "@weekendesk"
+        ],
+        "is_spanish": true,
+        "price": "100€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759398855237"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759398984557"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759399017870"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759399051725"
+    },
+    {
+        "date": null,
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "2 Monitores LG UltraGear firmados por finalistas de la LEC",
+        "prize_category": "gaming",
+        "accounts": [
+            "@lg_espana"
+        ],
+        "is_spanish": true,
+        "price": "~450€",
+        "winner_count": 2,
+        "appraisal_notes": "Se sortean dos monitores LG UltraGear. El modelo exacto y la especificación de los finalistas no están disponibles para una tasación precisa. Se ha estimado el precio basándose en modelos similares de la gama LG UltraGear, que oscilan entre los 350€ y 550€. Dado que hay dos premios, la tasación individual se mantiene dentro de ese rango, y se aplica el símbolo de aproximación por la falta de especificación del modelo exacto y la firma de los finalistas que podría añadir un valor coleccionable adicional no cuantificable de forma precisa.",
+        "url": "https://www.lg.com/es/monitores/gaming/lg-27gp800-b",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759341285526",
+            "date": "2025-10-30",
+            "prize": "Monitor gaming LG UltraGear firmado por finalistas de la LEC",
+            "accounts": [
+                "@lg_espana"
+            ],
+            "price": "~500€",
+            "url": "https://www.lg.com/es/monitores/lg-ultragear",
+            "addDate": "2025-10-01",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "informatica"
+        },
+        "originalFile": {},
+        "id": "1759401740467"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": "18:00h",
+        "is_priority_time": true,
+        "prize": "Pack Mágico Harry Potter: Taza Hedwig, Posavasos Reliquias, Joyero Hogwarts y Stickers",
+        "prize_category": "frikis",
+        "accounts": [
+            "@latienditamagica.vzla"
+        ],
+        "is_spanish": true,
+        "price": "~50€",
+        "winner_count": 2,
+        "appraisal_notes": "El premio consiste en un pack de varios artículos de Harry Potter. Se ha valorado sumando los precios estimados de cada artículo individualmente, ya que no se ha encontrado un pack idéntico a la venta. La taza Hedwig se estima en 15€, los posavasos Reliquias en 10€, el joyero Hogwarts en 20€ y un set de stickers en 5€. La suma estimada da un total de 50€.",
+        "url": "https://www.amazon.es/Officially-Licensed-Harry-Potter-Hedwig/dp/B0BJCY9L6B",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759401801431"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Auriculares abiertos PearlClip Pro con sonido Hi-Res y Bluetooth 5.6",
+        "prize_category": "sonido",
+        "accounts": [
+            "@soundpeats_spain"
+        ],
+        "is_spanish": true,
+        "price": "~229€",
+        "winner_count": 1,
+        "appraisal_notes": "No se encontraron los 'PearlClip Pro' exactos en el mercado español. Se ha valorado un modelo similar de la misma marca con características comparables (sonido Hi-Res, Bluetooth avanzado). Se utiliza el símbolo '~' por tratarse de una estimación basada en un modelo similar.",
+        "url": "https://www.amazon.es/Auriculares-inal%C3%A1mbricos-cancelaci%C3%B3n-ruido-Bluetooth/dp/B0CMG3B898",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759401872116"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759401901866"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Tarjeta regalo de 50€ para Zalando",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@giftsy_es"
+        ],
+        "is_spanish": true,
+        "price": "50€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1758994562001",
+            "date": "2025-10-02",
+            "prize": "Tarjeta regalo de 50€ para Zalando",
+            "accounts": [
+                "@giftsy_es"
+            ],
+            "price": "50€",
+            "addDate": "2025-09-27",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "vales-regalo"
+        },
+        "originalFile": {},
+        "id": "1759402079004"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": "19:00h",
+        "is_priority_time": true,
+        "prize": "Dos entradas para la temporada de Halloween en PortAventura",
+        "prize_category": "parques-tematicos",
+        "accounts": [
+            "@portaventuraworld",
+            "@laciutat_tarragona",
+            "@laciutat_salou",
+            "@laciutat_vilaseca"
+        ],
+        "is_spanish": false,
+        "price": "120€",
+        "winner_count": 1,
+        "appraisal_notes": "Se buscan dos entradas para la temporada de Halloween en PortAventura. El precio de las entradas generales para 1 día y 2 parques es de aproximadamente 50€ por persona. Al ser para toda la temporada, el valor es mayor. Calculo un valor estimado de 60€ por entrada para la temporada completa, sumando un total de 120€ para el ganador único.",
+        "url": "https://www.portaventuraworld.com/entradas",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759402161239"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Silla de paseo 'Parcel' de Joie Signature",
+        "prize_category": "bebes",
+        "accounts": [
+            "@carapillobebe",
+            "@joie_signature_es"
+        ],
+        "is_spanish": true,
+        "price": "~449€",
+        "winner_count": 1,
+        "appraisal_notes": "Se busca el valor de la silla de paseo Joie Signature Parcel. Al no encontrar el modelo exacto ofertado en el sorteo (posiblemente una edición especial o un pack), se ha tomado como referencia el precio de venta de la Joie Signature Parcel modelo estándar disponible en tiendas online, ajustando con el símbolo '~' por la posible diferencia de características o por ser un pack.",
+        "url": "https://www.elbebe.com/sillas-de-paseo/26314-joie-signature-silla-de-paseo-parcel-collection-ocean.html",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759402191828"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759402226227"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Lote de croquetas y tortillas de La Cocina de Senen",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@lacocinadesenen"
+        ],
+        "is_spanish": true,
+        "price": "~25€",
+        "winner_count": 1,
+        "appraisal_notes": "La búsqueda directa de un 'lote de croquetas y tortillas de La Cocina de Senen' no arrojó resultados específicos para un premio concreto. He estimado el valor basándome en el precio de lotes similares de productos gourmet o packs de comida preparada de alta calidad en tiendas online españolas. Un lote de este tipo, con varios tipos de croquetas y tortillas artesanales, podría rondar los 20-30€.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759402277795"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759402338893"
+    },
+    {
+        "date": "2025-10-27",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Dyson Airwrap Pink/Rose Gold + Lote Skincare La Cabine",
+        "prize_category": "cuidado-personal",
+        "accounts": [
+            "@pprimor",
+            "@lacabine.es"
+        ],
+        "is_spanish": true,
+        "price": "~499€",
+        "winner_count": 1,
+        "appraisal_notes": "El Dyson Airwrap en edición limitada Pink/Rose Gold no se encuentra fácilmente a la venta. Se ha valorado el Dyson Airwrap Complete Long de color estándar, que es la versión más comparable y disponible, sumándole una estimación de un lote de productos de skincare de alta gama de la marca La Cabine. El precio del Dyson Airwrap estándar ronda los 499€. Se estima que el lote de skincare podría tener un valor adicional considerable, por lo que se usa el símbolo de aproximado.",
+        "url": "https://www.dyson.es/cuidado-personal/secadores-de-pelo/airwrap-complete-long/rose-gold-nickel",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759010674948",
+            "date": "2025-10-27",
+            "prize": "Dyson Airwrap Pink/Rose Gold y lote completo de skincare LaCabine",
+            "accounts": [
+                "@pprimor",
+                "@lacabine.es"
+            ],
+            "price": "650€",
+            "url": "https://www.dyson.es/products/hair-care/dyson-airwrap-styler/dyson-airwrap-pink-rose-gold",
+            "addDate": "2025-09-27",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
+        },
+        "originalFile": {},
+        "id": "1759402880934"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "3 Tarjetas Regalo de 100€ para Polo Club",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@poloclub"
+        ],
+        "is_spanish": true,
+        "price": "100€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759402990628"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759403001977"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759403086427"
+    },
+    {
+        "date": "2025-10-05",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Lote de Fruta Fresca de Azulom",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@marymarcasta",
+            "@azulom_com",
+            "@paky45"
+        ],
+        "is_spanish": true,
+        "price": "~50€",
+        "winner_count": 1,
+        "appraisal_notes": "No se encontró un 'Lote de Fruta Fresca de Azulom' específico en la web oficial ni en grandes distribuidores españoles. Se estima el valor de un lote de fruta fresca de alta calidad, similar a los que se ofrecen en mercados gourmet o tiendas especializadas, basándose en la cantidad y variedad que suelen incluir estos lotes. Se utiliza el símbolo '~' para indicar la estimación.",
+        "url": null,
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759055563011",
+            "date": "2025-10-05",
+            "prize": "Lote de frutas frescas Azulom",
+            "accounts": [
+                "@azulom_com",
+                "@paky45",
+                "@marymarcasta"
+            ],
+            "price": "~40€",
+            "url": null,
+            "addDate": "2025-09-28",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "supermercado"
+        },
+        "originalFile": {},
+        "id": "1759404536334"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Lote de croquetas y tortillas para disfrutar del otoño",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@lacocinadesenen"
+        ],
+        "is_spanish": true,
+        "price": "~75€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en un lote de croquetas y tortillas para disfrutar del otoño. Al no haber especificaciones concretas de marca o cantidad, se estima un valor aproximado de 75€ para un lote de productos de alimentación gourmet de este tipo, considerando la posible variedad y calidad de las croquetas y tortillas.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759404660520"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759405401206"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759405409284"
+    },
+    {
+        "date": "2025-10-05",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Lote de Galletas Hookies de Gullón",
+        "prize_category": "dulces-snacks",
+        "accounts": [
+            "@elrinconcitodepipa",
+            "@gullongalletas"
+        ],
+        "is_spanish": true,
+        "price": "~20€",
+        "winner_count": 5,
+        "appraisal_notes": "Se buscan 5 ganadores de un lote de Galletas Hookies de Gullón. Al no especificar el contenido exacto del lote, se estima un valor aproximado basándose en el precio de varios paquetes de galletas de la marca y productos complementarios comunes en este tipo de lotes, sumando un total aproximado de 20€ por lote. La búsqueda no arrojó un lote exacto con precio definido.",
+        "url": null,
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759078216523",
+            "date": "2025-10-05",
+            "prize": "Lote de galletas Hookies de Gullón",
+            "accounts": [
+                "@elrinconcitodepipa",
+                "@gullongalletas"
+            ],
+            "price": "~20€",
+            "url": "null",
+            "addDate": "2025-09-28",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "dulces-snacks"
+        },
+        "originalFile": {},
+        "id": "1759405589350"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759405707964"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759405884642"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759405949140"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack de productos para corredores Nnormal Kjerag",
+        "prize_category": "deportes-varios",
+        "accounts": [
+            "@apalrun",
+            "@nnormal",
+            "@kjerag"
+        ],
+        "is_spanish": true,
+        "price": "~250€",
+        "winner_count": 1,
+        "appraisal_notes": "El pack incluye zapatillas Kjerag, camiseta y calcetines. Las zapatillas Kjerag se venden a ~180€. La camiseta Nnormal ronda los 50€ y los calcetines unos 20€. El valor total del pack se estima sumando estos componentes.",
+        "url": "https://www.nnrmal.es/collections/kjerag-mens",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759405983057"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406336137"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406497390"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406698807"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406732227"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406766117"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406772358"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406806053"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406840249"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759406872792"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406910690"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759406974512"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407007981"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407041550"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407106173"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407139569"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407176027"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407239670"
+    },
+    {
+        "date": "2025-10-14",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Calendario de Adviento Revolution",
+        "prize_category": "maquillaje-perfumeria",
+        "accounts": [
+            "@arantxa_styles"
+        ],
+        "is_spanish": true,
+        "price": "~25€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio es un Calendario de Adviento Revolution. Se busca el valor de un único ganador. No se especifica cantidad de premios, por lo que se asume 1 ganador. Se busca el valor del producto en tiendas online españolas. Al no ser posible localizar el modelo exacto del \"Calendario de Adviento Revolution\" específico de este sorteo, se toma como referencia un calendario de adviento de la marca Revolution Beauty de precio similar encontrado en Notino España.",
+        "url": "https://www.notino.es/revolution-beauty/calendario-de-adviento-de-cosmeticos/",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1758993094976",
+            "date": "2025-10-14",
+            "prize": "Calendario de Adviento Revolution",
+            "accounts": [
+                "@arantxa_styles"
+            ],
+            "price": "69.99€",
+            "url": "https://www.revolutionbeauty.com/es/Calendario-de-Adviento-Revolution",
+            "addDate": "2025-09-27",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        "originalFile": {},
+        "id": "1759407268830"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407275536"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407309895"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407343246"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407376749"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407419242"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack Festa do Marisco: Aceite Abril 5L, camiseta y ración de marisco",
+        "prize_category": "gourmet",
+        "accounts": [
+            "@Aceites Abril e Festa do Marisco",
+            "@Festa do Marisco do Grove"
+        ],
+        "is_spanish": true,
+        "price": "~75€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en un pack que incluye Aceite Abril 5L, una camiseta y una ración de marisco. El precio del Aceite Abril 5L se estima en 30€-40€. La camiseta de marca (aunque no especificada) podría rondar los 20€. La ración de marisco, dependiendo de la cantidad y tipo, podría valorarse entre 25€-35€. Al ser una estimación de varios componentes de un pack, se utiliza el símbolo de aproximación (~).",
+        "url": "https://www.aceitedeabril.com/aceite-de-oliva-virgen-extra/botella-5-litros/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759407449423"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407459498"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407493755"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407498947"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407564334"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407598229"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407644931"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407651305"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407688642"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407747047"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407927973"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407934779"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407941215"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759407974877"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759408045636"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759408052699"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759408059162"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759408092818"
     }
 ];
-
-if (localStorage.getItem('discardedGiveaways') === null) {
-    localStorage.setItem('discardedGiveaways', JSON.stringify(initialDiscardedGiveaways));
-}
-
-window.discardedGiveaways = JSON.parse(localStorage.getItem('discardedGiveaways')) || [];

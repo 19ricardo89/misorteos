@@ -2912,6 +2912,8 @@ const getCategoryInfo = (categoryKey) => {
         return CATEGORY_INFO[categoryKey] || { name: 'Otros', emoji: '⭐' };
     };
 
+// REEMPLAZA TU FUNCIÓN buildModal ACTUAL CON ESTA VERSIÓN COMPLETA
+
 const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all') => {
     const modalBody = document.getElementById('modal-body');
     const notInterestedBody = document.getElementById('not-interested-body');
@@ -2932,15 +2934,51 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
         return true;
     });
     
+    // =================================================================
+    // ¡NUEVA LÓGICA DE ORDENACIÓN AVANZADA!
+    // =================================================================
+    
+    // Función auxiliar para parsear el precio a un número
+    const parsePriceForSort = (priceString) => {
+        if (!priceString || typeof priceString !== 'string') return 0;
+        const cleanedString = priceString.replace(/[^0-9,.]/g, '').replace(',', '.');
+        const numericValue = parseFloat(cleanedString);
+        return isNaN(numericValue) ? 0 : numericValue;
+    };
+
+    // 1. Separamos los sorteos en los 3 bloques que definiste
+    const priorityBlock = dayGiveaways.filter(g => g.is_priority_time);
+    const timedBlock = dayGiveaways.filter(g => g.ends_at_time && !g.is_priority_time);
+    const noTimeBlock = dayGiveaways.filter(g => !g.ends_at_time);
+
+    // 2. Ordenamos cada bloque según tus reglas
+    // Bloque prioritario: ordenado por hora ascendente (los que acaban antes, primero)
+    priorityBlock.sort((a, b) => {
+        const timeA = a.ends_at_time ? parseInt(a.ends_at_time.replace(':', '').replace('h', '')) : 2400;
+        const timeB = b.ends_at_time ? parseInt(b.ends_at_time.replace(':', '').replace('h', '')) : 2400;
+        return timeA - timeB;
+    });
+
+    // Bloque con hora de medianoche: ordenado por precio descendente
+    timedBlock.sort((a, b) => parsePriceForSort(b.price) - parsePriceForSort(a.price));
+
+    // Bloque sin hora: ordenado por precio descendente
+    noTimeBlock.sort((a, b) => parsePriceForSort(b.price) - parsePriceForSort(a.price));
+    
+    // 3. Unimos los bloques en el orden correcto
+    dayGiveaways = [...priorityBlock, ...timedBlock, ...noTimeBlock];
+
+    // Finalmente, movemos los completados al final
     dayGiveaways.sort((a, b) => {
         const isACompleted = !!completedGiveaways[a.id];
         const isBCompleted = !!completedGiveaways[b.id];
         if (isACompleted && !isBCompleted) return 1;
         if (!isACompleted && isBCompleted) return -1;
-        const priceA = parsePrice(a.price);
-        const priceB = parsePrice(b.price);
-        return priceB - priceA;
+        return 0; // Si ambos están completados o no, mantenemos su orden relativo
     });
+    // =================================================================
+    // FIN DE LA NUEVA LÓGICA DE ORDENACIÓN
+    // =================================================================
 
     const dayNotInterested = notInterestedGiveaways[dateStr] || [];
 
@@ -2953,18 +2991,14 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
         
         const categoryInfo = getCategoryInfo(giveaway.prize_category);
 
-        // --- INICIO DE LA MODIFICACIÓN ---
         let timeInfoHTML = '';
         if (giveaway.ends_at_time) {
             if (giveaway.is_priority_time) {
-                // Con emoji de reloj si es prioritario
                 timeInfoHTML = `<span class="text-sm font-bold text-red-600 ml-2">⏰ ${giveaway.ends_at_time}</span>`;
             } else {
-                // Sin emoji si no es prioritario (ej. medianoche)
                 timeInfoHTML = `<span class="text-xs text-gray-500 ml-2">${giveaway.ends_at_time}</span>`;
             }
         }
-        // --- FIN DE LA MODIFICACIÓN ---
 
         itemContainer.innerHTML = `
             <div class="flex items-start flex-1 overflow-hidden">

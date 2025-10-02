@@ -1,11 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const fetch = require('node-fetch');
 
 // --- Función Auxiliar para leer los prompts de forma segura ---
 const readPromptFromFile = (fileName) => {
-    // ¡RUTA CORREGIDA Y DEFINITIVA!
-    const promptDirectory = path.resolve(__dirname, '..', 'prompt'); 
+    const promptDirectory = path.resolve(__dirname, '..', 'Prompt');
     const filePath = path.join(promptDirectory, fileName);
     try {
         return fs.readFileSync(filePath, 'utf8');
@@ -15,8 +13,9 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (con los modelos estables v1) ---
-const callGeminiAPI = async (prompt, model, base64Data = null) => {
+// --- Función para llamar a la API de Gemini (con gemini-2.5-flash) ---
+const callGeminiAPI = async (prompt, model = 'gemini-2.5-flash', base64Data = null) => {
+    const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
         throw new Error("La clave de API de Gemini no está configurada.");
@@ -72,7 +71,7 @@ const callGeminiAPI = async (prompt, model, base64Data = null) => {
     }
 };
 
-// --- Handler Principal de la Función de Netlify ---
+// --- Handler Principal (Arquitectura de 5 especialistas con 2.5 Flash) ---
 exports.handler = async function (event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -84,21 +83,21 @@ exports.handler = async function (event, context) {
             return { statusCode: 400, body: JSON.stringify({ error: 'No se proporcionó la imagen en formato base64.' }) };
         }
 
-        // === PASO 1: EXTRACCIÓN INICIAL (con gemini-pro-vision) ===
+        // === PASO 1: EXTRACCIÓN INICIAL (con 2.5 Flash) ===
         const extractorPrompt = readPromptFromFile('data_extractor.txt');
-        const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-pro-vision', base64Data);
+        const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-2.5-flash', base64Data);
         const { raw_text, visual_description } = extractedData;
 
-        // === PASO 2: EJECUCIÓN PARALELA DE EXPERTOS (con gemini-pro) ===
+        // === PASO 2: EJECUCIÓN PARALELA DE EXPERTOS (con 2.5 Flash) ===
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         
         const dateInputText = `${readPromptFromFile('date_expert.txt').replace('${fechaFormateada}', fechaFormateada)}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         const prizeInputText = `${readPromptFromFile('prize_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}\n\n# DESCRIPCIÓN VISUAL A CONSIDERAR:\n${visual_description}`;
         const accountsInputText = `${readPromptFromFile('accounts_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         
-        const datePromise = callGeminiAPI(dateInputText, 'gemini-pro');
-        const prizePromise = callGeminiAPI(prizeInputText, 'gemini-pro');
-        const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-pro');
+        const datePromise = callGeminiAPI(dateInputText, 'gemini-2.5-flash');
+        const prizePromise = callGeminiAPI(prizeInputText, 'gemini-2.5-flash');
+        const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-2.5-flash');
 
         const priceRegex = /(\d{1,5}(?:[.,]\d{1,2})?)\s*€/;
         const priceMatch = raw_text.match(priceRegex);
@@ -114,7 +113,7 @@ exports.handler = async function (event, context) {
                 let appraiserPrompt = readPromptFromFile('price_appraiser.txt');
                 appraiserPrompt = appraiserPrompt.replace('${prize_name}', prizeResult.prize);
                 appraiserPrompt = appraiserPrompt.replace('${accounts_list}', (prizeResult.accounts || []).join(', '));
-                return callGeminiAPI(appraiserPrompt, 'gemini-pro');
+                return callGeminiAPI(appraiserPrompt, 'gemini-2.5-flash');
             });
         }
 

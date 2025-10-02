@@ -1,10 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const fetch = require('node-fetch');
 
 // --- Función Auxiliar para leer los prompts de forma segura ---
 const readPromptFromFile = (fileName) => {
-    // ¡Ruta corregida para apuntar a Netlify/Prompt/!
+    // ¡RUTA CORREGIDA Y DEFINITIVA!
     const promptDirectory = path.resolve(__dirname, '..', 'Prompt'); 
     const filePath = path.join(promptDirectory, fileName);
     try {
@@ -17,6 +16,7 @@ const readPromptFromFile = (fileName) => {
 
 // --- Función para llamar a la API de Gemini (con los modelos estables v1) ---
 const callGeminiAPI = async (prompt, model, base64Data = null) => {
+    const fetch = (await import('node-fetch')).default; // <-- Sintaxis correcta para Netlify
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
         throw new Error("La clave de API de Gemini no está configurada.");

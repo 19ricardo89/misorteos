@@ -13,7 +13,7 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (VERSIÓN ORIGINAL) ---
+// --- Función para llamar a la API de Gemini (VERSIÓN ORIGINAL FUNCIONAL) ---
 const callGeminiAPI = async (prompt, base64Data = null) => {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -72,7 +72,7 @@ const callGeminiAPI = async (prompt, base64Data = null) => {
     }
 };
 
-// --- Handler Principal de la Función de Netlify (VERSIÓN ORIGINAL) ---
+// --- Handler Principal de la Función de Netlify (VERSIÓN ORIGINAL FUNCIONAL) ---
 exports.handler = async function (event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -92,17 +92,14 @@ exports.handler = async function (event, context) {
         // === PASO 2: PREPARACIÓN Y EJECUCIÓN PARALELA DE TODOS LOS EXPERTOS ===
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         
-        // Preparamos los prompts para cada experto
         const dateInputText = `${readPromptFromFile('date_expert.txt').replace('${fechaFormateada}', fechaFormateada)}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         const prizeInputText = `${readPromptFromFile('prize_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}\n\n# DESCRIPCIÓN VISUAL A CONSIDERAR:\n${visual_description}`;
         const accountsInputText = `${readPromptFromFile('accounts_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         
-        // Creamos las promesas para las llamadas a la API
         const datePromise = callGeminiAPI(dateInputText);
         const prizePromise = callGeminiAPI(prizeInputText);
         const accountsPromise = callGeminiAPI(accountsInputText);
 
-        // --- LÓGICA DEL TASADOR ---
         const priceRegex = /(\d{1,5}(?:[.,]\d{1,2})?)\s*€/;
         const priceMatch = raw_text.match(priceRegex);
         let pricePromise;
@@ -121,7 +118,6 @@ exports.handler = async function (event, context) {
             });
         }
 
-        // Ejecutamos TODAS las promesas en paralelo.
         const [dateResult, prizeResult, accountsResult, priceResult] = await Promise.all([
             datePromise,
             prizePromise,

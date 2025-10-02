@@ -3379,9 +3379,11 @@ const buildModal = (dateStr, modalSearchQuery = '', modalCategoryFilter = 'all')
     };
     reader.readAsDataURL(file);
 }
+// REEMPLAZA ESTAS DOS FUNCIONES EN TU CÓDIGO
+
 function renderInteractiveCard(resultData) {
     liveResultsContainer.innerHTML = '';
-
+    
     if (autoSaveTimer) {
         clearInterval(autoSaveTimer);
         autoSaveTimer = null;
@@ -3416,6 +3418,11 @@ function renderInteractiveCard(resultData) {
             <div><label for="interactive-accounts">Cuentas:</label><textarea id="interactive-accounts" rows="2">${accounts}</textarea></div>
         </div>
     `;
+    
+    // Asignamos el status 'no_date' si la IA devuelve una fecha nula o vacía
+    if (resultData.status === 'valid' && !resultData.date) {
+        resultData.status = 'no_date';
+    }
 
     switch(resultData.status) {
         case 'valid':
@@ -3428,7 +3435,7 @@ function renderInteractiveCard(resultData) {
             title = 'Comparar Sorteos Duplicados';
             cardStatusClass = 'card-status-duplicate';
             buttonsHTML = `<button id="btn-merge" class="btn-merge">Fusionar</button><button id="btn-add-new" class="btn-save">Añadir como Nuevo</button><button id="btn-discard" class="btn-discard">Descartar</button>`;
-
+            
             const analyzedGiveawayHTML = generateGiveawayDetailsHTML(resultData, "Sorteo Analizado (Nuevo)");
             const originalGiveawayHTML = generateGiveawayDetailsHTML(resultData.originalGiveaway, "Sorteo Original (Existente)");
 
@@ -3448,7 +3455,7 @@ function renderInteractiveCard(resultData) {
         case 'no_date':
             isAutomatic = true;
             title = ` limbo Sorteo Sin Fecha`;
-            cardStatusClass = 'card-status-error';
+            cardStatusClass = 'card-status-error'; // Reusamos el color rojo
             cardHTML = `
             <div id="current-interactive-card" class="interactive-card ${cardStatusClass}">
                 <h3 class="card-title">${title}</h3>
@@ -3518,13 +3525,13 @@ function renderInteractiveCard(resultData) {
             startAutoProceedTimer('discard');
         }
     }
-
+    
     const actionsContainer = liveResultsContainer.querySelector('.interactive-card-actions');
     if (actionsContainer) {
         actionsContainer.addEventListener('click', (e) => {
             const button = e.target.closest('button');
             if (!button) return;
-
+            
             if (autoSaveTimer) {
                  clearInterval(autoSaveTimer);
                  autoSaveTimer = null;
@@ -3543,7 +3550,8 @@ function renderInteractiveCard(resultData) {
         });
     }
 }
-    function handleUserDecisionAndProceed(action, data) {
+
+function handleUserDecisionAndProceed(action, data) {
     const card = document.getElementById('current-interactive-card');
     let editedData = { ...data };
     if (card && card.querySelector('.interactive-card-form')) {
@@ -3557,31 +3565,19 @@ function renderInteractiveCard(resultData) {
     switch(action){
         case 'save':
         case 'add-new':
-            // =================================================================
-            // ¡NUEVA LÓGICA PARA VERIFICAR FECHAS CADUCADAS!
-            // =================================================================
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Normalizamos la fecha de hoy para comparar solo días
+            today.setHours(0, 0, 0, 0);
             
             const giveawayDate = new Date(editedData.date + 'T00:00:00');
 
             if (giveawayDate < today) {
-                // Si la fecha ya pasó, lo descartamos automáticamente
                 discardedGiveaways.push({ ...editedData, id: Date.now().toString(), status: 'expired' });
                 analysisResults.expired.push(editedData);
                 saveDiscardedGiveaways();
                 showNotification('Sorteo Caducado', 'Se ha movido automáticamente a descartados.');
-                
-                // Procedemos al siguiente sin guardarlo en el calendario
-                updateAnalysisLegend();
-                currentIndex++;
-                processNextImage();
-                return; // Detenemos la ejecución aquí
+                break;
             }
-            // =================================================================
-            // FIN DE LA NUEVA LÓGICA
-            // =================================================================
-
+            
             const newGiveaway = { 
                 id: Date.now().toString(),
                 date: editedData.date, 
@@ -3595,9 +3591,13 @@ function renderInteractiveCard(resultData) {
                 prize_category: editedData.prize_category
             };
             
-            if (!newGiveaway.date || !newGiveaway.prize) {
-                showNotification('Error', 'Faltan la fecha o el premio para guardar el sorteo.');
-                return;
+            if (!newGiveaway.date) {
+                // Si falta la fecha, lo mandamos al limbo y NO detenemos el flujo
+                datelessGiveaways.push({ ...editedData, id: Date.now().toString(), status: 'no_date' });
+                analysisResults['no_date'].push(editedData);
+                saveDatelessGiveaways();
+                showNotification('Sorteo sin Fecha', 'Movido a "El Limbo" para revisión manual.');
+                break;
             }
             
             analysisResults.added.push(newGiveaway);
@@ -3629,20 +3629,20 @@ function renderInteractiveCard(resultData) {
             }
             analysisResults.duplicate.push(editedData);
             break;
-        // ... dentro de la función handleUserDecisionAndProceed ...
-case 'discard':
-    if (data.status === 'no_date') { // ¡NUEVA CONDICIÓN!
-        datelessGiveaways.push({ ...data, id: Date.now().toString() });
-        analysisResults[data.status].push(editedData);
-        saveDatelessGiveaways();
-    } else if (data.status === 'not_a_giveaway' || data.status === 'duplicate') {
-         discardedGiveaways.push({ ...data, id: Date.now().toString() });
-         analysisResults[data.status].push(editedData);
-         saveDiscardedGiveaways();
-    } else if (data.status === 'api_error') {
-        analysisResults.api_error.push(editedData);
-    }
-    break;
+        case 'discard':
+            // ¡NUEVA LÓGICA!
+            if (data.status === 'no_date') {
+                datelessGiveaways.push({ ...data, id: Date.now().toString() });
+                analysisResults[data.status].push(editedData);
+                saveDatelessGiveaways();
+                showNotification('Sorteo sin Fecha', 'Movido a "El Limbo".');
+            } else {
+                 if(!analysisResults[data.status]) analysisResults[data.status] = [];
+                 discardedGiveaways.push({ ...data, id: Date.now().toString() });
+                 analysisResults[data.status].push(editedData);
+                 saveDiscardedGiveaways();
+            }
+            break;
     }
     
     updateAnalysisLegend();

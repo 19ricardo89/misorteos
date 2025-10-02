@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch');
 
 // --- Función Auxiliar para leer los prompts de forma segura ---
 const readPromptFromFile = (fileName) => {
-    // ¡RUTA CORREGIDA Y DEFINITIVA!
     const promptDirectory = path.resolve(__dirname, '..', 'Prompt'); 
     const filePath = path.join(promptDirectory, fileName);
     try {
@@ -16,7 +16,6 @@ const readPromptFromFile = (fileName) => {
 
 // --- Función para llamar a la API de Gemini (con los modelos estables v1) ---
 const callGeminiAPI = async (prompt, model, base64Data = null) => {
-    const fetch = (await import('node-fetch')).default; // <-- Sintaxis correcta para Netlify
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
         throw new Error("La clave de API de Gemini no está configurada.");
@@ -84,12 +83,10 @@ exports.handler = async function (event, context) {
             return { statusCode: 400, body: JSON.stringify({ error: 'No se proporcionó la imagen en formato base64.' }) };
         }
 
-        // === PASO 1: EXTRACCIÓN INICIAL (con gemini-pro-vision) ===
         const extractorPrompt = readPromptFromFile('data_extractor.txt');
         const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-pro-vision', base64Data);
         const { raw_text, visual_description } = extractedData;
 
-        // === PASO 2: EJECUCIÓN PARALELA DE EXPERTOS (con gemini-pro) ===
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         
         const dateInputText = `${readPromptFromFile('date_expert.txt').replace('${fechaFormateada}', fechaFormateada)}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
@@ -125,7 +122,6 @@ exports.handler = async function (event, context) {
             pricePromise
         ]);
 
-        // === PASO 3: ENSAMBLAJE FINAL (SIN SUPERVISOR) ===
         const finalResult = { 
             ...dateResult, 
             ...prizeResult, 

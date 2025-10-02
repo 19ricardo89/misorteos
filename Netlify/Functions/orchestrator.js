@@ -71,7 +71,7 @@ const callGeminiAPI = async (prompt, model, base64Data = null) => {
     }
 };
 
-// --- Handler Principal (Arquitectura Flash + Supervisor Pro) ---
+// --- Handler Principal (Arquitectura Flash + Supervisor Flash) ---
 exports.handler = async function (event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -88,14 +88,16 @@ exports.handler = async function (event, context) {
         const extractedData = await callGeminiAPI(extractorPrompt, 'gemini-2.5-flash-lite', base64Data);
         const { raw_text, visual_description } = extractedData;
 
-        // === PASO 2: EJECUCIÓN PARALELA DE EXPERTOS (con 2.5 Flash-Lite) ===
+        // === PASO 2: EJECUCIÓN PARALELA DE EXPERTOS ===
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         
         const dateInputText = `${readPromptFromFile('date_expert.txt').replace('${fechaFormateada}', fechaFormateada)}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         const prizeInputText = `${readPromptFromFile('prize_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}\n\n# DESCRIPCIÓN VISUAL A CONSIDERAR:\n${visual_description}`;
         const accountsInputText = `${readPromptFromFile('accounts_expert.txt')}\n\n# TEXTO A ANALIZAR:\n${raw_text}`;
         
-        const datePromise = callGeminiAPI(dateInputText, 'gemini-2.5-flash-lite');
+        // ¡CAMBIO CLAVE! El experto de fechas usa 2.5-flash
+        const datePromise = callGeminiAPI(dateInputText, 'gemini-2.5-flash');
+        // El resto usa el más rápido, 2.5-flash-lite
         const prizePromise = callGeminiAPI(prizeInputText, 'gemini-2.5-flash-lite');
         const accountsPromise = callGeminiAPI(accountsInputText, 'gemini-2.5-flash-lite');
 
@@ -133,14 +135,15 @@ exports.handler = async function (event, context) {
         };
 
         // =================================================================
-        // PASO 4: LLAMADA AL SUPERVISOR (con 2.5 Pro)
+        // PASO 4: LLAMADA AL SUPERVISOR (con 2.5 Flash)
         // =================================================================
         let supervisorPrompt = readPromptFromFile('supervisor_expert.txt');
         supervisorPrompt = supervisorPrompt.replace('${raw_text}', raw_text);
         supervisorPrompt = supervisorPrompt.replace('${json_data}', JSON.stringify(preliminaryResult, null, 2));
         supervisorPrompt = supervisorPrompt.replace('${fechaFormateada}', fechaFormateada);
 
-        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-2.5-pro');
+        // ¡CAMBIO CLAVE! El supervisor también usa 2.5-flash
+        const finalResult = await callGeminiAPI(supervisorPrompt, 'gemini-2.5-flash');
 
         // =================================================================
         // PASO 5: DEVOLVER EL RESULTADO FINAL (VALIDADO)

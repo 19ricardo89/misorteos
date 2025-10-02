@@ -13,7 +13,7 @@ const readPromptFromFile = (fileName) => {
     }
 };
 
-// --- Función para llamar a la API de Gemini (con los modelos estables) ---
+// --- Función para llamar a la API de Gemini (con los modelos estables v1) ---
 const callGeminiAPI = async (prompt, model, base64Data = null) => {
     const fetch = (await import('node-fetch')).default;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;

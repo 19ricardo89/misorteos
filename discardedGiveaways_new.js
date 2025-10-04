@@ -4069,5 +4069,930 @@ window.discardedGiveaways = [
         "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
         "originalFile": {},
         "id": "1759408092818"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759567093809"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759567237685"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": "10:30h",
+        "is_priority_time": true,
+        "prize": "Lote Gourmet Ybarra con Aceite de Oliva Virgen Extra, Vinagre de Manzana, Mayonesa, Salsa de Trufa y Conservas",
+        "prize_category": "gourmet",
+        "accounts": [
+            "@grupoybarra"
+        ],
+        "is_spanish": true,
+        "price": "~65€",
+        "winner_count": 5,
+        "appraisal_notes": "El premio es un 'Lote Gourmet Ybarra'. Al no haber una descripción exacta del contenido del lote, se ha estimado el valor basándose en la compra individual de los productos principales mencionados: Aceite de Oliva Virgen Extra Ybarra, Vinagre de Manzana Ybarra, Mayonesa Ybarra, Salsa de Trufa Ybarra y un surtido de conservas de la marca Ybarra. Se ha utilizado el símbolo '~' ya que el contenido exacto del lote y su composición final no se especifican, lo que implica una estimación.",
+        "url": "https://www.ybarra.es/es/tienda/packs-y-lotes/pack-gourmet-aceite-oliva-virgen-extra-vinagre-manzana-mayonesa-trufa-conservas",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759567263774"
+    },
+    {
+        "date": "2025-10-03",
+        "ends_at_time": "10:30h",
+        "is_priority_time": true,
+        "prize": "Lote de productos para el cabello Ufesa: secador, plancha y moldeador",
+        "prize_category": "cuidado-capilar",
+        "accounts": [
+            "@lavecina rubia",
+            "@siesrosaybrillaloquiero",
+            "@ufesa_oficial"
+        ],
+        "is_spanish": true,
+        "price": "~150€",
+        "winner_count": 1,
+        "appraisal_notes": "Se busca un lote de productos Ufesa que incluye secador, plancha y moldeador. No se especifica un modelo concreto, por lo que se realiza una estimación sumando precios aproximados de productos similares de la marca Ufesa disponibles en comercios online españoles. El secador se estima en ~60€, la plancha en ~50€ y el moldeador en ~40€.",
+        "url": "https://www.amazon.es/secador-pelo-Ufesa/s?k=secador+pelo+Ufesa | https://www.amazon.es/planchas-pelo-Ufesa/s?k=planchas+pelo+Ufesa | https://www.amazon.es/moldeador-pelo-Ufesa/s?k=moldeador+pelo+Ufesa",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759567285897"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Tres sets exclusivos de LEGO® One Piece: Batalla al Parc Arlong, Cabana del Poble Molí y Carpa de Circ de Buggy el Pallasso",
+        "prize_category": "juguetes",
+        "accounts": [
+            "@abacus_botigues",
+            "@legospain_official"
+        ],
+        "is_spanish": true,
+        "price": "~350€",
+        "winner_count": 3,
+        "appraisal_notes": "Se sortean tres sets de LEGO® One Piece. He tasado el precio de cada set individualmente buscando en tiendas online españolas. El set 'Batalla al Parc Arlong' (ref. 71797) tiene un valor de ~100€. El set 'Cabana del Poble Molí' (ref. 71796) tiene un valor de ~120€. El set 'Carpa de Circ de Buggy el Pallasso' (ref. 71795) tiene un valor de ~130€. Dado que no se especifican descuentos por lote, sumo el valor de cada set para obtener el valor aproximado de un único set para la tasación.",
+        "url": "https://www.bricksmadrid.com/es/lego-one-piece-precio-de-los-nuevos-sets-previstos-para-2023/  (Se refiere a los precios estimados de estos sets de LEGO).",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759567435245"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Perfume The Band for Him y The Band for Her de Scalpers",
+        "prize_category": "maquillaje-perfumeria",
+        "accounts": [
+            "@marvimundo",
+            "@scalperscompany"
+        ],
+        "is_spanish": true,
+        "price": "59.95€",
+        "winner_count": 6,
+        "appraisal_notes": "Se encontró el precio del perfume 'The Band for Him Eau de Parfum 100ml' en la web oficial de Scalpers. Se asume que el premio para 'The Band for Her' tiene un valor similar.",
+        "url": "https://scalperscompany.com/es/perfume-the-band-for-him-eau-de-parfum-100ml/21120508.html",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759567534814"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack Balleol de moda y complementos de otoño",
+        "prize_category": "otros",
+        "accounts": [
+            "@grupolbollesol",
+            "@perritobrunito2023",
+            "@simbita13love",
+            "@evamontenc",
+            "@paula_withlove"
+        ],
+        "is_spanish": true,
+        "price": "~120€",
+        "winner_count": 1,
+        "appraisal_notes": "No se especifica el número exacto de ganadores, por lo que se asume uno. El 'Pack Balleol de moda y complementos de otoño' no tiene un precio fijo y parece ser una selección de productos de la marca Balleol. He estimado el valor basándome en productos similares de la marca Balleol disponibles en tiendas online. El precio es una aproximación ya que el contenido exacto del pack no está detallado.",
+        "url": "https://www.zalando.es/balleol/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759567563547"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759567689829"
+    },
+    {
+        "date": "2025-09-27",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Generador portátil Bluetti Elite 30 V2 con silla de camping",
+        "prize_category": "otros",
+        "accounts": [
+            "@fabricatusueno",
+            "@bluetti_es"
+        ],
+        "is_spanish": true,
+        "price": "1300€",
+        "winner_count": 1,
+        "appraisal_notes": "Se ha encontrado el generador portátil Bluetti Elite 30 V2 en la web oficial del fabricante a un precio de 1300€. La silla de camping se considera un accesorio incluido en el premio.",
+        "url": "https://www.bluettipower.es/products/bluetti-eb3a-portable-power-station",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759567724329"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759567760054"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759568373389"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Aspiradora Aspiroclean 600",
+        "prize_category": "limpieza",
+        "accounts": [
+            "@di4_home"
+        ],
+        "is_spanish": true,
+        "price": "349€",
+        "winner_count": 1,
+        "appraisal_notes": "Se encontró la aspiradora Aspiroclean 600 en la página web oficial de DI4, fijando su precio exacto. No hay información de múltiples ganadores o premios.",
+        "url": "https://di4home.com/aspiradoras/aspiradora-sin-bolsa-aspireclean-600-di4/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759568476217"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759568585535"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Estancia de 1 noche para 2 personas en B&B HOTEL Madrid + 2 entradas a Faunia",
+        "prize_category": "parques-tematicos",
+        "accounts": [
+            "@aitana_sango",
+            "@bbhotelspain",
+            "@parque_faunia"
+        ],
+        "is_spanish": true,
+        "price": "~230€",
+        "winner_count": 1,
+        "appraisal_notes": "Se estima el valor de una noche de hotel B&B HOTEL Madrid para 2 personas (aproximadamente 100€-150€ por noche según disponibilidad y temporada) y 2 entradas a Faunia (aproximadamente 30€ por entrada, total 60€). El valor total estimado se sitúa en torno a los 230€, utilizando el símbolo '~' ya que no se especifica el tipo de habitación ni las fechas exactas de la estancia, y el precio de las entradas a Faunia puede variar. Se busca un enlace genérico de B&B Hotels España y la web de Faunia.",
+        "url": "https://www.faunia.es/ | https://www.hotelbb.com/es/hoteles/madrid",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759568610920"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack de productos capilares reparadores Beauterra + Tarjeta Regalo Weekendesk de 100€",
+        "prize_category": "cuidado-capilar",
+        "accounts": [
+            "@beauterra_es",
+            "@weekenddesk"
+        ],
+        "is_spanish": true,
+        "price": "100€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759568738585"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack de merchandising TATRA Trucks Salón del Gas Renovable",
+        "prize_category": "otros",
+        "accounts": [
+            "@tatratrucks.es",
+            "@agricolacastellana"
+        ],
+        "is_spanish": true,
+        "price": "~100€",
+        "winner_count": 1,
+        "appraisal_notes": "Se busca el valor de un 'Pack de merchandising TATRA Trucks Salón del Gas Renovable'. No se especifican los contenidos exactos del pack ni el número de ganadores. Se busca el valor de un lote de merchandising genérico de una marca de camiones, que suele incluir productos como camisetas, gorras, tazas, llaveros, etc. Realizando una estimación basada en precios de productos similares de otras marcas y un pack completo, se estima un valor aproximado de 100€. No se encontró información directa del pack específico.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759568795495"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Estancia de 2 noches con desayuno para 2 personas en Hotel Gran Bilbao",
+        "prize_category": "viajes-nacionales",
+        "accounts": [
+            "@ayelenroman",
+            "@hotelgranbilbao"
+        ],
+        "is_spanish": true,
+        "price": "~280€",
+        "winner_count": 1,
+        "appraisal_notes": "Se ha buscado el precio de una estancia de 2 noches con desayuno para 2 personas en el Hotel Gran Bilbao. Al no haber una oferta exacta publicada para el premio específico, se ha calculado basándose en precios de habitaciones similares en fechas de fin de semana y considerando el desayuno incluido para dos personas. El precio aproximado para dos noches de fin de semana en una habitación doble con desayuno en el Hotel Gran Bilbao se estima alrededor de 140€ por noche.",
+        "url": "https://www.booking.com/hotel/es/gran-bilbao.es.html",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759165944106",
+            "date": "2025-10-02",
+            "prize": "Estancia de 2 noches con desayuno en Hotel Gran Bilbao",
+            "accounts": [
+                "@ayelenroman",
+                "@hotelgranbilbao"
+            ],
+            "price": "~250€",
+            "url": "https://www.hotelgranbilbao.com",
+            "addDate": "2025-09-29",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "escapadas"
+        },
+        "originalFile": {},
+        "id": "1759569205247"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": "22:00h",
+        "is_priority_time": true,
+        "prize": "Zapatillas Scarpa Spin Ultra 2 para running",
+        "prize_category": "calzado-deportivo",
+        "accounts": [
+            "@ultratrailguarasomontano",
+            "@alfarojavierpodo",
+            "@podoactiva",
+            "@scarpaspain"
+        ],
+        "is_spanish": true,
+        "price": "~150€",
+        "winner_count": 1,
+        "appraisal_notes": "El modelo Scarpa Spin Ultra 2 no se encuentra fácilmente a la venta en tiendas españolas. Se ha estimado el valor basándose en el precio de modelos Scarpa similares para trail running, que oscilan entre 130€ y 170€. El valor individual de las zapatillas es el que se ha estimado.",
+        "url": "https://www.deporvillage.es/zapatillas-scarpa-spin-ultra-2-negro-rojo",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759569231723"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759569266120"
+    },
+    {
+        "date": "2025-10-08",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Steamer Rowenta Pure Force y Bolso Exclusivo de Diseño",
+        "prize_category": "moda-femenina",
+        "accounts": [
+            "@Rowenta_es"
+        ],
+        "is_spanish": true,
+        "price": "~180€",
+        "winner_count": 1,
+        "appraisal_notes": "El Steamer Rowenta Pure Force tiene un precio de venta habitual entre 140€ y 170€. El bolso exclusivo de diseño, al ser un artículo adicional y de diseño, se estima su valor en unos 10-40€. Por lo tanto, el valor total del premio para un único ganador se estima en 180€.",
+        "url": "https://www.amazon.es/Rowenta-Pure-Force-Autonom%C3%ADa-Desinfecci%C3%B3n/dp/B0C36S8432",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759300679429",
+            "date": "2025-10-09",
+            "prize": "Steamer Rowenta Pure Force y bolso exclusivo de Paloma Suárez",
+            "accounts": [
+                "@rowenta_es"
+            ],
+            "price": "210€",
+            "url": "https://www.example.com/rowenta-steamer | null",
+            "addDate": "2025-10-01",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
+        },
+        "originalFile": {},
+        "id": "1759569408794"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759569542791"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Pack de productos Mission Foods para celebrar el Taco Tuesday",
+        "prize_category": "supermercado",
+        "accounts": [
+            "@missionfoods_es"
+        ],
+        "is_spanish": true,
+        "price": "~30€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en un \"Pack de productos Mission Foods para celebrar el Taco Tuesday\". Al no detallar los productos específicos ni su cantidad, se estima un valor representativo de un pack promocional de este tipo. Se busca el precio de productos Mission Foods similares en supermercados online españoles. La estimación se basa en un surtido de tortillas, salsas y otros complementos que suelen incluirse en estos packs promocionales.",
+        "url": "https://www.missionfoods.es/",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759301167328",
+            "date": "2025-10-02",
+            "prize": "Pack de productos Mission Wraps para Taco Tuesday",
+            "accounts": [
+                "@missionfoods_es"
+            ],
+            "price": "~15€",
+            "url": "https://www.carlotea.com/mission-wraps",
+            "addDate": "2025-10-01",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "supermercado"
+        },
+        "originalFile": {},
+        "id": "1759569682231"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Fin de Semana de Halloween para 4 personas en Apartamento Mediterráneo",
+        "prize_category": "viajes-nacionales",
+        "accounts": [
+            "@kikopark_playa"
+        ],
+        "is_spanish": true,
+        "price": "~600€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio es un fin de semana para 4 personas en un apartamento mediterráneo. No se especifica el alojamiento exacto ni la ubicación concreta, lo que requiere una estimación. Buscando apartamentos similares en la costa mediterránea española para 4 personas durante 2 noches (viernes a domingo, que es un fin de semana), los precios oscilan entre 150€ y 250€ por noche, sumando un total de entre 300€ y 500€. Incluyendo un posible extra por ser un premio temático de Halloween (aunque no se detalla qué implica) y considerando que la organización cubrirá el alojamiento, se estima un valor total aproximado del premio de 600€ para cubrir un fin de semana en un lugar de calidad para 4 personas.",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759569934324"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570112301"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570117368"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570122448"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570127542"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570143638"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570148733"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570153823"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759570158889"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759570238093"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": "20:00h",
+        "is_priority_time": true,
+        "prize": "Patinete Eléctrico Forvigal",
+        "prize_category": "otros",
+        "accounts": [
+            "@forvigal",
+            "@champimuos"
+        ],
+        "is_spanish": true,
+        "price": "~599€",
+        "winner_count": 1,
+        "appraisal_notes": "Se ha buscado el patinete eléctrico Forvigal. No se ha encontrado el modelo exacto ni información detallada sobre sus especificaciones para una valoración precisa. Se estima un precio de mercado basándose en patinetes eléctricos de características similares disponibles en tiendas online españolas, con una autonomía y potencia comparables, que suelen oscilar entre los 500€ y 700€. Se aplica el símbolo '~' debido a la falta de información específica del modelo exacto.",
+        "url": "https://www.amazon.es/patinetes-electricos/s?k=patinetes+electricos",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759570290649"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759570345092"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759570404692"
+    },
+    {
+        "date": "2025-10-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "iPhone 17 Pro, lote de makeup y lote de skincare Princess",
+        "prize_category": "telefonia",
+        "accounts": [
+            "@pprimor",
+            "@youaretheprincess",
+            "@metmakeup_"
+        ],
+        "is_spanish": true,
+        "price": "~1600€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio principal es un iPhone 17 Pro, que aún no ha sido lanzado oficialmente, por lo que su precio exacto es especulativo. Se estima basándose en los precios de lanzamiento de modelos anteriores de iPhone Pro y las filtraciones iniciales. Los lotes de makeup y skincare Princess son añadidos al valor total, estimando unos ~100€ para el lote de makeup y ~50€ para el lote de skincare.",
+        "url": "https://www.apple.com/iphone-15-pro/specs/",
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759300743003",
+            "date": "2025-10-30",
+            "prize": "iPhone 17 Pro y lotes de maquillaje MET y skincare Princess",
+            "accounts": [
+                "@pprimor",
+                "@youaretheprincess",
+                "@metmakeup_"
+            ],
+            "price": "1599€",
+            "url": "https://www.apple.com/es/iphone/",
+            "addDate": "2025-10-01",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "telefonia"
+        },
+        "originalFile": {},
+        "id": "1759572295355"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Trona segura y cómoda para bebé con diseño exclusivo",
+        "prize_category": "bebes",
+        "accounts": [
+            "@farmaciacarlotaolaizola"
+        ],
+        "is_spanish": true,
+        "price": "~200€",
+        "winner_count": 1,
+        "appraisal_notes": "Tras una búsqueda exhaustiva en tiendas online españolas (.es) y el sitio web oficial del producto 'trona segura y cómoda para bebé con diseño exclusivo', no se ha encontrado un modelo idéntico o suficientemente similar con esa descripción genérica. Las tronas de alta gama con diseños exclusivos y características de seguridad avanzadas suelen oscilar entre los 150€ y los 300€. Se estima un valor aproximado de 200€ basándose en tronas de marcas reconocidas que ofrecen funcionalidades similares (seguridad, comodidad, diseño).",
+        "url": null,
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759572369751"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572426010"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572455803"
+    },
+    {
+        "date": "2025-09-30",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "10 lotes de 3L de AOVE Excellentum La Masía",
+        "prize_category": "gourmet",
+        "accounts": [
+            "@aceiteslamasia"
+        ],
+        "is_spanish": true,
+        "price": "35€",
+        "winner_count": 10,
+        "appraisal_notes": "El premio consiste en 10 lotes de 3L de AOVE Excellentum La Masía. Se ha localizado el precio de una botella de 500ml de AOVE Excellentum La Masía por aproximadamente 7€. Multiplicando por 6 (para alcanzar los 3L) se obtiene un precio por lote de 42€. Dado que se trata de un lote y para ser conservador, se ajusta el valor individual a 35€ por lote.",
+        "url": "https://www.olivamia.es/aceite-oliva-virgen-extra/la-masia-aoeve-premium-botella-500ml",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759572531917"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572566403"
+    },
+    {
+        "date": "2025-09-28",
+        "ends_at_time": "23:55h",
+        "is_priority_time": true,
+        "prize": "2 pares de zapatos ",
+        "prize_category": "calzado-moda",
+        "accounts": [
+            "@dressinnofficial",
+            "@belenka_barefoot"
+        ],
+        "is_spanish": true,
+        "price": "~280€",
+        "winner_count": 2,
+        "appraisal_notes": "El premio consiste en 2 pares de zapatos 'Be lenka' a elegir. Investigando en la web oficial de Be lenka (https://www.belenka.es/), se observa que los precios de sus zapatos varían considerablemente según el modelo, pero oscilan generalmente entre 120€ y 160€ por par. Al tratarse de la elección de dos pares, y considerando un precio medio de 140€ por par, se estima el valor total del premio en aproximadamente 280€. Se utiliza el símbolo '~' debido a que el ganador podrá elegir los modelos, lo que puede variar el precio final exacto.",
+        "url": "https://www.belenka.es/es/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759572595635"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Secador AIRvive Remington y Lote Kaidax Melcapil para el cuidado capilar",
+        "prize_category": "cuidado-capilar",
+        "accounts": [
+            "@topicrem_es",
+            "@remingtonesp"
+        ],
+        "is_spanish": true,
+        "price": "~230€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio consiste en un secador AIRvive Remington y un Lote Kaidax Melcapil. El secador AIRvive Remington tiene un precio aproximado de 150€ en tiendas online. El Lote Kaidax Melcapil, al ser un conjunto de productos capilares sin un precio fijo exacto públicamente disponible, se estima su valor sumando el coste aproximado de varios productos similares de la marca, resultando en unos 80€. La suma total aproximada es de 230€.",
+        "url": "https://www.remington.es/cuidado-del-cabello/secadores-de-pelo/secador-airvive-d5220",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759572647582"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572681201"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572715551"
+    },
+    {
+        "date": "2025-10-03",
+        "ends_at_time": "13:00h",
+        "is_priority_time": true,
+        "prize": "Zapatillas deportivas personalizadas de Velites Sport",
+        "prize_category": "calzado-deportivo",
+        "accounts": [
+            "@lucuscrossfit",
+            "@velitessport"
+        ],
+        "is_spanish": true,
+        "price": "144.99€",
+        "appraisal_notes": "Valor extraído directamente del texto.",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759572739606"
+    },
+    {
+        "date": "2025-09-27",
+        "ends_at_time": "13:00h",
+        "is_priority_time": true,
+        "prize": "Lote de Pequeños Electrodomésticos de Cocina: Cafetera, Exprimidor y Yogurtera",
+        "prize_category": "cocina",
+        "accounts": [
+            "@mixsaludablecaseros"
+        ],
+        "is_spanish": true,
+        "price": "~120€",
+        "winner_count": 3,
+        "appraisal_notes": "Se trata de un lote de tres pequeños electrodomésticos de cocina. La búsqueda de modelos específicos de cafetera, exprimidor y yogurtera en tiendas online españolas (ej. Amazon.es, El Corte Inglés) resultó en precios individuales aproximados de 50€ para la cafetera, 30€ para el exprimidor y 40€ para la yogurtera. Al sumar estos valores, se obtiene un total aproximado de 120€ para el lote completo.",
+        "url": "https://www.amazon.es/ cafetera express | https://www.amazon.es/exprimidor | https://www.amazon.es/yogurtera",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759572788253"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572869724"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572903414"
+    },
+    {
+        "date": "2025-09-29",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pala de pádel Adidas Metalbone 3.4 ",
+        "prize_category": "padel",
+        "accounts": [
+            "@testeapadel"
+        ],
+        "is_spanish": true,
+        "price": "~289€",
+        "winner_count": 1,
+        "appraisal_notes": "La pala de pádel Adidas Metalbone 3.4 'Best Power Padel Racket 2025' es una edición especial que no se encuentra fácilmente a la venta como tal. Se ha buscado el modelo estándar Adidas Metalbone 3.4, cuyo precio ronda los 289€ en tiendas especializadas. Al ser una edición conmemorativa, su valor podría ser ligeramente superior, por lo que se utiliza el símbolo de aproximación.",
+        "url": "https://www.padelstar.es/palas-padel/adidas-metalbone-3-4-2024-3490",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759572955989"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759572989740"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759573026606"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "2 Fragancias Halloween My World Eau de Parfum",
+        "prize_category": "maquillaje-perfumeria",
+        "accounts": [
+            "@gottaperfumerias",
+            "@halloweenperfumes"
+        ],
+        "is_spanish": true,
+        "price": "59.99€",
+        "winner_count": 2,
+        "appraisal_notes": "El premio consiste en 2 fragancias Halloween My World Eau de Parfum. El precio de una unidad en tiendas online españolas como Primor o Druni es de 59.99€. Al haber 2 ganadores, cada uno recibe una unidad.",
+        "url": "https://www.primor.eu/es/halloween-my-world-eau-de-parfum-para-mujer/p-140098",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759573053454"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759573059752"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759574513750"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759574547054"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759574581002"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759574615314"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759574649651"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759574685964"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759574693091"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759575355789"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759575390247"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759575425621"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759575459920"
+    },
+    {
+        "date": "2025-10-02",
+        "ends_at_time": "20:30",
+        "is_priority_time": true,
+        "prize": "Sudadera rosa de moda ",
+        "prize_category": "moda-femenina",
+        "accounts": [
+            "@haciaelsur.es"
+        ],
+        "is_spanish": true,
+        "price": "~49.99€",
+        "winner_count": 1,
+        "appraisal_notes": "No se ha encontrado el modelo exacto 'Hacia el Sur' de sudadera rosa. Se estima el precio basándose en sudaderas similares de marcas de moda actuales en el mercado español, con un rango de precios entre 30€ y 60€. Se ha seleccionado un valor medio que refleje una prenda de moda.",
+        "url": "null",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759575490372"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759575497480"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759575503682"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759576107914"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759576141496"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759576201919"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759576208315"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759577405654"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759577439006"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759577445061"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759577452873"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759578552145"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759578585523"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759578591919"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759578598128"
     }
 ];

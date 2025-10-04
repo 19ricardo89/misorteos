@@ -18552,6 +18552,88 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "sonido"
+        },
+        {
+            "id": "1759580896089",
+            "date": "2025-10-06",
+            "prize": "Tarjeta Regalo Amazon 150€",
+            "accounts": [
+                "@xataka",
+                "@tcl_espana"
+            ],
+            "price": "150€",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "vales-regalo"
+        },
+        {
+            "id": "1759581344164",
+            "date": "2025-10-06",
+            "prize": "10 Entradas Dobles para la Fiesta del Día de la Hostelería en Madrid",
+            "accounts": [
+                "@makroesp"
+            ],
+            "price": "50€",
+            "url": "https://www.eventbrite.es/e/entradas-dia-de-la-hosteleria-2024-madrid-871502745787",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "entradas-eventos"
+        },
+        {
+            "id": "1759582359088",
+            "date": "2025-10-06",
+            "prize": "Cupón de 100€ para gastar en Día",
+            "accounts": [
+                "@Dia España"
+            ],
+            "price": "100€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "vales-regalo"
+        },
+        {
+            "id": "1759582447754",
+            "date": "2025-10-06",
+            "prize": "3 Lotes de productos de cuidado bucal Elmex de Druni",
+            "accounts": [
+                "@druni_perfumerias"
+            ],
+            "price": "~45€",
+            "url": "https://www.druni.es/elmex",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
+        },
+        {
+            "id": "1759583334525",
+            "date": "2025-10-06",
+            "prize": "Mochila de emergencia Sea To Summit súper equipada",
+            "accounts": [
+                "@seatosummitiberia"
+            ],
+            "price": "~289.95€",
+            "url": "https://www.seatosummit.es/products/dry-bags/pack-liners/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1759585397904",
+            "date": "2025-10-06",
+            "prize": "Beauty Calendar, Kits de productos 3INA y 1 mes de alquiler (1500€)",
+            "accounts": [
+                "@3inaspain"
+            ],
+            "price": "1500€",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "otros"
         }
     ],
     "2025-10-15": [
@@ -18714,6 +18796,21 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "otros"
+        },
+        {
+            "id": "1759582619215",
+            "date": "2025-10-15",
+            "prize": "3 días de Glamping de lujo para 5 personas en Glamping Orangeraie",
+            "accounts": [
+                "@noelilalia",
+                "@glampingorangeraie"
+            ],
+            "price": "~870€",
+            "url": "https://www.glampingorangeraie.com/estancias-de-lujo/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "viajes-nacionales"
         }
     ],
     "2025-10-25": [
@@ -18741,6 +18838,21 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "viajes-nacionales"
+        },
+        {
+            "id": "1759584333802",
+            "date": "2025-10-25",
+            "prize": "Peluche musical Peppa Pig Fiesta de Pijamas con luz y saco de dormir",
+            "accounts": [
+                "@babypa_oficial",
+                "@bandaies"
+            ],
+            "price": "59.99€",
+            "url": "https://www.toysrus.es/juguetes/peluches/peluches-personajes/peppa-pig-fiesta-de-pijamas-peluche-musical-con-luz-y-saco-de-dormir/0183017.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "juguetes"
         }
     ],
     "2025-12-08": [
@@ -18838,6 +18950,35 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "telefonia"
+        },
+        {
+            "id": "1759583875616",
+            "date": "2025-10-11",
+            "prize": "5 entradas dobles para Parque de Atracciones Madrid",
+            "accounts": [
+                "@rapiro",
+                "@parquedeatraccionesmadrid"
+            ],
+            "price": "~100€",
+            "url": "https://www.parquedeatracccionesdemadrid.es/entradas",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "parques-tematicos"
+        },
+        {
+            "id": "1759584031184",
+            "date": "2025-10-11",
+            "prize": "Escapada inolvidable a Roma: Vuelos + Hotel desde Sevilla",
+            "accounts": [
+                "@viajaconmitravelbook"
+            ],
+            "price": "~750€",
+            "url": "https://www.skyscanner.es/transporte/vuelos-desde/svq/240301/240304/vuelos-baratos-desde-sevilla-a-roma-en-marzo-de-2024.html?adults=1&origin=sevilla&destination=roma&departureDate=2024-03-01&returnDate=2024-03-04&stops=0&selectedFlight=false&adults=1",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "viajes-internacionales"
         }
     ],
     "2025-09-29": [
@@ -20757,6 +20898,48 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "restauracion"
+        },
+        {
+            "id": "1759580623715",
+            "date": "2025-10-21",
+            "prize": "Fin de Semana de Aventura y Terror para 4 en Camping Las Hoces: 2 Noches, Espeleología, Escalada, Tirolina, Taller Calabazas y Chocolate con Churros",
+            "accounts": [
+                "@CAMPINGLAS HOCES"
+            ],
+            "price": "~450€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "actividades"
+        },
+        {
+            "id": "1759581499419",
+            "date": "2025-10-21",
+            "prize": "4 Entradas Halloween PortAventura + 1 Noche Hotel para 4 Personas",
+            "accounts": [
+                "@Naturgy"
+            ],
+            "price": "~1060€",
+            "url": "https://www.portaventuraworld.com/halloween",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "parques-tematicos"
+        },
+        {
+            "id": "1759584907864",
+            "date": "2025-10-21",
+            "prize": "Caja Halloween HARIBO de caramelos y cámara instantánea Fujifilm Instax Mini 12",
+            "accounts": [
+                "@haribo_es"
+            ],
+            "price": "79.99€",
+            "url": "https://www.amazon.es/Fujifilm-Instax-Mini-12-C%C3%A1mara/dp/B0C4M76Q5J",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "imagen"
         }
     ],
     "2025-09-19": [
@@ -21139,6 +21322,122 @@ window.giveaways = {
             "ends_at_time": "10:00h",
             "is_priority_time": true,
             "prize_category": "viajes-nacionales"
+        },
+        {
+            "id": "1759579879744",
+            "date": "2025-10-13",
+            "prize": "Sueldo Teikafé: ¡Café gratis durante todo un año!",
+            "accounts": [
+                "@teika_es"
+            ],
+            "price": "~1560€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": "12:00h",
+            "is_priority_time": true,
+            "prize_category": "supermercado"
+        },
+        {
+            "id": "1759580340997",
+            "date": "2025-10-13",
+            "prize": "Portátil Lenovo IdeaPad Slim 3 Chromebook Gen 8 para maratones de cine",
+            "accounts": [
+                "@COZY"
+            ],
+            "price": "499€",
+            "url": "https://www.amazon.es/Lenovo-IdeaPad-Slim-Gen-14-0%E2%80%9D/dp/B0C79Z7W1D",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "informatica"
+        },
+        {
+            "id": "1759580743163",
+            "date": "2025-10-13",
+            "prize": "Portátil Lenovo IdeaPad Slim 3 Chromebook Gen 8",
+            "accounts": [
+                "@cozy"
+            ],
+            "price": "~499€",
+            "url": "https://www.amazon.es/Lenovo-IdeaPad-Slim-Gen-Chromebook/dp/B0CBK9Y19N",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "informatica"
+        },
+        {
+            "id": "1759580763952",
+            "date": "2025-10-13",
+            "prize": "Portátil Lenovo IdeaPad Slim 3 Chromebook Gen 8",
+            "accounts": [
+                "@tp_spain"
+            ],
+            "price": "499€",
+            "url": "https://www.amazon.es/Lenovo-IdeaPad-Slim-Chromebook-Gen/dp/B0BSPB768J",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "informatica"
+        },
+        {
+            "id": "1759583472373",
+            "date": "2025-10-13",
+            "prize": "2 Noches de Hotel para 2 Personas en Gran Hotel Costa del Sol",
+            "accounts": [
+                "@granhoteclcostadelsol"
+            ],
+            "price": "~200€",
+            "url": "https://www.booking.com/hotel/es/gran-hotel-costa-del-sol.es.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": "09:00h",
+            "is_priority_time": true,
+            "prize_category": "viajes-nacionales"
+        },
+        {
+            "id": "1759583843994",
+            "date": "2025-10-13",
+            "prize": "Noche para dos en Hotel 4* con spa o Juego de mochilas de viaje cabina",
+            "accounts": [
+                "@viajesmilplanes"
+            ],
+            "price": "~180€",
+            "url": "https://www.booking.com/hotel/es/hotel-palacio-de-soto.es.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "viajes-nacionales"
+        },
+        {
+            "id": "1759584108072",
+            "date": "2025-10-13",
+            "prize": "iPhone 17: El último modelo para el ganador del sorteo",
+            "accounts": [
+                "@cc_atalayas",
+                "@andres48murcia2.0",
+                "@bysherezade"
+            ],
+            "price": "~1200€",
+            "url": "https://www.apple.com/es/iphone/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "telefonia"
+        },
+        {
+            "id": "1759584738890",
+            "date": "2025-10-13",
+            "prize": "Pack Nutrición Deportiva Salsasoworld y Zapatillas Trail Altra Running",
+            "accounts": [
+                "@annagrifols",
+                "@salsasaworld",
+                "@altrarunning_europe"
+            ],
+            "price": "~210€",
+            "url": "https://www.salsasworld.com/es/nutricion/ | https://www.runnea.com/zapatillas/running/altrarunning/trail/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deportes-varios"
         }
     ],
     "2025-12-20": [
@@ -22365,6 +22664,120 @@ window.giveaways = {
             "ends_at_time": "23:59h",
             "is_priority_time": false,
             "prize_category": "bolsos-mochilas"
+        },
+        {
+            "id": "1759580073452",
+            "date": "2025-10-05",
+            "prize": "2 Lotes de productos solares Hawaiian Tropic de Druni Perfumerias",
+            "accounts": [
+                "@druni_perfumerias"
+            ],
+            "price": "~35€",
+            "url": "https://www.druni.es/pack-solar-hawaiian-tropic",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
+        },
+        {
+            "id": "1759580571184",
+            "date": "2025-10-05",
+            "prize": "Colchón Organic 135x200 de materiales naturales",
+            "accounts": [
+                "@wonderflip_autorreciclable"
+            ],
+            "price": "~850€",
+            "url": "https://www.colchoneria.es/colchon-emma-one-135x190-colchones-especiales/145765",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "descanso"
+        },
+        {
+            "id": "1759580595225",
+            "date": "2025-10-05",
+            "prize": "Colchón Organic (135x200) de materiales naturales para un descanso sano y sostenible",
+            "accounts": [
+                "@wonderflip_autorreciclable"
+            ],
+            "price": "~1200€",
+            "url": "https://www.ikin.es/colchones/colchon-natural/colchon-bio-natur-135x200/",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "descanso"
+        },
+        {
+            "id": "1759580846510",
+            "date": "2025-10-05",
+            "prize": "Lote de maquillaje completo de Deborah Milano con base, labiales, gloss, sombras, perfilador y paleta.",
+            "accounts": [
+                "@pprimor",
+                "@deborah_milano_makeup"
+            ],
+            "price": "~95€",
+            "url": "https://www.primor.eu/deborah-milano",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "maquillaje-perfumeria"
+        },
+        {
+            "id": "1759581239311",
+            "date": "2025-10-05",
+            "prize": "Smartbox de Viaje Europeo 3 Días 2 Noches para Dos Personas",
+            "accounts": [
+                "@pequenosgigantesci"
+            ],
+            "price": "129€",
+            "url": "https://www.smartbox.com/es/escapada-romantica-2-noches-2-personas/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "escapadas"
+        },
+        {
+            "id": "1759582731819",
+            "date": "2025-10-05",
+            "prize": "Las 20 camisetas exclusivas del 20 aniversario de Pampling (valoradas en 300€)",
+            "accounts": [
+                "@pamplingnews",
+                "@iberiangeek"
+            ],
+            "price": "~300€",
+            "url": "https://www.pampling.com/novedades/6038-camiseta-pampling-20-aniversario-limited-edition",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "viajes-internacionales"
+        },
+        {
+            "id": "1759583418303",
+            "date": "2025-10-05",
+            "prize": "Estancia de fin de semana en villa privada con piscina, barbacoa y discoteca para 6 personas",
+            "accounts": [
+                "@villadahialmerimar"
+            ],
+            "price": "~750€",
+            "url": "https://www.booking.com/villa/es/country/es.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "viajes-nacionales"
+        },
+        {
+            "id": "1759584876138",
+            "date": "2025-10-05",
+            "prize": "2 Lotes de productos solares Hawaiian Tropic",
+            "accounts": [
+                "@druni_perfumerias"
+            ],
+            "price": "~60€",
+            "url": "null",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
         }
     ],
     "2025-10-12": [
@@ -22555,6 +22968,91 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "cocina"
+        },
+        {
+            "id": "1759581574067",
+            "date": "2025-10-12",
+            "prize": "Lote de productos para bebé y cuidado personal de North Baby, Carelia y Be Mummy",
+            "accounts": [
+                "@bemummycom",
+                "@northbaby_oficial",
+                "@careliannatural"
+            ],
+            "price": "350€",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "bebes"
+        },
+        {
+            "id": "1759582829684",
+            "date": "2025-10-12",
+            "prize": "Pack Experiencia Doble I Love Reggaeton Valencia 2026: Acceso General + Tour Backstage",
+            "accounts": [
+                "@ilovereggaeton_official"
+            ],
+            "price": "44€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "entradas-conciertos"
+        },
+        {
+            "id": "1759583496740",
+            "date": "2025-10-12",
+            "prize": "Silla gaming DRIFT DR50 (Negra/Roja)",
+            "accounts": [
+                "@neobytecomputers",
+                "@driftgamingeu"
+            ],
+            "price": "189€",
+            "url": "https://www.driftgaming.eu/es/silla-gaming-drift-dr50-negro-rojo",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gaming"
+        },
+        {
+            "id": "1759583704811",
+            "date": "2025-10-12",
+            "prize": "10 Packs Especiales Café Carmencita con Taza Exclusiva",
+            "accounts": [
+                "@carmencita_especias"
+            ],
+            "price": "~35€",
+            "url": "https://www.cafe-carmencita.com/es/cafe-en-grano/149-cafe-carmencita-gran-reserva-500g.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "supermercado"
+        },
+        {
+            "id": "1759583734293",
+            "date": "2025-10-12",
+            "prize": "Pack Exclusivo: Tarjeta Regalo Kiabi 80€ + Karaoke Light Party DUO VTech",
+            "accounts": [
+                "@kiabies",
+                "@vtech_juguetes"
+            ],
+            "price": "80€",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "juguetes"
+        },
+        {
+            "id": "1759595794328",
+            "date": "2025-10-12",
+            "prize": "Cesta Gourmet Cachamai con Galletitas, Taza y Planta para Mamá",
+            "accounts": [
+                "@cachamaioficial"
+            ],
+            "price": "~50€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gourmet"
         }
     ],
     "2025-09-25": [
@@ -23296,6 +23794,35 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "decoracion"
+        },
+        {
+            "id": "1759583527157",
+            "date": "2025-10-04",
+            "prize": "Pack Multimarca de Productos de Running y Comunidad Runator",
+            "accounts": [
+                "@fer_ninonino",
+                "@comunidadrunator"
+            ],
+            "price": "~250€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deportes-varios"
+        },
+        {
+            "id": "1759584626526",
+            "date": "2025-10-04",
+            "prize": "Vale de 100€ para gastar en sacos de dormir Molis & Co",
+            "accounts": [
+                "@eldormilonfeliz",
+                "@molisandco"
+            ],
+            "price": "100€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "vales-regalo"
         }
     ],
     "2025-10-19": [
@@ -23395,6 +23922,34 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "padel"
+        },
+        {
+            "id": "1759581216467",
+            "date": "2025-10-19",
+            "prize": "iPhone 17 Pro, MacBook Pro y AirPods Pro 3 de Flex Picks",
+            "accounts": [
+                "@flexpickss",
+                "@erictelgram"
+            ],
+            "price": "30€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "telefonia"
+        },
+        {
+            "id": "1759595761135",
+            "date": "2025-10-19",
+            "prize": "Pack de 3 Testers de Color Pintura Elegance Bruger",
+            "accounts": [
+                "@Bruger"
+            ],
+            "price": "~30€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:55h",
+            "is_priority_time": true,
+            "prize_category": "decoracion"
         }
     ],
     "2025-09-28": [
@@ -24071,6 +24626,21 @@ window.giveaways = {
             ],
             "price": "~250€",
             "url": "https://www.merchandising.mercedes-benz.com/es_ES/mercedes-amg-petronas-formula-one-team/c/MB_AMG_PETRONAS_TEAM",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1759581598874",
+            "date": "2025-10-26",
+            "prize": "Pack Exclusivo Mercedes-AMG Petronas F1 Team y Einhell: Polo, Mochila, Cafetera, Atornillador, E-CASE L y Batería",
+            "accounts": [
+                "@einhellesp",
+                "@mariajoseperezalc"
+            ],
+            "price": "~350€",
+            "url": "https://www.mercedesamgf1.com/es_ES/shop/clothing-accessories/ - https://www.einhell.es/",
             "addDate": "2025-10-04",
             "ends_at_time": "23:59h",
             "is_priority_time": false,
@@ -25274,6 +25844,65 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "padel"
+        },
+        {
+            "id": "1759581524278",
+            "date": "2025-10-14",
+            "prize": "Lote de 3 productos de bienestar infantil Neo Peques",
+            "accounts": [
+                "@arenalperfumerias",
+                "@neopeques"
+            ],
+            "price": "~75€",
+            "url": "https://www.integral.bio/es/catalogo/neo-peques-sueo-250ml-neo-peques-digest-250ml-neo-peques-defensas-250ml-neo-peques-ojos-y-oidos-50ml-neo-peques-respir-50ml-neo-peques-piel-50ml-peluche-neo_i15172",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "cuidado-personal"
+        },
+        {
+            "id": "1759581651447",
+            "date": "2025-10-14",
+            "prize": "Pouf Lotus de Joenfa con diseño de elefantes",
+            "accounts": [
+                "@joenfa",
+                "@feriahabitatvalencia"
+            ],
+            "price": "~70€",
+            "url": "https://www.amazon.es/dp/B0CWRL3T25?ref=ppx_yo2ov_dx_ttl_product_image",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "decoracion"
+        },
+        {
+            "id": "1759582593150",
+            "date": "2025-10-14",
+            "prize": "Lote de productos de higiene y puericultura para recién nacidos de Mustela y Nuk",
+            "accounts": [
+                "@mustelaesp",
+                "@nuk_es"
+            ],
+            "price": "~250€",
+            "url": "https://www.mustela.es/ y https://www.nuk.es/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "bebes"
+        },
+        {
+            "id": "1759584817847",
+            "date": "2025-10-14",
+            "prize": "Súper lote de productos de Farmacia de Carol",
+            "accounts": [
+                "@farmaciadecarol"
+            ],
+            "price": "~150€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
         }
     ],
     "2025-10-10": [
@@ -25572,6 +26201,49 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "juguetes"
+        },
+        {
+            "id": "1759584596473",
+            "date": "2025-10-10",
+            "prize": "Robot de cocina KUBO Electrodomésticos ES con 6L y 7 accesorios",
+            "accounts": [
+                "@Wortenes",
+                "@KUBO Electrodomésticos ES"
+            ],
+            "price": "~599€",
+            "url": "https://www.kuboelectrodomesticos.com/robots-de-cocina/kubo-kitchen-6l",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "cocina"
+        },
+        {
+            "id": "1759595703473",
+            "date": "2025-10-10",
+            "prize": "Zapatos Biomecanics para niños",
+            "accounts": [
+                "@micasam ইতি",
+                "@biomecanics"
+            ],
+            "price": "~70€",
+            "url": "https://www.amazon.es/s?k=biomecanics+ni%C3%B1os&i=fashion",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:30h",
+            "is_priority_time": true,
+            "prize_category": "moda-infantil"
+        },
+        {
+            "id": "1759595866109",
+            "date": "2025-10-10",
+            "prize": "Vale de 100 € para gastar en Amary Crianza",
+            "accounts": [
+                "@amarycrianza"
+            ],
+            "price": "100€",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "vales-regalo"
         }
     ],
     "2025-10-16": [
@@ -25688,6 +26360,20 @@ window.giveaways = {
             "ends_at_time": "23:59h",
             "is_priority_time": false,
             "prize_category": "descanso"
+        },
+        {
+            "id": "1759583173338",
+            "date": "2025-10-16",
+            "prize": "Premio directo de DermaXPro con opción a extras",
+            "accounts": [
+                "@vadegratis"
+            ],
+            "price": "140€",
+            "url": "https://dermapro.es/tienda/",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": true,
+            "prize_category": "otros"
         }
     ],
     "2025-10-31": [
@@ -25798,6 +26484,61 @@ window.giveaways = {
             "price": "~40€",
             "url": "https://www.amazon.es/Ariete-2957-Metal-Palomitas-Máquina/dp/B07D67BY5B",
             "addDate": "2025-10-02",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cocina"
+        },
+        {
+            "id": "1759580364716",
+            "date": "2025-10-31",
+            "prize": "Promoción de productos García Millán y Hamburdehesa",
+            "accounts": [
+                "@GarciaMillan.es"
+            ],
+            "price": "~100€",
+            "url": "https://www.garciamillan.es/es/cestas-y-lotes/363-cesta-gourmet-garcia-millan.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "supermercado"
+        },
+        {
+            "id": "1759581416833",
+            "date": "2025-10-31",
+            "prize": "Bono de 500€ para personalizar tu coche en Recambios Diez",
+            "accounts": [
+                "@recambiosdiez"
+            ],
+            "price": "500€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1759583359594",
+            "date": "2025-10-31",
+            "prize": "Viaje a Praga para 2 personas y blanqueamiento dental",
+            "accounts": [
+                "@bucalia_es"
+            ],
+            "price": "~1500€",
+            "url": "https://www.comparativiajes.com/viaje-a-praga-para-dos-personas",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "viajes-internacionales"
+        },
+        {
+            "id": "1759584507693",
+            "date": "2025-10-31",
+            "prize": "Barbacoa eléctrica Cecotec TxuletaCo The Beast 6850",
+            "accounts": [
+                "@planetoutletoficial"
+            ],
+            "price": "199€",
+            "url": "https://www.amazon.es/Cecotec-Barbacoa-Eléctrica-Potente-Ajustable/dp/B0BS52W39B",
+            "addDate": "2025-10-04",
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "cocina"
@@ -26946,6 +27687,77 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "cocina"
+        },
+        {
+            "id": "1759580387539",
+            "date": "2025-10-07",
+            "prize": "iPhone 16 Rosa Edición Druni Perfumerías",
+            "accounts": [
+                "@druni_perfumerias"
+            ],
+            "price": "~1000€",
+            "url": "https://www.apple.com/es/iphone-15-pro/",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "telefonia"
+        },
+        {
+            "id": "1759580790480",
+            "date": "2025-10-07",
+            "prize": "Pala de pádel Babolat Technical Viper Jua Lebrón 2.5 firmada por Lebrón",
+            "accounts": [
+                "@padeladdict",
+                "@babolatesp"
+            ],
+            "price": "~750€",
+            "url": "https://www.babolat.com/es/padel/palas-padel/technical-viper-juan-lebron-2024-301439.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "padel"
+        },
+        {
+            "id": "1759581473184",
+            "date": "2025-10-07",
+            "prize": "40€ en productos de Miel Mayem",
+            "accounts": [
+                "@mielmayem"
+            ],
+            "price": "40€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gourmet"
+        },
+        {
+            "id": "1759584222637",
+            "date": "2025-10-07",
+            "prize": "Lote de Polvos de Volumen y Textura Giorgi para el cabello",
+            "accounts": [
+                "@giorgi_line"
+            ],
+            "price": "~30€",
+            "url": "https://www.giorgi.es/productos/polvos-de-textura-volumen/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "cuidado-capilar"
+        },
+        {
+            "id": "1759584971213",
+            "date": "2025-10-07",
+            "prize": "MEGA Lote Mr. Wonderful y Galletas Gullón",
+            "accounts": [
+                "@mrwonderful_",
+                "@gullongalletas"
+            ],
+            "price": "~350€",
+            "url": "https://www.promocionesgullon.es/es/concurso/mrwonderful",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "supermercado"
         }
     ],
     "2025-10-29": [
@@ -27307,7 +28119,7 @@ window.giveaways = {
         {
             "id": "1759569483503",
             "date": "2025-10-08",
-            "prize": "5 Lotes de Productos para el Cuidado de Piel y Cabello Garnier",
+            "prize": "5 Lotes de productos para el cuidado de la piel y cabello de Garnier",
             "accounts": [
                 "@garnier_es",
                 "@elegido_pda"
@@ -27332,6 +28144,168 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "gafas-accesorios"
+        },
+        {
+            "id": "1759580607572",
+            "date": "2025-10-08",
+            "prize": "4 entradas para Dinópolis Teruel temporada 2025",
+            "accounts": [
+                "@miryam.ugc",
+                "@dinopolisteruel"
+            ],
+            "price": "120€",
+            "url": "https://www.dinopolis.com/entradas_y_precios",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "parques-tematicos"
+        },
+        {
+            "id": "1759580961997",
+            "date": "2025-10-08",
+            "prize": "Tarjeta regalo de 100€ para Zara o tiendas Inditex",
+            "accounts": [
+                "@mamad2_princesas",
+                "@mamienamorada4"
+            ],
+            "price": "100€",
+            "addDate": "2025-10-04",
+            "ends_at_time": "00:00h",
+            "is_priority_time": false,
+            "prize_category": "vales-regalo"
+        },
+        {
+            "id": "1759581126779",
+            "date": "2025-10-08",
+            "prize": "Gafas de sol unisex de diseño ",
+            "accounts": [
+                "@QuevedosOpticas"
+            ],
+            "price": "~130€",
+            "url": "https://tiwi.es/gafas-de-sol/gafas-de-sol-quevedo-l-unisex/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gafas-accesorios"
+        },
+        {
+            "id": "1759581153056",
+            "date": "2025-10-08",
+            "prize": "Lote de golosinas Vidal",
+            "accounts": [
+                "@angy.l92",
+                "@vidalgolosinas"
+            ],
+            "price": "~25€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "dulces-snacks"
+        },
+        {
+            "id": "1759581442782",
+            "date": "2025-10-08",
+            "prize": "Pack de lápices de ojos Multiplayer Revlon",
+            "accounts": [
+                "@clarel_esp",
+                "@revlon_es"
+            ],
+            "price": "~25.98€",
+            "url": "https://www.druni.es/revlon-pack-colorstay-micro-precision-3uds",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "maquillaje-perfumeria"
+        },
+        {
+            "id": "1759581547852",
+            "date": "2025-10-08",
+            "prize": "Lote de Golosinas ",
+            "accounts": [
+                "@loreepv",
+                "@vidalgolosinas"
+            ],
+            "price": "~25€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": "00:00h",
+            "is_priority_time": false,
+            "prize_category": "dulces-snacks"
+        },
+        {
+            "id": "1759581628638",
+            "date": "2025-10-08",
+            "prize": "12 Pares de Zapatos Nyrex Shoes: ¡Un Año de Estrenos!",
+            "accounts": [
+                "@nyrexshoes"
+            ],
+            "price": "950€",
+            "url": "https://www.amazon.es/nyx-shoes",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "calzado-moda"
+        },
+        {
+            "id": "1759583968374",
+            "date": "2025-10-08",
+            "prize": "Estancia de fin de semana en Camping Candeleda",
+            "accounts": [
+                "@viajarmola",
+                "@camping_candeleda"
+            ],
+            "price": "250€",
+            "url": "https://www.campingcandeleda.com/alojamientos/caba%C3%B1as-con-ba%C3%B1o-privado/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "viajes-nacionales"
+        },
+        {
+            "id": "1759584074828",
+            "date": "2025-10-08",
+            "prize": "4 Entradas + Hotel para Halloween Scary Nights en Parque Warner",
+            "accounts": [
+                "@parquewarner",
+                "@bbhotelsspain"
+            ],
+            "price": "~550€",
+            "url": "https://www.parquewarner.com/eventos/halloween/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "escapadas"
+        },
+        {
+            "id": "1759595733088",
+            "date": "2025-10-08",
+            "prize": "2 entradas para Atlantis Aquarium Madrid",
+            "accounts": [
+                "@carrefourentradas",
+                "@viajescarrefour"
+            ],
+            "price": "50€",
+            "url": "https://www.atlanticolaquarium.com/entradas/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "parques-tematicos"
+        },
+        {
+            "id": "1759595933117",
+            "date": "2025-10-08",
+            "prize": "Televisor Nilait 65",
+            "accounts": [
+                "@nilait_es",
+                "@sonypicturesspain"
+            ],
+            "price": "999€",
+            "url": "https://www.amazon.es/Nilait-Smart-Android-DVB-T2-Resolución/dp/B0CS9V76T2",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "imagen"
         }
     ],
     "2025-12-23": [
@@ -27427,7 +28401,7 @@ window.giveaways = {
         {
             "id": "1759237132231",
             "date": "2025-10-09",
-            "prize": "Entradas dobles para PortAventura Park en Halloween",
+            "prize": "4 Entradas Dobles para PortAventura World en Halloween",
             "accounts": [
                 "@portaventuraworld"
             ],
@@ -27645,6 +28619,215 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "cuidado-capilar"
+        },
+        {
+            "id": "1759581362703",
+            "date": "2025-10-09",
+            "prize": "Extintor de seguridad para caravanas, campers y autos",
+            "accounts": [
+                "@la_patatilla",
+                "@ferosticker",
+                "@ferosticker_spain"
+            ],
+            "price": "~35€",
+            "url": "https://www.amazon.es/extintor-coche-caravana/s?k=extintor+coche+caravana",
+            "addDate": "2025-10-04",
+            "ends_at_time": "20:30h",
+            "is_priority_time": true,
+            "prize_category": "otros"
+        },
+        {
+            "id": "1759581394362",
+            "date": "2025-10-09",
+            "prize": "Zapatillas deportivas Puma Electrify Nitro 3",
+            "accounts": [
+                "@automotor_dursan",
+                "@hyroxstest.arganda",
+                "@crossfit_arganda"
+            ],
+            "price": "150€",
+            "url": "https://eu.puma.com/es/es/pd/zapatillas-electrify-nitro-3-hombre/376728.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "calzado-deportivo"
+        },
+        {
+            "id": "1759582472620",
+            "date": "2025-10-09",
+            "prize": "Lote de dulces y golosinas para Halloween de Vidal Golosinas",
+            "accounts": [
+                "@0_vir",
+                "@vidalgolosinas"
+            ],
+            "price": "~100€",
+            "url": "https://www.vidalgolosinas.com/es/",
+            "addDate": "2025-10-04",
+            "ends_at_time": "00:00h",
+            "is_priority_time": false,
+            "prize_category": "dulces-snacks"
+        },
+        {
+            "id": "1759582538236",
+            "date": "2025-10-09",
+            "prize": "Colchón premium Nube Visco Flex 135x190 cm",
+            "accounts": [
+                "@colchonerialacasacadelaura"
+            ],
+            "price": "1.162€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "descanso"
+        },
+        {
+            "id": "1759582649471",
+            "date": "2025-10-09",
+            "prize": "Colección Conjunta Dash and Stars x Women'secret: Looks Comfy y Fashion",
+            "accounts": [
+                "@womensecretofficial",
+                "@dashandstars"
+            ],
+            "price": "~100€",
+            "url": "https://www.womenssecret.com/es/dash-and-stars-x-womenssecret/looks-comfy-y-fashion",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:55h",
+            "is_priority_time": true,
+            "prize_category": "moda-femenina"
+        },
+        {
+            "id": "1759582676411",
+            "date": "2025-10-09",
+            "prize": "Lote completo de cuidado capilar Kativa y secador Remington Airvive",
+            "accounts": [
+                "@kativa_iberia",
+                "@remingtonesp"
+            ],
+            "price": "~100€",
+            "url": "https://www.remington.es/cuidado-del-cabello/secadores-de-pelo/secador-de-pelo-airvive-d5020",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "cuidado-capilar"
+        },
+        {
+            "id": "1759582797154",
+            "date": "2025-10-09",
+            "prize": "Viaje a Baja California para ver ballenas en libertad (7 noches) con vuelos internacionales y todo incluido",
+            "accounts": [
+                "@saraguchi_",
+                "@entreazulesdestinos",
+                "@anahernandezsarría",
+                "@crisroroche"
+            ],
+            "price": "~2500€",
+            "url": "https://www.ofertasviajes.com/viajes/mexico/baja-california/viajes-a-baja-california-todo-incluido/",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "viajes-internacionales"
+        },
+        {
+            "id": "1759583095224",
+            "date": "2025-10-09",
+            "prize": "Aspiradora sin cable con pantalla táctil",
+            "accounts": [
+                "@eriiica_83",
+                "@erikarr15"
+            ],
+            "price": "~250€",
+            "url": "https://www.amazon.es/Tineco-Inalambrica-Inteligente-Pantalla-Autolimpieza/dp/B097Q4G14T",
+            "addDate": "2025-10-04",
+            "ends_at_time": "20:00h",
+            "is_priority_time": true,
+            "prize_category": "limpieza"
+        },
+        {
+            "id": "1759583120019",
+            "date": "2025-10-09",
+            "prize": "Botines con plataforma REBECA SHOP",
+            "accounts": [
+                "@rebecashop.es"
+            ],
+            "price": "130€",
+            "url": "https://rebecashop.com/botin-camper-piel-cuero-negro-con-plataforma-y-hebillas-r-3112",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "calzado-moda"
+        },
+        {
+            "id": "1759583785733",
+            "date": "2025-10-09",
+            "prize": "PlayStation 5 Edición Limitada Ghost of Tsushima con mando",
+            "accounts": [
+                "@elcorteinglestech",
+                "@elcorteingles"
+            ],
+            "price": "~600€",
+            "url": "https://www.amazon.es/PlayStation-Consola-Edici%C3%B3n-Limitada-Ghost/dp/B09X134K8N",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "gaming"
+        },
+        {
+            "id": "1759583907155",
+            "date": "2025-10-09",
+            "prize": "2 vuelos por Europa para compartir",
+            "accounts": [
+                "@Destinia_com"
+            ],
+            "price": "~700€",
+            "url": "https://www.comparadorvuelos.com/",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:59h",
+            "is_priority_time": true,
+            "prize_category": "viajes-internacionales"
+        },
+        {
+            "id": "1759584132071",
+            "date": "2025-10-09",
+            "prize": "Lote de productos Ocean y chubasquero amarillo tQel para perros",
+            "accounts": [
+                "@oceanpetfood",
+                "@tqel"
+            ],
+            "price": "~35€",
+            "url": "https://www.tiendamarina.com/productos/ropa-impermeable-para-perros-chubasquero-tqel-amarillo",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "mascotas"
+        },
+        {
+            "id": "1759584158591",
+            "date": "2025-10-09",
+            "prize": "3 Vales de compra Pinkork: 100€, 50€ y 20€",
+            "accounts": [
+                "@andreea_lalala",
+                "@pinkork_es"
+            ],
+            "price": "170€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "vales-regalo"
+        },
+        {
+            "id": "1759595842781",
+            "date": "2025-10-09",
+            "prize": "Selección de 4 cuentos infantiles a elegir por el ganador",
+            "accounts": [
+                "@esthersalamancamelero"
+            ],
+            "price": "~60€",
+            "url": "https://www.casadellibro.com/libros-infantiles-cuentos-infantiles/144006",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "libros-comics"
         }
     ],
     "2025-12-30": [
@@ -28428,6 +29611,21 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "muebles"
+        },
+        {
+            "id": "1759580009044",
+            "date": "2025-10-30",
+            "prize": "Lote Gourmet: 3 Packs de Hamburguesas Angus de Hamburdehesa y Lote de Gazpacho y Salmorejo García Millán con neverita y tote-bag.",
+            "accounts": [
+                "@Hamburdehesa",
+                "@García Millán"
+            ],
+            "price": "~90€",
+            "url": "https://bit.ly/hamburdehesaGM_FBooct",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "gourmet"
         }
     ],
     "2025-11-30": [
@@ -28472,6 +29670,20 @@ window.giveaways = {
             "ends_at_time": "23:59h",
             "is_priority_time": false,
             "prize_category": "cuidado-capilar"
+        },
+        {
+            "id": "1759583756822",
+            "date": "2025-10-24",
+            "prize": "Zapatillas New Balance FuelCell Rebel V5",
+            "accounts": [
+                "@atmosferasport_oficial"
+            ],
+            "price": "160€",
+            "url": "https://www.newbalance.es/es/pd/fuelcell-rebel-v5/WREBELV5-44141.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": "14:00h",
+            "is_priority_time": true,
+            "prize_category": "calzado-deportivo"
         }
     ],
     "2025-10-18": [
@@ -28592,6 +29804,20 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "supermercado"
+        },
+        {
+            "id": "1759583195997",
+            "date": "2025-10-28",
+            "prize": "Pack de Ciclismo: Cámara Insta360 X5, Casco POC Ventral y Equipación Cleardent",
+            "accounts": [
+                "@marttinoficial"
+            ],
+            "price": "~1300€",
+            "url": "https://www.insta360.com/es/store/insta360-x5/buy | https://www.pocsports.com/es/helmets/road-cycling/ventral-air-spin/ | https://cleardent.es/equipacion-ciclista/",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deportes-varios"
         }
     ],
     "2025-10-22": [
@@ -28637,6 +29863,34 @@ window.giveaways = {
             "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "dulces-snacks"
+        },
+        {
+            "id": "1759580814429",
+            "date": "2025-10-22",
+            "prize": "Set de 3 Maletas Gabol Infinity (Grande, Mediana y Cabina)",
+            "accounts": [
+                "@alihogar",
+                "@gaboloficial"
+            ],
+            "price": "300€",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "equipaje-viaje"
+        },
+        {
+            "id": "1759581681123",
+            "date": "2025-10-22",
+            "prize": "Sillón Relax NINFA de Conforama",
+            "accounts": [
+                "@conforama_es"
+            ],
+            "price": "349€",
+            "url": "https://www.conforama.es/muebles/salon/sillones-relax/sillones-relax-motorizados/sillones-relax-motorizados-ninfa-gris-oscuro-gris-claro-gris-medio/pr/541881",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "muebles"
         }
     ],
     "2025-11-13": [
@@ -28683,6 +29937,54 @@ window.giveaways = {
             "url": "https://www.jamonarium.com/es/jamones-ibericos-de-bellota/2443-jamon-iberico-de-bellota-reserva-valdemoro-75-kg-pata negra-d-o-guijuelo.html",
             "addDate": "2025-10-04",
             "ends_at_time": "23:59h",
+            "is_priority_time": false,
+            "prize_category": "gourmet"
+        }
+    ],
+    "2025-11-02": [
+        {
+            "id": "1759581270137",
+            "date": "2025-11-02",
+            "prize": "Lote Anual de Perfumadores y Asevi Bands Color Protect y Active Fresh",
+            "accounts": [
+                "@asevi.es"
+            ],
+            "price": "~75€",
+            "url": "https://www.carrefour.es/asevi-bands-gel-lavavajillas-lavanda-blanco-caja-40un/248384131/p",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:55h",
+            "is_priority_time": true,
+            "prize_category": "limpieza"
+        },
+        {
+            "id": "1759583224543",
+            "date": "2025-11-02",
+            "prize": "Lote de un año de Asevi Bands y Perfumadores",
+            "accounts": [
+                "@Asevi"
+            ],
+            "price": "~35€",
+            "url": "https://www.asevi.com/es/perfumadores",
+            "addDate": "2025-10-04",
+            "ends_at_time": "23:55h",
+            "is_priority_time": true,
+            "prize_category": "limpieza"
+        }
+    ],
+    "2025-11-01": [
+        {
+            "id": "1759595647646",
+            "date": "2025-11-01",
+            "prize": "Triple Premio Gourmet: Jamón Ibérico, Soporte Jamonero y Juego de Cuchillos Cuchillería",
+            "accounts": [
+                "@adrian_laynez_jamon",
+                "@ibericoscesarnieto",
+                "@cuchillerlagalicia"
+            ],
+            "price": "~350€",
+            "url": "https://www.jamonesibericosonline.com/jamon-iberico-bellota-pieza-entera/59-jamon-iberico-de-bellota-d-o-guijuelo-8kg-aprox.html",
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
             "is_priority_time": false,
             "prize_category": "gourmet"
         }

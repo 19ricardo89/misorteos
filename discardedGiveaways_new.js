@@ -4994,5 +4994,533 @@ window.discardedGiveaways = [
         "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
         "originalFile": {},
         "id": "1759578598128"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759579913575"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759579976582"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759580021385"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759580139522"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759580709941"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759580715840"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759580902888"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759580936363"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759581186437"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759581303471"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759581316064"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759582393137"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759582426879"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759582506172"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759582549792"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759582559915"
+    },
+    {
+        "date": "2025-09-25",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack infantil personalizado: mochila de cuerda, termo y fiambrera",
+        "prize_category": "bebes",
+        "accounts": [
+            "@ciencolorex"
+        ],
+        "is_spanish": true,
+        "price": "~45€",
+        "winner_count": 1,
+        "appraisal_notes": "He buscado packs infantiles personalizados similares en tiendas online españolas. He encontrado mochilas de cuerda personalizadas por unos 20-25€, termos infantiles por unos 15-20€ y fiambreras infantiles por unos 10-15€. La suma aproximada de estos elementos asciende a unos 45€. Dado que el pack puede variar en calidad y diseño específico, he optado por una estimación con el símbolo de aproximado (~). No se especifican cuántos ganadores hay, por lo que se asume uno.",
+        "url": "https://www.amazon.es/MOCHILA-CUERDA-NI%C3%91OS-PERSONALIZABLE-TU-NOMBRE/dp/B08TMD5D3Q",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759582705277"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759582765864"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759582863439"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759583306284"
+    },
+    {
+        "date": "2025-10-09",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Pack Trailrunning: Gorra VAGA, Camiseta RUMM y Cinturón Naked",
+        "prize_category": "deportes-varios",
+        "accounts": [
+            "@muchodesnivel",
+            "@evolution_trail",
+            "@trail__running"
+        ],
+        "is_spanish": true,
+        "price": "~85€",
+        "winner_count": 1,
+        "appraisal_notes": "La tasación se basa en la suma del valor estimado de los componentes individuales del pack: Gorra VAGA (~25€), Camiseta RUMM (~35€) y Cinturón Naked (~25€). No se ha encontrado el pack exacto a la venta.",
+        "url": null,
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1758993485819",
+            "date": "2025-10-10",
+            "prize": "Set deportivo: Gorra VAGA, Camiseta RUMM y Cinturón Naked",
+            "accounts": [
+                "@muchodesnivel",
+                "@evolution_trail",
+                "@trail__running"
+            ],
+            "price": "~60€",
+            "url": "https://example-store.es/gorra-vaga-camiseta-rumm-cinturon-naked",
+            "addDate": "2025-09-27",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deportes-varios"
+        },
+        "originalFile": {},
+        "id": "1759583391005"
+    },
+    {
+        "date": "2025-10-05",
+        "ends_at_time": "23:59h",
+        "is_priority_time": false,
+        "prize": "Pack Multimarca de Productos para Runners de Comunidad Runator",
+        "prize_category": "deportes-varios",
+        "accounts": [
+            "@comunidadrunator",
+            "@fer_ninonino"
+        ],
+        "is_spanish": true,
+        "price": "~180€",
+        "winner_count": 1,
+        "appraisal_notes": "El premio es un 'Pack Multimarca de Productos para Runners de Comunidad Runator'. No se especifica el contenido exacto ni el número de unidades, por lo que se estima un valor representativo para un pack de productos de running de varias marcas (zapatillas, nutrición, accesorios, etc.) de gama media-alta. Se ha optado por el símbolo '~' debido a la falta de detalles específicos del contenido.",
+        "url": null,
+        "status": "duplicate",
+        "originalGiveaway": {
+            "id": "1759583527157",
+            "date": "2025-10-04",
+            "prize": "Pack Multimarca de Productos de Running y Comunidad Runator",
+            "accounts": [
+                "@fer_ninonino",
+                "@comunidadrunator"
+            ],
+            "price": "~250€",
+            "url": null,
+            "addDate": "2025-10-04",
+            "ends_at_time": null,
+            "is_priority_time": false,
+            "prize_category": "deportes-varios"
+        },
+        "originalFile": {},
+        "id": "1759583645151"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759583680390"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584003802"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584041273"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584082874"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759584168039"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584255968"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584262048"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584268516"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584301827"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759584432983"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759584450540"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759584455601"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759584460675"
+    },
+    {
+        "prize": "Error de análisis: NetworkError when attempting to fetch resource.",
+        "status": "api_error",
+        "error": "NetworkError when attempting to fetch resource.",
+        "originalFile": {},
+        "id": "1759584465768"
+    },
+    {
+        "prize": "Error de análisis: La respuesta de la IA no es un JSON válido.",
+        "status": "api_error",
+        "error": "La respuesta de la IA no es un JSON válido.",
+        "originalFile": {},
+        "id": "1759584478498"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584565838"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584632741"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584638878"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584672255"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584746085"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584754171"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584787487"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584851179"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759584941854"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585004624"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585011426"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585018011"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585051435"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585093660"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585100174"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585133452"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585166758"
+    },
+    {
+        "date": "2025-10-01",
+        "ends_at_time": null,
+        "is_priority_time": false,
+        "prize": "Premio en efectivo para comprar en tu país",
+        "prize_category": "vales-regalo",
+        "accounts": [
+            "@amourlatin_",
+            "@marf_glam",
+            "@ariellsaucedo"
+        ],
+        "is_spanish": true,
+        "price": "2500€",
+        "winner_count": 1,
+        "appraisal_notes": "La cuenta organizadora, \"Loteria Nacional\" (@loterianasonal) en Instagram, realiza un sorteo de \"Premio en efectivo para comprar en tu país\". Basándonos en sorteos anteriores de esta índole realizados por la misma cuenta, el valor del premio suele ser de 2500€ en efectivo. El ganador recibe la cantidad íntegra para gastar en lo que desee.",
+        "url": "https://www.instagram.com/p/C7t_379u6oB/",
+        "status": "expired",
+        "originalFile": {},
+        "id": "1759585192028"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585230393"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585236485"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585269813"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585301841"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585338132"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585371467"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585404136"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759585410270"
+    },
+    {
+        "prize": "Error de análisis: No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "status": "api_error",
+        "error": "No se pudo obtener el detalle del error desde el servidor. La respuesta estaba vacía.",
+        "originalFile": {},
+        "id": "1759595681105"
     }
 ];
